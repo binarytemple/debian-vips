@@ -1,12 +1,19 @@
+vips (7.10.8-2) unstable; urgency=low
+
+  * Note: 7.10.8-1 was never part of the archive
+  * Name development package libvips10-dev rather than libvips-dev.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 19 Mar 2005 13:32:00 -0500
+
 vips (7.10.8-1) unstable; urgency=low
 
   * Rename packages:
     - libvips7.10 -> libvips10
-    - libvips7.10-dev -> libvips10-dev
+    - libvips7.10-dev -> libvips-dev
     - libvips7.10-tools -> libvips-tools
     - libvips7.10-doc -> libvips-doc
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 19 Mar 2005 13:25:41 -0500
+ -- Jay Berkenbilt <ejb@ql.org>  Sun, 16 Jan 2005 13:12:07 -0500
 
 vips7.10 (7.10.8-1) unstable; urgency=low
 
