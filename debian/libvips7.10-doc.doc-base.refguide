@@ -1,0 +1,10 @@
+Document: libvips7.10-refguide
+Title: Reference Guide for VIPS 7.10
+Author: John Cupitt, Kirk Martinez
+Abstract: The VIPS Reference Guide introduces the functions available
+ in the VIPS image processing library.
+Section: Apps/Programming
+
+Format: HTML
+Index: /usr/share/doc/libvips7.10-doc/html/refguide/index.html
+Files: /usr/share/doc/libvips7.10-doc/html/refguide/*

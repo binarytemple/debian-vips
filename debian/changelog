@@ -1,0 +1,26 @@
+vips7.10 (7.10.8-2) UNRELEASED; urgency=low
+
+  * NOT RELEASED YET
+
+ -- Jay Berkenbilt <ejb@in.ql.org>  Fri, 14 Jan 2005 22:06:29 -0500
+
+vips7.10 (7.10.8-1) unstable; urgency=low
+
+  * New upstream release
+  * Upstream fixed gcc-4.0/amd64 compiler error.  Thanks Andreas Jochens
+    <aj@andaco.de>.  (Closes: #288650)
+
+ -- Jay Berkenbilt <ejb@ql.org>  Fri, 14 Jan 2005 21:40:16 -0500
+
+vips7.10 (7.10.6-2) unstable; urgency=high
+
+  * Remove stray header(1) manual page.  (Closes: #284573)
+  * Fix segmentation fault in im_icc_present.  (Closes: #283872)
+
+ -- Jay Berkenbilt <ejb@ql.org>  Tue,  7 Dec 2004 12:10:27 -0500
+
+vips7.10 (7.10.6-1) unstable; urgency=low
+
+  * Initial release. (Closes: #274544)
+
+ -- Jay Berkenbilt <ejb@ql.org>  Sun,  7 Nov 2004 11:47:05 -0500

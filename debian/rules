@@ -1,0 +1,47 @@
+#!/usr/bin/make -f
+
+# To distinguish variables that are truly local to this file (rather
+# than for use by cdbs), we adopt the convention of starting local
+# variables' names with l_.
+
+l_PWD := $(shell pwd)
+l_STAMPS = debian/l_stamps
+
+# Variables used by cdbs
+DEB_TAR_SRCDIR = vips-7.10.8
+DEB_INSTALL_DIRS_libvips7.10 = /usr/lib /usr/share/man
+DEB_INSTALL_DIRS_libvips7.10-dev = /usr /usr/lib /usr/share/man
+DEB_INSTALL_DIRS_libvips7.10-tools = /usr/bin
+DEB_INSTALL_DOCS_libvips7.10-doc = \
+	$(DEB_BUILDDIR)/doc/html \
+	$(DEB_BUILDDIR)/doc/ps
+DEB_COMPRESS_EXCLUDE = html
+
+# Include cdbs rules files.
+include /usr/share/cdbs/1/rules/tarball.mk
+#include /usr/share/cdbs/1/rules/simple-patchsys.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+# "make install" runs installed programs at one point, so we need to
+# set LD_LIBRARY_PATH to the installed library directory.
+ifeq ("$(LD_LIBRARY_PATH)", "")
+LD_LIBRARY_PATH=$(l_PWD)/debian/tmp/usr/lib
+else
+LD_LIBRARY_PATH += :$(l_PWD)/debian/tmp/usr/lib
+endif
+export LD_LIBRARY_PATH
+
+cleanbuilddir::
+	$(RM) -r $(l_STAMPS)
+
+# As 0.4.21, cdbs creates but doesn't remove debian/compat.  It
+# creates it conditionally, so this doesn't have a trivial fix.
+clean::
+	$(RM) debian/compat
+
+install/libvips7.10-tools::
+	rm debian/tmp/usr/bin/im_*
+	rm debian/tmp/usr/bin/header
+	rm debian/tmp/usr/share/man/man1/header.1*
+	perl $(l_PWD)/debian/scripts/create_missing_manual_pages

@@ -1,0 +1,4 @@
+debian/tmp/usr/lib/libvips.so.*
+debian/tmp/usr/lib/libvipsCC.so.*
+debian/tmp/usr/share/vips
+debian/tmp/usr/share/locale

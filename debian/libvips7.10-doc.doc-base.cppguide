@@ -1,0 +1,12 @@
+Document: libvips7.10-cppguide
+Title: C++ Programmers' Guide for VIPS 7.10
+Author: John Cupitt, Ruven Pillay
+Abstract: The VIPS C++ Programmer's Guide explains how to call
+ VIPS library functions from C++ programs using the C++ interface.
+ The C++ interface is as efficient as the C API, but is easier to
+ use.
+Section: Apps/Programming
+
+Format: HTML
+Index: /usr/share/doc/libvips7.10-doc/html/cppguide/index.html
+Files: /usr/share/doc/libvips7.10-doc/html/cppguide/*
