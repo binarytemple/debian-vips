@@ -8,7 +8,11 @@ l_PWD := $(shell pwd)
 l_STAMPS = debian/l_stamps
 
 # Variables used by cdbs
-DEB_TAR_SRCDIR = vips-7.10.8
+
+VERSION := $(shell dpkg-parsechangelog | \
+             awk '/Version:/ {print $$2}' | cut -d- -f 1)
+
+DEB_TAR_SRCDIR = vips-$(VERSION)
 DEB_INSTALL_DIRS_libvips10 = /usr/lib /usr/share/man
 DEB_INSTALL_DIRS_libvips10-dev = /usr /usr/lib /usr/share/man
 DEB_INSTALL_DIRS_libvips-tools = /usr/bin
