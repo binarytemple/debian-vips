@@ -1,3 +1,9 @@
+vips (7.10.8-2) UNRELEASED; urgency=low
+
+  * NOT RELEASED YET
+
+ -- Jay Berkenbilt <ejb@in.ql.org>  Sun, 16 Jan 2005 14:48:49 -0500
+
 vips (7.10.8-1) unstable; urgency=low
 
   * Rename packages:
