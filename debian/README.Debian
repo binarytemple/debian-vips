@@ -26,4 +26,4 @@ im_header_int", "vips im_header_string", or "vips im_header_double"
 instead.  Additionally, the hundreds of im_* links are not installed.
 Use "vips im_command" instead of "im_command".
 
- -- Jay Berkenbilt <ejb@ql.org>, Fri Jan 14 20:24:05 2005
+ -- Jay Berkenbilt <qjb@debian.org>, Sat Mar 19 13:25:24 2005

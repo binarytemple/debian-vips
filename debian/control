@@ -28,7 +28,7 @@ Description: image processing system good for very large images
  This package includes runtime libraries needed to run applications
  linked with the vips library.
 
-Package: libvips-dev
+Package: libvips10-dev
 Section: libdevel
 Architecture: any
 Depends: libvips10 (= ${Source-Version})
@@ -56,7 +56,7 @@ Section: graphics
 Architecture: any
 Depends: ${shlibs:Depends}
 Recommends: nip2, libvips-doc
-Suggests: libvips-dev
+Suggests: libvips10-dev
 Conflicts: libvips7.8-tools, libvips7.10-tools (<< 7.10.dummy)
 Replaces: libvips7.10-tools
 Description: image processing system good for very large images (tools)

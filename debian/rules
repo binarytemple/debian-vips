@@ -10,7 +10,7 @@ l_STAMPS = debian/l_stamps
 # Variables used by cdbs
 DEB_TAR_SRCDIR = vips-7.10.8
 DEB_INSTALL_DIRS_libvips10 = /usr/lib /usr/share/man
-DEB_INSTALL_DIRS_libvips-dev = /usr /usr/lib /usr/share/man
+DEB_INSTALL_DIRS_libvips10-dev = /usr /usr/lib /usr/share/man
 DEB_INSTALL_DIRS_libvips-tools = /usr/bin
 DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html \
