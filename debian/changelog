@@ -1,9 +1,3 @@
-vips (7.10.8-3) UNRELEASED; urgency=low
-
-  * NOT RELEASED YET
-
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 19 Mar 2005 13:41:41 -0500
-
 vips (7.10.8-2) unstable; urgency=low
 
   * Note: 7.10.8-1 was never part of the archive
