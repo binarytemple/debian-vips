@@ -9,8 +9,8 @@ Package: libvips10
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}
-Conflicts: libvips7.8, libvips7.10, libvips7.10-dev, libvips7.10-tools, libvips7.10-doc
-Replaces: libvips7.10, libvips7.10-dev, libvips7.10-tools, libvips7.10-doc
+Conflicts: libvips7.8, libvips7.10 (<< 7.10.dummy)
+Replaces: libvips7.10
 Provides: libvips
 Recommends: nip2
 Description: image processing system good for very large images
