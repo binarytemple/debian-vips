@@ -9,10 +9,10 @@ l_STAMPS = debian/l_stamps
 
 # Variables used by cdbs
 DEB_TAR_SRCDIR = vips-7.10.8
-DEB_INSTALL_DIRS_libvips7.10 = /usr/lib /usr/share/man
-DEB_INSTALL_DIRS_libvips7.10-dev = /usr /usr/lib /usr/share/man
-DEB_INSTALL_DIRS_libvips7.10-tools = /usr/bin
-DEB_INSTALL_DOCS_libvips7.10-doc = \
+DEB_INSTALL_DIRS_libvips10 = /usr/lib /usr/share/man
+DEB_INSTALL_DIRS_libvips-dev = /usr /usr/lib /usr/share/man
+DEB_INSTALL_DIRS_libvips-tools = /usr/bin
+DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html \
 	$(DEB_BUILDDIR)/doc/ps
 DEB_COMPRESS_EXCLUDE = html
@@ -40,7 +40,7 @@ cleanbuilddir::
 clean::
 	$(RM) debian/compat
 
-install/libvips7.10-tools::
+install/libvips-tools::
 	rm debian/tmp/usr/bin/im_*
 	rm debian/tmp/usr/bin/header
 	rm debian/tmp/usr/share/man/man1/header.1*

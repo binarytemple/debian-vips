@@ -1,4 +1,4 @@
-Document: libvips7.10-cppguide
+Document: libvips-cppguide
 Title: C++ Programmers' Guide for VIPS 7.10
 Author: John Cupitt, Ruven Pillay
 Abstract: The VIPS C++ Programmer's Guide explains how to call
@@ -8,5 +8,5 @@ Abstract: The VIPS C++ Programmer's Guide explains how to call
 Section: Apps/Programming
 
 Format: HTML
-Index: /usr/share/doc/libvips7.10-doc/html/cppguide/index.html
-Files: /usr/share/doc/libvips7.10-doc/html/cppguide/*
+Index: /usr/share/doc/libvips-doc/html/cppguide/index.html
+Files: /usr/share/doc/libvips-doc/html/cppguide/*

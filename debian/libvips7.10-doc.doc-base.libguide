@@ -1,4 +1,4 @@
-Document: libvips7.10-libguide
+Document: libvips-libguide
 Title: Library Programmers' Guide for VIPS 7.10
 Author: John Cupitt, Kirk Martinez
 Abstract: The VIPS Library Programmer's Guide explains how to write
@@ -7,5 +7,5 @@ Abstract: The VIPS Library Programmer's Guide explains how to write
 Section: Apps/Programming
 
 Format: HTML
-Index: /usr/share/doc/libvips7.10-doc/html/libguide/index.html
-Files: /usr/share/doc/libvips7.10-doc/html/libguide/*
+Index: /usr/share/doc/libvips-doc/html/libguide/index.html
+Files: /usr/share/doc/libvips-doc/html/libguide/*

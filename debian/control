@@ -1,17 +1,17 @@
-Source: vips7.10
-Section: libs
+Source: vips
 Priority: optional
 Build-Depends: cdbs, debhelper (>= 4.1.0), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick6-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config
 Maintainer: Jay Berkenbilt <ejb@ql.org>
 Standards-Version: 3.6.1
 
-Package: libvips7.10
+Package: libvips10
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}
+Conflicts: libvips7.8, libvips7.10 (<< 7.10.dummy)
+Replaces: libvips7.10
 Provides: libvips
 Recommends: nip2
-Conflicts: libvips7.8
 Description: image processing system good for very large images
  VIPS is an image processing system designed with efficiency in mind.
  It is good with large images (images larger than the amount of RAM in
@@ -27,14 +27,14 @@ Description: image processing system good for very large images
  This package includes runtime libraries needed to run applications
  linked with the vips library.
 
-Package: libvips7.10-dev
+Package: libvips-dev
 Section: libdevel
 Architecture: any
-Depends: libvips7.10 (= ${Source-Version})
-Provides: libvips-dev
-Recommends: libvips7.10-doc, libvips7.10-tools
+Depends: libvips10 (= ${Source-Version})
+Recommends: libvips-doc, libvips-tools
 Suggests: nip2
-Conflicts: libvips7.8-dev
+Conflicts: libvips7.8-dev, libvips7.10-dev (<< 7.10.dummy)
+Replaces: libvips7.10-dev
 Description: image processing system good for very large images (dev)
  VIPS is an image processing system designed with efficiency in mind.
  It is good with large images (images larger than the amount of RAM in
@@ -50,13 +50,14 @@ Description: image processing system good for very large images (dev)
  This package includes all development files needed to compile
  applications that use the vips library.
 
-Package: libvips7.10-tools
+Package: libvips-tools
+Section: graphics
 Architecture: any
 Depends: ${shlibs:Depends}
-Provides: libvips-tools
-Recommends: nip2, libvips7.10-doc
-Suggests: libvips7.10-dev
-Conflicts: libvips7.8-tools
+Recommends: nip2, libvips-doc
+Suggests: libvips-dev
+Conflicts: libvips7.8-tools, libvips7.10-tools (<< 7.10.dummy)
+Replaces: libvips7.10-tools
 Description: image processing system good for very large images (tools)
  VIPS is an image processing system designed with efficiency in mind.
  It is good with large images (images larger than the amount of RAM in
@@ -73,10 +74,11 @@ Description: image processing system good for very large images (tools)
  possible to use some vips functionality from shell scripts or the
  command line.
 
-Package: libvips7.10-doc
+Package: libvips-doc
 Section: doc
 Architecture: all
-Provides: libvips-doc
+Conflicts: libvips7.8-doc, libvips7.10-doc (<< 7.10.dummy)
+Replaces: libvips7.10-doc
 Description: image processing system good for very large images (doc)
  VIPS is an image processing system designed with efficiency in mind.
  It is good with large images (images larger than the amount of RAM in

@@ -1,4 +1,4 @@
-Document: libvips7.10-refguide
+Document: libvips-refguide
 Title: Reference Guide for VIPS 7.10
 Author: John Cupitt, Kirk Martinez
 Abstract: The VIPS Reference Guide introduces the functions available
@@ -6,5 +6,5 @@ Abstract: The VIPS Reference Guide introduces the functions available
 Section: Apps/Programming
 
 Format: HTML
-Index: /usr/share/doc/libvips7.10-doc/html/refguide/index.html
-Files: /usr/share/doc/libvips7.10-doc/html/refguide/*
+Index: /usr/share/doc/libvips-doc/html/refguide/index.html
+Files: /usr/share/doc/libvips-doc/html/refguide/*
