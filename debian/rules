@@ -23,7 +23,7 @@ DEB_COMPRESS_EXCLUDE = html
 
 # Include cdbs rules files.
 include /usr/share/cdbs/1/rules/tarball.mk
-include /usr/share/cdbs/1/rules/simple-patchsys.mk
+#include /usr/share/cdbs/1/rules/simple-patchsys.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
@@ -42,7 +42,7 @@ cleanbuilddir::
 # As 0.4.21, cdbs creates but doesn't remove debian/compat.  It
 # creates it conditionally, so this doesn't have a trivial fix.
 clean::
-	$(RM) debian/compat
+	$(RM) debian/compat *.cdbs-config_list
 
 install/libvips-tools::
 	rm debian/tmp/usr/bin/im_*
