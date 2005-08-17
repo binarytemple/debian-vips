@@ -1,8 +1,8 @@
-vips (7.10.10-3) UNRELEASED; urgency=low
+vips (7.10.12-1) unstable; urgency=low
 
-  * NOT RELEASED YET
+  * New upstream release
 
- -- Jay Berkenbilt <qjb@debian.org>  Sun, 31 Jul 2005 13:45:06 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Wed, 17 Aug 2005 18:56:41 -0400
 
 vips (7.10.10-2) unstable; urgency=low
 
