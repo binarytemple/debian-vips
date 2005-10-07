@@ -1,7 +1,7 @@
 Source: vips
 Section: libs
 Priority: optional
-Build-Depends: cdbs, debhelper (>= 4.1.0), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick6-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl
+Build-Depends: cdbs, debhelper (>= 4.1.0), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl
 Maintainer: Jay Berkenbilt <qjb@debian.org>
 Standards-Version: 3.6.2
 
