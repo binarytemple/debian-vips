@@ -1,7 +1,7 @@
 vips (7.10.14-1) unstable; urgency=low
 
   * New upstream release
-  * Change dependencies for libmagick transition
+  * Change dependencies for libmagick transition (Closes: #332471)
 
  -- Jay Berkenbilt <qjb@debian.org>  Fri,  7 Oct 2005 11:39:14 -0400
 
