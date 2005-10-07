@@ -31,7 +31,7 @@ Description: image processing system good for very large images
 Package: libvips10-dev
 Section: libdevel
 Architecture: any
-Depends: libvips10c2 (= ${Source-Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick6-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config
+Depends: libvips10c2 (= ${Source-Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config
 Provides: libvips-dev
 Recommends: libvips-doc, libvips-tools
 Suggests: nip2
