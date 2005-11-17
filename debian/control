@@ -5,7 +5,7 @@ Build-Depends: cdbs, debhelper (>= 4.1.0), libjpeg62-dev, libtiff4-dev, zlib1g-d
 Maintainer: Jay Berkenbilt <qjb@debian.org>
 Standards-Version: 3.6.2
 
-Package: libvips10c2
+Package: libvips10c2a
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}
@@ -31,7 +31,7 @@ Description: image processing system good for very large images
 Package: libvips10-dev
 Section: libdevel
 Architecture: any
-Depends: libvips10c2 (= ${Source-Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config
+Depends: libvips10c2a (= ${Source-Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config
 Provides: libvips-dev
 Recommends: libvips-doc, libvips-tools
 Suggests: nip2
