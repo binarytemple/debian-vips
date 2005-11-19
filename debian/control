@@ -9,7 +9,7 @@ Package: libvips10c2a
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}
-Conflicts: libvips7.10, libvips10
+Conflicts: libvips7.10, libvips10, libvips10c2
 Replaces: libvips7.10, libvips10
 Provides: libvips
 Recommends: nip2
