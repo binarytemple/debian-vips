@@ -1,3 +1,9 @@
+vips (7.10.16-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 22 Nov 2005 20:43:11 -0500
+
 vips (7.10.15-2) unstable; urgency=low
 
   * Rename libvips10c2 to libvips10c2a because of libstdc++ allocator
