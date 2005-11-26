@@ -1,7 +1,7 @@
 vips (7.10.16-2) unstable; urgency=low
 
-  * Fix libtool versioning problem resulting in wrong soname.  (Closes:
-    #340788)
+  * Fix libtool versioning problem resulting in wrong soname.
+    (Closes: #340788)
 
  -- Jay Berkenbilt <qjb@debian.org>  Fri, 25 Nov 2005 19:15:54 -0500
 
