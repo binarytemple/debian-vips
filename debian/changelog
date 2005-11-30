@@ -1,3 +1,11 @@
+vips (7.10.17-1) unstable; urgency=medium
+
+  * New upstream release
+  * No user-visible changes; resync with upstream which has included our
+    local soname patch.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 29 Nov 2005 19:08:08 -0500
+
 vips (7.10.16-2) unstable; urgency=low
 
   * Fix libtool versioning problem resulting in wrong soname.
