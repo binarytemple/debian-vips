@@ -1,3 +1,9 @@
+vips (7.10.19-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue,  2 May 2006 15:05:41 -0400
+
 vips (7.10.17-1) unstable; urgency=medium
 
   * New upstream release
