@@ -1,9 +1,9 @@
 vips (7.10.19-1) unstable; urgency=low
 
   * New upstream release
-  * Updated standards version to 3.7.0; no changes required.
+  * Updated standards version to 3.7.2; no changes required.
 
- -- Jay Berkenbilt <qjb@debian.org>  Tue,  2 May 2006 15:24:31 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 12 May 2006 18:05:32 -0400
 
 vips (7.10.17-1) unstable; urgency=medium
 
