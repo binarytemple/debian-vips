@@ -44,10 +44,15 @@ cleanbuilddir::
 clean::
 	$(RM) debian/compat *.cdbs-config_list
 
+pre-build::
+	find build-tree -name CVS -print | xargs rm -rf
+
 install/libvips-tools::
 	rm debian/tmp/usr/bin/im_*
 	rm debian/tmp/usr/bin/header
 	rm debian/tmp/usr/share/man/man1/header.1*
+	rm debian/tmp/usr/lib/python*/site-packages/vipsCC/*.pyc
+	rm debian/tmp/usr/lib/python*/site-packages/vipsCC/*.pyo
 	perl $(l_PWD)/debian/scripts/create_missing_manual_pages
 
 # Install lintian override files
@@ -56,3 +61,6 @@ binary-post-install/%::
 	    mkdir -p debian/$*/usr/share/lintian/overrides && \
 	    cp -p debian/$*.lintian debian/$*/usr/share/lintian/overrides/$*; \
 	fi
+
+binary-install/vipscc-python:
+	dh_pycentral -p$(cdbs_curpkg)

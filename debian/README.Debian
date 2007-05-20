@@ -11,7 +11,7 @@ General Notes
 
 The Debian vips package has been built in such a way that everything
 should works even with the VIPSHOME environment variable unset, and
-that the vips-7.10 wrapper mentioned in the documentation is not
+that the vips-7.12 wrapper mentioned in the documentation is not
 needed.
 
 In the unlikely event that you run into something that requires
@@ -26,4 +26,4 @@ im_header_int", "vips im_header_string", or "vips im_header_double"
 instead.  Additionally, the hundreds of im_* links are not installed.
 Use "vips im_command" instead of "im_command".
 
- -- Jay Berkenbilt <qjb@debian.org>, Sat Mar 19 13:25:24 2005
+ -- Jay Berkenbilt <qjb@debian.org>, Sun, 20 May 2007 12:31:38 -0400
