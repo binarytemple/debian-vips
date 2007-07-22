@@ -1,10 +1,4 @@
 #!/usr/bin/env perl
-#
-# $Id: create_missing_manual_pages,v 1.1 2004/08/03 01:55:52 ejb Exp $
-# $Source: /home/ejb/Q/debian/CVSroot/vips7.10/debian/scripts/create_missing_manual_pages,v $
-# $Author: ejb $
-#
-
 require 5.008;
 BEGIN { $^W = 1; }
 use strict;

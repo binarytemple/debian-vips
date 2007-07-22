@@ -28,11 +28,10 @@ Description: image processing system good for very large images
  This package includes runtime libraries needed to run applications
  linked with the vips library.
 
-Package: libvips12-dev
+Package: libvips-dev
 Section: libdevel
 Architecture: any
 Depends: libvips12 (= ${binary:Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-central, python-dev (>= 2.4), liboil0.3-dev, libopenexr-dev
-Provides: libvips-dev
 Recommends: libvips-doc, libvips-tools
 Suggests: nip2
 Conflicts: libvips10-dev

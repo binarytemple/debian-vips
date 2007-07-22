@@ -2,8 +2,10 @@ vips (7.12.2-1) unstable; urgency=low
 
   * New upstream release
   * There is now a python-vipsCC package vips's Python bindings.
+  * The development package no longer has the library soname in its name.
+    It is now just libvips-dev.
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 21 Jul 2007 22:14:24 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 21 Jul 2007 22:57:31 -0400
 
 vips (7.10.21-1) unstable; urgency=low
 
