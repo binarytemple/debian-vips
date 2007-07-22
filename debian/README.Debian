@@ -2,22 +2,13 @@
 Examples
 ========
 
-A number of vips examples are available.  They can be downloaded from:
+A number of vips examples are available.  Please see the "Supported"
+section of the vips website:
 
-http://www.vips.ecs.soton.ac.uk/vips-7.10/vips-examples-7.10.tar.gz
+http://www.vips.ecs.soton.ac.uk/
 
 General Notes
 =============
-
-The Debian vips package has been built in such a way that everything
-should works even with the VIPSHOME environment variable unset, and
-that the vips-7.12 wrapper mentioned in the documentation is not
-needed.
-
-In the unlikely event that you run into something that requires
-VIPSHOME to be set, please set VIPSHOME to /usr and report this as a
-bug against this package.  (See bugs.debian.org for details about
-reporting bugs against Debian package.)
 
 Several links and binaries have not been installed for Debian.  In
 particular, the "header" command is not installed because it conflicts
@@ -26,4 +17,4 @@ im_header_int", "vips im_header_string", or "vips im_header_double"
 instead.  Additionally, the hundreds of im_* links are not installed.
 Use "vips im_command" instead of "im_command".
 
- -- Jay Berkenbilt <qjb@debian.org>, Sun, 20 May 2007 12:31:38 -0400
+ -- Jay Berkenbilt <qjb@debian.org>, Sat, 21 Jul 2007 22:37:13 -0400

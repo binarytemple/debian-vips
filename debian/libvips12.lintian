@@ -1,1 +1,1 @@
-libvips12: package-name-doesnt-match-sonames libvipsCC11 libvips11
+libvips12: package-name-doesnt-match-sonames libvipsCC12 libvips12
