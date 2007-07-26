@@ -78,7 +78,7 @@ XS-Python-Version: current
 XB-Python-Version: ${python:Versions}
 Section: graphics
 Architecture: any
-Depends: ${shlibs:Depends}, Python (>= 2.4)
+Depends: ${shlibs:Depends}, python (>= 2.4)
 Recommends: nip2, libvips-doc
 Suggests: libvips-dev
 Description: image processing system good for very large images (tools)
