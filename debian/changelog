@@ -1,6 +1,6 @@
 vips (7.12.2-2) unstable; urgency=low
 
-  * Correct dependency typo from Python to python.  Thansk Michal
+  * Correct dependency typo from Python to python.  Thanks Michal
     Politowski.  (Closes: #434677)
 
  -- Jay Berkenbilt <qjb@debian.org>  Thu, 26 Jul 2007 07:26:13 -0400
