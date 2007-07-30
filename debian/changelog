@@ -1,3 +1,9 @@
+vips (7.12.4-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 30 Jul 2007 16:50:20 -0400
+
 vips (7.12.2-2) unstable; urgency=low
 
   * Correct dependency typo from Python to python.  Thanks Michal
