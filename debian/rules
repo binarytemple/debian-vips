@@ -17,8 +17,7 @@ DEB_INSTALL_DIRS_libvips10c2a = /usr/lib /usr/share/man
 DEB_INSTALL_DIRS_libvips10-dev = /usr /usr/lib /usr/share/man
 DEB_INSTALL_DIRS_libvips-tools = /usr/bin
 DEB_INSTALL_DOCS_libvips-doc = \
-	$(DEB_BUILDDIR)/doc/html \
-	$(DEB_BUILDDIR)/doc/ps
+	$(DEB_BUILDDIR)/doc/html
 DEB_COMPRESS_EXCLUDE = html
 
 # Include cdbs rules files.
