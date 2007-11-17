@@ -1,8 +1,9 @@
 Source: vips
 Section: libs
 Priority: optional
-Build-Depends: cdbs, debhelper (>= 4.1.0), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-all-dev, python-dev (>= 2.4), python-central, liboil0.3-dev, libopenexr-dev, swig
+Build-Depends: cdbs, debhelper (>= 5.0.38), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-dev (>= 2.4), python-central (>= 0.5.6), liboil0.3-dev, libopenexr-dev, swig
 Maintainer: Jay Berkenbilt <qjb@debian.org>
+XS-Python-Version: current
 Standards-Version: 3.7.2
 
 Package: libvips12
@@ -74,11 +75,10 @@ Description: image processing system good for very large images (tools)
  command line.
 
 Package: python-vipscc
-XS-Python-Version: current
 XB-Python-Version: ${python:Versions}
 Section: graphics
 Architecture: any
-Depends: ${shlibs:Depends}, python (>= 2.4)
+Depends: ${shlibs:Depends}, ${python:Depends}
 Recommends: nip2, libvips-doc
 Suggests: libvips-dev
 Description: image processing system good for very large images (tools)

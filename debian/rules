@@ -61,5 +61,5 @@ binary-post-install/%::
 	    cp -p debian/$*.lintian debian/$*/usr/share/lintian/overrides/$*; \
 	fi
 
-binary-install/vipscc-python:
+binary-install/python-vipscc::
 	dh_pycentral -p$(cdbs_curpkg)
