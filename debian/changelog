@@ -2,8 +2,9 @@ vips (7.12.5-3) unstable; urgency=low
 
   * Fix gcc 4.3 compilation problems.  (Closes: #456043)
   * Update standards version to 3.7.3.  No changes required.
+  * Change Section from "graphics" to "python" in python-vipscc
 
- -- Jay Berkenbilt <qjb@debian.org>  Mon, 11 Feb 2008 09:16:40 -0500
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 11 Feb 2008 09:40:16 -0500
 
 vips (7.12.5-2) unstable; urgency=low
 

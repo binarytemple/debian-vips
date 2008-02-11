@@ -76,7 +76,7 @@ Description: image processing system good for very large images (tools)
 
 Package: python-vipscc
 XB-Python-Version: ${python:Versions}
-Section: graphics
+Section: python
 Architecture: any
 Depends: ${shlibs:Depends}, ${python:Depends}
 Recommends: nip2, libvips-doc
