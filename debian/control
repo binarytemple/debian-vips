@@ -93,7 +93,7 @@ Description: image processing system good for very large images (tools)
  with some command-line tools and a spreadsheet-like graphical user
  interface.  The graphical interface is available in the nip2 package.
  .
- This package includes python bindings to the vips library.
+ This package includes Python bindings to the vips library.
 
 Package: libvips-doc
 Section: doc
