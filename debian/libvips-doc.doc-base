@@ -1,5 +1,5 @@
 Document: libvips-appguide
-Title: Application Programmers' Guide for VIPS 7.12
+Title: Application Programmers' Guide for VIPS 7.14
 Author: John Cupitt, Kirk Martinez
 Abstract: The VIPS Application Programmer's Guide explains how to call
  VIPS library functions from C programs.

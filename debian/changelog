@@ -1,3 +1,9 @@
+vips (7.14.1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 16 Mar 2008 09:35:35 -0400
+
 vips (7.12.5-3) unstable; urgency=low
 
   * Fix gcc 4.3 compilation problems.  (Closes: #456043)
