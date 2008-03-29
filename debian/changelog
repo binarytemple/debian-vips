@@ -1,3 +1,10 @@
+vips (7.14.1-2) unstable; urgency=low
+
+  * Officially supported version; updating watch file and uploading to
+    unstable.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 29 Mar 2008 11:28:19 -0400
+
 vips (7.14.1-1) experimental; urgency=low
 
   * New upstream release
