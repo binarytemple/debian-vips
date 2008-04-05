@@ -10,8 +10,8 @@ Package: libvips15
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}
-Conflicts: libvips10c2a
-Replaces: libvips10c2a
+Conflicts: libvips10c2a, libvips12
+Replaces: libvips10c2a, libvips12
 Provides: libvips
 Recommends: nip2
 Description: image processing system good for very large images
