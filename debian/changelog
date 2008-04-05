@@ -1,4 +1,4 @@
-vips (7.14.1-3) unstable; urgency=low
+vips (7.14.1-3) unstable; urgency=medium
 
   * Add missing conflicts/replaces to allow proper update.  Thanks to
     Michal Politowski for pointing out the error.  (Closes: #473388)
