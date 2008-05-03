@@ -7,6 +7,11 @@
 l_PWD := $(shell pwd)
 l_STAMPS = debian/l_stamps
 
+# Build for all available python versions
+l_PYTHON_VERSION := $(shell pyversions -vd)
+l_OTHER_PYTHON_VERSIONS := \
+	$(filter-out $(l_PYTHON_VERSION), $(shell pyversions -vr))
+
 # Variables used by cdbs
 
 VERSION := $(shell dpkg-parsechangelog | \
@@ -61,5 +66,9 @@ binary-post-install/%::
 	    cp -p debian/$*.lintian debian/$*/usr/share/lintian/overrides/$*; \
 	fi
 
-binary-install/python-vipscc::
-	dh_pycentral -p$(cdbs_curpkg)
+install/python-vipscc::
+	set -e; \
+	for v in $(l_OTHER_PYTHON_VERSIONS); do \
+	  make -C $(DEB_BUILDDIR)/python/vipsCC clean; \
+          make -C $(DEB_BUILDDIR)/python/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v install DESTDIR=$(l_PWD)/debian/tmp; \
+	 done
