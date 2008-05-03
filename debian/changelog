@@ -1,3 +1,13 @@
+vips (7.14.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Change dependency on fftw3-dev to fftw3-dev | libfftw3-dev to save
+    Ubuntu people from having to continually patch vips
+  * Build python package for all versions of python.  Thanks to Matthias
+    Klose for the patch.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 03 May 2008 09:15:55 -0400
+
 vips (7.14.1-4) unstable; urgency=low
 
   * Make sure g++, not gcc is used to link C programs that link with C++
