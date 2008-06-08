@@ -1,6 +1,6 @@
 vips (7.14.4-1) unstable; urgency=low
 
-  * New upstream release
+  * New upstream release.  Incorporates all previous patches.
 
  -- Jay Berkenbilt <qjb@debian.org>  Sun, 08 Jun 2008 10:35:16 -0400
 
