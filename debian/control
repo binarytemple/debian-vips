@@ -5,6 +5,7 @@ Build-Depends: cdbs, debhelper (>= 5.0.38), libjpeg62-dev, libtiff4-dev, zlib1g-
 Maintainer: Jay Berkenbilt <qjb@debian.org>
 XS-Python-Version: current
 Standards-Version: 3.7.3
+Homepage: http://www.vips.ecs.soton.ac.uk
 
 Package: libvips15
 Section: libs
