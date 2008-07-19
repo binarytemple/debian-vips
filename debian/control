@@ -1,7 +1,7 @@
 Source: vips
 Section: libs
 Priority: optional
-Build-Depends: cdbs, debhelper (>= 5.0.38), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-dev (>= 2.4), python-central (>= 0.5.6), liboil0.3-dev, libopenexr-dev, swig
+Build-Depends: cdbs, debhelper (>= 5.0.38), quilt, libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-dev (>= 2.4), python-central (>= 0.5.6), liboil0.3-dev, libopenexr-dev, swig
 Maintainer: Jay Berkenbilt <qjb@debian.org>
 XS-Python-Version: current
 Standards-Version: 3.8.0
