@@ -1,3 +1,12 @@
+vips (7.14.5-1) unstable; urgency=low
+
+  * New upstream release
+  * Switched source packaging to no longer use tarball in tarball format.
+  * Switched to quilt.  Added README.Source.
+  * Updated standards to 3.8.0
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 19 Jul 2008 16:10:41 -0400
+
 vips (7.14.4-1) unstable; urgency=low
 
   * New upstream release.  Incorporates all previous patches.
