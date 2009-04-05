@@ -10,7 +10,7 @@ Homepage: http://www.vips.ecs.soton.ac.uk
 Package: libvips15
 Section: libs
 Architecture: any
-Depends: ${misc:Depends} ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Conflicts: libvips10c2a, libvips12
 Replaces: libvips10c2a, libvips12
 Provides: libvips
@@ -33,7 +33,7 @@ Description: image processing system good for very large images
 Package: libvips-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends} libvips15 (= ${binary:Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-central, python-dev (>= 2.4), liboil0.3-dev, libopenexr-dev, libmatio-dev
+Depends: ${misc:Depends}, libvips15 (= ${binary:Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-central, python-dev (>= 2.4), liboil0.3-dev, libopenexr-dev, libmatio-dev
 Recommends: libvips-doc, libvips-tools
 Suggests: nip2
 Conflicts: libvips10-dev
@@ -56,7 +56,7 @@ Description: image processing system good for very large images (dev)
 Package: libvips-tools
 Section: graphics
 Architecture: any
-Depends: ${misc:Depends} ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Recommends: nip2, libvips-doc
 Suggests: libvips-dev
 Description: image processing system good for very large images (tools)
@@ -79,7 +79,7 @@ Package: python-vipscc
 XB-Python-Version: ${python:Versions}
 Section: python
 Architecture: any
-Depends: ${misc:Depends} ${shlibs:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Recommends: nip2, libvips-doc
 Suggests: libvips-dev
 Description: image processing system good for very large images (tools)
