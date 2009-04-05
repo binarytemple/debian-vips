@@ -51,7 +51,6 @@ pre-build::
 	find build-tree -name CVS -print | xargs rm -rf
 
 install/libvips-tools::
-	rm debian/tmp/usr/bin/im_*
 	rm debian/tmp/usr/bin/header
 	rm debian/tmp/usr/share/man/man1/header.1*
 	rm debian/tmp/usr/lib/python*/site-packages/vipsCC/*.pyc
