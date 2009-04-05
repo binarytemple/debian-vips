@@ -1,7 +1,7 @@
-Source: vips
+q Source: vips
 Section: libs
 Priority: optional
-Build-Depends: cdbs, debhelper (>= 5.0.38), quilt, libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-dev (>= 2.4), python-central (>= 0.5.6), liboil0.3-dev, libopenexr-dev, flex, bison
+Build-Depends: cdbs, debhelper (>= 5.0.38), quilt, libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-dev (>= 2.4), python-central (>= 0.5.6), liboil0.3-dev, libopenexr-dev, libmatio-dev, flex, bison
 Maintainer: Jay Berkenbilt <qjb@debian.org>
 XS-Python-Version: current
 Standards-Version: 3.8.1
@@ -33,7 +33,7 @@ Description: image processing system good for very large images
 Package: libvips-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends} libvips15 (= ${binary:Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-central, python-dev (>= 2.4), liboil0.3-dev, libopenexr-dev
+Depends: ${misc:Depends} libvips15 (= ${binary:Version}), libjpeg62-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-central, python-dev (>= 2.4), liboil0.3-dev, libopenexr-dev, libmatio-dev
 Recommends: libvips-doc, libvips-tools
 Suggests: nip2
 Conflicts: libvips10-dev
