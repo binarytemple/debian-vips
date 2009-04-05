@@ -1,3 +1,10 @@
+At present, there are no patches.  If there were, we'd use quilt, and
+the following would be true.  To enable quilt, it would be necessary
+to add it as a build dependency in debian/control and to uncomment the
+patchsys-quilt line in debian/rules.
+
+----------------------------------------------------------------------
+
 This package uses quilt to manage all modifications to the upstream
 source.  Changes are stored in the source package as diffs in
 debian/patches and applied during the build.
@@ -45,3 +52,5 @@ run:
 
 You may need to run quilt pop -a to unapply patches first before running
 this command.
+
+ -- Jay Berkenbilt <qjb@debian.org>, Sat,  4 Apr 2009 22:03:39 -0400
