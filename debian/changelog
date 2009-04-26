@@ -1,9 +1,9 @@
-vips (7.18.0-1) unstable; urgency=low
+vips (7.18.1-1) unstable; urgency=low
 
   * New upstream release
   * Updated standards to 3.8.1.  No changes required.
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 04 Apr 2009 21:05:05 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 26 Apr 2009 11:11:06 -0400
 
 vips (7.14.5-1) unstable; urgency=low
 
