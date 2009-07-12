@@ -5,9 +5,16 @@ patchsys-quilt line in debian/rules.
 
 ----------------------------------------------------------------------
 
+BOILER-PLATE TEXT
+=================
+
 This package uses quilt to manage all modifications to the upstream
 source.  Changes are stored in the source package as diffs in
-debian/patches and applied during the build.
+debian/patches and applied during the build.  To set up quilt for
+working with this package, cd to the root of the extracted source
+package and run
+
+    export QUILT_PATCHES=$PWD/debian/patches
 
 To get the fully patched source after unpacking the source package, cd to
 the root level of the source package and run:
@@ -52,5 +59,3 @@ run:
 
 You may need to run quilt pop -a to unapply patches first before running
 this command.
-
- -- Jay Berkenbilt <qjb@debian.org>, Sat,  4 Apr 2009 22:03:39 -0400
