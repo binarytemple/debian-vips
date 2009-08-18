@@ -25,10 +25,17 @@ DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html
 DEB_COMPRESS_EXCLUDE = html
 
+DEB_AUTO_UPDATE_LIBTOOL = pre
+DEB_AUTO_UPDATE_AUTOMAKE = 1.10
+DEB_AUTO_UPDATE_ACLOCAL = $(DEB_AUTO_UPDATE_AUTOMAKE)
+DEB_AUTO_UPDATE_AUTOCONF = 2.63
+
 # Include cdbs rules files.
 #include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
+
+DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
 
 # "make install" runs installed programs at one point, so we need to
 # set LD_LIBRARY_PATH to the installed library directory.
@@ -53,8 +60,8 @@ pre-build::
 install/libvips-tools::
 	rm debian/tmp/usr/bin/header
 	rm debian/tmp/usr/share/man/man1/header.1*
-	rm debian/tmp/usr/lib/python*/site-packages/vipsCC/*.pyc
-	rm debian/tmp/usr/lib/python*/site-packages/vipsCC/*.pyo
+	rm debian/tmp/usr/lib/python*/*-packages/vipsCC/*.pyc
+	rm debian/tmp/usr/lib/python*/*-packages/vipsCC/*.pyo
 	perl $(l_PWD)/debian/scripts/create_missing_manual_pages
 
 # Install lintian override files
