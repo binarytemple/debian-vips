@@ -23,12 +23,13 @@ DEB_INSTALL_DIRS_libvips-tools = /usr/bin
 DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html
 DEB_COMPRESS_EXCLUDE = html
-DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
 
 # Include cdbs rules files.
 #include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
+
+DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix="\$${prefix}"
 
 # "make install" runs installed programs at one point, so we need to
 # set LD_LIBRARY_PATH to the installed library directory.
