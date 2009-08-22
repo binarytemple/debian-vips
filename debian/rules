@@ -17,13 +17,13 @@ l_OTHER_PYTHON_VERSIONS := \
 VERSION := $(shell dpkg-parsechangelog | \
              awk '/Version:/ {print $$2}' | cut -d- -f 1)
 
-DEB_TAR_SRCDIR = vips-$(VERSION)
 DEB_INSTALL_DIRS_libvips10c2a = /usr/lib /usr/share/man
 DEB_INSTALL_DIRS_libvips10-dev = /usr /usr/lib /usr/share/man
 DEB_INSTALL_DIRS_libvips-tools = /usr/bin
 DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html
 DEB_COMPRESS_EXCLUDE = html
+DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
 
 # Include cdbs rules files.
 #include /usr/share/cdbs/1/rules/patchsys-quilt.mk
