@@ -1,3 +1,11 @@
+vips (7.18.2-3) unstable; urgency=low
+
+  * Add additional fix for python 2.6.  Thanks Fabrice Coutadeur.
+    Repeated attempts are the fault of my modifications, not Fabrice's
+    patch.  (Closes: #538054)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 24 Aug 2009 11:06:32 -0400
+
 vips (7.18.2-2) unstable; urgency=low
 
   * Add additional fix for python 2.6.  Thanks Fabrice Coutadeur.
