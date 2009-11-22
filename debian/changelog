@@ -1,3 +1,10 @@
+vips (7.20.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Converted package format to "3.0 (quilt)"
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 22 Nov 2009 12:10:53 -0500
+
 vips (7.18.2-3) unstable; urgency=low
 
   * Add additional fix for python 2.6.  Thanks Fabrice Coutadeur.
