@@ -1,9 +1,9 @@
-vips (7.20.0-1) unstable; urgency=low
+vips (7.20.2-1) unstable; urgency=low
 
   * New upstream release
   * Converted package format to "3.0 (quilt)"
 
- -- Jay Berkenbilt <qjb@debian.org>  Sun, 22 Nov 2009 12:10:53 -0500
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 23 Nov 2009 21:31:00 -0500
 
 vips (7.18.2-3) unstable; urgency=low
 
