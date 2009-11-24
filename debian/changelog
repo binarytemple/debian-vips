@@ -1,4 +1,4 @@
-vips (7.20.2-1) unstable; urgency=low
+vips (7.20.2-1) experimental; urgency=low
 
   * New upstream release
   * Converted package format to "3.0 (quilt)"
