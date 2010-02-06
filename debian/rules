@@ -26,6 +26,11 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
+# We're just using python-distutils so that compiled files end up in
+# the right place.  Vips takes care of compiling the python modules
+# itself.
+DEB_PYTHON_SETUP_CMD = true
+
 # exec_prefix set explicitly to /usr appears to be required by
 # configure scripts in order to properly install multiple versions of
 # python.  Setting to "\$${prefix}" doesn't work.
