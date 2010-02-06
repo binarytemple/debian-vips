@@ -23,6 +23,7 @@ DEB_COMPRESS_EXCLUDE = html
 
 # Include cdbs rules files.
 include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/python-distutils.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
 # exec_prefix set explicitly to /usr appears to be required by
@@ -53,7 +54,6 @@ pre-build::
 install/libvips-tools::
 	rm debian/tmp/usr/bin/header
 	rm debian/tmp/usr/share/man/man1/header.1*
-	rm debian/tmp/usr/lib/python*/*-packages/vipsCC/*.pyc
 	perl $(l_PWD)/debian/scripts/create_missing_manual_pages
 
 # Install lintian override files
