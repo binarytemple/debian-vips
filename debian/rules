@@ -53,6 +53,7 @@ pre-build::
 install/libvips-tools::
 	rm debian/tmp/usr/bin/header
 	rm debian/tmp/usr/share/man/man1/header.1*
+	rm debian/tmp/usr/lib/python*/*-packages/vipsCC/*.pyc
 	perl $(l_PWD)/debian/scripts/create_missing_manual_pages
 
 # Install lintian override files
