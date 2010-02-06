@@ -23,7 +23,7 @@ DEB_COMPRESS_EXCLUDE = html
 
 # Include cdbs rules files.
 include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/python-distutils.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
 # exec_prefix set explicitly to /usr appears to be required by
