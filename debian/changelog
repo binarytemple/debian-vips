@@ -3,8 +3,9 @@ vips (7.20.7-1) unstable; urgency=low
   * New upstream release
   * Don't remove byte compiled Python files; allow python-central to move
     them to the proper locations instead.  (Closes: #566053)
+  * Updated standards version to 3.8.4.  No changes required.
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 06 Feb 2010 17:37:55 -0500
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 06 Feb 2010 17:54:32 -0500
 
 vips (7.20.6-1) unstable; urgency=low
 
