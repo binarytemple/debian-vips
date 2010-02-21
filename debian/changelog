@@ -1,3 +1,5 @@
+XXX changed references to libjpeg62-dev to libjpeg-dev
+
 vips (7.20.7-1) unstable; urgency=low
 
   * New upstream release
