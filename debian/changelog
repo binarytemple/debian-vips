@@ -2,8 +2,10 @@ vips (7.22.0-1) experimental; urgency=low
 
   * New upstream release
   * Changed references to libjpeg62-dev to libjpeg-dev
+  * Upstream release includes German translation. (Closes: #582086)
+  * Upstream release includes fixes to typos. (Closes: #582084)
 
- -- Jay Berkenbilt <qjb@debian.org>  Sun, 20 Jun 2010 12:09:51 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 20 Jun 2010 13:20:26 -0400
 
 vips (7.20.7-1) unstable; urgency=low
 
