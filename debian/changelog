@@ -1,4 +1,9 @@
-XXX changed references to libjpeg62-dev to libjpeg-dev
+vips (7.22.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Changed references to libjpeg62-dev to libjpeg-dev
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 20 Jun 2010 12:09:51 -0400
 
 vips (7.20.7-1) unstable; urgency=low
 
