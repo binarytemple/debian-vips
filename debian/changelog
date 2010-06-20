@@ -1,4 +1,4 @@
-vips (7.22.0-1) unstable; urgency=low
+vips (7.22.0-1) experimental; urgency=low
 
   * New upstream release
   * Changed references to libjpeg62-dev to libjpeg-dev
