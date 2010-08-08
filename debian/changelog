@@ -1,3 +1,10 @@
+vips (7.22.2-1) experimental; urgency=low
+
+  * New upstream release
+  * Updated standards version to 3.9.1.  No changes required.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 08 Aug 2010 19:30:12 -0400
+
 vips (7.22.1-1) experimental; urgency=low
 
   * New upstream release
