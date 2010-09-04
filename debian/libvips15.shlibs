@@ -1,2 +1,2 @@
-libvips 15 libvips15
-libvipsCC 15 libvips15
+libvips 15 libvips15 (>= 7.22.2-2)
+libvipsCC 15 libvips15 (>= 7.22.2-2)
