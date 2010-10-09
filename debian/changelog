@@ -1,3 +1,11 @@
+vips (7.22.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Upstream release includes fix to CVE-2010-3364: insecure library
+    loading.  (Closes: #598296)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 09 Oct 2010 10:39:23 -0400
+
 vips (7.22.2-2) unstable; urgency=low
 
   * Upstream has declared this to be a stable release.  No code changes
