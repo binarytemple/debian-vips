@@ -1,0 +1,5 @@
+As of the time of packaging 7.24, lcms 2 was not yet in debian.  When
+lcms 2 is in debian, vips should be modified to depend on it instead
+of lcms 1.
+
+ -- Jay Berkenbilt <qjb@debian.org>, Mon, 27 Dec 2010 14:24:29 -0500
