@@ -31,7 +31,7 @@ Description: image processing system good for very large images
 Package: libvips-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libvips15 (= ${binary:Version}), libjpeg-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-central, python-dev (>= 2.4), liborc0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev
+Depends: ${misc:Depends}, libvips15 (= ${binary:Version}), libjpeg-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms1-dev, libpng12-dev, libmagick9-dev | libmagick-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-central, python-dev (>= 2.4), liborc-0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev
 Recommends: libvips-doc, libvips-tools
 Suggests: nip2
 Description: image processing system good for very large images (dev)
