@@ -1,3 +1,9 @@
+vips (7.24.5-2) unstable; urgency=low
+
+  * Oops...fix lintian errors from moved documentation.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Apr 2011 13:29:02 -0400
+
 vips (7.24.5-1) unstable; urgency=low
 
   * New upstream release

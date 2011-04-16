@@ -6,5 +6,5 @@ Abstract: The VIPS Application Programmer's Guide explains how to call
 Section: Programming
 
 Format: HTML
-Index: /usr/share/doc/libvips-doc/html/vipsmanual.html
-Files: /usr/share/doc/libvips-doc/html/*
+Index: /usr/share/gtk-doc/html/libvips/vipsmanual.html
+Files: /usr/share/gtk-doc/html/libvips/*
