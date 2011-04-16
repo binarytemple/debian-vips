@@ -1,8 +1,9 @@
 vips (7.24.5-1) unstable; urgency=low
 
   * New upstream release
+  * Updated standards to 3.9.2.  No changes required.
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Apr 2011 10:53:49 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Apr 2011 10:58:26 -0400
 
 vips (7.24.1-1) unstable; urgency=low
 
