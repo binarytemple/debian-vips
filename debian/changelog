@@ -1,3 +1,10 @@
+vips (7.24.5-3) unstable; urgency=low
+
+  * Updated libmagick build dependencies to use non-version-specific
+    packages for better upgradability. (Closes: #625602, #625552)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 07 May 2011 09:42:14 -0400
+
 vips (7.24.5-2) unstable; urgency=low
 
   * Oops...fix lintian errors from moved documentation.
