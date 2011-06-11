@@ -1,4 +1,4 @@
-vips (7.24.5-4) unstable; urgency=low
+vips (7.24.5-4) unstable; urgency=high
 
   * Fixed ImageMagick dependencies; previous fix missed dependencies of
     libvips-dev. (Closes: #629904, #630014)
