@@ -1,3 +1,10 @@
+vips (7.24.5-4) unstable; urgency=low
+
+  * Fixed ImageMagick dependencies; previous fix missed dependencies of
+    libvips-dev. (Closes: #629904, #630014)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 11 Jun 2011 07:54:15 -0400
+
 vips (7.24.5-3) unstable; urgency=low
 
   * Updated libmagick build dependencies to use non-version-specific
