@@ -1,3 +1,9 @@
+vips (7.24.5-5) unstable; urgency=low
+
+  * Migrate from dh_pycentral to dh_python2.  (Closes: #617141)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 02 Jul 2011 04:02:00 -0400
+
 vips (7.24.5-4) unstable; urgency=high
 
   * Fixed ImageMagick dependencies; previous fix missed dependencies of

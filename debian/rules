@@ -21,7 +21,6 @@ DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html
 DEB_COMPRESS_EXCLUDE = html
 
-DEB_PYTHON_SYSTEM = pycentral
 DEB_PYTHON_PRIVATE_MODULES_DIRS = swig/vipsCC
 
 # Include cdbs rules files.
