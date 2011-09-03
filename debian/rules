@@ -65,6 +65,10 @@ binary-post-install/%::
 	    cp -p debian/$*.lintian debian/$*/usr/share/lintian/overrides/$*; \
 	fi
 
+# Remove remaining .la files
+binary-post-install/%::
+	find . -type f -name '*.la' -exec rm {} \;
+
 install/python-vipscc::
 	set -e; \
 	for v in $(l_OTHER_PYTHON_VERSIONS); do \

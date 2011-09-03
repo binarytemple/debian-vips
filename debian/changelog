@@ -2,8 +2,12 @@ vips (7.26.3-1) unstable; urgency=low
 
   * New upstream release
   * Migrate from dh_pycentral to dh_python2.  (Closes: #617141)
+  * Remove remaining .la files which were installed with the python
+    module.  (Closes: #633181)
+  * New upstream release includes updated German translation.  (Closes:
+    #625255)
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 03 Sep 2011 10:26:05 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 03 Sep 2011 10:47:36 -0400
 
 vips (7.24.5-4) unstable; urgency=high
 
