@@ -71,4 +71,4 @@ install/python-vipscc::
 	  make -C $(DEB_BUILDDIR)/swig/vipsCC clean; \
           make -C $(DEB_BUILDDIR)/swig/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v install DESTDIR=$(l_PWD)/debian/tmp; \
 	done
-	find $(l_PWD)/debian/tmp -type f -name '*.la' -exec rm {} \;
+	find $(l_PWD)/debian/tmp -type f \( -name '*.la' -o -name '*.pyc' -o -name '*.pyo' \) -exec rm {} \;
