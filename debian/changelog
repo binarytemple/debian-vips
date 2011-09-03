@@ -1,8 +1,9 @@
-vips (7.24.5-5) unstable; urgency=low
+vips (7.26.3-1) unstable; urgency=low
 
+  * New upstream release
   * Migrate from dh_pycentral to dh_python2.  (Closes: #617141)
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 02 Jul 2011 04:02:00 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 03 Sep 2011 10:26:05 -0400
 
 vips (7.24.5-4) unstable; urgency=high
 
