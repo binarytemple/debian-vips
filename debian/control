@@ -1,7 +1,7 @@
 Source: vips
 Section: libs
 Priority: optional
-Build-Depends: cdbs (>= 0.4.90~), debhelper (>= 5.0.38), libjpeg-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms2-dev, libpng12-dev, libmagickcore-dev, libmagickwand-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-dev (>= 2.6.6-3~), liborc-0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev, flex, bison
+Build-Depends: cdbs (>= 0.4.90~), debhelper (>= 5.0.38), libjpeg-dev, libtiff4-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms2-dev, libpng12-dev, libmagickcore-dev, libmagickwand-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-all-dev, python-dev (>= 2.6.6-3~), liborc-0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev, flex, bison
 Maintainer: Jay Berkenbilt <qjb@debian.org>
 Standards-Version: 3.9.2
 Homepage: http://www.vips.ecs.soton.ac.uk
