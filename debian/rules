@@ -72,6 +72,6 @@ binary-post-install/%::
 install/python-vipscc::
 	set -e; \
 	for v in $(l_OTHER_PYTHON_VERSIONS); do \
-	  make -C $(DEB_BUILDDIR)/python/vipsCC clean; \
-          make -C $(DEB_BUILDDIR)/python/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v install DESTDIR=$(l_PWD)/debian/tmp; \
+	  make -C $(DEB_BUILDDIR)/swig/vipsCC clean; \
+          make -C $(DEB_BUILDDIR)/swig/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v install DESTDIR=$(l_PWD)/debian/tmp; \
 	 done
