@@ -1,9 +1,10 @@
-vips (7.26.6-1) unstable; urgency=low
+vips (7.26.7-1) unstable; urgency=low
 
   * New upstream release
-  * Fix python packaging issue.  (Closes: #642746)
+  * Fix python packaging issue.  Thanks Jakub Wilik <jwilk@debian.org>.
+    (Closes: #642746)
 
- -- Jay Berkenbilt <qjb@debian.org>  Fri, 11 Nov 2011 08:33:48 -0500
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 31 Dec 2011 10:31:20 -0500
 
 vips (7.26.3-1) unstable; urgency=low
 

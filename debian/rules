@@ -21,12 +21,12 @@ DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html
 DEB_COMPRESS_EXCLUDE = html
 
-DEB_PYTHON_PRIVATE_MODULES_DIRS = swig/vipsCC
-
 # Include cdbs rules files.
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-module.mk
 include /usr/share/cdbs/1/class/autotools.mk
+
+include /usr/share/python/python.mk
 
 # exec_prefix set explicitly to /usr appears to be required by
 # configure scripts in order to properly install multiple versions of
@@ -69,6 +69,6 @@ install/python-vipscc::
 	set -e; \
 	for v in $(l_OTHER_PYTHON_VERSIONS); do \
 	  make -C $(DEB_BUILDDIR)/swig/vipsCC clean; \
-          make -C $(DEB_BUILDDIR)/swig/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v install DESTDIR=$(l_PWD)/debian/tmp; \
+          make -C $(DEB_BUILDDIR)/swig/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v pyexecdir="$(call py_libdir_sh, $$v)" install DESTDIR=$(l_PWD)/debian/tmp; \
 	done
 	find $(l_PWD)/debian/tmp -type f \( -name '*.la' -o -name '*.pyc' -o -name '*.pyo' \) -exec rm {} \;
