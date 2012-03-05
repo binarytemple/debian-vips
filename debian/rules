@@ -33,6 +33,10 @@ include /usr/share/python/python.mk
 # python.  Setting to "\$${prefix}" doesn't work.
 DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
 
+ifneq (, $(filter kfreebsd%, $(DEB_HOST_ARCH_CPU)))
+DEB_CONFIGURE_EXTRA_FLAGS += --without-v4l
+endif
+
 # "make install" runs installed programs at one point, so we need to
 # set LD_LIBRARY_PATH to the installed library directory.
 ifeq ("$(LD_LIBRARY_PATH)", "")
