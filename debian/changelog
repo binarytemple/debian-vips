@@ -1,3 +1,9 @@
+vips (7.26.7-3) unstable; urgency=low
+
+  * Correctly implement previous change (fix omission in rules file)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 05 Mar 2012 13:33:26 -0500
+
 vips (7.26.7-2) unstable; urgency=low
 
   * Update png dependency to libpng-dev.  (Closes: #662536)

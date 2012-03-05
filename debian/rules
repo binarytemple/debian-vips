@@ -33,6 +33,7 @@ include /usr/share/python/python.mk
 # python.  Setting to "\$${prefix}" doesn't work.
 DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
 
+DEB_HOST_ARCH_CPU	?= $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
 ifneq (, $(filter kfreebsd%, $(DEB_HOST_ARCH_CPU)))
 DEB_CONFIGURE_EXTRA_FLAGS += --without-v4l
 endif
