@@ -49,10 +49,8 @@ export LD_LIBRARY_PATH
 cleanbuilddir::
 	$(RM) -r $(l_STAMPS)
 
-# As 0.4.21, cdbs creates but doesn't remove debian/compat.  It
-# creates it conditionally, so this doesn't have a trivial fix.
 clean::
-	$(RM) debian/compat *.cdbs-config_list
+	$(RM) *.cdbs-config_list
 
 pre-build::
 	find build-tree -name CVS -print | xargs rm -rf
