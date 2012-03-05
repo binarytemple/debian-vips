@@ -1,3 +1,10 @@
+vips (7.26.7-4) unstable; urgency=low
+
+  * Explicitly disable v4l on kfreebsd architectures.  Hopefully it's
+    really right this time.  (Closes: #654430)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 05 Mar 2012 16:41:02 -0500
+
 vips (7.26.7-3) unstable; urgency=low
 
   * Correctly implement previous change (fix omission in rules file)
