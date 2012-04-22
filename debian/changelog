@@ -1,3 +1,9 @@
+vips (7.28.2-2) UNRELEASED; urgency=low
+
+  * NOT RELEASED YET
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 18 Mar 2012 17:29:17 -0400
+
 vips (7.28.2-1) unstable; urgency=low
 
   * New upstream release

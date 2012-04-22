@@ -60,13 +60,6 @@ install/libvips-tools::
 	rm debian/tmp/usr/share/man/man1/header.1*
 	perl $(l_PWD)/debian/scripts/create_missing_manual_pages
 
-# Install lintian override files
-binary-post-install/%::
-	if [ -f debian/$*.lintian ]; then \
-	    mkdir -p debian/$*/usr/share/lintian/overrides && \
-	    cp -p debian/$*.lintian debian/$*/usr/share/lintian/overrides/$*; \
-	fi
-
 install/python-vipscc::
 	set -e; \
 	for v in $(l_OTHER_PYTHON_VERSIONS); do \
