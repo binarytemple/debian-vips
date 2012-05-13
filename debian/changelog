@@ -1,8 +1,9 @@
-vips (7.28.2-2) unstable; urgency=low
+vips (7.28.5-1) unstable; urgency=low
 
-  * Enable bitiff (XXX don't release this version)
+  * New upstream release
+  * Use tiff 4.x to get bigtiff support
 
- -- Jay Berkenbilt <qjb@debian.org>  Sun, 18 Mar 2012 17:29:17 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 13 May 2012 10:11:11 -0400
 
 vips (7.28.2-1) unstable; urgency=low
 
