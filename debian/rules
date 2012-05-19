@@ -34,6 +34,8 @@ include /usr/share/python/python.mk
 # python.  Setting to "\$${prefix}" doesn't work.
 DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
 DEB_CONFIGURE_USER_FLAGS = --libdir="\$${prefix}/lib/$(DEB_HOST_MULTIARCH)" \
+PKG_CONFIG_PATH=/usr/lib/$(DEB_HOST_MULTIARCH)
+export PKG_CONFIG_PATH
 
 ifneq (, $(filter kfreebsd%, $(DEB_HOST_ARCH_OS)))
 DEB_CONFIGURE_EXTRA_FLAGS += --without-v4l
