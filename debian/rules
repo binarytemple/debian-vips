@@ -20,6 +20,7 @@ VERSION := $(shell dpkg-parsechangelog | \
 DEB_INSTALL_DOCS_libvips-doc = \
 	$(DEB_BUILDDIR)/doc/html
 DEB_COMPRESS_EXCLUDE = html
+export DEB_BUILD_HARDENING=1
 
 # Include cdbs rules files.
 include /usr/share/cdbs/1/rules/debhelper.mk
@@ -32,6 +33,8 @@ include /usr/share/python/python.mk
 # configure scripts in order to properly install multiple versions of
 # python.  Setting to "\$${prefix}" doesn't work.
 DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
+DEB_CONFIGURE_USER_FLAGS = --libdir="\$${prefix}/lib/$(DEB_HOST_MULTIARCH)" \
+export PKG_CONFIG_PATH=/usr/lib/$(DEB_HOST_MULTIARCH)
 
 ifneq (, $(filter kfreebsd%, $(DEB_HOST_ARCH_OS)))
 DEB_CONFIGURE_EXTRA_FLAGS += --without-v4l
