@@ -1,15 +1,10 @@
-vips (7.28.5-2) unstable; urgency=low
-
-  * Support bigtiff
-
- -- Jay Berkenbilt <qjb@debian.org>  Tue, 29 May 2012 09:52:22 -0400
-
 vips (7.28.5-1) unstable; urgency=low
 
   * New upstream release
   * multiarch, hardening
+  * Support bigtiff
 
- -- Jay Berkenbilt <qjb@debian.org>  Thu, 24 May 2012 15:52:35 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 29 May 2012 14:25:06 -0400
 
 vips (7.28.2-1) unstable; urgency=low
 
