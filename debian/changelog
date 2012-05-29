@@ -1,3 +1,9 @@
+vips (7.28.5-2) unstable; urgency=low
+
+  * Support bigtiff
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 29 May 2012 09:52:22 -0400
+
 vips (7.28.5-1) unstable; urgency=low
 
   * New upstream release
