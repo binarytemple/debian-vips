@@ -1,9 +1,9 @@
-vips (7.32.2-1) experimental; urgency=low
+vips (7.32.3-1) experimental; urgency=low
 
   * New upstream release
   * Fix broken debian/watch file.  (Closes: #688104)
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 13 Apr 2013 21:30:52 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 16 Apr 2013 11:00:37 -0400
 
 vips (7.28.8-1) unstable; urgency=low
 
