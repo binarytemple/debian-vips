@@ -1,8 +1,7 @@
 vips (7.34.2-1) experimental; urgency=low
 
   * New upstream release
-  * Replace shlibs file with symbols file
-  * Update standards to 3.9.4
+  * Update standards to 3.9.4 (no changes required)
   * Add build dependency on autotools-dev
 
  -- Jay Berkenbilt <qjb@debian.org>  Sun, 15 Sep 2013 08:30:00 -0400
