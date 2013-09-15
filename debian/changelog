@@ -3,8 +3,9 @@ vips (7.34.2-1) experimental; urgency=low
   * New upstream release
   * Update standards to 3.9.4 (no changes required)
   * Add build dependency on autotools-dev
+  * XXX not done yet
 
- -- Jay Berkenbilt <qjb@debian.org>  Sun, 15 Sep 2013 08:30:00 -0400
+ --
 
 vips (7.32.3-1) experimental; urgency=low
 
