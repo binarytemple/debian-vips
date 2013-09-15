@@ -78,6 +78,7 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Recommends: nip2, libvips-doc
 Suggests: libvips-dev
+XS-Python-Version: all
 Description: image processing system good for very large images (tools)
  VIPS is an image processing system designed with efficiency in mind.
  It is good with large images (images larger than the amount of RAM in
