@@ -1,3 +1,9 @@
+vips (7.34.2-1) experimental; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 15 Sep 2013 07:47:10 -0400
+
 vips (7.32.3-1) experimental; urgency=low
 
   * New upstream release
