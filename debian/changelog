@@ -3,10 +3,9 @@ vips (7.34.2-1) unstable; urgency=low
   * New upstream release
   * Update standards to 3.9.4 (no changes required)
   * Add build dependency on autotools-dev
+  * Stop installing .a files with python modules
 
-  * XXX not yet uploaded: python issue
-
- --
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 16 Sep 2013 09:16:07 -0400
 
 vips (7.32.3-1) experimental; urgency=low
 
