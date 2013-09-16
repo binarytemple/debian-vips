@@ -72,8 +72,4 @@ install/python-vipscc::
 	  make -C $(DEB_BUILDDIR)/swig/vipsCC clean; \
           make -C $(DEB_BUILDDIR)/swig/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v pyexecdir="$(call py_libdir_sh, $$v)" install DESTDIR=$(l_PWD)/debian/tmp; \
 	done
-	-bash -i
-	-sh -i
-	echo waiting for /tmp/done...
-	@while [ ! -f /tmp/done ]; do sleep 1; done
-	find debian/tmp -type f \( -name '*.la' -o -name '*.pyc' -o -name '*.pyo' \) -exec rm {} \;
+	find debian/tmp -type f \( -name '*.la' -o -name '*.pyc' -o -name '*.pyo' -o -path '*/vipsCC/*.a' \) -exec rm {} \;
