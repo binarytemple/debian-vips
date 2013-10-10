@@ -43,6 +43,12 @@ ifneq (, $(filter kfreebsd%, $(DEB_HOST_ARCH_OS)))
 DEB_CONFIGURE_EXTRA_FLAGS += --without-v4l
 endif
 
+# Remove special case for armhf using gcc-4.7 when bug #725880 is
+# closed.  See also note in control file.
+ifeq ($(DEB_HOST_ARCH), armhf)
+DEB_CONFIGURE_EXTRA_FLAGS += CC=gcc-4.7 CXX=g++-4.7
+endif
+
 # "make install" runs installed programs at one point, so we need to
 # set LD_LIBRARY_PATH to the installed library directory.
 ifeq ("$(LD_LIBRARY_PATH)", "")

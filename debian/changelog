@@ -1,3 +1,10 @@
+vips (7.34.2-3) unstable; urgency=low
+
+  * Use gcc-4.7 on armhf, as a workaround for gcc-4.8 bug #725880.  Thanks
+    Sébastien Villemot <sebastien@debian.org>.  (Closes: #725032)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 10 Oct 2013 12:25:07 -0400
+
 vips (7.34.2-1) unstable; urgency=low
 
   * New upstream release
