@@ -1,3 +1,10 @@
+vips (7.36.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Update standards version to 3.9.5.  No changes required.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 14 Nov 2013 12:39:59 -0500
+
 vips (7.34.2-3) unstable; urgency=low
 
   * Use gcc-4.7 on armhf, as a workaround for gcc-4.8 bug #725880.  Thanks
