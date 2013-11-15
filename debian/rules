@@ -1,0 +1,74 @@
+#!/usr/bin/make -f
+
+# To distinguish variables that are truly local to this file (rather
+# than for use by cdbs), we adopt the convention of starting local
+# variables' names with l_.
+
+l_PWD := $(shell pwd)
+l_STAMPS = debian/l_stamps
+
+# Build for all available python versions
+l_PYTHON_VERSION := $(shell pyversions -vd)
+l_OTHER_PYTHON_VERSIONS := \
+	$(filter-out $(l_PYTHON_VERSION), $(shell pyversions -vr))
+
+# Variables used by cdbs
+
+VERSION := $(shell dpkg-parsechangelog | \
+             awk '/Version:/ {print $$2}' | cut -d- -f 1)
+
+DEB_INSTALL_DOCS_libvips-doc = \
+	$(DEB_BUILDDIR)/doc/html
+DEB_COMPRESS_EXCLUDE = html
+
+DEB_PYTHON_SYSTEM = pycentral
+DEB_PYTHON_PRIVATE_MODULES_DIRS = swig/vipsCC
+
+# Include cdbs rules files.
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/python-module.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+# exec_prefix set explicitly to /usr appears to be required by
+# configure scripts in order to properly install multiple versions of
+# python.  Setting to "\$${prefix}" doesn't work.
+DEB_CONFIGURE_EXTRA_FLAGS = --exec_prefix=/usr
+
+# "make install" runs installed programs at one point, so we need to
+# set LD_LIBRARY_PATH to the installed library directory.
+ifeq ("$(LD_LIBRARY_PATH)", "")
+LD_LIBRARY_PATH=$(l_PWD)/debian/tmp/usr/lib
+else
+LD_LIBRARY_PATH += :$(l_PWD)/debian/tmp/usr/lib
+endif
+export LD_LIBRARY_PATH
+
+cleanbuilddir::
+	$(RM) -r $(l_STAMPS)
+
+# As 0.4.21, cdbs creates but doesn't remove debian/compat.  It
+# creates it conditionally, so this doesn't have a trivial fix.
+clean::
+	$(RM) debian/compat *.cdbs-config_list
+
+pre-build::
+	find build-tree -name CVS -print | xargs rm -rf
+
+install/libvips-tools::
+	rm debian/tmp/usr/bin/header
+	rm debian/tmp/usr/share/man/man1/header.1*
+	perl $(l_PWD)/debian/scripts/create_missing_manual_pages
+
+# Install lintian override files
+binary-post-install/%::
+	if [ -f debian/$*.lintian ]; then \
+	    mkdir -p debian/$*/usr/share/lintian/overrides && \
+	    cp -p debian/$*.lintian debian/$*/usr/share/lintian/overrides/$*; \
+	fi
+
+install/python-vipscc::
+	set -e; \
+	for v in $(l_OTHER_PYTHON_VERSIONS); do \
+	  make -C $(DEB_BUILDDIR)/python/vipsCC clean; \
+          make -C $(DEB_BUILDDIR)/python/vipsCC PYTHON_VERSION=$$v PYTHON_INCLUDES=-I/usr/include/python$$v install DESTDIR=$(l_PWD)/debian/tmp; \
+	 done
