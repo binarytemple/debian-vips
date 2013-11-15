@@ -1,15 +1,39 @@
-vips (7.28.5-2) unstable; urgency=low
+vips (7.34.2-3) unstable; urgency=low
 
-  * Support bigtiff
+  * Use gcc-4.7 on armhf, as a workaround for gcc-4.8 bug #725880.  Thanks
+    Sébastien Villemot <sebastien@debian.org>.  (Closes: #725032)
 
- -- Jay Berkenbilt <qjb@debian.org>  Tue, 29 May 2012 09:52:22 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 10 Oct 2013 12:25:07 -0400
+
+vips (7.34.2-1) unstable; urgency=low
+
+  * New upstream release
+  * Update standards to 3.9.4 (no changes required)
+  * Add build dependency on autotools-dev
+  * Stop installing .a files with python modules
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 16 Sep 2013 09:16:07 -0400
+
+vips (7.32.3-1) experimental; urgency=low
+
+  * New upstream release
+  * Fix broken debian/watch file.  (Closes: #688104)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 27 Apr 2013 21:10:48 -0400
+
+vips (7.28.8-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 29 Jun 2012 14:00:16 -0400
 
 vips (7.28.5-1) unstable; urgency=low
 
   * New upstream release
   * multiarch, hardening
+  * Support bigtiff
 
- -- Jay Berkenbilt <qjb@debian.org>  Thu, 24 May 2012 15:52:35 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 29 May 2012 14:25:06 -0400
 
 vips (7.28.2-1) unstable; urgency=low
 

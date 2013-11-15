@@ -1,12 +1,15 @@
 Source: vips
 Section: libs
 Priority: optional
-Build-Depends: cdbs (>= 0.4.93~), debhelper (>> 9~), dpkg-dev (>= 1.16.1~), libjpeg-dev, libtiff5-alt-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms2-dev, libpng-dev, libmagickcore-dev, libmagickwand-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-all-dev, python-dev (>= 2.6.6-3~), liborc-0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev, libopenslide-dev, flex, bison
+# Remove armhf dependencies on gcc-4.7 when bug #725880 is closed.
+# See also note in rules file.
+Build-Depends: cdbs (>= 0.4.93~), debhelper (>> 9~), dpkg-dev (>= 1.16.1~), autotools-dev, libjpeg-dev, libtiff5-alt-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms2-dev, libpng-dev, libmagickcore-dev, libmagickwand-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libxml-parser-perl, libexif-gtk-dev, python-all-dev, python-dev (>= 2.6.6-3~), liborc-0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev, libopenslide-dev, flex, bison, gcc-4.7 [armhf], g++-4.7 [armhf]
+XS-Python-Version: all
 Maintainer: Jay Berkenbilt <qjb@debian.org>
-Standards-Version: 3.9.3
+Standards-Version: 3.9.4
 Homepage: http://www.vips.ecs.soton.ac.uk
 
-Package: libvips15
+Package: libvips31
 Section: libs
 Architecture: any
 Multi-Arch: same
@@ -32,7 +35,7 @@ Description: image processing system good for very large images
 Package: libvips-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libvips15 (= ${binary:Version}), libjpeg-dev, libtiff5-alt-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms2-dev, libpng-dev, libmagickcore-dev, libmagickwand-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-dev (>= 2.6.6-3~), liborc-0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev, libopenslide-dev
+Depends: ${misc:Depends}, libvips31 (= ${binary:Version}), libjpeg-dev, libtiff5-alt-dev, zlib1g-dev, fftw3-dev | libfftw3-dev, liblcms2-dev, libpng-dev, libmagickcore-dev, libmagickwand-dev, libfreetype6-dev, libpango1.0-dev, libfontconfig1-dev, libglib2.0-dev, libice-dev, gettext, pkg-config, libexif-gtk-dev, python-all-dev, python-dev (>= 2.6.6-3~), liborc-0.4-dev, libopenexr-dev, libmatio-dev, libxml2-dev, libcfitsio3-dev, libopenslide-dev
 Recommends: libvips-doc, libvips-tools
 Suggests: nip2
 Description: image processing system good for very large images (dev)
