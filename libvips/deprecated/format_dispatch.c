@@ -17,7 +17,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -60,6 +61,32 @@ static im_function jpeg2vips_desc = {
 	jpeg2vips_vec,			/* Dispatch function */
 	IM_NUMBER( jpeg2vips_args ), 	/* Size of arg list */
 	jpeg2vips_args 			/* Arg list */
+};
+
+static int
+vips2dz_vec( im_object *argv )
+{
+	IMAGE *in = argv[0];
+	char *out = argv[1];
+
+	if( im_vips2dz( in, out ) )
+		return( -1 );
+
+	return( 0 );
+}
+
+static im_arg_desc vips2dz_args[] = {
+	IM_INPUT_IMAGE( "in" ),
+	IM_INPUT_STRING( "out" )
+};
+
+static im_function vips2dz_desc = {
+	"im_vips2dz",			/* Name */
+	"save as deepzoom",		/* Description */
+	0,				/* Flags */
+	vips2dz_vec,			/* Dispatch function */
+	IM_NUMBER( vips2dz_args ), 	/* Size of arg list */
+	vips2dz_args 			/* Arg list */
 };
 
 static int
@@ -424,6 +451,7 @@ static im_function *list[] = {
 	&analyze2vips_desc,
 	&tiff2vips_desc,
 	&vips2csv_desc,
+	&vips2dz_desc,
 	&vips2jpeg_desc,
 	&vips2mimejpeg_desc,
 	&vips2png_desc,

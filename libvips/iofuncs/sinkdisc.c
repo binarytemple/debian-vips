@@ -27,7 +27,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -171,7 +172,6 @@ wbuffer_write( WriteBuffer *wbuffer )
 		&wbuffer->area, write->a );
 }
 
-#ifdef HAVE_THREADS
 /* Run this as a thread to do a BG write.
  */
 static void *
@@ -200,7 +200,6 @@ wbuffer_write_thread( void *data )
 
 	return( NULL );
 }
-#endif /*HAVE_THREADS*/
 
 static WriteBuffer *
 wbuffer_new( Write *write )
@@ -227,17 +226,13 @@ wbuffer_new( Write *write )
 	 */
 	vips__region_no_ownership( wbuffer->region );
 
-#ifdef HAVE_THREADS
 	/* Make this last (picks up parts of wbuffer on startup).
 	 */
-	if( !(wbuffer->thread = g_thread_create( wbuffer_write_thread, wbuffer, 
-		TRUE, NULL )) ) {
-		vips_error( "wbuffer_new", 
-			"%s", _( "unable to create thread" ) );
+	if( !(wbuffer->thread = vips_g_thread_new( "wbuffer", 
+		wbuffer_write_thread, wbuffer )) ) {  
 		wbuffer_free( wbuffer );
 		return( NULL );
 	}
-#endif /*HAVE_THREADS*/
 
 	return( wbuffer );
 }
@@ -266,13 +261,7 @@ wbuffer_flush( Write *write )
 
 	/* Set the background writer going for this buffer.
 	 */
-#ifdef HAVE_THREADS
 	vips_semaphore_up( &write->buf->go );
-#else
-	/* No threads? Write ourselves synchronously.
-	 */
-	wbuffer_write( write->buf );
-#endif /*HAVE_THREADS*/
 
 	return( 0 );
 }
@@ -327,7 +316,7 @@ wbuffer_allocate_fn( VipsThreadState *state, void *a, gboolean *stop )
 	VipsRect image;
 	VipsRect tile;
 
-	VIPS_DEBUG_MSG( "wbuffer_allocate_fn:\n" );
+	VIPS_DEBUG_MSG( "wbuffer_allocate_fn:\n"  );
 
 	/* Is the state x/y OK? New line or maybe new buffer or maybe even 
 	 * all done.
@@ -337,8 +326,8 @@ wbuffer_allocate_fn( VipsThreadState *state, void *a, gboolean *stop )
 		sink_base->y += sink_base->tile_height;
 
 		if( sink_base->y >= VIPS_RECT_BOTTOM( &write->buf->area ) ) {
-			/* Block until the last write is done, then set write
-			 * of the front buffer going.
+			/* Block until the write of the previous buffer 
+			 * is done, then set write of this buffer going.
 			 */
 			if( wbuffer_flush( write ) )
 				return( -1 );
@@ -386,7 +375,10 @@ wbuffer_allocate_fn( VipsThreadState *state, void *a, gboolean *stop )
 	 */
 	wstate->buf = write->buf;
 
-	VIPS_DEBUG_MSG( "  allocated %d x %d:\n", tile.left, tile.top );
+	VIPS_DEBUG_MSG( "  thread %p allocated "
+		"left = %d, top = %d, width = %d, height = %d\n", 
+		g_thread_self(), 
+		tile.left, tile.top, tile.width, tile.height );
 
 	/* Add to the number of writers on the buffer.
 	 */
@@ -412,13 +404,15 @@ wbuffer_work_fn( VipsThreadState *state, void *a )
 
 	int result;
 
-	VIPS_DEBUG_MSG( "wbuffer_work_fn: %p %d x %d\n", 
-		state, state->pos.left, state->pos.top );
+	VIPS_DEBUG_MSG( "wbuffer_work_fn: thread %p, %d x %d\n", 
+		g_thread_self(), 
+		state->pos.left, state->pos.top );
 
 	result = vips_region_prepare_to( state->reg, wstate->buf->region, 
 		&state->pos, state->pos.left, state->pos.top );
 
-	VIPS_DEBUG_MSG( "wbuffer_work_fn: %p result = %d\n", state, result );
+	VIPS_DEBUG_MSG( "wbuffer_work_fn: thread %p result = %d\n", 
+		g_thread_self(), result );
 
 	/* Tell the bg write thread we've left.
 	 */

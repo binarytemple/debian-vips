@@ -1,0 +1,152 @@
+<!-- ##### SECTION Title ##### -->
+rect
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_RECT_BOTTOM ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_RECT_HCENTRE ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_RECT_RIGHT ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_RECT_VCENTRE ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### STRUCT VipsRect ##### -->
+<para>
+
+</para>
+
+@left: 
+@top: 
+@width: 
+@height: 
+
+<!-- ##### FUNCTION vips_rect_dup ##### -->
+<para>
+
+</para>
+
+@r: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rect_equalsrect ##### -->
+<para>
+
+</para>
+
+@r1: 
+@r2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rect_includespoint ##### -->
+<para>
+
+</para>
+
+@r: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rect_includesrect ##### -->
+<para>
+
+</para>
+
+@r1: 
+@r2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rect_intersectrect ##### -->
+<para>
+
+</para>
+
+@r1: 
+@r2: 
+@out: 
+
+
+<!-- ##### FUNCTION vips_rect_isempty ##### -->
+<para>
+
+</para>
+
+@r: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rect_marginadjust ##### -->
+<para>
+
+</para>
+
+@r: 
+@n: 
+
+
+<!-- ##### FUNCTION vips_rect_normalise ##### -->
+<para>
+
+</para>
+
+@r: 
+
+
+<!-- ##### FUNCTION vips_rect_unionrect ##### -->
+<para>
+
+</para>
+
+@r1: 
+@r2: 
+@out: 
+
+

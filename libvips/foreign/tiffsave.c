@@ -22,7 +22,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -95,14 +96,14 @@ vips_foreign_save_tiff_build( VipsObject *object )
 
 	/* Default xres/yres to the values from the image.
 	 */
-	if( !vips_object_get_argument_assigned( object, "xres" ) )
+	if( !vips_object_argument_isset( object, "xres" ) )
 		tiff->xres = save->ready->Xres * 10.0;
-	if( !vips_object_get_argument_assigned( object, "yres" ) )
+	if( !vips_object_argument_isset( object, "yres" ) )
 		tiff->yres = save->ready->Yres * 10.0;
 
 	/* resunit param overrides resunit metadata.
 	 */
-	if( !vips_object_get_argument_assigned( object, "resunit" ) &&
+	if( !vips_object_argument_isset( object, "resunit" ) &&
 		vips_image_get_typeof( save->ready, 
 			VIPS_META_RESOLUTION_UNIT ) &&
 		!vips_image_get_string( save->ready, 

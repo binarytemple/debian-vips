@@ -1,0 +1,126 @@
+<!-- ##### SECTION Title ##### -->
+morphology
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION im_cntlines ##### -->
+<para>
+
+</para>
+
+@im: 
+@nolines: 
+@flag: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_dilate ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_erode ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_label_regions ##### -->
+<para>
+
+</para>
+
+@test: 
+@mask: 
+@segments: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_maxvalue ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_profile ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@dir: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_rank ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@width: 
+@height: 
+@index: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_rank_image ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@n: 
+@index: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_zerox ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@sign: 
+@Returns: 
+
+

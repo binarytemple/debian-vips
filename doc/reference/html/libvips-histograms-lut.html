@@ -44,7 +44,7 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-histograms-lut.html#im-buildlut" title="im_buildlut ()">im_buildlut</a>                         (<em class="parameter"><code><a class="link" href="libvips-mask.html#DOUBLEMASK:CAPS" title="DOUBLEMASK"><span class="type">DOUBLEMASK</span></a> *input</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histograms-lut.html#im-buildlut" title="im_buildlut ()">im_buildlut</a>                         (<em class="parameter"><code><span class="type">DOUBLEMASK</span> *input</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *output</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-histograms-lut.html#im-gammacorrect" title="im_gammacorrect ()">im_gammacorrect</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
@@ -83,7 +83,7 @@ Stable, unless otherwise indicated
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-histograms-lut.html#im-identity-ushort" title="im_identity_ushort ()">im_identity_ushort</a>                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *lut</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> bands</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sz</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-histograms-lut.html#im-invertlut" title="im_invertlut ()">im_invertlut</a>                        (<em class="parameter"><code><a class="link" href="libvips-mask.html#DOUBLEMASK:CAPS" title="DOUBLEMASK"><span class="type">DOUBLEMASK</span></a> *input</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histograms-lut.html#im-invertlut" title="im_invertlut ()">im_invertlut</a>                        (<em class="parameter"><code><span class="type">DOUBLEMASK</span> *input</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *output</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> lut_size</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-histograms-lut.html#im-ismonotonic" title="im_ismonotonic ()">im_ismonotonic</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *lut</code></em>,
@@ -171,7 +171,7 @@ for CIELAB images, but might be useful elsewhere.
 <a name="libvips-histograms-lut.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="im-buildlut"></a><h3>im_buildlut ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_buildlut                         (<em class="parameter"><code><a class="link" href="libvips-mask.html#DOUBLEMASK:CAPS" title="DOUBLEMASK"><span class="type">DOUBLEMASK</span></a> *input</code></em>,
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_buildlut                         (<em class="parameter"><code><span class="type">DOUBLEMASK</span> *input</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *output</code></em>);</pre>
 <p>
 This operation builds a lookup table from a set of points. Intermediate
@@ -276,7 +276,7 @@ Gamma-correct an 8- or 16-bit unsigned image with a lookup table. The
 output format is the same as the input format.
 </p>
 <p>
-See also: <a class="link" href="libvips-histograms-lut.html#im-identity" title="im_identity ()"><code class="function">im_identity()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-powtra"><code class="function">im_powtra()</code></a>, <a class="link" href="libvips-histograms-lut.html#im-maplut" title="im_maplut ()"><code class="function">im_maplut()</code></a>
+See also: <a class="link" href="libvips-histograms-lut.html#im-identity" title="im_identity ()"><code class="function">im_identity()</code></a>, <code class="function">im_powtra()</code>, <a class="link" href="libvips-histograms-lut.html#im-maplut" title="im_maplut ()"><code class="function">im_maplut()</code></a>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -707,7 +707,7 @@ The created image consist a <em class="parameter"><code>bands</code></em>-bands 
 for building up look-up tables.
 </p>
 <p>
-See also: <a class="link" href="libvips-histograms-lut.html#im-identity-ushort" title="im_identity_ushort ()"><code class="function">im_identity_ushort()</code></a>, <a class="link" href="libvips-other.html#im-make-xy" title="im_make_xy ()"><code class="function">im_make_xy()</code></a>.
+See also: <a class="link" href="libvips-histograms-lut.html#im-identity-ushort" title="im_identity_ushort ()"><code class="function">im_identity_ushort()</code></a>, <code class="function">im_make_xy()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -742,7 +742,7 @@ The created image consist a <em class="parameter"><code>bands</code></em>-bands 
 for building up look-up tables.
 </p>
 <p>
-See also: <a class="link" href="libvips-histograms-lut.html#im-identity" title="im_identity ()"><code class="function">im_identity()</code></a>, <a class="link" href="libvips-other.html#im-make-xy" title="im_make_xy ()"><code class="function">im_make_xy()</code></a>.
+See also: <a class="link" href="libvips-histograms-lut.html#im-identity" title="im_identity ()"><code class="function">im_identity()</code></a>, <code class="function">im_make_xy()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -769,7 +769,7 @@ See also: <a class="link" href="libvips-histograms-lut.html#im-identity" title="
 <hr>
 <div class="refsect2">
 <a name="im-invertlut"></a><h3>im_invertlut ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_invertlut                        (<em class="parameter"><code><a class="link" href="libvips-mask.html#DOUBLEMASK:CAPS" title="DOUBLEMASK"><span class="type">DOUBLEMASK</span></a> *input</code></em>,
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_invertlut                        (<em class="parameter"><code><span class="type">DOUBLEMASK</span> *input</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *output</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> lut_size</code></em>);</pre>
 <p>

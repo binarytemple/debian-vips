@@ -23,6 +23,8 @@
  * 	- cleanups
  * 15/10/11
  * 	- rewrite as a class
+ * 10/10/12
+ *	- add @background
  */
 
 /*
@@ -41,7 +43,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -69,7 +72,7 @@
 #include <vips/internal.h>
 #include <vips/debug.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
 typedef struct _VipsEmbed {
 	VipsConversion parent_instance;
@@ -79,10 +82,15 @@ typedef struct _VipsEmbed {
 	VipsImage *in;
 
 	VipsExtend extend;
+	VipsArea *background;
 	int x;
 	int y;
 	int width;
 	int height;
+
+	/* Pixel we paint calculated from background.
+	 */
+	VipsPel *ink;
 
 	/* Geometry calculations. 
 	 */
@@ -257,6 +265,14 @@ vips_embed_gen( VipsRegion *or, void *seq, void *a, void *b, gboolean *stop )
 				embed->extend == 0 ? 0 : 255 );
 		break;
 
+	case VIPS_EXTEND_BACKGROUND:
+		/* Paint the borders a solid value.
+		 */
+		for( i = 0; i < 8; i++ )
+			vips_region_paint_pel( or, &embed->border[i], 
+				embed->ink ); 
+		break;
+
 	case VIPS_EXTEND_COPY:
 		/* Extend the borders.
 		 */
@@ -307,6 +323,7 @@ vips_embed_gen( VipsRegion *or, void *seq, void *a, void *b, gboolean *stop )
 static int
 vips_embed_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsConversion *conversion = VIPS_CONVERSION( object );
 	VipsEmbed *embed = (VipsEmbed *) object;
 	VipsImage **t = (VipsImage **) vips_object_local_array( object, 7 );
@@ -316,7 +333,7 @@ vips_embed_build( VipsObject *object )
 	if( VIPS_OBJECT_CLASS( vips_embed_parent_class )->build( object ) )
 		return( -1 );
 
-	/* nip can generate this quite often ... just copy.
+	/* nip2 can generate this quite often ... just copy.
 	 */
 	if( embed->x == 0 && 
 		embed->y == 0 && 
@@ -326,6 +343,15 @@ vips_embed_build( VipsObject *object )
 
 	if( vips_image_pio_input( embed->in ) )
 		return( -1 );
+
+	if( !(embed->ink = vips__vector_to_ink( 
+		class->nickname, embed->in,
+		embed->background->data, embed->background->n )) )
+		return( -1 );
+
+	if( !vips_object_argument_isset( object, "extend" ) &&
+		vips_object_argument_isset( object, "background" ) )
+		embed->extend = VIPS_EXTEND_BACKGROUND; 
 
 	switch( embed->extend ) {
 	case VIPS_EXTEND_REPEAT:
@@ -398,11 +424,16 @@ vips_embed_build( VipsObject *object )
 
 	case VIPS_EXTEND_BLACK:
 	case VIPS_EXTEND_WHITE:
+	case VIPS_EXTEND_BACKGROUND:
 	case VIPS_EXTEND_COPY:
 		if( vips_image_copy_fields( conversion->out, embed->in ) )
 			return( -1 );
+
+		/* embed is used in many places. We don't really care about
+		 * geometry, so use ANY to avoid disturbing all pipelines. 
+		 */
 		vips_demand_hint( conversion->out, 
-			VIPS_DEMAND_STYLE_SMALLTILE, embed->in, NULL );
+			VIPS_DEMAND_STYLE_ANY, embed->in, NULL );
 
 		conversion->out->Xsize = embed->width;
 		conversion->out->Ysize = embed->height;
@@ -427,7 +458,8 @@ vips_embed_build( VipsObject *object )
 		 * and remove this test.
 		 */
 		if( vips_rect_isempty( &embed->rsub ) ) {
-			vips_error( "VipsEmbed", "%s", _( "bad dimensions" ) );
+			vips_error( class->nickname, 
+				"%s", _( "bad dimensions" ) );
 			return( -1 );
 		}
 
@@ -502,6 +534,7 @@ vips_embed_class_init( VipsEmbedClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	VIPS_DEBUG_MSG( "vips_embed_class_init\n" );
 
@@ -511,6 +544,8 @@ vips_embed_class_init( VipsEmbedClass *class )
 	vobject_class->nickname = "embed";
 	vobject_class->description = _( "embed an image in a larger image" );
 	vobject_class->build = vips_embed_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 
 	VIPS_ARG_IMAGE( class, "in", -1, 
 		_( "Input" ), 
@@ -523,28 +558,28 @@ vips_embed_class_init( VipsEmbedClass *class )
 		_( "Left edge of input in output" ),
 		VIPS_ARGUMENT_REQUIRED_INPUT,
 		G_STRUCT_OFFSET( VipsEmbed, x ),
-		-1000000, 1000000, 0 );
+		-1000000000, 1000000000, 0 );
 
 	VIPS_ARG_INT( class, "y", 3, 
 		_( "y" ), 
 		_( "Top edge of input in output" ),
 		VIPS_ARGUMENT_REQUIRED_INPUT,
 		G_STRUCT_OFFSET( VipsEmbed, y ),
-		-1000000, 1000000, 0 );
+		-1000000000, 1000000000, 0 );
 
 	VIPS_ARG_INT( class, "width", 4, 
 		_( "Width" ), 
 		_( "Image width in pixels" ),
 		VIPS_ARGUMENT_REQUIRED_INPUT,
 		G_STRUCT_OFFSET( VipsEmbed, width ),
-		1, 1000000, 1 );
+		1, 1000000000, 1 );
 
 	VIPS_ARG_INT( class, "height", 5, 
 		_( "Height" ), 
 		_( "Image height in pixels" ),
 		VIPS_ARGUMENT_REQUIRED_INPUT,
 		G_STRUCT_OFFSET( VipsEmbed, height ),
-		1, 1000000, 1 );
+		1, 1000000000, 1 );
 
 	VIPS_ARG_ENUM( class, "extend", 6, 
 		_( "Extend" ), 
@@ -552,13 +587,22 @@ vips_embed_class_init( VipsEmbedClass *class )
 		VIPS_ARGUMENT_OPTIONAL_INPUT,
 		G_STRUCT_OFFSET( VipsEmbed, extend ),
 		VIPS_TYPE_EXTEND, VIPS_EXTEND_BLACK );
+
+	VIPS_ARG_BOXED( class, "background", 12, 
+		_( "Background" ), 
+		_( "Colour for background pixels" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsEmbed, background ),
+		VIPS_TYPE_ARRAY_DOUBLE );
 }
 
 static void
 vips_embed_init( VipsEmbed *embed )
 {
-	/* Init our instance fields.
-	 */
+	embed->extend = VIPS_EXTEND_BLACK;
+	embed->background = 
+		vips_area_new_array( G_TYPE_DOUBLE, sizeof( double ), 1 ); 
+	((double *) (embed->background->data))[0] = 0;
 }
 
 /**
@@ -574,6 +618,7 @@ vips_embed_init( VipsEmbed *embed )
  * Optional arguments:
  *
  * @extend: how to generate the edge pixels
+ * @background: colour for edge pixels
  *
  * The opposite of vips_extract_area(): embed @in within an image of size 
  * @width by @height at position @x, @y.  @extend

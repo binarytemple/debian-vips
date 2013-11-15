@@ -1,0 +1,148 @@
+<!-- ##### SECTION Title ##### -->
+VipsInterpolate
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_INTERPOLATE_SCALE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_INTERPOLATE_SHIFT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_TRANSFORM_SCALE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_TRANSFORM_SHIFT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT VipsInterpolate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT VipsInterpolateClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@interpolate: 
+@get_window_size: 
+@window_size: 
+@get_window_offset: 
+@window_offset: 
+
+<!-- ##### USER_FUNCTION VipsInterpolateMethod ##### -->
+<para>
+
+</para>
+
+@interpolate: 
+@out: 
+@in: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION vips_interpolate ##### -->
+<para>
+
+</para>
+
+@interpolate: 
+@out: 
+@in: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION vips_interpolate_bilinear_static ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_interpolate_get_method ##### -->
+<para>
+
+</para>
+
+@interpolate: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_interpolate_get_window_offset ##### -->
+<para>
+
+</para>
+
+@interpolate: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_interpolate_get_window_size ##### -->
+<para>
+
+</para>
+
+@interpolate: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_interpolate_nearest_static ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_interpolate_new ##### -->
+<para>
+
+</para>
+
+@nickname: 
+@Returns: 
+
+

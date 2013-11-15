@@ -33,7 +33,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -79,7 +80,7 @@ im_profile( IMAGE *in, IMAGE *out, int dir )
 {
 	int sz;
 	unsigned short *buf;
-	int x, y, b;
+	int x, y;
 
 	/* If in is not uchar, do (!=0) to make a uchar image.
 	 */
@@ -147,6 +148,8 @@ im_profile( IMAGE *in, IMAGE *out, int dir )
 		 */
 		for( y = 0; y < in->Ysize; y++ ) {
 			VipsPel *p = IM_IMAGE_ADDR( in, 0, y );
+
+			int b; 
 
 			for( b = 0; b < in->Bands; b++ ) {
 				VipsPel *p1;

@@ -126,6 +126,13 @@
  * 2/12/11
  * 	- make into a simple function call ready to be wrapped as a new-style
  * 	  VipsForeign class
+ * 21/3/12
+ * 	- bump max layer buffer up
+ * 2/6/12
+ * 	- copy jpeg pyramid in gather in RGB mode ... tiff4 doesn't do ycbcr
+ * 	  mode
+ * 7/8/12
+ * 	- be more cautious enabling YCbCr mode
  */
 
 /*
@@ -144,7 +151,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -155,6 +163,7 @@
  */
 
 /* 
+#define DEBUG_VERBOSE
 #define DEBUG
  */
 
@@ -182,7 +191,7 @@
 /* Max no of tiles we buffer in a layer. Enough to buffer a line of 64x64
  * tiles on a 100k pixel across image.
  */
-#define MAX_LAYER_BUFFER (1000)
+#define MAX_LAYER_BUFFER (10000)
 
 /* Bits we OR together for quadrants in a tile.
  */
@@ -452,16 +461,10 @@ write_tiff_header( TiffWrite *tw, TIFF *tif, int width, int height )
 	TIFFSetField( tif, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT );
 	TIFFSetField( tif, TIFFTAG_COMPRESSION, tw->compression );
 
-	if( tw->compression == COMPRESSION_JPEG ) {
+	if( tw->compression == COMPRESSION_JPEG ) 
 		TIFFSetField( tif, TIFFTAG_JPEGQUALITY, tw->jpqual );
 
-		/* Enable rgb->ycbcr conversion in the jpeg write. See also
-		 * the photometric selection below.
-		 */
-		TIFFSetField( tif, TIFFTAG_JPEGCOLORMODE, JPEGCOLORMODE_RGB );
-	}
-
-	if( tw->predictor != -1 ) 
+	if( tw->predictor != VIPS_FOREIGN_TIFF_PREDICTOR_NONE ) 
 		TIFFSetField( tif, TIFFTAG_PREDICTOR, tw->predictor );
 
 	/* Don't write mad resolutions (eg. zero), it confuses some programs.
@@ -509,6 +512,9 @@ write_tiff_header( TiffWrite *tw, TIFF *tif, int width, int height )
 
 		case 3:
 		case 4:
+			/* could be: RGB, RGBA, CMYK, LAB, LABA, generic
+			 * multi-band image.
+			 */
 			if( tw->im->Type == VIPS_INTERPRETATION_LAB || 
 				tw->im->Type == VIPS_INTERPRETATION_LABS ) 
 				photometric = PHOTOMETRIC_CIELAB;
@@ -518,12 +524,16 @@ write_tiff_header( TiffWrite *tw, TIFF *tif, int width, int height )
 					TIFFTAG_INKSET, INKSET_CMYK );
 			}
 			else if( tw->compression == COMPRESSION_JPEG &&
-				tw->im->Bands == 3 ) 
+				tw->im->Bands == 3 &&
+				tw->im->BandFmt == VIPS_FORMAT_UCHAR ) { 
 				/* This signals to libjpeg that it can do
 				 * YCbCr chrominance subsampling from RGB, not
 				 * that we will supply the image as YCbCr.
 				 */
 				photometric = PHOTOMETRIC_YCBCR;
+				TIFFSetField( tif, TIFFTAG_JPEGCOLORMODE, 
+					JPEGCOLORMODE_RGB );
+			}
 			else
 				photometric = PHOTOMETRIC_RGB;
 
@@ -532,18 +542,22 @@ write_tiff_header( TiffWrite *tw, TIFF *tif, int width, int height )
 				v[0] = EXTRASAMPLE_ASSOCALPHA;
 				TIFFSetField( tif, TIFFTAG_EXTRASAMPLES, 1, v );
 			}
+
 			break;
 
 		case 5:
-			if( tw->im->Type == VIPS_INTERPRETATION_CMYK ) {
-				photometric = PHOTOMETRIC_SEPARATED;
-				TIFFSetField( tif, 
-					TIFFTAG_INKSET, INKSET_CMYK );
-			}
+			/* Only CMYKA
+			 */
+			photometric = PHOTOMETRIC_SEPARATED;
+			TIFFSetField( tif, TIFFTAG_INKSET, INKSET_CMYK );
 			break;
 
 		default:
 			g_assert( 0 );
+
+			/* Keep -Wall happy.
+			 */
+			return( 0 );
 		}
 
 		TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, photometric );
@@ -904,17 +918,18 @@ shrink_region( VipsRegion *from, VipsRect *area,
 /* Write a tile from a layer.
  */
 static int
-save_tile( TiffWrite *tw, TIFF *tif, VipsPel *tbuf, VipsRegion *reg, VipsRect *area )
+save_tile( TiffWrite *tw, 
+	TIFF *tif, VipsPel *tbuf, VipsRegion *reg, VipsRect *area )
 {
 	/* Have to repack pixels.
 	 */
 	pack2tiff( tw, reg, tbuf, area );
 
-#ifdef DEBUG
+#ifdef DEBUG_VERBOSE
 	printf( "Writing %dx%d pixels at position %dx%d to image %s\n",
 		tw->tilew, tw->tileh, area->left, area->top,
 		TIFFFileName( tif ) );
-#endif /*DEBUG*/
+#endif /*DEBUG_VERBOSE*/
 
 	/* Write to TIFF! easy.
 	 */
@@ -1061,7 +1076,7 @@ write_tif_tilewise( TiffWrite *tw )
 		return( -1 );
 
 	g_assert( !tw->write_lock );
-	tw->write_lock = g_mutex_new();
+	tw->write_lock = vips_g_mutex_new();
 
 	/* Write pyramid too? Only bother if bigger than tile size.
 	 */
@@ -1135,13 +1150,23 @@ delete_files( TiffWrite *tw )
 	PyramidLayer *layer = tw->layer;
 
 	if( tw->bname ) {
+#ifndef DEBUG
 		unlink( tw->bname );
+#else
+		printf( "delete_files: leaving %s\n", tw->bname );
+#endif /*DEBUG*/
+
 		tw->bname = NULL;
 	}
 
 	for( layer = tw->layer; layer; layer = layer->below ) 
 		if( layer->lname ) {
+#ifndef DEBUG
 			unlink( layer->lname );
+#else
+			printf( "delete_files: leaving %s\n", layer->lname );
+#endif /*DEBUG*/
+
 			layer->lname = NULL;
 		}
 }
@@ -1151,13 +1176,11 @@ delete_files( TiffWrite *tw )
 static void
 free_tiff_write( TiffWrite *tw )
 {
-#ifndef DEBUG
 	delete_files( tw );
-#endif /*DEBUG*/
 
 	VIPS_FREEF( TIFFClose, tw->tif );
 	VIPS_FREEF( vips_free, tw->tbuf );
-	VIPS_FREEF( g_mutex_free, tw->write_lock );
+	VIPS_FREEF( vips_g_mutex_free, tw->write_lock );
 	VIPS_FREEF( free_pyramid, tw->layer );
 	VIPS_FREEF( vips_free, tw->icc_profile );
 }
@@ -1190,6 +1213,10 @@ get_compression( VipsForeignTiffCompression compression )
 	default:
 		g_assert( 0 );
 	}
+
+	/* Keep -Wall happy.
+	 */
+	return( -1 );
 }
 
 static int
@@ -1204,6 +1231,10 @@ get_resunit( VipsForeignTiffResunit resunit )
 	default:
 		g_assert( 0 );
 	}
+
+	/* Keep -Wall happy.
+	 */
+	return( -1 );
 }
 
 /* Make and init a TiffWrite.
@@ -1334,14 +1365,32 @@ tiff_copy( TiffWrite *tw, TIFF *out, TIFF *in )
 	CopyField( TIFFTAG_ROWSPERSTRIP, i32 );
 	CopyField( TIFFTAG_SUBFILETYPE, i32 );
 
-	if( tw->predictor != -1 ) 
+	if( tw->predictor != VIPS_FOREIGN_TIFF_PREDICTOR_NONE ) 
 		TIFFSetField( out, TIFFTAG_PREDICTOR, tw->predictor );
 
 	/* TIFFTAG_JPEGQUALITY is a pesudo-tag, so we can't copy it.
 	 * Set explicitly from TiffWrite.
 	 */
-	if( tw->compression == COMPRESSION_JPEG ) 
+	if( tw->compression == COMPRESSION_JPEG ) {
 		TIFFSetField( out, TIFFTAG_JPEGQUALITY, tw->jpqual );
+
+		/* Only for three-band, 8-bit images.
+		 */
+		if( tw->im->Bands == 3 &&
+			tw->im->BandFmt == VIPS_FORMAT_UCHAR ) { 
+			/* Enable rgb->ycbcr conversion in the jpeg write. 
+			 */
+			TIFFSetField( out, 
+				TIFFTAG_JPEGCOLORMODE, JPEGCOLORMODE_RGB );
+
+			/* And we want ycbcr expanded to rgb on read. Otherwise
+			 * TIFFTileSize() will give us the size of a chrominance
+			 * subsampled tile.
+			 */
+			TIFFSetField( in, 
+				TIFFTAG_JPEGCOLORMODE, JPEGCOLORMODE_RGB );
+		}
+	}
 
 	/* We can't copy profiles :( Set again from TiffWrite.
 	 */
@@ -1357,7 +1406,7 @@ tiff_copy( TiffWrite *tw, TIFF *out, TIFF *in )
 		 * here to save compression/decompression, but sadly it seems
 		 * not to work :-( investigate at some point.
 		 */
-		len = TIFFReadEncodedTile( in, tile, buf, (tsize_t) -1 );
+		len = TIFFReadEncodedTile( in, tile, buf, -1 );
 		if( len < 0 ||
 			TIFFWriteEncodedTile( out, tile, buf, len ) < 0 ) {
 			vips_free( buf );
@@ -1426,7 +1475,6 @@ gather_pyramid( TiffWrite *tw )
 	return( 0 );
 }
 
-
 int 
 vips__tiff_write( VipsImage *in, const char *filename, 
 	VipsForeignTiffCompression compression, int Q, 
@@ -1445,10 +1493,7 @@ vips__tiff_write( VipsImage *in, const char *filename,
 	printf( "tiff2vips: libtiff version is \"%s\"\n", TIFFGetVersion() );
 #endif /*DEBUG*/
 
-	/* Override the default TIFF error handler.
-	 */
-	TIFFSetErrorHandler( vips__thandler_error );
-	TIFFSetWarningHandler( vips__thandler_warning );
+	vips__tiff_init();
 
 	/* Check input image.
 	 */
@@ -1525,7 +1570,8 @@ vips__tiff_write( VipsImage *in, const char *filename,
 
 	/* Gather layers together into final pyramid file.
 	 */
-	if( tw->pyramid && gather_pyramid( tw ) ) {
+	if( tw->pyramid && 
+		gather_pyramid( tw ) ) {
 		free_tiff_write( tw );
 		return( -1 );
 	}

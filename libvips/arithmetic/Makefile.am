@@ -1,18 +1,12 @@
 noinst_LTLIBRARIES = libarithmetic.la
 
 libarithmetic_la_SOURCES = \
-	arith_dispatch.c \
 	abs.c \
 	complex.c \
-	im_cross_phase.c \
 	deviate.c \
 	divide.c \
-	im_linreg.c \
-	im_maxpos_avg.c \
-	im_maxpos_vec.c \
 	measure.c \
 	multiply.c \
-	im_point_bilinear.c \
 	remainder.c \
 	sign.c \
 	stats.c \
@@ -24,7 +18,7 @@ libarithmetic_la_SOURCES = \
 	subtract.c \
 	math.c \
 	arithmetic.c \
-	arithmetic.h \
+	parithmetic.h \
 	binary.c \
 	binary.h \
 	unary.c \
@@ -39,4 +33,4 @@ libarithmetic_la_SOURCES = \
 	math2.c \
 	round.c 
 
-INCLUDES = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 
+AM_CPPFLAGS = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 

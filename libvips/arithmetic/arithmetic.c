@@ -14,19 +14,20 @@
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -51,7 +52,201 @@
 
 #include <vips/vips.h>
 
-#include "arithmetic.h"
+#include "parithmetic.h"
+
+/** 
+ * SECTION: arithmetic
+ * @short_description: operations which perform pixel arithmetic, trig, log, statistics
+ * @see_also: <link linkend="libvips-boolean">boolean</link>
+ * @stability: Stable
+ * @include: vips/vips.h
+ *
+ * These operations perform pixel arithmetic, that is, they perform an
+ * arithmetic operation, such as addition, on every pixel in an image or a
+ * pair of images. All (except in a few cases noted below) will work with 
+ * images of any type or any mixture of types, of any size and of any number 
+ * of bands.
+ *
+ * For binary operations, if the number of bands differs, one of the images 
+ * must have one band. In this case, an n-band image is formed from the 
+ * one-band image by joining n copies of the one-band image together, and then
+ * the two n-band images are operated upon.
+ *
+ * In the same way, for operations that take an array constant, such as 
+ * vips_remainder_const(), you can mix single-element arrays or single-band 
+ * images freely.
+ *
+ * Arithmetic operations try to preserve precision by increasing the number of
+ * bits in the output image when necessary. Generally, this follows the ANSI C
+ * conventions for type promotion, so multiplying two
+ * #VIPS_FORMAT_UCHAR images together, for example, produces a 
+ * #VIPS_FORMAT_USHORT image, and taking the im_costra() of a 
+ * #VIPS_FORMAT_USHORT image produces #VIPS_FORMAT_FLOAT image. 
+ *
+ * For binary arithmetic operations, type promotion occurs in two stages. 
+ * First, the two input images are cast up to the smallest common format, 
+ * that is, the type with the smallest range that can represent the full 
+ * range of both inputs. This conversion can be represented as a table:
+ *
+ * <table>
+ *   <title>Smallest common format</title>
+ *   <tgroup cols='10' align='left' colsep='1' rowsep='1'>
+ *     <thead>
+ *       <row>
+ *         <entry>@in2/@in1</entry>
+ *         <entry>uchar</entry>
+ *         <entry>char</entry>
+ *         <entry>ushort</entry>
+ *         <entry>short</entry>
+ *         <entry>uint</entry>
+ *         <entry>int</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *     </thead>
+ *     <tbody>
+ *       <row>
+ *         <entry>uchar</entry>
+ *         <entry>ushort</entry>
+ *         <entry>short</entry>
+ *         <entry>ushort</entry>
+ *         <entry>short</entry>
+ *         <entry>uint</entry>
+ *         <entry>int</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>char</entry>
+ *         <entry>short</entry>
+ *         <entry>short</entry>
+ *         <entry>short</entry>
+ *         <entry>short</entry>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>ushort</entry>
+ *         <entry>ushort</entry>
+ *         <entry>short</entry>
+ *         <entry>ushort</entry>
+ *         <entry>short</entry>
+ *         <entry>uint</entry>
+ *         <entry>int</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>short</entry>
+ *         <entry>short</entry>
+ *         <entry>short</entry>
+ *         <entry>short</entry>
+ *         <entry>short</entry>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>uint</entry>
+ *         <entry>uint</entry>
+ *         <entry>int</entry>
+ *         <entry>uint</entry>
+ *         <entry>int</entry>
+ *         <entry>uint</entry>
+ *         <entry>int</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>int</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>float</entry>
+ *         <entry>float</entry>
+ *         <entry>float</entry>
+ *         <entry>float</entry>
+ *         <entry>float</entry>
+ *         <entry>float</entry>
+ *         <entry>float</entry>
+ *         <entry>float</entry>
+ *         <entry>double</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *       <row>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *         <entry>double complex</entry>
+ *       </row>
+ *     </tbody>
+ *   </tgroup>
+ * </table>
+ *
+ * In the second stage, the operation is performed between the two identical 
+ * types to form the output. The details vary between operations, but 
+ * generally the principle is that the output type should be large enough to 
+ * represent the whole range of possible values, except that int never becomes 
+ * float.
+ */
 
 G_DEFINE_ABSTRACT_TYPE( VipsArithmetic, vips_arithmetic, VIPS_TYPE_OPERATION );
 
@@ -165,7 +360,7 @@ vips__bandup( const char *domain, VipsImage *in, VipsImage **out, int n )
 		return( -1 );
 	}
 	if( n > 256 || n < 1 ) {
-		im_error( domain, "%s", _( "bad bands" ) );
+		vips_error( domain, "%s", _( "bad bands" ) );
 		return( -1 );
 	}
 
@@ -204,8 +399,8 @@ int
 vips__formatalike( VipsImage *in1, VipsImage *in2, 
 	VipsImage **out1, VipsImage **out2 )
 {
-	IMAGE *in[2];
-	IMAGE *out[2];
+	VipsImage *in[2];
+	VipsImage *out[2];
 
 	in[0] = in1;
 	in[1] = in2;
@@ -223,8 +418,8 @@ int
 vips__sizealike( VipsImage *in1, VipsImage *in2, 
 	VipsImage **out1, VipsImage **out2 )
 {
-	IMAGE *in[2];
-	IMAGE *out[2];
+	VipsImage *in[2];
+	VipsImage *out[2];
 
 	in[0] = in1;
 	in[1] = in2;
@@ -297,6 +492,7 @@ vips_arithmetic_gen( VipsRegion *or,
 static int
 vips_arithmetic_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsArithmetic *arithmetic = VIPS_ARITHMETIC( object );
 	VipsArithmeticClass *aclass = VIPS_ARITHMETIC_GET_CLASS( arithmetic );
 
@@ -320,13 +516,13 @@ vips_arithmetic_build( VipsObject *object )
 	/* No need to check input bands, bandalike will do this for us.
 	 */
 	if( arithmetic->n > MAX_INPUT_IMAGES ) {
-		vips_error( "VipsArithmetic",
+		vips_error( class->nickname,
 			"%s", _( "too many input images" ) );
 		return( -1 );
 	}
 	for( i = 0; i < arithmetic->n; i++ )
 		if( vips_image_pio_input( arithmetic->in[i] ) || 
-			vips_check_uncoded( "VipsArithmetic", 
+			vips_check_uncoded( class->nickname, 
 				arithmetic->in[i] ) ) 
 			return( -1 );
 
@@ -340,7 +536,7 @@ vips_arithmetic_build( VipsObject *object )
 	/* Cast our input images up to a common format, bands and size.
 	 */
 	if( vips__formatalike_vec( arithmetic->in, format, arithmetic->n ) ||
-		vips__bandalike_vec( "VipsArithmetic", 
+		vips__bandalike_vec( class->nickname, 
 			format, band, arithmetic->n, arithmetic->base_bands ) ||
 		vips__sizealike_vec( band, size, arithmetic->n ) ) 
 		return( -1 );
@@ -370,6 +566,7 @@ vips_arithmetic_class_init( VipsArithmeticClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	gobject_class->set_property = vips_object_set_property;
 	gobject_class->get_property = vips_object_get_property;
@@ -377,6 +574,8 @@ vips_arithmetic_class_init( VipsArithmeticClass *class )
 	vobject_class->nickname = "arithmetic";
 	vobject_class->description = _( "arithmetic operations" );
 	vobject_class->build = vips_arithmetic_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 
 	VIPS_ARG_IMAGE( class, "out", 100, 
 		_( "Output" ), 
@@ -439,7 +638,7 @@ vips_arithmetic_get_vector( VipsArithmeticClass *class, VipsBandFormat fmt )
 {
 	g_assert( fmt >= 0 && fmt < VIPS_FORMAT_LAST );
 
-	if( !vips_vector_get_enabled() ||
+	if( !vips_vector_isenabled() ||
 		!class->vector_program[fmt] )
 		return( NULL );
 
@@ -502,6 +701,7 @@ vips_arithmetic_operation_init( void )
 	extern GType vips_math2_get_type( void ); 
 	extern GType vips_math2_const_get_type( void ); 
 	extern GType vips_complex_get_type( void ); 
+	extern GType vips_complex2_get_type( void ); 
 	extern GType vips_complexget_get_type( void ); 
 	extern GType vips_complexform_get_type( void ); 
 
@@ -530,6 +730,7 @@ vips_arithmetic_operation_init( void )
 	vips_math2_get_type(); 
 	vips_math2_const_get_type(); 
 	vips_complex_get_type(); 
+	vips_complex2_get_type(); 
 	vips_complexget_get_type(); 
 	vips_complexform_get_type(); 
 }

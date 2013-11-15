@@ -31,7 +31,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -101,26 +102,99 @@ int vips__thinstrip_height = VIPS__THINSTRIP_HEIGHT;
  */
 int vips__concurrency = 0;
 
-#ifndef HAVE_THREADS
-/* If we're building without gthread, we need stubs for the g_thread_*() and
- * g_mutex_*() functions. <vips/thread.h> has #defines which point the g_
- * names here.
+/* Glib 2.32 revised the thread API. We need some compat functions.
  */
 
-void vips__g_thread_init( GThreadFunctions *vtable ) {}
-gpointer vips__g_thread_join( GThread *dummy ) { return( NULL ); }
-gpointer vips__g_thread_self( void ) { return( NULL ); }
-GThread *vips__g_thread_create_full( GThreadFunc d1, 
-	gpointer d2, gulong d3, gboolean d4, gboolean d5, GThreadPriority d6,
-	GError **d7 )
-	{ return( NULL ); }
+GMutex *
+vips_g_mutex_new( void )
+{
+	GMutex *mutex;
 
-GMutex *vips__g_mutex_new( void ) { return( NULL ); }
-void vips__g_mutex_free( GMutex *d ) {}
-void vips__g_mutex_lock( GMutex *d ) {}
-void vips__g_mutex_unlock( GMutex *d ) {}
-#endif /*!HAVE_THREADS*/
+#ifdef HAVE_MUTEX_INIT
+	mutex = g_new( GMutex, 1 );
+	g_mutex_init( mutex );
+#else
+	mutex = g_mutex_new();
+#endif
 
+	return( mutex );
+}
+
+void
+vips_g_mutex_free( GMutex *mutex )
+{
+#ifdef HAVE_MUTEX_INIT
+	g_mutex_clear( mutex );
+	g_free( mutex );
+#else
+	g_mutex_free( mutex );
+#endif
+}
+
+GCond *
+vips_g_cond_new( void )
+{
+	GCond *cond;
+
+#ifdef HAVE_COND_INIT
+	cond = g_new( GCond, 1 );
+	g_cond_init( cond );
+#else
+	cond = g_cond_new();
+#endif
+
+	return( cond );
+}
+
+void
+vips_g_cond_free( GCond *cond )
+{
+#ifdef HAVE_COND_INIT
+	g_cond_clear( cond );
+	g_free( cond );
+#else
+	g_cond_free( cond );
+#endif
+}
+
+GThread *
+vips_g_thread_new( const char *domain, GThreadFunc func, gpointer data )
+{
+	GThread *thread;
+	GError *error = NULL;
+
+#ifdef HAVE_THREAD_NEW
+	thread = g_thread_try_new( domain, func, data, &error );
+#else
+	thread = g_thread_create( func, data, TRUE, &error );
+#endif
+
+	if( !thread ) {
+		if( error ) {
+			vips_error( domain, "%s", error->message );
+			g_error_free( error );
+		}
+		else
+			vips_error( domain, 
+				"%s", _( "unable to create thread" ) );
+	}
+
+	return( thread );
+}
+
+/**
+ * vips_concurrency_set:
+ * @concurrency: number of threads to run
+ *
+ * Sets the number of worker threads that vips should use when running a
+ * #VipsThreadPool. 
+ *
+ * The special value 0 means "default". In this case, the number of threads is
+ * set by the environmnt variable IM_CONCURRENCY, or if that is not set, the
+ * number of threads availble on the hist machine. 
+ *
+ * See also: vips_concurrency_get().
+ */
 void
 vips_concurrency_set( int concurrency )
 {
@@ -190,8 +264,29 @@ get_num_processors( void )
 	return( nproc );
 }
 
-/* Set (p)thr_concurrency() from IM_CONCURRENCY environment variable. Return 
- * the number of regions we should pass over the image.
+/**
+ * vips_concurrency_get:
+ *
+ * Returns the number of worker threads that vips should use when running a
+ * #VipsThreadPool. 
+ *
+ * vips gets this values from these sources in turn:
+ *
+ * If vips_concurrency_set() has been called, this value is used. The special
+ * value 0 means "default". You can also use the command-line argument
+ * "--vips-concurrency" to set this value.
+ *
+ * If vips_concurrency_set() has not been called and no command-line argument
+ * was used, vips uses the value of the environment variable IM_CONCURRENCY,
+ *
+ * If IM_CONCURRENCY has not been set, vips find the number of hardware
+ * threads that the host machine can run in parallel and uses that value. 
+ *
+ * The final value is clipped to the range 1 - 1024.
+ *
+ * See also: vips_concurrency_get().
+ *
+ * Returns: number of worker threads to use.
  */
 int
 vips_concurrency_get( void )
@@ -530,7 +625,6 @@ vips_thread_work_unit( VipsThread *thr )
 	}
 }
 
-#ifdef HAVE_THREADS
 /* What runs as a thread ... loop, waiting to be told to do stuff.
  */
 static void *
@@ -558,7 +652,6 @@ vips_thread_main_loop( void *a )
 
         return( NULL );
 }
-#endif /*HAVE_THREADS*/
 
 /* Attach another thread to a threadpool.
  */
@@ -594,22 +687,13 @@ vips_thread_new( VipsThreadpool *pool )
 	}
 #endif /*TIME_THREAD*/
 
-#ifdef HAVE_THREADS
-	/* Make a worker thread. We have to use g_thread_create_full() because
-	 * we need to insist on a non-tiny stack. Some platforms default to
-	 * very small values (eg. various BSDs).
-	 */
-	if( !(thr->thread = g_thread_create_full( vips_thread_main_loop, thr, 
-		VIPS__DEFAULT_STACK_SIZE, TRUE, FALSE, 
-		G_THREAD_PRIORITY_NORMAL, NULL )) ) {
-		vips_error( "vips_thread_new", 
-			"%s", _( "unable to create thread" ) );
+	if( !(thr->thread = vips_g_thread_new( "worker", 
+		vips_thread_main_loop, thr )) ) {  
 		vips_thread_free( thr );
 		return( NULL );
 	}
 
-	VIPS_DEBUG_MSG_RED( "vips_thread_new: g_thread_create_full()\n" );
-#endif /*HAVE_THREADS*/
+	VIPS_DEBUG_MSG_RED( "vips_thread_new: vips_g_thread_new()\n" );
 
 	return( thr );
 }
@@ -640,7 +724,7 @@ vips_threadpool_free( VipsThreadpool *pool )
 		pool->im->filename, pool );
 
 	vips_threadpool_kill_threads( pool );
-	VIPS_FREEF( g_mutex_free, pool->allocate_lock );
+	VIPS_FREEF( vips_g_mutex_free, pool->allocate_lock );
 	vips_semaphore_destroy( &pool->finish );
 	vips_semaphore_destroy( &pool->tick );
 
@@ -665,7 +749,7 @@ vips_threadpool_new( VipsImage *im )
 	pool->im = im;
 	pool->allocate = NULL;
 	pool->work = NULL;
-	pool->allocate_lock = g_mutex_new();
+	pool->allocate_lock = vips_g_mutex_new();
 	pool->nthr = vips_concurrency_get();
 	pool->thr = NULL;
 	vips_semaphore_init( &pool->finish, 0, "finish" );
@@ -801,9 +885,8 @@ vips_threadpool_create_threads( VipsThreadpool *pool )
  * processed, @progress is called, so that the operation can give
  * progress feedback. @progress may be %NULL.
  *
- * Each thread has private state that the @allocate and @work functions can 
- * use to communicate. This state is created by each worker as it starts using
- * @start. Use the state destructor to clean up.
+ * The object returned by @start must be an instance of a subclass of
+ * #VipsThreadState. Use this to communicate between @allocate and @work. 
  *
  * @allocate and @start are always single-threaded (so they can write to the 
  * per-pool state), whereas @work can be executed concurrently. @progress is 
@@ -846,15 +929,9 @@ vips_threadpool_run( VipsImage *im,
 	}
 
 	for(;;) {
-#ifdef HAVE_THREADS
 		/* Wait for a tick from a worker.
 		 */
 		vips_semaphore_down( &pool->tick );
-#else
-		/* No threads, do the work ourselves in the main thread.
-		 */
-		vips_thread_work_unit( pool->thr[0] );
-#endif /*HAVE_THREADS*/
 
 		VIPS_DEBUG_MSG( "vips_threadpool_run: tick\n" );
 
@@ -878,6 +955,8 @@ vips_threadpool_run( VipsImage *im,
 	result = pool->error ? -1 : 0;
 
 	vips_threadpool_free( pool );
+
+	vips_image_minimise_all( im );
 
 	return( result );
 }

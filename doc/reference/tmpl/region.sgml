@@ -1,0 +1,217 @@
+<!-- ##### SECTION Title ##### -->
+VipsRegion
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_REGION_ADDR ##### -->
+<para>
+
+</para>
+
+@R: 
+@X: 
+@Y: 
+
+
+<!-- ##### MACRO VIPS_REGION_ADDR_TOPLEFT ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_REGION_LSKIP ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_REGION_N_ELEMENTS ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_REGION_SIZEOF_LINE ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### STRUCT VipsRegion ##### -->
+<para>
+
+</para>
+
+@im: 
+@valid: 
+
+<!-- ##### STRUCT VipsRegionClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+
+<!-- ##### FUNCTION vips_region_black ##### -->
+<para>
+
+</para>
+
+@reg: 
+
+
+<!-- ##### FUNCTION vips_region_buffer ##### -->
+<para>
+
+</para>
+
+@reg: 
+@r: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_copy ##### -->
+<para>
+
+</para>
+
+@reg: 
+@dest: 
+@r: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION vips_region_equalsregion ##### -->
+<para>
+
+</para>
+
+@reg1: 
+@reg2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_image ##### -->
+<para>
+
+</para>
+
+@reg: 
+@r: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_new ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_paint ##### -->
+<para>
+
+</para>
+
+@reg: 
+@r: 
+@value: 
+
+
+<!-- ##### FUNCTION vips_region_paint_pel ##### -->
+<para>
+
+</para>
+
+@reg: 
+@r: 
+@ink: 
+
+
+<!-- ##### FUNCTION vips_region_position ##### -->
+<para>
+
+</para>
+
+@reg: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_prepare ##### -->
+<para>
+
+</para>
+
+@reg: 
+@r: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_prepare_many ##### -->
+<para>
+
+</para>
+
+@reg: 
+@r: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_prepare_to ##### -->
+<para>
+
+</para>
+
+@reg: 
+@dest: 
+@r: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_region_region ##### -->
+<para>
+
+</para>
+
+@reg: 
+@dest: 
+@r: 
+@x: 
+@y: 
+@Returns: 
+
+

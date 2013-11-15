@@ -14,19 +14,20 @@
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -51,7 +52,7 @@
 
 #include <vips/vips.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
 typedef struct _VipsRecomb {
 	VipsConversion parent_instance;
@@ -139,6 +140,7 @@ vips_recomb_gen( VipsRegion *or,
 static int
 vips_recomb_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsConversion *conversion = (VipsConversion *) object;
 	VipsRecomb *recomb = (VipsRecomb *) object;
 	VipsImage **t = (VipsImage **) vips_object_local_array( object, 2 );
@@ -147,16 +149,16 @@ vips_recomb_build( VipsObject *object )
 		return( -1 );
 
 	if( vips_image_pio_input( recomb->in ) || 
-		vips_check_uncoded( "VipsRecomb", recomb->in ) ||
-		vips_check_noncomplex( "VipsRecomb", recomb->in ) )
+		vips_check_uncoded( class->nickname, recomb->in ) ||
+		vips_check_noncomplex( class->nickname, recomb->in ) )
 		return( -1 );
 	if( vips_image_pio_input( recomb->m ) || 
-		vips_check_uncoded( "VipsRecomb", recomb->m ) ||
-		vips_check_noncomplex( "VipsRecomb", recomb->m ) ||
-		vips_check_mono( "VipsRecomb", recomb->m ) )
+		vips_check_uncoded( class->nickname, recomb->m ) ||
+		vips_check_noncomplex( class->nickname, recomb->m ) ||
+		vips_check_mono( class->nickname, recomb->m ) )
 		return( -1 );
 	if( recomb->in->Bands != recomb->m->Xsize ) {
-		vips_error( "VipsRecomb", 
+		vips_error( class->nickname, 
 			"%s", _( "bands in must equal matrix width" ) );
 		return( -1 );
 	}
@@ -188,6 +190,7 @@ vips_recomb_class_init( VipsRecombClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *object_class = (VipsObjectClass *) class;
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	gobject_class->set_property = vips_object_set_property;
 	gobject_class->get_property = vips_object_get_property;
@@ -195,6 +198,8 @@ vips_recomb_class_init( VipsRecombClass *class )
 	object_class->nickname = "recomb";
 	object_class->description = _( "linear recombination with matrix" );
 	object_class->build = vips_recomb_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 
 	VIPS_ARG_IMAGE( class, "in", 0, 
 		_( "Input" ), 

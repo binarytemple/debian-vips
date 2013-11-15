@@ -21,7 +21,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -66,9 +67,17 @@ extern int vips__thinstrip_height;
  */
 extern int vips__concurrency;
 
+/* abort() on any error.
+ */
+extern int vips__fatal;
+
 /* Give progress feedback.
  */
 extern int vips__progress;
+
+/* Leak check on exit.
+ */
+extern int vips__leak;
 
 /* A string giving the image size (in bytes of uncompressed image) above which 
  * we decompress to disc on open. 
@@ -83,6 +92,8 @@ extern char *vips__cache_max_files;
 extern gboolean vips__cache_dump;
 extern gboolean vips__cache_trace;
 
+void vips__cache_init( void );
+
 typedef int (*im__fftproc_fn)( VipsImage *, VipsImage *, VipsImage * );
 
 /* iofuncs
@@ -93,7 +104,8 @@ int vips_image_open_input( VipsImage *image );
 int vips_image_open_output( VipsImage *image );
 
 void vips__link_break_all( VipsImage *im );
-void *vips__link_map( VipsImage *im, VipsSListMap2Fn fn, void *a, void *b );
+void *vips__link_map( VipsImage *image, gboolean upstream, 
+	VipsSListMap2Fn fn, void *a, void *b );
 
 char *vips__b64_encode( const unsigned char *data, size_t data_length );
 unsigned char *vips__b64_decode( const char *buffer, size_t *data_length );
@@ -131,10 +143,6 @@ int vips__sizealike( VipsImage *in1, VipsImage *in2,
 	VipsImage **out1, VipsImage **out2 );
 int vips__bandalike( const char *domain, 
 	VipsImage *in1, VipsImage *in2, VipsImage **out1, VipsImage **out2 );
-
-int vips_foreign_tilecache( VipsImage *in, VipsImage **out, int strip_height );
-
-
 
 
 void im__format_init( void );
@@ -181,27 +189,6 @@ int im__colour_unary( const char *domain,
 VipsImage **im__insert_base( const char *domain, 
 	VipsImage *in1, VipsImage *in2, VipsImage *out );
 
-/* Structure for holding the lookup tables for XYZ<=>rgb conversion.
- * Also holds the luminance to XYZ matrix and the inverse one.
- */
-struct im_col_tab_disp {
-	/*< private >*/
-	float	t_Yr2r[1501];		/* Conversion of Yr to r */
-	float	t_Yg2g[1501];		/* Conversion of Yg to g */
-	float	t_Yb2b[1501];		/* Conversion of Yb to b */
-	float	t_r2Yr[1501];		/* Conversion of r to Yr */
-	float	t_g2Yg[1501];		/* Conversion of g to Yg */
-	float	t_b2Yb[1501];		/* Conversion of b to Yb */
-	float	mat_XYZ2lum[3][3];	/* XYZ to Yr, Yg, Yb matrix */
-	float	mat_lum2XYZ[3][3];	/* Yr, Yg, Yb to XYZ matrix */
-	float rstep, gstep, bstep;
-	float ristep, gistep, bistep;
-};
-
-struct im_col_tab_disp *im_col_make_tables_RGB( VipsImage *im, 
-	struct im_col_display *d );
-struct im_col_tab_disp *im_col_display_get_table( struct im_col_display *d );
-
 int im__fftproc( VipsImage *dummy, 
 	VipsImage *in, VipsImage *out, im__fftproc_fn fn );
 
@@ -224,7 +211,6 @@ int im__find_best_contrast( VipsImage *image,
 int im__balance( VipsImage *ref, VipsImage *sec, VipsImage *out,
 	VipsImage **ref_out, VipsImage **sec_out, int dx, int dy, int balancetype );
 
-void imb_Lab2LCh( float *, float *, int );
 void imb_LCh2Lab( float *, float *, int );
 
 /* A colour temperature.
@@ -234,11 +220,11 @@ typedef struct {
 } im_colour_temperature;
 
 void imb_XYZ2Lab( float *, float *, int, im_colour_temperature * );
-void imb_Lab2XYZ( float *, float *, int, im_colour_temperature * );
-void imb_LabQ2Lab( VipsPel *, float *, int );
-void imb_Lab2LabQ( float *, VipsPel *, int );
 void imb_LabS2Lab( signed short *, float *, int );
 void imb_Lab2LabS( float *, signed short *, int n );
+
+void vips__Lab2LabQ_vec( VipsPel *out, float *in, int width );
+void vips__LabQ2Lab_vec( float *out, VipsPel *in, int width );
 
 void im_copy_dmask_matrix( DOUBLEMASK *mask, double **matrix );
 void im_copy_matrix_dmask( double **matrix, DOUBLEMASK *mask );
@@ -270,7 +256,10 @@ int im__fmaskcir( VipsImage *out, VipsMaskType flag, va_list ap );
 /* inplace
  */
 
-VipsPel *im__vector_to_ink( const char *domain, VipsImage *im, int n, double *vec );
+VipsPel *vips__vector_to_ink( const char *domain, 
+	VipsImage *im, double *vec, int n );
+VipsPel *im__vector_to_ink( const char *domain, 
+	VipsImage *im, int n, double *vec );
 VipsImage *im__inplace_base( const char *domain, 
 	VipsImage *main, VipsImage *sub, VipsImage *out );
 
@@ -286,11 +275,16 @@ void vips__init_wrap7_classes( void );
  */
 void vips_arithmetic_operation_init( void );
 void vips_conversion_operation_init( void );
+void vips_resample_operation_init( void );
+void vips_foreign_operation_init( void );
+void vips_colour_operation_init( void );
 
 guint64 vips__parse_size( const char *size_string );
 
-IMAGE *vips__deprecated_open_read( const char *filename );
+IMAGE *vips__deprecated_open_read( const char *filename, gboolean sequential );
 IMAGE *vips__deprecated_open_write( const char *filename );
+
+int vips__input_interpolate_init( im_object *obj, char *str );
 
 #ifdef __cplusplus
 }

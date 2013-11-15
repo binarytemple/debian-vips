@@ -21,6 +21,8 @@
  * 24/2/12
  * 	- avoid NaN in float/double/complex images
  * 	- allow +/- INFINITY as a result
+ * 4/12/12
+ * 	- track and return top n values
  */
 
 /*
@@ -39,7 +41,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -68,20 +71,113 @@
 
 #include "statistic.h"
 
+/* Track max values and position here. We need one of these for each thread,
+ * and one for the main value.
+ *
+ * We will generally only be tracking a small (<10?) number of values, so
+ * simple arrays will be fastest.
+ */
+typedef struct _VipsValues {
+	struct _VipsMax *max;
+
+	/* Number of values we track.
+	 */
+	int size;
+
+	/* How many values we have in the arrays.
+	 */
+	int n;
+
+	/* Position and values. We track mod**2 for complex and do a sqrt() at
+	 * the end. The three arrays are sorted by @value, smallest first.
+	 */
+	double *value;
+	int *x_pos;
+	int *y_pos;
+} VipsValues;
+
 typedef struct _VipsMax {
 	VipsStatistic parent_instance;
 
-	gboolean set;		/* FALSE means no value yet */
+	/* Max number of values we track.
+	 */
+	int size;
 
-	/* The current maximum. When scanning complex images, we keep the
-	 * square of the modulus here and do a single sqrt() right at the end.
+	/* The single max. Can be unset if, for example, the whole image is
+	 * NaN.
 	 */
 	double max;
+	int x;
+	int y;
 
-	/* And its position.
+	/* And the positions and values we found as VipsArrays for returning 
+	 * to our caller.
 	 */
-	int x, y;
+	VipsArrayDouble *max_array;
+	VipsArrayInt *x_array;
+	VipsArrayInt *y_array;
+
+	/* Global state here.
+	 */
+	VipsValues values;
 } VipsMax;
+
+static void
+vips_values_init( VipsValues *values, VipsMax *max )
+{
+	values->max = max;
+
+	values->size = max->size;
+	values->n = 0;
+	values->value = VIPS_ARRAY( max, values->size, double );
+	values->x_pos = VIPS_ARRAY( max, values->size, int );
+	values->y_pos = VIPS_ARRAY( max, values->size, int );
+}
+
+/* Add a value. Do nothing if the value is too small.
+ */
+static void
+vips_values_add( VipsValues *values, double v, int x, int y )
+{
+	int i, j;
+
+	/* Find insertion point.
+	 */
+	for( i = 0; i < values->n; i++ )
+		if( v <= values->value[i] ) 
+			break;
+
+	/* Array full? 
+	 */
+	if( values->n == values->size ) {
+		if( i > 0 ) {
+			/* We need to move stuff to the left to make space,
+			 * shunting the smallest out.
+			 */
+			for( j = 0; j < i - 1; j++ ) {
+				values->value[j] = values->value[j + 1];
+				values->x_pos[j] = values->x_pos[j + 1];
+				values->y_pos[j] = values->y_pos[j + 1];
+			}
+			values->value[i - 1] = v;
+			values->x_pos[i - 1] = x;
+			values->y_pos[i - 1] = y;
+		}
+	}
+	else {
+		/* Not full, move stuff to the right into empty space.
+		 */
+		for( j = values->n; j > i; j-- ) {
+			values->value[j] = values->value[j - 1];
+			values->x_pos[j] = values->x_pos[j - 1];
+			values->y_pos[j] = values->y_pos[j - 1];
+		}
+		values->value[i] = v;
+		values->x_pos[i] = x;
+		values->y_pos[i] = y;
+		values->n += 1;
+	}
+}
 
 typedef VipsStatisticClass VipsMaxClass;
 
@@ -92,47 +188,77 @@ vips_max_build( VipsObject *object )
 {
 	VipsStatistic *statistic = VIPS_STATISTIC( object ); 
 	VipsMax *max = (VipsMax *) object;
+	VipsValues *values = &max->values;
+
+	vips_values_init( values, max );
 
 	if( VIPS_OBJECT_CLASS( vips_max_parent_class )->build( object ) )
 		return( -1 );
 
+	/* For speed we accumulate max ** 2 for complex.
+	 */
+	if( vips_bandfmt_iscomplex( vips_image_get_format( statistic->in ) ) ) {
+		int i;
+
+		for( i = 0; i < values->n; i++ ) 
+			values->value[i] = sqrt( values->value[i] );
+	}
+
 	/* Don't set if there's no value (eg. if every pixel is NaN). This
 	 * will trigger an error later.
 	 */
-	if( max->set ) {
-		double m;
+	if( values->n > 0 ) {
+		VipsArrayDouble *out_array;
+		VipsArrayInt *x_array;
+		VipsArrayInt *y_array;
 
-		/* For speed we accumulate max^2 for complex.
-		 */
-		m = max->max;
-		if( vips_bandfmt_iscomplex( 
-			vips_image_get_format( statistic->in ) ) )
-			m = sqrt( m );
+		out_array = vips_array_double_new( values->value, values->n );
+		x_array = vips_array_int_new( values->x_pos, values->n );
+		y_array = vips_array_int_new( values->y_pos, values->n );
 
 		/* We have to set the props via g_object_set() to stop vips
 		 * complaining they are unset.
 		 */
 		g_object_set( max, 
-			"out", m,
-			"x", max->x,
-			"y", max->y,
+			"out", values->value[values->n - 1],
+			"x", values->x_pos[values->n - 1],
+			"y", values->y_pos[values->n - 1],
+			"out_array", out_array,
+			"x_array", x_array,
+			"y_array", y_array,
 			NULL );
+
+		vips_area_unref( (VipsArea *) out_array );
+		vips_area_unref( (VipsArea *) x_array );
+		vips_area_unref( (VipsArea *) y_array );
 	}
+
+#ifdef DEBUG
+{	int i;
+
+	printf( "vips_max_build: %d values found\n", values->n );
+	for( i = 0; i < values->n; i++ )
+		printf( "%d) %g\t%d\t%d\n", 
+			i, 
+			values->value[i], 
+			values->x_pos[i], values->y_pos[i] ); 
+}
+#endif /*DEBUG*/
 
 	return( 0 );
 }
 
-/* New sequence value. Make a private VipsMax for this thread.
+/* New sequence value. Make a private VipsValues for this thread.
  */
 static void *
 vips_max_start( VipsStatistic *statistic )
 {
-	VipsMax *max;
+	VipsValues *values;
 
-	max = g_new( VipsMax, 1 );
-	max->set = FALSE;
+	values = g_new( VipsValues, 1 );
+	vips_values_init( values, (VipsMax *) statistic ); 
 
-	return( (void *) max );
+	return( (void *) values );
 }
 
 /* Merge the sequence value back into the per-call state.
@@ -140,122 +266,97 @@ vips_max_start( VipsStatistic *statistic )
 static int
 vips_max_stop( VipsStatistic *statistic, void *seq )
 {
-	VipsMax *global = (VipsMax *) statistic;
-	VipsMax *local = (VipsMax *) seq;
+	VipsMax *max = (VipsMax *) statistic;
+	VipsValues *values = (VipsValues *) seq;
 
-	if( local->set &&
-		(!global->set || local->max > global->max) ) {
-		global->max = local->max;
-		global->x = local->x;
-		global->y = local->y;
-		global->set = TRUE;
-	}
+	int i;
 
-	g_free( local );
+	for( i = 0; i < values->n; i++ )
+		vips_values_add( &max->values, 
+			values->value[i], values->x_pos[i], values->y_pos[i] );
+
+	g_free( values );
 
 	return( 0 );
 }
 
-/* real max with an upper bound.
+/* Real max with an upper bound. 
+ *
+ * Add values to the buffer if they are greater than the buffer minimum. If
+ * the buffer isn't full, there is no minimum.
+ *
+ * Avoid a double test by splitting the loop into two phases: before and after
+ * the buffer fills.
+ *
+ * Stop if our array fills with maxval.
  */
 #define LOOPU( TYPE, UPPER ) { \
 	TYPE *p = (TYPE *) in; \
 	TYPE m; \
 	\
-	if( max->set ) \
-		m = max->max; \
-	else { \
-		m = p[0]; \
-		max->x = x; \
-		max->y = y; \
-	} \
+	for( i = 0; i < sz && values->n < values->size; i++ ) \
+		vips_values_add( values, p[i], x + i / bands, y ); \
+	m = values->value[0]; \
 	\
-	for( i = 0; i < sz; i++ ) { \
+	for( ; i < sz; i++ ) { \
 		if( p[i] > m ) { \
-			m = p[i]; \
-			max->x = x + i / bands; \
-			max->y = y; \
+			vips_values_add( values, p[i], x + i / bands, y ); \
+			m = values->value[0]; \
+			\
 			if( m >= UPPER ) { \
 				statistic->stop = TRUE; \
 				break; \
 			} \
 		} \
 	} \
-	\
-	max->max = m; \
-	max->set = TRUE; \
 } 
 
 /* float/double max ... no limits, and we have to avoid NaN.
  *
- * NaN compares false to every float value, so if we were to take the first
- * point in this buffer as our start max (as we do above) and it was NaN, we'd
- * never replace it with a true value.
+ * NaN compares false to every float value, so we don't need to test for NaN
+ * in the second loop. 
  */
 #define LOOPF( TYPE ) { \
 	TYPE *p = (TYPE *) in; \
 	TYPE m; \
-	gboolean set; \
 	\
-	set = max->set; \
-	m = max->max; \
+	for( i = 0; i < sz && values->n < values->size; i++ ) \
+		if( !isnan( p[i] ) ) \
+			vips_values_add( values, p[i], x + i / bands, y ); \
+	m = values->value[0]; \
 	\
-	for( i = 0; i < sz; i++ ) { \
-		if( set ) { \
-			if( p[i] > m ) { \
-				m = p[i]; \
-				max->x = x + i / bands; \
-				max->y = y; \
-			} \
+	for( ; i < sz; i++ ) \
+		if( p[i] > m ) { \
+			vips_values_add( values, p[i], x + i / bands, y ); \
+			m = values->value[0]; \
 		} \
-		else if( !isnan( p[i] ) ) {  \
-			m = p[i]; \
-			max->x = x + i / bands; \
-			max->y = y; \
-			set = TRUE; \
-		} \
-	} \
-	\
-	if( set ) { \
-		max->max = m; \
-		max->set = TRUE; \
-	} \
 } 
 
-/* As LOOPF, but complex. Track max(mod) to avoid sqrt().
+/* As LOOPF, but complex. Track max(mod ** 2) to avoid sqrt().
  */
 #define LOOPC( TYPE ) { \
 	TYPE *p = (TYPE *) in; \
 	TYPE m; \
-	gboolean set; \
 	\
-	set = max->set; \
-	m = max->max; \
-	\
-	for( i = 0; i < sz; i++ ) { \
-		TYPE mod; \
+	for( i = 0; i < sz && values->n < values->size; i++ ) { \
+		TYPE mod2 = p[0] * p[0] + p[1] * p[1]; \
 		\
-		mod = p[0] * p[0] + p[1] * p[1]; \
+		if( !isnan( mod2 ) ) \
+			vips_values_add( values, p[i], x + i / bands, y ); \
+		\
 		p += 2; \
-		\
-		if( set ) { \
-			if( mod > m ) { \
-				m = mod; \
-				max->x = x + i / bands; \
-				max->y = y; \
-			} \
-		} \
-		else if( !isnan( mod ) ) {  \
-			m = mod; \
-			max->x = x + i / bands; \
-			max->y = y; \
-			set = TRUE; \
-		} \
 	} \
+	m = values->value[0]; \
 	\
-	if( set ) { \
-		max->max = m; \
-		max->set = TRUE; \
+	for( ; i < sz; i++ ) { \
+		TYPE mod2 = p[0] * p[0] + p[1] * p[1]; \
+		\
+		if( mod2 > m ) { \
+			vips_values_add( values, mod2, x + i / bands, y ); \
+			m = values->value[0]; \
+		} \
+		\
+		p += 2; \
 	} \
 } 
 
@@ -265,7 +366,7 @@ static int
 vips_max_scan( VipsStatistic *statistic, void *seq, 
 	int x, int y, void *in, int n )
 {
-	VipsMax *max = (VipsMax *) seq;
+	VipsValues *values = (VipsValues *) seq;
 	const int bands = vips_image_get_bands( statistic->in );
 	const int sz = n * bands;
 
@@ -334,17 +435,46 @@ vips_max_class_init( VipsMaxClass *class )
 		G_STRUCT_OFFSET( VipsMax, x ),
 		0, 1000000, 0 );
 
-	VIPS_ARG_INT( class, "y", 2, 
+	VIPS_ARG_INT( class, "y", 3, 
 		_( "y" ), 
 		_( "Vertical position of maximum" ),
 		VIPS_ARGUMENT_OPTIONAL_OUTPUT,
 		G_STRUCT_OFFSET( VipsMax, y ),
 		0, 1000000, 0 );
+
+	VIPS_ARG_INT( class, "size", 4, 
+		_( "Size" ), 
+		_( "Number of maximum values to find" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsMax, size ),
+		0, 1000000, 10 );
+
+	VIPS_ARG_BOXED( class, "out_array", 6, 
+		_( "Output array" ), 
+		_( "Array of output values" ),
+		VIPS_ARGUMENT_OPTIONAL_OUTPUT,
+		G_STRUCT_OFFSET( VipsMax, max_array ),
+		VIPS_TYPE_ARRAY_DOUBLE );
+
+	VIPS_ARG_BOXED( class, "x_array", 7, 
+		_( "x array" ), 
+		_( "Array of horizontal positions" ),
+		VIPS_ARGUMENT_OPTIONAL_OUTPUT,
+		G_STRUCT_OFFSET( VipsMax, x_array ),
+		VIPS_TYPE_ARRAY_INT );
+
+	VIPS_ARG_BOXED( class, "y_array", 8, 
+		_( "y array" ), 
+		_( "Array of vertical positions" ),
+		VIPS_ARGUMENT_OPTIONAL_OUTPUT,
+		G_STRUCT_OFFSET( VipsMax, y_array ),
+		VIPS_TYPE_ARRAY_INT );
 }
 
 static void
 vips_max_init( VipsMax *max )
 {
+	max->size = 1;
 }
 
 /**
@@ -357,17 +487,25 @@ vips_max_init( VipsMax *max )
  *
  * @x: horizontal position of maximum
  * @y: vertical position of maximum
+ * @size: number of maxima to find
+ * @out_array: return array of maximum values
+ * @x_array: corresponding horizontal positions
+ * @y_array: corresponding vertical positions
  *
  * This operation finds the maximum value in an image. 
  *
- * If the image contains several maximum values, only the first one found is
- * returned.
+ * If the image contains several maximum values, only the first @size 
+ * found are returned.
  *
  * It operates on all 
  * bands of the input image: use vips_stats() if you need to find an 
  * maximum for each band. 
  *
  * For complex images, this operation finds the maximum modulus.
+ *
+ * You can read out the position of the maximum with @x and @y. You can read
+ * out arrays of the values and positions of the top @size maxima with
+ * @out_array, @x_array and @y_array.
  *
  * See also: vips_min(), vips_stats().
  *

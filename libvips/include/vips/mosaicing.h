@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -38,6 +39,14 @@ extern "C" {
 #endif /*__cplusplus*/
 
 #include <vips/vips.h>
+
+int im_match_linear( VipsImage *ref, VipsImage *sec, VipsImage *out,
+	int xr1, int yr1, int xs1, int ys1,
+	int xr2, int yr2, int xs2, int ys2 );
+int im_match_linear_search( VipsImage *ref, VipsImage *sec, VipsImage *out,
+	int xr1, int yr1, int xs1, int ys1,
+	int xr2, int yr2, int xs2, int ys2,
+	int hwindowsize, int hsearchsize );
 
 int im_lrmerge( VipsImage *ref, VipsImage *sec, VipsImage *out,
 	int dx, int dy, int mwidth );

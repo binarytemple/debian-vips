@@ -65,7 +65,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -93,7 +94,7 @@
 #include <vips/internal.h>
 #include <vips/debug.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
 typedef struct _VipsCast {
 	VipsConversion parent_instance;
@@ -120,8 +121,10 @@ vips_cast_preeval( VipsImage *image, VipsProgress *progress, VipsCast *cast )
 static void
 vips_cast_posteval( VipsImage *image, VipsProgress *progress, VipsCast *cast )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( cast );
+
 	if( cast->overflow || cast->underflow ) 
-		vips_warn( "VipsCast", 
+		vips_warn( class->nickname, 
 			_( "%d underflows and %d overflows detected" ),
 			cast->underflow, cast->overflow );
 }
@@ -329,7 +332,7 @@ vips_cast_gen( VipsRegion *or, void *vseq, void *a, void *b,
 	VipsRect *r = &or->valid;
 	int le = r->left;
 	int to = r->top;
-	int bo = VIPS_RECT_BOTTOM(r);
+	int bo = VIPS_RECT_BOTTOM( r );
 	int sz = VIPS_REGION_N_ELEMENTS( or );
 	int x, y;
 
@@ -422,6 +425,7 @@ vips_cast_gen( VipsRegion *or, void *vseq, void *a, void *b,
 static int
 vips_cast_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsConversion *conversion = VIPS_CONVERSION( object );
 	VipsCast *cast = (VipsCast *) object;
 
@@ -433,7 +437,7 @@ vips_cast_build( VipsObject *object )
 	if( cast->in->BandFmt == cast->format ) 
 		return( vips_image_write( cast->in, conversion->out ) );
 
-	if( vips_check_uncoded( "VipsCast", cast->in ) ||
+	if( vips_check_uncoded( class->nickname, cast->in ) ||
 		vips_image_pio_input( cast->in ) )
 		return( -1 );
 
@@ -462,6 +466,7 @@ vips_cast_class_init( VipsCastClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	VIPS_DEBUG_MSG( "vips_cast_class_init\n" );
 
@@ -471,6 +476,8 @@ vips_cast_class_init( VipsCastClass *class )
 	vobject_class->nickname = "cast";
 	vobject_class->description = _( "cast an image" );
 	vobject_class->build = vips_cast_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 
 	VIPS_ARG_IMAGE( class, "in", 1, 
 		_( "Input" ), 

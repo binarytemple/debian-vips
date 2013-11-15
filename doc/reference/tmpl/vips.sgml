@@ -1,0 +1,105 @@
+<!-- ##### SECTION Title ##### -->
+vips
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION vips_check_init ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_get_argv0 ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_get_option_group ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_guess_libdir ##### -->
+<para>
+
+</para>
+
+@argv0: 
+@env_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_guess_prefix ##### -->
+<para>
+
+</para>
+
+@argv0: 
+@env_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_init ##### -->
+<para>
+
+</para>
+
+@argv0: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_shutdown ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_version ##### -->
+<para>
+
+</para>
+
+@flag: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_version_string ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+

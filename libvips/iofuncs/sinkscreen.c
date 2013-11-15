@@ -23,7 +23,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -65,14 +66,6 @@
 #include <vips/vips.h>
 #include <vips/thread.h>
 #include <vips/debug.h>
-
-/* A have-threads we can test in if().
- */
-#ifdef HAVE_THREADS
-static const int have_threads = 1;
-#else /*!HAVE_THREADS*/
-static const int have_threads = 0;
-#endif /*HAVE_THREADS*/
 
 #ifdef VIPS_DEBUG_AMBER
 static int render_num_renders = 0;
@@ -228,8 +221,8 @@ render_free( Render *render )
 	}
 	g_mutex_unlock( render_dirty_lock );
 
-	g_mutex_free( render->ref_count_lock );
-	g_mutex_free( render->lock );
+	vips_g_mutex_free( render->ref_count_lock );
+	vips_g_mutex_free( render->lock );
 
 	vips_slist_map2( render->all, (VipsSListMap2Fn) tile_free, NULL, NULL );
 	VIPS_FREEF( g_slist_free, render->all );
@@ -425,7 +418,8 @@ render_work( VipsThreadState *state, void *a )
 	if( vips_region_prepare_to( state->reg, tile->region, 
 		&tile->area, tile->area.left, tile->area.top ) ) {
 		VIPS_DEBUG_MSG_RED( "render_work: "
-			"vips_region_prepare_to() failed\n" ); 
+			"vips_region_prepare_to() failed: %s\n",
+			vips_error_buffer() ); 
 		return( -1 );
 	}
 	tile->painted = TRUE;
@@ -520,23 +514,15 @@ render_thread_main( void *client )
 static int
 render_thread_create( void )
 {
-	if( !have_threads )
-		return( 0 );
-
 	if( !render_dirty_lock ) {
-		render_dirty_lock = g_mutex_new();
+		render_dirty_lock = vips_g_mutex_new();
 		vips_semaphore_init( &render_dirty_sem, 0, "render_dirty_sem" );
 	}
 
-	if( !render_thread && have_threads ) {
-		if( !(render_thread = g_thread_create_full( 
-			render_thread_main, NULL, 
-			VIPS__DEFAULT_STACK_SIZE, TRUE, FALSE, 
-			G_THREAD_PRIORITY_NORMAL, NULL )) ) {
-			vips_error( "sink_screen", 
-				"%s", _( "unable to create thread" ) );
+	if( !render_thread ) {
+		if( !(render_thread = vips_g_thread_new( "sink_screen",
+			render_thread_main, NULL )) ) 
 			return( -1 );
-		}
 	}
 
 	return( 0 );
@@ -595,7 +581,7 @@ render_new( VipsImage *in, VipsImage *out, VipsImage *mask,
 		return( NULL );
 
 	render->ref_count = 1;
-	render->ref_count_lock = g_mutex_new();
+	render->ref_count_lock = vips_g_mutex_new();
 
 	render->in = in;
 	render->out = out;
@@ -607,7 +593,7 @@ render_new( VipsImage *in, VipsImage *out, VipsImage *mask,
 	render->notify = notify;
 	render->a = a;
 
-	render->lock = g_mutex_new();
+	render->lock = vips_g_mutex_new();
 
 	render->all = NULL;
 	render->ntiles = 0;
@@ -746,7 +732,7 @@ tile_queue( Tile *tile, VipsRegion *reg )
 	tile->painted = FALSE;
 	tile_touch( tile );
 
-	if( render->notify && have_threads ) {
+	if( render->notify ) {
 		/* Add to the list of renders with dirty tiles. The bg 
 		 * thread will pick it up and paint it. It can be already on
 		 * the dirty list.
@@ -755,7 +741,7 @@ tile_queue( Tile *tile, VipsRegion *reg )
 		render_dirty_put( render );
 	}
 	else {
-		/* No threads, or no notify ... paint the tile ourselves 
+		/* no notify ... paint the tile ourselves 
 		 * sychronously. No need to notify the client since they'll 
 		 * never see black tiles.
 		 */
@@ -863,7 +849,6 @@ static void
 tile_copy( Tile *tile, VipsRegion *to )
 {
 	VipsRect ovlap;
-	int y;
 
 	/* Find common pixels.
 	 */
@@ -875,6 +860,8 @@ tile_copy( Tile *tile, VipsRegion *to )
 	 */
 	if( tile->painted && !tile->region->invalid ) {
 		int len = VIPS_IMAGE_SIZEOF_PEL( to->im ) * ovlap.width;
+
+		int y;
 
 		VIPS_DEBUG_MSG( "tile_copy: "
 			"copying calculated pixels for %p %dx%d\n",
@@ -968,7 +955,6 @@ image_stop( void *seq, void *a, void *b )
 static int
 mask_fill( VipsRegion *out, void *seq, void *a, void *b, gboolean *stop )
 {
-#ifdef HAVE_THREADS
 	Render *render = (Render *) a;
 	VipsRect *r = &out->valid;
 	int x, y;
@@ -1006,9 +992,6 @@ mask_fill( VipsRegion *out, void *seq, void *a, void *b, gboolean *stop )
 		}
 
 	g_mutex_unlock( render->lock );
-#else /*!HAVE_THREADS*/
-	vips_region_paint( out, &out->valid, 255 );
-#endif /*HAVE_THREADS*/
 
 	return( 0 );
 }
@@ -1058,7 +1041,7 @@ mask_fill( VipsRegion *out, void *seq, void *a, void *b, gboolean *stop )
  * vips_region_prepare() on @out will always block until the pixels have been
  * calculated.
  *
- * See also: vips_image_cache(), im_tile_cache(), vips_region_prepare(), 
+ * See also: vips_tilecache(), vips_region_prepare(), 
  * vips_sink_disc(), vips_sink().
  *
  * Returns: 0 on sucess, -1 on error.

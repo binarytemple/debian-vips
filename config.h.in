@@ -1,4 +1,4 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
+/* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* define to open non-text files in binary mode */
 #undef BINARY_OPEN
@@ -26,6 +26,9 @@
 
 /* define if you have cfitsio installed. */
 #undef HAVE_CFITSIO
+
+/* define if your glib has g_cond_init(). */
+#undef HAVE_COND_INIT
 
 /* Define to 1 if you have the `dcgettext' function. */
 #undef HAVE_DCGETTEXT
@@ -118,6 +121,9 @@
 /* Define to 1 if you have the `memset' function. */
 #undef HAVE_MEMSET
 
+/* Define to 1 if you have the `mkdir' function. */
+#undef HAVE_MKDIR
+
 /* Define to 1 if you have the `mkstemp' function. */
 #undef HAVE_MKSTEMP
 
@@ -130,13 +136,16 @@
 /* Define to 1 if you have the `munmap' function. */
 #undef HAVE_MUNMAP
 
+/* define if your glib has g_mutex_init(). */
+#undef HAVE_MUTEX_INIT
+
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 #undef HAVE_NDIR_H
 
 /* define if you have OpenEXR >=1.2.2 installed. */
 #undef HAVE_OPENEXR
 
-/* define if you have OpenSlide >= 3.2.5 installed. */
+/* define if you have OpenSlide >= 3.3.0 installed. */
 #undef HAVE_OPENSLIDE
 
 /* define if you have orc-0.4.11 or later installed. */
@@ -147,6 +156,9 @@
 
 /* define if you have libpng installed. */
 #undef HAVE_PNG
+
+/* define if your glib has G_PRIVATE_INIT(). */
+#undef HAVE_PRIVATE_INIT
 
 /* Define to 1 if you have the `putenv' function. */
 #undef HAVE_PUTENV
@@ -234,14 +246,17 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
-/* threaded evaluation */
-#undef HAVE_THREADS
+/* define if your glib has g_thread_new(). */
+#undef HAVE_THREAD_NEW
 
 /* define if you have libtiff installed. */
 #undef HAVE_TIFF
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* define if your glib has g_value_get_schar(). */
+#undef HAVE_VALUE_GET_SCHAR
 
 /* have video4linux 1 */
 #undef HAVE_VIDEODEV
@@ -258,9 +273,18 @@
 /* Define if you have libz libraries and header files. */
 #undef HAVE_ZIP
 
+/* Define to 1 if you have the `_mkdir' function. */
+#undef HAVE__MKDIR
+
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
+
+/* Define if mkdir takes only one argument. */
+#undef MKDIR_TAKES_ONE_ARG
+
+/* define if your glib needs g_type_init(). */
+#undef NEED_TYPE_INIT
 
 /* native win32 */
 #undef OS_WIN32
@@ -312,6 +336,11 @@
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #undef X_DISPLAY_MISSING
+
+/* Enable large inode numbers on Mac OS X 10.5.  */
+#ifndef _DARWIN_USE_64_BIT_INODE
+# define _DARWIN_USE_64_BIT_INODE 1
+#endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 #undef _FILE_OFFSET_BITS

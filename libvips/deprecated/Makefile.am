@@ -1,8 +1,15 @@
 noinst_LTLIBRARIES = libdeprecated.la
 
 libdeprecated_la_SOURCES = \
+	im_linreg.c \
+	im_point_bilinear.c \
+	resample_dispatch.c \
 	im_openslide2vips.c \
+	im_lab_morph.c \
 	deprecated_dispatch.c \
+	colour_dispatch.c \
+	arith_dispatch.c \
+	im_maxpos_avg.c \
 	wrapvips7.c \
 	lazy.c \
 	im_dif_std.c \
@@ -56,14 +63,15 @@ libdeprecated_la_SOURCES = \
 	im_png2vips.c \
 	im_ppm2vips.c \
 	im_tiff2vips.c \
-	im_tile_cache.c \
 	im_vips2csv.c \
 	im_vips2jpeg.c \
 	im_vips2png.c \
 	im_vips2ppm.c \
 	im_vips2tiff.c \
+	conver_dispatch.c \
+	im_vips2dz.c \
 	matlab.c \
 	radiance.c \
 	raw.c
 
-INCLUDES = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 
+AM_CPPFLAGS = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 

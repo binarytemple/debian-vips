@@ -1,0 +1,155 @@
+<!-- ##### SECTION Title ##### -->
+VipsThreadState
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### USER_FUNCTION VipsThreadStartFn ##### -->
+<para>
+
+</para>
+
+@im: 
+@a: 
+@Returns: 
+
+
+<!-- ##### STRUCT VipsThreadState ##### -->
+<para>
+
+</para>
+
+@im: 
+@reg: 
+@pos: 
+@x: 
+@y: 
+@stop: 
+@a: 
+
+<!-- ##### STRUCT VipsThreadStateClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+
+<!-- ##### USER_FUNCTION VipsThreadpoolAllocateFn ##### -->
+<para>
+
+</para>
+
+@state: 
+@a: 
+@stop: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsThreadpoolProgressFn ##### -->
+<para>
+
+</para>
+
+@a: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsThreadpoolWorkFn ##### -->
+<para>
+
+</para>
+
+@state: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__print_renders ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_concurrency_get ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_concurrency_set ##### -->
+<para>
+
+</para>
+
+@concurrency: 
+
+
+<!-- ##### FUNCTION vips_get_tile_size ##### -->
+<para>
+
+</para>
+
+@im: 
+@tile_width: 
+@tile_height: 
+@nlines: 
+
+
+<!-- ##### FUNCTION vips_thread_state_new ##### -->
+<para>
+
+</para>
+
+@im: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_thread_state_set ##### -->
+<para>
+
+</para>
+
+@object: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_threadpool_run ##### -->
+<para>
+
+</para>
+
+@im: 
+@start: 
+@allocate: 
+@work: 
+@progress: 
+@a: 
+@Returns: 
+
+

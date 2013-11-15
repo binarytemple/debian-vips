@@ -28,25 +28,28 @@
  * 	- redone as a class
  * 1/2/12
  * 	- complex ==, != were broken
+ * 16/7/12
+ * 	- im1 > im2, im1 >= im2 were broken 
  */
 
 /*
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -88,18 +91,16 @@ static int
 vips_relational_build( VipsObject *object )
 {
 	VipsRelational *relational = (VipsRelational *) object;
-	VipsArithmetic *arithmetic = (VipsArithmetic *) object;
+	VipsBinary *binary = (VipsBinary *) object;
 
 	if( relational->relational == VIPS_OPERATION_RELATIONAL_MORE ) {
 		relational->relational = VIPS_OPERATION_RELATIONAL_LESS;
-		VIPS_SWAP( VipsImage *, 
-			arithmetic->ready[0], arithmetic->ready[1] );
+		VIPS_SWAP( VipsImage *, binary->left, binary->right );
 	}
 
 	if( relational->relational == VIPS_OPERATION_RELATIONAL_MOREEQ ) {
 		relational->relational = VIPS_OPERATION_RELATIONAL_LESSEQ;
-		VIPS_SWAP( VipsImage *, 
-			arithmetic->ready[0], arithmetic->ready[1] );
+		VIPS_SWAP( VipsImage *, binary->left, binary->right );
 	}
 
 	if( VIPS_OBJECT_CLASS( vips_relational_parent_class )->build( object ) )
@@ -271,7 +272,11 @@ vips_relationalv( VipsImage *left, VipsImage *right, VipsImage **out,
  * Smallest common format in 
  * <link linkend="VIPS-arithmetic">arithmetic</link>).
  *
- * See also: vips_boolean(), vips_relational_const().
+ * To decide if pixels match exactly, that is have the same value in every
+ * band, use vips_bandbool() after this operation to AND or OR image bands 
+ * together. 
+ *
+ * See also: vips_boolean(), vips_bandbool(), vips_relational_const().
  *
  * Returns: 0 on success, -1 on error
  */

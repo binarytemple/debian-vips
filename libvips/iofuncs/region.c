@@ -59,7 +59,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -322,6 +323,9 @@ vips_region_summary( VipsObject *object, VipsBuf *buf )
 	vips_buf_appendf( buf, "top = %d, ", region->valid.top );
 	vips_buf_appendf( buf, "width = %d, ", region->valid.width );
 	vips_buf_appendf( buf, "height = %d", region->valid.height );
+
+	if( region->buffer && region->buffer->buf )
+		vips_buf_appendf( buf, ", bytes = %zd", region->buffer->bsize );
 
 	VIPS_OBJECT_CLASS( vips_region_parent_class )->summary( object, buf );
 }
@@ -866,8 +870,9 @@ vips_region_paint( VipsRegion *reg, VipsRect *r, int value )
 	vips_rect_intersectrect( r, &reg->valid, &ovl );
 	if( !vips_rect_isempty( &ovl ) ) {
 		VipsPel *q = VIPS_REGION_ADDR( reg, ovl.left, ovl.top );
-		int wd = ovl.width * VIPS_IMAGE_SIZEOF_PEL( reg->im );
-		int ls = VIPS_REGION_LSKIP( reg );
+		size_t wd = ovl.width * VIPS_IMAGE_SIZEOF_PEL( reg->im );
+		size_t ls = VIPS_REGION_LSKIP( reg );
+
 		int y;
 
 		for( y = 0; y < ovl.height; y++ ) {
@@ -1051,7 +1056,7 @@ vips_region_prepare( VipsRegion *reg, VipsRect *r )
 
 	vips__region_check_ownership( reg );
 
-	if( vips_image_get_kill( im ) )
+	if( vips_image_iskilled( im ) )
 		return( -1 );
 
 	/* We use save for sanity checking valid: we test at the end that the
@@ -1185,7 +1190,7 @@ vips_region_prepare_to( VipsRegion *reg,
 	VipsRect clipped2;
 	VipsRect final;
 
-	if( vips_image_get_kill( im ) )
+	if( vips_image_iskilled( im ) )
 		return( -1 );
 
 	/* Sanity check.

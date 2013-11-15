@@ -5,19 +5,20 @@
 
     Copyright (C) 1991-2003 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -53,6 +54,7 @@ typedef struct _VipsObjectClass VipsObjectClass;
  * @VIPS_ARGUMENT_SET_ALWAYS: don't do use-before-set checks
  * @VIPS_ARGUMENT_INPUT: is an input argument (one we depend on)
  * @VIPS_ARGUMENT_OUTPUT: is an output argument (depends on us)
+ * @VIPS_ARGUMENT_DEPRECATED: just there for back-compat, hide 
  *
  * Flags we associate with each object argument.
  *
@@ -65,6 +67,11 @@ typedef struct _VipsObjectClass VipsObjectClass;
  * example, VipsImage::width is a property that gives access to the Xsize
  * member of struct _VipsImage. We default its 'assigned' to TRUE
  * since the field is always set directly by C.
+ *
+ * @VIPS_ARGUMENT_DEPRECATED arguments are not shown in help text, are not
+ * looked for if required, are not checked for "have-been-set". You can
+ * deprecate a required argument, but you must obviously add a new required
+ * argument if you do.
  */
 typedef enum /*< flags >*/ {
 	VIPS_ARGUMENT_NONE = 0,
@@ -73,7 +80,8 @@ typedef enum /*< flags >*/ {
 	VIPS_ARGUMENT_SET_ONCE = 4,
 	VIPS_ARGUMENT_SET_ALWAYS = 8,
 	VIPS_ARGUMENT_INPUT = 16,
-	VIPS_ARGUMENT_OUTPUT = 32
+	VIPS_ARGUMENT_OUTPUT = 32,
+	VIPS_ARGUMENT_DEPRECATED = 64
 } VipsArgumentFlags;
 
 /* Useful flag combinations. User-visible ones are:
@@ -116,6 +124,18 @@ extern int _vips__argument_id;
 	\
 	pspec = g_param_spec_object( (NAME), (LONG), (DESC),  \
 		VIPS_TYPE_IMAGE, \
+		G_PARAM_READWRITE ); \
+	g_object_class_install_property( G_OBJECT_CLASS( CLASS ), \
+		_vips__argument_id++, pspec ); \
+	vips_object_class_install_argument( VIPS_OBJECT_CLASS( CLASS ), \
+		pspec, (FLAGS), (PRIORITY), (OFFSET) ); \
+}
+
+#define VIPS_ARG_INTERPOLATE( CLASS, NAME, PRIORITY, LONG, DESC, FLAGS, OFFSET ) { \
+	GParamSpec *pspec; \
+	\
+	pspec = g_param_spec_object( (NAME), (LONG), (DESC),  \
+		VIPS_TYPE_INTERPOLATE, \
 		G_PARAM_READWRITE ); \
 	g_object_class_install_property( G_OBJECT_CLASS( CLASS ), \
 		_vips__argument_id++, pspec ); \
@@ -306,8 +326,7 @@ int vips_object_get_argument( VipsObject *object, const char *name,
 	GParamSpec **pspec,
 	VipsArgumentClass **argument_class,
 	VipsArgumentInstance **argument_instance );
-gboolean vips_object_get_argument_assigned( VipsObject *object, 
-	const char *name );
+gboolean vips_object_argument_isset( VipsObject *object, const char *name );
 VipsArgumentFlags vips_object_get_argument_flags( VipsObject *object, 
 	const char *name );
 int vips_object_get_argument_priority( VipsObject *object, const char *name );
@@ -325,20 +344,35 @@ int vips_object_get_argument_priority( VipsObject *object, const char *name );
 			(VipsArgumentClass *) p->data; \
 		VipsArgument *argument = (VipsArgument *) argument_class; \
 		GParamSpec *PSPEC = argument->pspec; \
-		VipsArgumentInstance *ARG_INSTANCE = \
+		VipsArgumentInstance *ARG_INSTANCE __attribute__ ((unused)) = \
 			vips__argument_get_instance( argument_class, \
 			VIPS_OBJECT( OBJECT ) ); \
-		\
-		/* We have many props on the arg table ... filter out the \
-		 * ones for this class. \
-		 */ \
-		if( g_object_class_find_property( \
-			G_OBJECT_CLASS( object_class ), \
-			g_param_spec_get_name( PSPEC ) ) == PSPEC ) {
 
-#define VIPS_ARGUMENT_FOR_ALL_END } } }
+#define VIPS_ARGUMENT_FOR_ALL_END } }
 
 /* And some macros to collect args from a va list. 
+ *
+ * Use something like this:
+
+	GParamSpec *pspec;
+	VipsArgumentClass *argument_class;
+	VipsArgumentInstance *argument_instance;
+
+	if( vips_object_get_argument( VIPS_OBJECT( operation ), name,
+		&pspec, &argument_class, &argument_instance ) )
+		return( -1 );
+
+	VIPS_ARGUMENT_COLLECT_SET( pspec, argument_class, ap );
+
+		GValue value holds the value of an input argument, do 
+		something with it
+
+	VIPS_ARGUMENT_COLLECT_GET( pspec, argument_class, ap );
+
+		void **arg points to where to write an output argument
+
+	VIPS_ARGUMENT_COLLECT_END
+ 
  */
 #define VIPS_ARGUMENT_COLLECT_SET( PSPEC, ARG_CLASS, AP ) \
 	if( (ARG_CLASS->flags & VIPS_ARGUMENT_INPUT) ) { \
@@ -427,7 +461,9 @@ struct _VipsObjectClass {
 	 */
 	void (*summary_class)( struct _VipsObjectClass *, VipsBuf * );
 
-	/* Try to print a one-line summary for the object, handy for debugging.
+	/* Try to print a one-line summary for the object, the user can see
+	 * this output via things like "header fred.tif", --vips-cache-trace,
+	 * etc. 
 	 */
 	void (*summary)( VipsObject *, VipsBuf * );
 
@@ -494,13 +530,22 @@ struct _VipsObjectClass {
 	 */
 	const char *description;
 
-	/* Table of arguments for this class and any derived classes. Order
-	 * is important, so keep a traverse list too. We can't rely on the
-	 * ordering given by g_object_class_list_properties() since it comes
-	 * from a hash :-(
+	/* Hash from pspec to VipsArgumentClass.
+	 *
+	 * This records the VipsArgumentClass for every pspec used in 
+	 * VipsObject and any subclass (ie. everywhere), so it's huge. Don't
+	 * loop over this hash! Fine for lookups though.
 	 */
 	VipsArgumentTable *argument_table;
+
+	/* A sorted (by priority) list of the VipsArgumentClass for this class 
+	 * and any superclasses. This is small and specific to this class.
+	 *
+	 * Use the stored GType to work out when to restart the list for a
+	 * subclass.
+	 */
 	GSList *argument_table_traverse;
+	GType argument_table_traverse_gtype;
 };
 
 gboolean vips_value_is_null( GParamSpec *psoec, const GValue *value );
@@ -529,7 +574,7 @@ void vips_object_class_install_argument( VipsObjectClass *, GParamSpec *pspec,
 	VipsArgumentFlags flags, int priority, guint offset );
 int vips_object_set_argument_from_string( VipsObject *object, 
 	const char *name, const char *value );
-gboolean vips_object_get_argument_needs_string( VipsObject *object, 
+gboolean vips_object_argument_needsstring( VipsObject *object, 
 	const char *name );
 int vips_object_get_argument_to_string( VipsObject *object, 
 	const char *name, const char *arg );
@@ -538,6 +583,10 @@ int vips_object_set_required( VipsObject *object, const char *value );
 typedef void *(*VipsObjectSetArguments)( VipsObject *, void *, void * );
 VipsObject *vips_object_new( GType type, 
 	VipsObjectSetArguments set, void *a, void *b );
+
+int vips_object_set_valist( VipsObject *object, va_list ap );
+int vips_object_set( VipsObject *object, ... )
+	__attribute__((sentinel));
 
 VipsObject *vips_object_new_from_string( VipsObjectClass *object_class, 
 	const char *p );

@@ -1,0 +1,171 @@
+<!-- ##### SECTION Title ##### -->
+memory
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_ARRAY ##### -->
+<para>
+
+</para>
+
+@OBJ: 
+@N: 
+@T: 
+
+
+<!-- ##### MACRO VIPS_FREE ##### -->
+<para>
+
+</para>
+
+@S: 
+
+
+<!-- ##### MACRO VIPS_FREEF ##### -->
+<para>
+
+</para>
+
+@F: 
+@S: 
+
+
+<!-- ##### MACRO VIPS_NEW ##### -->
+<para>
+
+</para>
+
+@OBJ: 
+@T: 
+
+
+<!-- ##### MACRO VIPS_SETSTR ##### -->
+<para>
+
+</para>
+
+@S: 
+@V: 
+
+
+<!-- ##### FUNCTION vips_free ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_malloc ##### -->
+<para>
+
+</para>
+
+@object: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_strdup ##### -->
+<para>
+
+</para>
+
+@object: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_close ##### -->
+<para>
+
+</para>
+
+@fd: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_free ##### -->
+<para>
+
+</para>
+
+@s: 
+
+
+<!-- ##### FUNCTION vips_tracked_get_allocs ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_get_files ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_get_mem ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_get_mem_highwater ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_malloc ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_open ##### -->
+<para>
+
+</para>
+
+@pathname: 
+@flags: 
+@...: 
+@Returns: 
+
+

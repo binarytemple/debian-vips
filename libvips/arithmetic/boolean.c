@@ -37,19 +37,20 @@
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -79,7 +80,7 @@
 typedef struct _VipsBoolean {
 	VipsBinary parent_instance;
 
-	VipsOperationBoolean boolean;
+	VipsOperationBoolean operation;
 
 } VipsBoolean;
 
@@ -90,13 +91,14 @@ G_DEFINE_TYPE( VipsBoolean, vips_boolean, VIPS_TYPE_BINARY );
 static int
 vips_boolean_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsBinary *binary = (VipsBinary *) object;
 
 	if( binary->left &&
-		vips_check_noncomplex( "VipsBoolean", binary->left ) )
+		vips_check_noncomplex( class->nickname, binary->left ) )
 		return( -1 );
 	if( binary->right &&
-		vips_check_noncomplex( "VipsBoolean", binary->right ) )
+		vips_check_noncomplex( class->nickname, binary->right ) )
 		return( -1 );
 
 	if( VIPS_OBJECT_CLASS( vips_boolean_parent_class )->build( object ) )
@@ -148,7 +150,7 @@ vips_boolean_buffer( VipsArithmetic *arithmetic,
 
 	int x;
 
-	switch( boolean->boolean ) {
+	switch( boolean->operation ) {
 	case VIPS_OPERATION_BOOLEAN_AND: 	
 		SWITCH( LOOP, FLOOP, & ); 
 		break;
@@ -205,8 +207,7 @@ vips_boolean_class_init( VipsBooleanClass *class )
 	gobject_class->get_property = vips_object_get_property;
 
 	object_class->nickname = "boolean";
-	object_class->description = 
-		_( "a boolean operation on a pair of images" );
+	object_class->description = _( "boolean operation on two images" );
 	object_class->build = vips_boolean_build;
 
 	vips_arithmetic_set_format_table( aclass, vips_bandfmt_boolean );
@@ -217,7 +218,7 @@ vips_boolean_class_init( VipsBooleanClass *class )
 		_( "Operation" ), 
 		_( "boolean to perform" ),
 		VIPS_ARGUMENT_REQUIRED_INPUT,
-		G_STRUCT_OFFSET( VipsBoolean, boolean ),
+		G_STRUCT_OFFSET( VipsBoolean, operation ),
 		VIPS_TYPE_OPERATION_BOOLEAN, 
 			VIPS_OPERATION_BOOLEAN_AND ); 
 }
@@ -229,10 +230,10 @@ vips_boolean_init( VipsBoolean *boolean )
 
 static int
 vips_booleanv( VipsImage *left, VipsImage *right, VipsImage **out, 
-	VipsOperationBoolean boolean, va_list ap )
+	VipsOperationBoolean operation, va_list ap )
 {
 	return( vips_call_split( "boolean", ap, left, right, out, 
-		boolean ) );
+		operation ) );
 }
 
 /**
@@ -240,7 +241,7 @@ vips_booleanv( VipsImage *left, VipsImage *right, VipsImage **out,
  * @left: left-hand input #VipsImage
  * @right: right-hand input #VipsImage
  * @out: output #VipsImage
- * @boolean: boolean operation to perform
+ * @operation: boolean operation to perform
  * @...: %NULL-terminated list of optional named arguments
  *
  * Perform various boolean operations on pairs of images. 
@@ -267,13 +268,13 @@ vips_booleanv( VipsImage *left, VipsImage *right, VipsImage **out,
  */
 int
 vips_boolean( VipsImage *left, VipsImage *right, VipsImage **out, 
-	VipsOperationBoolean boolean, ... )
+	VipsOperationBoolean operation, ... )
 {
 	va_list ap;
 	int result;
 
-	va_start( ap, boolean );
-	result = vips_booleanv( left, right, out, boolean, ap );
+	va_start( ap, operation );
+	result = vips_booleanv( left, right, out, operation, ap );
 	va_end( ap );
 
 	return( result );
@@ -412,7 +413,7 @@ vips_rshift( VipsImage *left, VipsImage *right, VipsImage **out, ... )
 typedef struct _VipsBooleanConst {
 	VipsUnaryConst parent_instance;
 
-	VipsOperationBoolean boolean;
+	VipsOperationBoolean operation;
 } VipsBooleanConst;
 
 typedef VipsUnaryConstClass VipsBooleanConstClass;
@@ -423,11 +424,12 @@ G_DEFINE_TYPE( VipsBooleanConst,
 static int
 vips_boolean_const_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsUnary *unary = (VipsUnary *) object;
 	VipsUnaryConst *uconst = (VipsUnaryConst *) object;
 
 	if( unary->in &&
-		vips_check_noncomplex( "VipsBoolean", unary->in ) )
+		vips_check_noncomplex( class->nickname, unary->in ) )
 		return( -1 );
 
 	uconst->const_format = VIPS_FORMAT_INT;
@@ -470,7 +472,7 @@ vips_boolean_const_buffer( VipsArithmetic *arithmetic,
 
 	int i, x, b;
 
-	switch( bconst->boolean ) {
+	switch( bconst->operation ) {
 	case VIPS_OPERATION_BOOLEAN_AND: 	
 		SWITCH( LOOPC, FLOOPC, & ); 
 		break;
@@ -519,7 +521,7 @@ vips_boolean_const_class_init( VipsBooleanConstClass *class )
 		_( "Operation" ), 
 		_( "boolean to perform" ),
 		VIPS_ARGUMENT_REQUIRED_INPUT,
-		G_STRUCT_OFFSET( VipsBooleanConst, boolean ),
+		G_STRUCT_OFFSET( VipsBooleanConst, operation ),
 		VIPS_TYPE_OPERATION_BOOLEAN, 
 			VIPS_OPERATION_BOOLEAN_AND ); 
 }
@@ -531,7 +533,7 @@ vips_boolean_const_init( VipsBooleanConst *boolean_const )
 
 static int
 vips_boolean_constv( VipsImage *in, VipsImage **out, 
-	VipsOperationBoolean boolean, double *c, int n, va_list ap )
+	VipsOperationBoolean operation, double *c, int n, va_list ap )
 {
 	VipsArea *area_c;
 	double *array; 
@@ -544,7 +546,7 @@ vips_boolean_constv( VipsImage *in, VipsImage **out,
 		array[i] = c[i];
 
 	result = vips_call_split( "boolean_const", ap, 
-		in, out, boolean, area_c );
+		in, out, operation, area_c );
 
 	vips_area_unref( area_c );
 
@@ -555,7 +557,7 @@ vips_boolean_constv( VipsImage *in, VipsImage **out,
  * vips_boolean_const:
  * @in: input image
  * @out: output image
- * @boolean: boolean operation to perform
+ * @operation: boolean operation to perform
  * @c: array of constants 
  * @n: number of constants in @c
  * @...: %NULL-terminated list of optional named arguments
@@ -578,13 +580,13 @@ vips_boolean_constv( VipsImage *in, VipsImage **out,
  */
 int
 vips_boolean_const( VipsImage *in, VipsImage **out, 
-	VipsOperationBoolean boolean, double *c, int n, ... )
+	VipsOperationBoolean operation, double *c, int n, ... )
 {
 	va_list ap;
 	int result;
 
 	va_start( ap, n );
-	result = vips_boolean_constv( in, out, boolean, c, n, ap );
+	result = vips_boolean_constv( in, out, operation, c, n, ap );
 	va_end( ap );
 
 	return( result );

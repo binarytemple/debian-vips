@@ -50,6 +50,9 @@
  * 24/3/11
  * 	- move demand_hint stuff in here
  * 	- move to vips_ namespace
+ * 7/7/12
+ * 	- lock around link make/break so we can process an image from many
+ * 	  threads
  */
 
 /*
@@ -68,7 +71,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -80,6 +84,7 @@
 
 /*
 #define VIPS_DEBUG
+#define DEBUG
  */
 
 #ifdef HAVE_CONFIG_H
@@ -119,7 +124,7 @@
  */
 #define MAX_IMAGES (1000)
 
-/* Make a upstream/downstream link. upstream is one of downstream's inputs.
+/* Make an upstream/downstream link. upstream is one of downstream's inputs.
  */
 static void 
 vips__link_make( VipsImage *image_up, VipsImage *image_down )
@@ -144,6 +149,7 @@ vips__link_break( VipsImage *image_up, VipsImage *image_down )
 {
 	g_assert( image_up );
 	g_assert( image_down );
+
 	g_assert( g_slist_find( image_up->downstream, image_down ) );
 	g_assert( g_slist_find( image_down->upstream, image_up ) );
 
@@ -167,11 +173,13 @@ vips__link_break_rev( VipsImage *image_down, VipsImage *image_up )
 	return( vips__link_break( image_up, image_down ) );
 }
 
-/* An VipsImage is going ... break all links.
+/* A VipsImage is going ... break all links.
  */
 void
 vips__link_break_all( VipsImage *image )
 {
+	g_mutex_lock( vips__global_lock );
+
 	vips_slist_map2( image->upstream, 
 		(VipsSListMap2Fn) vips__link_break, image, NULL );
 	vips_slist_map2( image->downstream, 
@@ -179,25 +187,35 @@ vips__link_break_all( VipsImage *image )
 
 	g_assert( !image->upstream );
 	g_assert( !image->downstream );
+
+	g_mutex_unlock( vips__global_lock );
 }
 
+typedef struct _LinkMap {
+	gboolean upstream;
+	int *serial;
+	VipsSListMap2Fn fn;
+	void *a;
+	void *b;
+} LinkMap;
+
 static void *
-vips__link_mapp( VipsImage *image, 
-	VipsSListMap2Fn fn, int *serial, void *a, void *b )
+vips__link_mapp( VipsImage *image, LinkMap *map ) 
 {
 	void *res;
 
 	/* Loop?
 	 */
-	if( image->serial == *serial )
+	if( image->serial == *map->serial )
 		return( NULL );
-	image->serial = *serial;
+	image->serial = *map->serial;
 
-	if( (res = fn( image, a, b )) )
+	if( (res = map->fn( image, map->a, map->b )) )
 		return( res );
 
-	return( vips_slist_map4( image->downstream,
-		(VipsSListMap4Fn) vips__link_mapp, fn, serial, a, b ) );
+	return( vips_slist_map2( map->upstream ? 
+		image->upstream : image->downstream,
+		(VipsSListMap2Fn) vips__link_mapp, map, NULL ) );
 }
 
 static void *
@@ -208,16 +226,23 @@ vips__link_map_cb( VipsImage *image, GSList **images )
 	return( NULL );
 }
 
-/* Apply a function to an image and all downstream images, direct and indirect. 
+/* Apply a function to an image and all upstream or downstream images, 
+ * direct and indirect. 
  */
 void *
-vips__link_map( VipsImage *image, VipsSListMap2Fn fn, void *a, void *b )
+vips__link_map( VipsImage *image, gboolean upstream, 
+	VipsSListMap2Fn fn, void *a, void *b )
 {
 	static int serial = 0;
 
+	LinkMap map;
 	GSList *images;
 	GSList *p;
 	void *result;
+
+	serial += 1;
+
+	images = NULL;
 
 	/* The function might do anything, including removing images
 	 * or invalidating other images, so we can't trigger them from within 
@@ -225,14 +250,23 @@ vips__link_map( VipsImage *image, VipsSListMap2Fn fn, void *a, void *b )
 	 * run the functions, and unref.
 	 */
 
-	serial += 1;
-	images = NULL;
-	vips__link_mapp( image, 
-		(VipsSListMap2Fn) vips__link_map_cb, &serial, &images, NULL );
+	map.upstream = upstream;
+	map.serial = &serial;
+	map.fn = (VipsSListMap2Fn) vips__link_map_cb;
+	map.a = (void *) &images;
+	map.b = NULL;
+
+	g_mutex_lock( vips__global_lock );
+
+	vips__link_mapp( image, &map ); 
 
 	for( p = images; p; p = p->next ) 
 		g_object_ref( p->data );
+
+	g_mutex_unlock( vips__global_lock );
+
 	result = vips_slist_map2( images, fn, a, b );
+
 	for( p = images; p; p = p->next ) 
 		g_object_unref( p->data );
 	g_slist_free( images );
@@ -294,7 +328,7 @@ vips_demand_hint_array( VipsImage *image, VipsDemandStyle hint, VipsImage **in )
 
 #ifdef DEBUG
         printf( "vips_demand_hint_array: set dhint for \"%s\" to %s\n",
-		im->filename, 
+		image->filename, 
 		vips_enum_nick( VIPS_TYPE_DEMAND_STYLE, image->dhint ) );
 	printf( "\toperation requested %s\n", 
 		vips_enum_nick( VIPS_TYPE_DEMAND_STYLE, hint ) );
@@ -308,10 +342,12 @@ vips_demand_hint_array( VipsImage *image, VipsDemandStyle hint, VipsImage **in )
 
 	/* im depends on all these ims.
 	 */
+	g_mutex_lock( vips__global_lock );
 	for( i = 0; i < len; i++ )
 		vips__link_make( in[i], image );
+	g_mutex_unlock( vips__global_lock );
 
-	/* Set a flag on the image to say we remember to call this thing.
+	/* Set a flag on the image to say we remembered to call this thing.
 	 * vips_image_generate() and friends check this.
 	 */
 	image->hint_set = TRUE;
@@ -473,13 +509,12 @@ vips_allocate_input_array( VipsImage *image, ... )
 {
 	va_list ap;
 	VipsImage **ar;
-	VipsImage *im;
 	int i, n;
 
 	/* Count input images.
 	 */
 	va_start( ap, image );
-	for( n = 0; (im = va_arg( ap, VipsImage * )); n++ )
+	for( n = 0; va_arg( ap, VipsImage * ); n++ )
 		;
 	va_end( ap );
 
@@ -552,6 +587,7 @@ write_vips( VipsRegion *region, VipsRect *area, void *a, void *b )
 
 	count = region->bpl * area->height;
 	buf = VIPS_REGION_ADDR( region, 0, area->top );
+
 	do {
 		nwritten = write( region->im->fd, buf, count ); 
 		if( nwritten == (size_t) -1 ) 
@@ -665,7 +701,7 @@ vips_image_generate( VipsImage *image,
                 if( image->dtype == VIPS_IMAGE_OPENOUT ) 
 			res = vips_sink_disc( image,
 				(VipsRegionWrite) write_vips, NULL );
-                else
+                else 
                         res = vips_sink_memory( image );
 
                 /* Error?

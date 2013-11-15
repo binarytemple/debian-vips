@@ -1,0 +1,152 @@
+<!-- ##### SECTION Title ##### -->
+transform
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT VipsTransformation ##### -->
+<para>
+
+</para>
+
+@iarea: 
+@oarea: 
+@a: 
+@b: 
+@c: 
+@d: 
+@idx: 
+@idy: 
+@odx: 
+@ody: 
+@ia: 
+@ib: 
+@ic: 
+@id: 
+
+<!-- ##### FUNCTION vips__affine ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@trn: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__transform_add ##### -->
+<para>
+
+</para>
+
+@in1: 
+@in2: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__transform_calc_inverse ##### -->
+<para>
+
+</para>
+
+@trn: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__transform_forward_point ##### -->
+<para>
+
+</para>
+
+@trn: 
+@x: 
+@y: 
+@ox: 
+@oy: 
+
+
+<!-- ##### FUNCTION vips__transform_forward_rect ##### -->
+<para>
+
+</para>
+
+@trn: 
+@in: 
+@out: 
+
+
+<!-- ##### FUNCTION vips__transform_init ##### -->
+<para>
+
+</para>
+
+@trn: 
+
+
+<!-- ##### FUNCTION vips__transform_invert_point ##### -->
+<para>
+
+</para>
+
+@trn: 
+@x: 
+@y: 
+@ox: 
+@oy: 
+
+
+<!-- ##### FUNCTION vips__transform_invert_rect ##### -->
+<para>
+
+</para>
+
+@trn: 
+@in: 
+@out: 
+
+
+<!-- ##### FUNCTION vips__transform_isidentity ##### -->
+<para>
+
+</para>
+
+@trn: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__transform_print ##### -->
+<para>
+
+</para>
+
+@trn: 
+
+
+<!-- ##### FUNCTION vips__transform_set_area ##### -->
+<para>
+
+</para>
+
+@Param1: 
+
+

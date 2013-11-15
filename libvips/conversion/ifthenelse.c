@@ -43,7 +43,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -70,7 +71,7 @@
 #include <vips/internal.h>
 #include <vips/debug.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
 typedef struct _VipsIfthenelse {
 	VipsConversion parent_instance;
@@ -400,6 +401,7 @@ vips_ifthenelse_gen( VipsRegion *or, void *seq, void *client1, void *client2,
 static int
 vips_ifthenelse_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsConversion *conversion = VIPS_CONVERSION( object );
 	VipsIfthenelse *ifthenelse = (VipsIfthenelse *) object;
 	VipsGenerateFn generate_fn = ifthenelse->blend ? 
@@ -429,7 +431,7 @@ vips_ifthenelse_build( VipsObject *object )
 
 	/* Cast our input images up to a common bands and size.
 	 */
-	if( vips__bandalike_vec( "VipsIfthenelse", all, band, 3, 0 ) ||
+	if( vips__bandalike_vec( class->nickname, all, band, 3, 0 ) ||
 		vips__sizealike_vec( band, size, 3 ) )
 		return( -1 );
 
@@ -458,6 +460,7 @@ vips_ifthenelse_class_init( VipsIfthenelseClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	VIPS_DEBUG_MSG( "vips_ifthenelse_class_init\n" );
 
@@ -467,6 +470,8 @@ vips_ifthenelse_class_init( VipsIfthenelseClass *class )
 	vobject_class->nickname = "ifthenelse";
 	vobject_class->description = _( "ifthenelse an image" );
 	vobject_class->build = vips_ifthenelse_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 
 	VIPS_ARG_IMAGE( class, "cond", -2, 
 		_( "Condition" ), 

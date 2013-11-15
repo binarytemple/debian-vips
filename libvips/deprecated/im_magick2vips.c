@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -41,20 +42,21 @@
 
 #include <vips/vips.h>
 
+#include "../foreign/magick.h"
+
 int
 im_magick2vips( const char *filename, IMAGE *out )
 {
-	VipsImage *t;
+#ifdef HAVE_MAGICK
+	/* Old behaviour was always to read all frames.
+	 */
+	return( vips__magick_read( filename, out, TRUE ) ); 
+#else
+	vips_error( "im_magick2vips", 
+		"%s", _( "no libMagick support in your libvips" ) ); 
 
-	if( vips_magickload( filename, &t, NULL ) )
-		return( -1 );
-	if( vips_image_write( t, out ) ) {
-		g_object_unref( t );
-		return( -1 );
-	}
-	g_object_unref( t );
-
-	return( 0 );
+	return( -1 );
+#endif /*HAVE_MAGICK*/
 }
 
 static int

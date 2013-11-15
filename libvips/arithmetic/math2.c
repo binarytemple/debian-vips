@@ -22,25 +22,28 @@
  * 	- im_powtra() adapated to make math2.c
  * 12/11/11
  * 	- redone as a class
+ * 17/7/12
+ * 	- wopconst was broken
  */
 
 /*
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -82,13 +85,14 @@ G_DEFINE_TYPE( VipsMath2, vips_math2, VIPS_TYPE_BINARY );
 static int
 vips_math2_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsBinary *binary = (VipsBinary *) object;
 
 	if( binary->left &&
-		vips_check_noncomplex( "VipsMath2", binary->left ) )
+		vips_check_noncomplex( class->nickname, binary->left ) )
 		return( -1 );
 	if( binary->right &&
-		vips_check_noncomplex( "VipsMath2", binary->right ) )
+		vips_check_noncomplex( class->nickname, binary->right ) )
 		return( -1 );
 
 	if( VIPS_OBJECT_CLASS( vips_math2_parent_class )->build( object ) )
@@ -193,7 +197,7 @@ vips_math2_class_init( VipsMath2Class *class )
 	gobject_class->get_property = vips_object_get_property;
 
 	object_class->nickname = "math2";
-	object_class->description = _( "pow( left, right)" );
+	object_class->description = _( "binary math operations" );
 	object_class->build = vips_math2_build;
 
 	vips_arithmetic_set_format_table( aclass, vips_bandfmt_math2 );
@@ -333,11 +337,12 @@ G_DEFINE_TYPE( VipsMath2Const,
 static int
 vips_math2_const_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsUnary *unary = (VipsUnary *) object;
 	VipsUnaryConst *uconst = (VipsUnaryConst *) object;
 
 	if( unary->in &&
-		vips_check_noncomplex( "VipsMath2", unary->in ) )
+		vips_check_noncomplex( class->nickname, unary->in ) )
 		return( -1 );
 
 	uconst->const_format = VIPS_FORMAT_DOUBLE;
@@ -401,7 +406,7 @@ vips_math2_const_class_init( VipsMath2ConstClass *class )
 		_( "Operation" ), 
 		_( "math to perform" ),
 		VIPS_ARGUMENT_REQUIRED_INPUT,
-		G_STRUCT_OFFSET( VipsMath2, math2 ),
+		G_STRUCT_OFFSET( VipsMath2Const, math2 ),
 		VIPS_TYPE_OPERATION_MATH2, VIPS_OPERATION_MATH2_POW ); 
 }
 

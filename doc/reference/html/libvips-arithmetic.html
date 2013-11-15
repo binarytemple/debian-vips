@@ -24,8 +24,6 @@
 <a href="#libvips-arithmetic.synopsis" class="shortcut">Top</a>
                    | 
                   <a href="#libvips-arithmetic.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#libvips-arithmetic.object-hierarchy" class="shortcut">Object Hierarchy</a>
 </td></tr>
 </table>
 <div class="refentry">
@@ -43,47 +41,17 @@ Stable, unless otherwise indicated
 </div>
 <div class="refsynopsisdiv">
 <a name="libvips-arithmetic.synopsis"></a><h2>Synopsis</h2>
-<a name="VipsOperationBoolean"></a><a name="VipsOperationComplex"></a><a name="VipsOperationComplexget"></a><a name="VipsOperationMath"></a><a name="VipsOperationMath2"></a><a name="VipsOperationRelational"></a><a name="VipsOperationRound"></a><pre class="synopsis">
+<pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
-enum                <a class="link" href="libvips-arithmetic.html#VipsOperationBoolean-enum" title="enum VipsOperationBoolean">VipsOperationBoolean</a>;
-enum                <a class="link" href="libvips-arithmetic.html#VipsOperationComplex-enum" title="enum VipsOperationComplex">VipsOperationComplex</a>;
-enum                <a class="link" href="libvips-arithmetic.html#VipsOperationComplexget-enum" title="enum VipsOperationComplexget">VipsOperationComplexget</a>;
-enum                <a class="link" href="libvips-arithmetic.html#VipsOperationMath-enum" title="enum VipsOperationMath">VipsOperationMath</a>;
-enum                <a class="link" href="libvips-arithmetic.html#VipsOperationMath2-enum" title="enum VipsOperationMath2">VipsOperationMath2</a>;
-enum                <a class="link" href="libvips-arithmetic.html#VipsOperationRelational-enum" title="enum VipsOperationRelational">VipsOperationRelational</a>;
-enum                <a class="link" href="libvips-arithmetic.html#VipsOperationRound-enum" title="enum VipsOperationRound">VipsOperationRound</a>;
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#im-cross-phase" title="im_cross_phase ()">im_cross_phase</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *a</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *b</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#im-linreg" title="im_linreg ()">im_linreg</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **ins</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *xs</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#im-maxpos-avg" title="im_maxpos_avg ()">im_maxpos_avg</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *xpos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *ypos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#im-maxpos-vec" title="im_maxpos_vec ()">im_maxpos_vec</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *xpos</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *ypos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *maxima</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#im-minpos-vec" title="im_minpos_vec ()">im_minpos_vec</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *xpos</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *ypos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *minima</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#im-point" title="im_point ()">im_point</a>                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a> *interpolate</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> band</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#im-point-bilinear" title="im_point_bilinear ()">im_point_bilinear</a>                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> band</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationBoolean" title="enum VipsOperationBoolean">VipsOperationBoolean</a>;
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationComplex" title="enum VipsOperationComplex">VipsOperationComplex</a>;
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationComplex2" title="enum VipsOperationComplex2">VipsOperationComplex2</a>;
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationComplexget" title="enum VipsOperationComplexget">VipsOperationComplexget</a>;
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationMath" title="enum VipsOperationMath">VipsOperationMath</a>;
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationMath2" title="enum VipsOperationMath2">VipsOperationMath2</a>;
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationRelational" title="enum VipsOperationRelational">VipsOperationRelational</a>;
+enum                <a class="link" href="libvips-arithmetic.html#VipsOperationRound" title="enum VipsOperationRound">VipsOperationRound</a>;
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-abs" title="vips_abs ()">vips_abs</a>                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
@@ -119,11 +87,11 @@ enum                <a class="link" href="libvips-arithmetic.html#VipsOperationR
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vips_boolean ()">vips_boolean</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean" title="enum VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-boolean-const" title="vips_boolean_const ()">vips_boolean_const</a>                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean" title="enum VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> *c</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
@@ -132,7 +100,12 @@ enum                <a class="link" href="libvips-arithmetic.html#VipsOperationR
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-complex" title="vips_complex ()">vips_complex</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplex"><span class="type">VipsOperationComplex</span></a> cmplx</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplex" title="enum VipsOperationComplex"><span class="type">VipsOperationComplex</span></a> cmplx</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-complex2" title="vips_complex2 ()">vips_complex2</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplex2" title="enum VipsOperationComplex2"><span class="type">VipsOperationComplex2</span></a> cmplx</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-complexform" title="vips_complexform ()">vips_complexform</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
@@ -140,12 +113,16 @@ enum                <a class="link" href="libvips-arithmetic.html#VipsOperationR
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-complexget" title="vips_complexget ()">vips_complexget</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplexget"><span class="type">VipsOperationComplexget</span></a> get</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplexget" title="enum VipsOperationComplexget"><span class="type">VipsOperationComplexget</span></a> get</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-conj" title="vips_conj ()">vips_conj</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-cos" title="vips_cos ()">vips_cos</a>                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-cross-phase" title="vips_cross_phase ()">vips_cross_phase</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-deviate" title="vips_deviate ()">vips_deviate</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
@@ -254,22 +231,22 @@ enum                <a class="link" href="libvips-arithmetic.html#VipsOperationR
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-math" title="vips_math ()">vips_math</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath"><span class="type">VipsOperationMath</span></a> math</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath" title="enum VipsOperationMath"><span class="type">VipsOperationMath</span></a> math</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-math2" title="vips_math2 ()">vips_math2</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2" title="enum VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-math2-const" title="vips_math2_const ()">vips_math2_const</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2" title="enum VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> *c</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-math2-const1" title="vips_math2_const1 ()">vips_math2_const1</a>                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2" title="enum VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> c</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-max" title="vips_max ()">vips_max</a>                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
@@ -364,17 +341,17 @@ enum                <a class="link" href="libvips-arithmetic.html#VipsOperationR
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-relational" title="vips_relational ()">vips_relational</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational" title="enum VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-relational-const" title="vips_relational_const ()">vips_relational_const</a>               (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational" title="enum VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> *c</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-relational-const1" title="vips_relational_const1 ()">vips_relational_const1</a>              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational" title="enum VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> c</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-remainder" title="vips_remainder ()">vips_remainder</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
@@ -395,7 +372,7 @@ enum                <a class="link" href="libvips-arithmetic.html#VipsOperationR
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-round" title="vips_round ()">vips_round</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRound"><span class="type">VipsOperationRound</span></a> round</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRound" title="enum VipsOperationRound"><span class="type">VipsOperationRound</span></a> round</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-arithmetic.html#vips-rshift" title="vips_rshift ()">vips_rshift</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
@@ -442,37 +419,6 @@ enum                <a class="link" href="libvips-arithmetic.html#VipsOperationR
 </pre>
 </div>
 <div class="refsect1">
-<a name="libvips-arithmetic.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  GEnum
-   +----VipsOperationBoolean
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsOperationComplex
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsOperationComplexget
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsOperationMath
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsOperationMath2
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsOperationRelational
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsOperationRound
-</pre>
-</div>
-<div class="refsect1">
 <a name="libvips-arithmetic.description"></a><h2>Description</h2>
 <p>
 These operations perform pixel arithmetic, that is, they perform an
@@ -489,16 +435,16 @@ the two n-band images are operated upon.
 </p>
 <p>
 In the same way, for operations that take an array constant, such as 
-<a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-remainder-vec"><code class="function">im_remainder_vec()</code></a>, you can mix single-element arrays or single-band 
+<a class="link" href="libvips-arithmetic.html#vips-remainder-const" title="vips_remainder_const ()"><code class="function">vips_remainder_const()</code></a>, you can mix single-element arrays or single-band 
 images freely.
 </p>
 <p>
 Arithmetic operations try to preserve precision by increasing the number of
 bits in the output image when necessary. Generally, this follows the ANSI C
 conventions for type promotion, so multiplying two
-<code class="literal">IM_BANDFMT_UCHAR</code> images together, for example, produces a 
-<code class="literal">IM_BANDFMT_USHORT</code> image, and taking the <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-costra"><code class="function">im_costra()</code></a> of a 
-<code class="literal">IM_BANDFMT_USHORT</code> image produces <code class="literal">IM_BANDFMT_FLOAT</code> image. 
+<a class="link" href="VipsImage.html#VIPS-FORMAT-UCHAR:CAPS"><span class="type">VIPS_FORMAT_UCHAR</span></a> images together, for example, produces a 
+<a class="link" href="VipsImage.html#VIPS-FORMAT-USHORT:CAPS"><span class="type">VIPS_FORMAT_USHORT</span></a> image, and taking the <code class="function">im_costra()</code> of a 
+<a class="link" href="VipsImage.html#VIPS-FORMAT-USHORT:CAPS"><span class="type">VIPS_FORMAT_USHORT</span></a> image produces <a class="link" href="VipsImage.html#VIPS-FORMAT-FLOAT:CAPS"><span class="type">VIPS_FORMAT_FLOAT</span></a> image. 
 </p>
 <p>
 For binary arithmetic operations, type promotion occurs in two stages. 
@@ -509,7 +455,7 @@ range of both inputs. This conversion can be represented as a table:
 <p>
 </p>
 <div class="table">
-<a name="idp21848816"></a><p class="title"><b>Table 1. Smallest common format</b></p>
+<a name="idp22028560"></a><p class="title"><b>Table 1. Smallest common format</b></p>
 <div class="table-contents"><table summary="Smallest common format" border="1">
 <colgroup>
 <col>
@@ -678,14 +624,14 @@ range of both inputs. This conversion can be represented as a table:
 In the second stage, the operation is performed between the two identical 
 types to form the output. The details vary between operations, but 
 generally the principle is that the output type should be large enough to 
-represent the whole rage of possible values, except that int never becomes 
+represent the whole range of possible values, except that int never becomes 
 float.
 </p>
 </div>
 <div class="refsect1">
 <a name="libvips-arithmetic.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="VipsOperationBoolean-enum"></a><h3>enum VipsOperationBoolean</h3>
+<a name="VipsOperationBoolean"></a><h3>enum VipsOperationBoolean</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_OPERATION_BOOLEAN_AND,
 	VIPS_OPERATION_BOOLEAN_OR,
@@ -718,22 +664,25 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vip
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-BOOLEAN-LSHIFT:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_BOOLEAN_LSHIFT</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-BOOLEAN-RSHIFT:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_BOOLEAN_RSHIFT</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-BOOLEAN-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_BOOLEAN_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsOperationComplex-enum"></a><h3>enum VipsOperationComplex</h3>
+<a name="VipsOperationComplex"></a><h3>enum VipsOperationComplex</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_OPERATION_COMPLEX_POLAR,
 	VIPS_OPERATION_COMPLEX_RECT,
@@ -764,14 +713,42 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-complex" title="vip
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-COMPLEX-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_COMPLEX_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsOperationComplexget-enum"></a><h3>enum VipsOperationComplexget</h3>
+<a name="VipsOperationComplex2"></a><h3>enum VipsOperationComplex2</h3>
+<pre class="programlisting">typedef enum {
+	VIPS_OPERATION_COMPLEX2_CROSS_PHASE,
+	VIPS_OPERATION_COMPLEX2_LAST
+} VipsOperationComplex2;
+</pre>
+<p>
+See also: <a class="link" href="libvips-arithmetic.html#vips-complex2" title="vips_complex2 ()"><code class="function">vips_complex2()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="VIPS-OPERATION-COMPLEX2-CROSS-PHASE:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_COMPLEX2_CROSS_PHASE</code></span></p></td>
+<td>convert to polar coordinates
+</td>
+</tr>
+<tr>
+<td><p><a name="VIPS-OPERATION-COMPLEX2-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_COMPLEX2_LAST</code></span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VipsOperationComplexget"></a><h3>enum VipsOperationComplexget</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_OPERATION_COMPLEXGET_REAL,
 	VIPS_OPERATION_COMPLEXGET_IMAG,
@@ -796,14 +773,15 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-complexget" title="
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-COMPLEXGET-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_COMPLEXGET_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsOperationMath-enum"></a><h3>enum VipsOperationMath</h3>
+<a name="VipsOperationMath"></a><h3>enum VipsOperationMath</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_OPERATION_MATH_SIN,
 	VIPS_OPERATION_MATH_COS,
@@ -876,14 +854,15 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-math" title="vips_m
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-MATH-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_MATH_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsOperationMath2-enum"></a><h3>enum VipsOperationMath2</h3>
+<a name="VipsOperationMath2"></a><h3>enum VipsOperationMath2</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_OPERATION_MATH2_POW,
 	VIPS_OPERATION_MATH2_WOP,
@@ -908,14 +887,15 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-math" title="vips_m
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-MATH2-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_MATH2_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsOperationRelational-enum"></a><h3>enum VipsOperationRelational</h3>
+<a name="VipsOperationRelational"></a><h3>enum VipsOperationRelational</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_OPERATION_RELATIONAL_EQUAL,
 	VIPS_OPERATION_RELATIONAL_NOTEQUAL,
@@ -964,14 +944,15 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-relational" title="
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-RELATIONAL-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_RELATIONAL_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsOperationRound-enum"></a><h3>enum VipsOperationRound</h3>
+<a name="VipsOperationRound"></a><h3>enum VipsOperationRound</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_OPERATION_ROUND_RINT,
 	VIPS_OPERATION_ROUND_CEIL,
@@ -1002,313 +983,8 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-round" title="vips_
 </tr>
 <tr>
 <td><p><a name="VIPS-OPERATION-ROUND-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_OPERATION_ROUND_LAST</code></span></p></td>
-<td></td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-cross-phase"></a><h3>im_cross_phase ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_cross_phase                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *a</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *b</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>);</pre>
-<p>
-Find the phase of the cross power spectrum of two complex images,
-expressed as a complex image where the modulus of each pixel is
-one.
-</p>
-<p>
-I.E. find (a.b*)/|a.b*| where
- .  represents complex multiplication
- *  represents the complex conjugate
- || represents the complex modulus
-</p>
-<p>
-See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-multiply"><code class="function">im_multiply()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-sign"><code class="function">im_sign()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>input <span class="type">IMAGE</span> 1</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>input <span class="type">IMAGE</span> 2</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output <span class="type">IMAGE</span>
+<td>
 </td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-linreg"></a><h3>im_linreg ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_linreg                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **ins</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *xs</code></em>);</pre>
-<p>
-Function to find perform pixelwise linear regression on an array of 
-single band images. The output is a seven-band douuble image
-</p>
-<p>
-TODO: figure out how this works and fix up these docs!
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ins</code></em> :</span></p></td>
-<td>NULL-terminated array of input images</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>results of analysis</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xs</code></em> :</span></p></td>
-<td>X position of each image (pixel value is Y)</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-maxpos-avg"></a><h3>im_maxpos_avg ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_maxpos_avg                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *xpos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *ypos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);</pre>
-<p>
-Function to find the maximum of an image.  Returns coords and value at
-double precision.  In the event of a draw, returns average of all 
-drawing coords.
-</p>
-<p>
-See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-maxpos"><code class="function">im_maxpos()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-min"><code class="function">im_min()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-stats"><code class="function">im_stats()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>image to scan</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
-<td>returned X position</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
-<td>returned Y position</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>returned value</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-maxpos-vec"></a><h3>im_maxpos_vec ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_maxpos_vec                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *xpos</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *ypos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *maxima</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>);</pre>
-<p>
-Find the coordinates and values of the <em class="parameter"><code>n</code></em> <em class="parameter"><code>maxima</code></em> of an image.
-</p>
-<p>
-For 8 and 16-bit images, it's much faster to find the histogram and then
-calculate a threshold from that. See <a class="link" href="libvips-histograms-lut.html#im-mpercent" title="im_mpercent ()"><code class="function">im_mpercent()</code></a>.
-</p>
-<p>
-See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-minpos"><code class="function">im_minpos()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-min"><code class="function">im_min()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-stats"><code class="function">im_stats()</code></a>, <a class="link" href="libvips-arithmetic.html#im-maxpos-avg" title="im_maxpos_avg ()"><code class="function">im_maxpos_avg()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>image to scan</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
-<td>array to return x positions</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
-<td>array to return y positions</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>maxima</code></em> :</span></p></td>
-<td>array to return values</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
-<td>number of maxima to search for</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-minpos-vec"></a><h3>im_minpos_vec ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_minpos_vec                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *xpos</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *ypos</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *minima</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>);</pre>
-<p>
-Find the coordinates and values of the <em class="parameter"><code>n</code></em> <em class="parameter"><code>minima</code></em> of an image.
-</p>
-<p>
-For 8 and 16-bit images, it's much faster to find the histogram and then
-calculate a threshold from that. See <a class="link" href="libvips-histograms-lut.html#im-mpercent" title="im_mpercent ()"><code class="function">im_mpercent()</code></a>.
-</p>
-<p>
-See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-minpos"><code class="function">im_minpos()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-min"><code class="function">im_min()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-stats"><code class="function">im_stats()</code></a>, <a class="link" href="libvips-arithmetic.html#im-maxpos-avg" title="im_maxpos_avg ()"><code class="function">im_maxpos_avg()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>image to scan</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
-<td>array to return x positions</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
-<td>array to return y positions</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>minima</code></em> :</span></p></td>
-<td>array to return values</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
-<td>number of minima to search for</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-point"></a><h3>im_point ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_point                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a> *interpolate</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> band</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);</pre>
-<p>
-Find the value at (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) in given band of image.
-Non-integral values are calculated using the supplied <em class="parameter"><code>interpolate</code></em>.
-</p>
-<p>
-See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-avg"><code class="function">im_avg()</code></a>, <a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a>
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>image to read from</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>interpolate</code></em> :</span></p></td>
-<td>interpolator to sample points with</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>x position to interpolate</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>y position to interpolate</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>band</code></em> :</span></p></td>
-<td>band to read</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>return interpolated value</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-point-bilinear"></a><h3>im_point_bilinear ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_point_bilinear                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> band</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);</pre>
-<p>
-Find the value at (<em class="parameter"><code>x</code></em>,<em class="parameter"><code>y</code></em>) in given band of image.
-Use bilinear interpolation if <em class="parameter"><code>x</code></em> or <em class="parameter"><code>y</code></em> are non-integral. 
-</p>
-<p>
-See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-avg"><code class="function">im_avg()</code></a>, <a class="link" href="libvips-arithmetic.html#im-point" title="im_point ()"><code class="function">im_point()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>image to read from</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>x position to interpolate</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>y position to interpolate</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>band</code></em> :</span></p></td>
-<td>band to read</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>return interpolated value</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
 </tr>
 </tbody>
 </table></div>
@@ -1417,7 +1093,7 @@ following table is used to determine the output type:
 <p>
 </p>
 <div class="table">
-<a name="idp22311344"></a><p class="title"><b>Table 2. VipsAdd type promotion</b></p>
+<a name="idp22312496"></a><p class="title"><b>Table 2. VipsAdd type promotion</b></p>
 <div class="table-contents"><table summary="VipsAdd type promotion" border="1">
 <colgroup>
 <col>
@@ -1752,7 +1428,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-stats" title="vips_
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_boolean                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean" title="enum VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Perform various boolean operations on pairs of images. 
@@ -1799,10 +1475,6 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-boolean-const" titl
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>boolean</code></em> :</span></p></td>
-<td>boolean operation to perform</td>
-</tr>
-<tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
 <td>
 <code class="literal">NULL</code>-terminated list of optional named arguments</td>
@@ -1819,7 +1491,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-boolean-const" titl
 <a name="vips-boolean-const"></a><h3>vips_boolean_const ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_boolean_const                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationBoolean" title="enum VipsOperationBoolean"><span class="type">VipsOperationBoolean</span></a> boolean</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> *c</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
@@ -1851,10 +1523,6 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vip
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
 <td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>boolean</code></em> :</span></p></td>
-<td>boolean operation to perform</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
@@ -1917,7 +1585,7 @@ Round to an integral value with <a class="link" href="libvips-arithmetic.html#VI
 <a name="vips-complex"></a><h3>vips_complex ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_complex                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplex"><span class="type">VipsOperationComplex</span></a> cmplx</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplex" title="enum VipsOperationComplex"><span class="type">VipsOperationComplex</span></a> cmplx</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Perform various operations on complex images.
@@ -1942,6 +1610,55 @@ input is double or dpcomplex, in which case the output is dpcomplex.
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cmplx</code></em> :</span></p></td>
 <td>complex operation to perform</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-complex2"></a><h3>vips_complex2 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_complex2                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplex2" title="enum VipsOperationComplex2"><span class="type">VipsOperationComplex2</span></a> cmplx</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Perform various binary operations on complex images.
+</p>
+<p>
+Angles are expressed in degrees. The output type is complex unless the 
+input is double or dpcomplex, in which case the output is dpcomplex.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
+<td>input <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
+<td>input <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cmplx</code></em> :</span></p></td>
+<td>complex2 operation to perform</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
@@ -2004,7 +1721,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-complexget" title="
 <a name="vips-complexget"></a><h3>vips_complexget ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_complexget                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplexget"><span class="type">VipsOperationComplexget</span></a> get</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationComplexget" title="enum VipsOperationComplexget"><span class="type">VipsOperationComplexget</span></a> get</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Get components of complex images. 
@@ -2113,10 +1830,53 @@ Perform <a class="link" href="libvips-arithmetic.html#VIPS-OPERATION-MATH-COS:CA
 </div>
 <hr>
 <div class="refsect2">
+<a name="vips-cross-phase"></a><h3>vips_cross_phase ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_cross_phase                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Perform <a class="link" href="libvips-arithmetic.html#VIPS-OPERATION-COMPLEX2-CROSS-PHASE:CAPS"><span class="type">VIPS_OPERATION_COMPLEX2_CROSS_PHASE</span></a> on an image. 
+See <a class="link" href="libvips-arithmetic.html#vips-complex2" title="vips_complex2 ()"><code class="function">vips_complex2()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
+<td>input <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
+<td>input <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="vips-deviate"></a><h3>vips_deviate ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_deviate                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> *out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2148,7 +1908,7 @@ following table is used to determine the output type:
 <p>
 </p>
 <div class="table">
-<a name="idp22722496"></a><p class="title"><b>Table 3. <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-arithmetic.html#im-divide"><code class="function">im_divide()</code></a> type promotion</b></p>
+<a name="idp22772192"></a><p class="title"><b>Table 3. <code class="function">im_divide()</code> type promotion</b></p>
 <div class="table-contents"><table summary="im_divide() type promotion" border="1">
 <colgroup>
 <col>
@@ -2214,14 +1974,6 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-multiply" title="vi
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in1</code></em> :</span></p></td>
-<td>input image 1</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in2</code></em> :</span></p></td>
-<td>input image 2</td>
-</tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
 <td>output image</td>
@@ -2638,7 +2390,10 @@ Perform <a class="link" href="libvips-arithmetic.html#VIPS-OPERATION-COMPLEXGET-
 <p>
 For unsigned formats, this operation calculates (max - <em class="parameter"><code>in</code></em>), eg. (255 -
 <em class="parameter"><code>in</code></em>) for uchar. For signed and float formats, this operation calculates (-1
-* <em class="parameter"><code>in</code></em>). 
+<em class="parameter"><code>in</code></em>). 
+</p>
+<p>
+For complex images, only the real part is inverted. See also <a class="link" href="libvips-arithmetic.html#vips-conj" title="vips_conj ()"><code class="function">vips_conj()</code></a>.
 </p>
 <p>
 See also: <a class="link" href="libvips-arithmetic.html#vips-linear" title="vips_linear ()"><code class="function">vips_linear()</code></a>.
@@ -2954,11 +2709,13 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-linear1" title="vip
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>array of constants for multiplication</td>
+<td>array of constants for multiplication. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>array of constants for addition</td>
+<td>array of constants for addition. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
@@ -3223,7 +2980,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vip
 <a name="vips-math"></a><h3>vips_math ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_math                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath"><span class="type">VipsOperationMath</span></a> math</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath" title="enum VipsOperationMath"><span class="type">VipsOperationMath</span></a> math</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Perform various functions in -lm, the maths library, on images. 
@@ -3273,7 +3030,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-math2" title="vips_
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_math2                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2" title="enum VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 This operation calculates a 2-ary maths operation on a pair of images
@@ -3343,7 +3100,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-math2-const" title=
 <a name="vips-math2-const"></a><h3>vips_math2_const ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_math2_const                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2" title="enum VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> *c</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
@@ -3410,7 +3167,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-math2" title="vips_
 <a name="vips-math2-const1"></a><h3>vips_math2_const1 ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_math2_const1                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationMath2" title="enum VipsOperationMath2"><span class="type">VipsOperationMath2</span></a> math2</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> c</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
@@ -3460,13 +3217,17 @@ Optional arguments:
 <p>
 <em class="parameter"><code>x</code></em>: horizontal position of maximum
 <em class="parameter"><code>y</code></em>: vertical position of maximum
+<em class="parameter"><code>size</code></em>: number of maxima to find
+<em class="parameter"><code>out_array</code></em>: return array of maximum values
+<em class="parameter"><code>x_array</code></em>: corresponding horizontal positions
+<em class="parameter"><code>y_array</code></em>: corresponding vertical positions
 </p>
 <p>
 This operation finds the maximum value in an image. 
 </p>
 <p>
-If the image contains several maximum values, only the first one found is
-returned.
+If the image contains several maximum values, only the first <em class="parameter"><code>size</code></em> 
+found are returned.
 </p>
 <p>
 It operates on all 
@@ -3475,6 +3236,11 @@ maximum for each band.
 </p>
 <p>
 For complex images, this operation finds the maximum modulus.
+</p>
+<p>
+You can read out the position of the maximum with <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>. You can read
+out arrays of the values and positions of the top <em class="parameter"><code>size</code></em> maxima with
+<em class="parameter"><code>out_array</code></em>, <em class="parameter"><code>x_array</code></em> and <em class="parameter"><code>y_array</code></em>.
 </p>
 <p>
 See also: <a class="link" href="libvips-arithmetic.html#vips-min" title="vips_min ()"><code class="function">vips_min()</code></a>, <a class="link" href="libvips-arithmetic.html#vips-stats" title="vips_stats ()"><code class="function">vips_stats()</code></a>.
@@ -3539,10 +3305,6 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-avg" title="vips_av
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>image to measure</td>
-</tr>
-<tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
 <td>array of measurements</td>
 </tr>
@@ -3578,13 +3340,17 @@ Optional arguments:
 <p>
 <em class="parameter"><code>x</code></em>: horizontal position of minimum
 <em class="parameter"><code>y</code></em>: vertical position of minimum
+<em class="parameter"><code>size</code></em>: number of minima to find
+<em class="parameter"><code>out_array</code></em>: return array of minimum values
+<em class="parameter"><code>x_array</code></em>: corresponding horizontal positions
+<em class="parameter"><code>y_array</code></em>: corresponding vertical positions
 </p>
 <p>
 This operation finds the minimum value in an image. 
 </p>
 <p>
-If the image contains several minimum values, only the first one found is
-returned.
+If the image contains several minimum values, only the first <em class="parameter"><code>size</code></em> 
+found are returned.
 </p>
 <p>
 It operates on all 
@@ -3595,7 +3361,12 @@ minimum for each band.
 For complex images, this operation finds the minimum modulus.
 </p>
 <p>
-See also: <a class="link" href="libvips-arithmetic.html#vips-max" title="vips_max ()"><code class="function">vips_max()</code></a>, <a class="link" href="libvips-arithmetic.html#vips-stats" title="vips_stats ()"><code class="function">vips_stats()</code></a>.
+You can read out the position of the minimum with <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>. You can read
+out arrays of the values and positions of the top <em class="parameter"><code>size</code></em> minima with
+<em class="parameter"><code>out_array</code></em>, <em class="parameter"><code>x_array</code></em> and <em class="parameter"><code>y_array</code></em>.
+</p>
+<p>
+See also: <a class="link" href="libvips-arithmetic.html#vips-min" title="vips_min ()"><code class="function">vips_min()</code></a>, <a class="link" href="libvips-arithmetic.html#vips-stats" title="vips_stats ()"><code class="function">vips_stats()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -3607,7 +3378,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-max" title="vips_ma
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output pixel maximum</td>
+<td>output pixel minimum</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
@@ -3900,7 +3671,7 @@ following table is used to determine the output type:
 <p>
 </p>
 <div class="table">
-<a name="idp23738560"></a><p class="title"><b>Table 4. VipsMultiply type promotion</b></p>
+<a name="idp23806784"></a><p class="title"><b>Table 4. VipsMultiply type promotion</b></p>
 <div class="table-contents"><table summary="VipsMultiply type promotion" border="1">
 <colgroup>
 <col>
@@ -4474,7 +4245,7 @@ Perform <a class="link" href="libvips-arithmetic.html#VIPS-OPERATION-COMPLEX-REC
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_relational                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational" title="enum VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Perform various relational operations on pairs of images. 
@@ -4501,7 +4272,12 @@ Smallest common format in
 arithmetic).
 </p>
 <p>
-See also: <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vips_boolean ()"><code class="function">vips_boolean()</code></a>, <a class="link" href="libvips-arithmetic.html#vips-relational-const" title="vips_relational_const ()"><code class="function">vips_relational_const()</code></a>.
+To decide if pixels match exactly, that is have the same value in every
+band, use <a class="link" href="libvips-conversion.html#vips-bandbool" title="vips_bandbool ()"><code class="function">vips_bandbool()</code></a> after this operation to AND or OR image bands 
+together. 
+</p>
+<p>
+See also: <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vips_boolean ()"><code class="function">vips_boolean()</code></a>, <a class="link" href="libvips-conversion.html#vips-bandbool" title="vips_bandbool ()"><code class="function">vips_bandbool()</code></a>, <a class="link" href="libvips-arithmetic.html#vips-relational-const" title="vips_relational_const ()"><code class="function">vips_relational_const()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -4542,7 +4318,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vip
 <a name="vips-relational-const"></a><h3>vips_relational_const ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_relational_const               (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational" title="enum VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> *c</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
@@ -4605,7 +4381,7 @@ See also: <a class="link" href="libvips-arithmetic.html#vips-boolean" title="vip
 <a name="vips-relational-const1"></a><h3>vips_relational_const1 ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_relational_const1              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRelational" title="enum VipsOperationRelational"><span class="type">VipsOperationRelational</span></a> relational</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> c</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
@@ -4860,7 +4636,7 @@ Round to an integral value with <a class="link" href="libvips-arithmetic.html#VI
 <a name="vips-round"></a><h3>vips_round ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_round                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRound"><span class="type">VipsOperationRound</span></a> round</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-arithmetic.html#VipsOperationRound" title="enum VipsOperationRound"><span class="type">VipsOperationRound</span></a> round</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Round to an integral value.
@@ -4892,7 +4668,7 @@ See also: <a class="link" href="libvips-conversion.html#vips-cast" title="vips_c
 <tr>
 <td><p><span class="term"><em class="parameter"><code>round</code></em> :</span></p></td>
 <td>
-<a class="link" href="libvips-arithmetic.html#VipsOperationRound"><span class="type">VipsOperationRound</span></a> rounding operation to perform</td>
+<a class="link" href="libvips-arithmetic.html#VipsOperationRound" title="enum VipsOperationRound"><span class="type">VipsOperationRound</span></a> rounding operation to perform</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
@@ -5176,7 +4952,7 @@ following table is used to determine the output type:
 <p>
 </p>
 <div class="table">
-<a name="idp24475472"></a><p class="title"><b>Table 5. VipsSubtract type promotion</b></p>
+<a name="idp24546768"></a><p class="title"><b>Table 5. VipsSubtract type promotion</b></p>
 <div class="table-contents"><table summary="VipsSubtract type promotion" border="1">
 <colgroup>
 <col>
@@ -5430,7 +5206,7 @@ Perform <a class="link" href="libvips-arithmetic.html#VIPS-OPERATION-MATH2-WOP:C
 </div>
 <div class="refsect1">
 <a name="libvips-arithmetic.see-also"></a><h2>See Also</h2>
-<a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html">boolean</a>
+boolean
 </div>
 </div>
 <div class="footer">

@@ -7,19 +7,20 @@
 
     Copyright (C) 1991-2003 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -43,10 +44,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include <vips/vips.h>
 #include <vips/internal.h>
 #include <vips/debug.h>
+
+#include <gobject/gvaluecollector.h>
+
+/**
+ * SECTION: object
+ * @short_description: the VIPS base object class
+ * @stability: Stable
+ * @see_also: <link linkend="libvips-operation">operation</link>
+ * @include: vips/vips.h
+ *
+ * The #VipsObject class and associated types and macros.
+ *
+ * #VipsObject is the base class for all objects in libvips. It has the
+ * following major features:
+ *
+ * <emphasis>Functional class creation</emphasis> Vips objects have a very 
+ * regular
+ * lifecycle: initialise, build, use, destroy. They behave rather like
+ * function calls and are free of side-effects. 
+ *
+ * <emphasis>Run-time introspection</emphasis> Vips objects can be fully 
+ * introspected at
+ * run-time. There is not need for a separate source-code analysis. 
+ *
+ * <emphasis>Command-line interface</emphasis> Vips objects have an 
+ * automatic command-line
+ * line interface with a set of virtual methods. 
+ *
+ */
 
 /* Our signals. 
  */
@@ -142,6 +173,7 @@ vips_object_check_required( VipsObject *object, GParamSpec *pspec,
 
 	if( (argument_class->flags & VIPS_ARGUMENT_REQUIRED) &&
 		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) &&
+		!(argument_class->flags & VIPS_ARGUMENT_DEPRECATED) &&
 		(argument_class->flags & *iomask) &&
 		!argument_instance->assigned ) {
 		vips_error( class->nickname, 
@@ -355,9 +387,11 @@ vips_argument_map( VipsObject *object,
 	g_object_ref( object ); 
 
 	VIPS_ARGUMENT_FOR_ALL( object, 
-		pspec, argument_class, argument_instance ) {
+		pspec, argument_class, argument_instance ) { 
 		void *result;
 
+		/* argument_instance should not be NULL.
+		 */
 		g_assert( argument_instance );
 
 		if( (result = fn( object, pspec,
@@ -388,19 +422,12 @@ vips_argument_class_map( VipsObjectClass *object_class,
 			(VipsArgumentClass *) p->data; 
 		VipsArgument *argument = (VipsArgument *) arg_class; 
 		GParamSpec *pspec = argument->pspec; 
-		
-		/* We have many props on the arg table ... filter out the 
-		 * ones for this class. 
-		 */ 
-		if( g_object_class_find_property( 
-			G_OBJECT_CLASS( object_class ), 
-			g_param_spec_get_name( pspec ) ) == pspec ) {
-			void *result;
 
-			if( (result = 
-				fn( object_class, pspec, arg_class, a, b )) )
-				return( result );
-		}
+		void *result;
+
+		if( (result = 
+			fn( object_class, pspec, arg_class, a, b )) )
+			return( result );
 	}
 
 	return( NULL );
@@ -525,16 +552,16 @@ vips_object_get_argument( VipsObject *object, const char *name,
 }
 
 /**
- * vips_object_get_argument_assigned:
+ * vips_object_argument_isset:
  * @object: the object to fetch the args from
  * @name: arg to fetch
  *
  * Convenience: has an argument been assigned. Useful for bindings.
  *
- * Returns: %TRUE if the arguent has been assigned.
+ * Returns: %TRUE if the argument has been assigned.
  */
 gboolean
-vips_object_get_argument_assigned( VipsObject *object, const char *name )
+vips_object_argument_isset( VipsObject *object, const char *name )
 {
 	GParamSpec *pspec;
 	VipsArgumentClass *argument_class;
@@ -749,15 +776,11 @@ vips_object_dispose( GObject *gobject )
 	/* Our subclasses should have already called this. Run it again, just
 	 * in case.
 	 */
-	if( !object->preclose ) {
-#ifdef VIPS_DEBUG
-		printf( "vips_object_dispose: no vips_object_preclose() " );
-		vips_object_print_name( VIPS_OBJECT( gobject ) );
-		printf( "\n" );
-#endif /*VIPS_DEBUG*/
-
-		vips_object_preclose( object );
-	}
+#ifdef DEBUG
+	if( !object->preclose ) 
+		printf( "vips_object_dispose: pre-close missing!\n" );
+#endif /*DEBUG*/
+	vips_object_preclose( object );
 
 	/* Clear all our arguments: they may be holding resources we should 
 	 * drop.
@@ -1202,14 +1225,13 @@ vips_object_real_summary_class( VipsObjectClass *class, VipsBuf *buf )
 static void
 vips_object_real_summary( VipsObject *object, VipsBuf *buf )
 {
-	vips_buf_appendf( buf, " %s (%p)", 
-		G_OBJECT_TYPE_NAME( object ), object );
 }
 
 static void
 vips_object_real_dump( VipsObject *object, VipsBuf *buf )
 {
-	vips_buf_appendf( buf, " (%p)", object );
+	vips_buf_appendf( buf, " %s (%p)", 
+		G_OBJECT_TYPE_NAME( object ), object );
 }
 
 static void
@@ -1221,7 +1243,7 @@ static void
 vips_object_real_rewind( VipsObject *object )
 {
 #ifdef DEBUG
-	printf( "vips_object_rewind\n" );
+	printf( "vips_object_real_rewind\n" );
 	vips_object_print_name( object );
 	printf( "\n" );
 #endif /*DEBUG*/
@@ -1277,7 +1299,7 @@ vips_object_class_init( VipsObjectClass *class )
 	if( !vips__object_all ) {
 		vips__object_all = g_hash_table_new( 
 			g_direct_hash, g_direct_equal );
-		vips__object_all_lock = g_mutex_new();
+		vips__object_all_lock = vips_g_mutex_new();
 	}
 
 	gobject_class->dispose = vips_object_dispose;
@@ -1377,7 +1399,8 @@ vips_object_class_install_argument( VipsObjectClass *object_class,
 	VipsArgumentClass *argument_class = g_new( VipsArgumentClass, 1 );
 
 #ifdef DEBUG
-	printf( "vips_object_class_install_argument: %s %s\n", 
+	printf( "vips_object_class_install_argument: %p %s %s\n", 
+		object_class,
 		g_type_name( G_TYPE_FROM_CLASS( object_class ) ),
 		g_param_spec_get_name( pspec ) );
 #endif /*DEBUG*/
@@ -1401,10 +1424,69 @@ vips_object_class_install_argument( VipsObjectClass *object_class,
 
 	vips_argument_table_replace( object_class->argument_table,
 		(VipsArgument *) argument_class );
+
+	/* If this is the first argument for a new subclass, we need to clone
+	 * the traverse list we inherit.
+	 */
+	if( object_class->argument_table_traverse_gtype != 
+		G_TYPE_FROM_CLASS( object_class ) ) {
+#ifdef DEBUG
+		printf( "vips_object_class_install_argument: "
+			"cloning traverse\n" ); 
+#endif /*DEBUG*/
+
+		object_class->argument_table_traverse = 
+			g_slist_copy( object_class->argument_table_traverse );
+		object_class->argument_table_traverse_gtype = 
+			G_TYPE_FROM_CLASS( object_class );
+	}
+
 	object_class->argument_table_traverse = g_slist_prepend(
 		object_class->argument_table_traverse, argument_class );
 	object_class->argument_table_traverse = g_slist_sort(
 		object_class->argument_table_traverse, traverse_sort );
+
+#ifdef DEBUG
+{
+	GSList *p;
+
+	printf( "%d items on traverse %p\n", 
+		g_slist_length( object_class->argument_table_traverse ),
+		&object_class->argument_table_traverse );
+	for( p = object_class->argument_table_traverse; p; p = p->next ) {
+		VipsArgumentClass *argument_class = 
+			(VipsArgumentClass *) p->data;
+
+		printf( "\t%p %s\n", 
+			argument_class, 
+			g_param_spec_get_name( 
+				((VipsArgument *) argument_class)->pspec ) );
+	}
+}
+#endif /*DEBUG*/
+}
+
+static void
+vips_object_no_value( VipsObject *object, const char *name )
+{
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
+
+	GParamSpec *pspec;
+	VipsArgumentClass *argument_class;
+	VipsArgumentInstance *argument_instance;
+
+	if( vips_object_get_argument( object, name,
+		&pspec, &argument_class, &argument_instance ) )
+		g_assert( 0 );
+
+	if( strcmp( name, g_param_spec_get_name( pspec ) ) == 0 )
+		vips_error( class->nickname,
+			_( "no value supplied for argument '%s'" ), name );
+	else
+		vips_error( class->nickname,
+			_( "no value supplied for argument '%s' ('%s')" ), 
+			name,
+			g_param_spec_get_name( pspec ) );
 }
 
 /* Set a named arg from a string.
@@ -1436,12 +1518,32 @@ vips_object_set_argument_from_string( VipsObject *object,
 
 	if( g_type_is_a( otype, VIPS_TYPE_IMAGE ) ) { 
 		VipsImage *out;
+		VipsOperationFlags flags;
+
+		flags = 0;
+		if( VIPS_IS_OPERATION( object ) )
+			flags = vips_operation_get_flags( 
+				VIPS_OPERATION( object ) );
+
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
+		}
 
 		/* Read the filename. vips_foreign_load_options()
 		 * handles embedded options.
 		 */
-		if( vips_foreign_load_options( value, &out ) )
-			return( -1 );
+		if( flags & VIPS_OPERATION_SEQUENTIAL ) {
+			if( vips_foreign_load_options( value, &out, 
+				"sequential", TRUE,
+				NULL ) )
+				return( -1 );
+		}
+		else {
+			if( vips_foreign_load_options( value, &out, 
+				NULL ) )
+				return( -1 );
+		}
 
 		g_value_init( &gvalue, VIPS_TYPE_IMAGE );
 		g_value_set_object( &gvalue, out );
@@ -1454,6 +1556,11 @@ vips_object_set_argument_from_string( VipsObject *object,
 	else if( g_type_is_a( otype, VIPS_TYPE_OBJECT ) &&
 		(oclass = g_type_class_ref( otype )) ) { 
 		VipsObject *new_object;
+
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
+		}
 
 		if( !(new_object = 
 			vips_object_new_from_string( oclass, value )) )
@@ -1477,51 +1584,109 @@ vips_object_set_argument_from_string( VipsObject *object,
 	else if( G_IS_PARAM_SPEC_BOOLEAN( pspec ) ) {
 		gboolean b;
 
-		g_value_init( &gvalue, G_TYPE_BOOLEAN );
 		b = TRUE;
 		if( value &&
 			(strcasecmp( value, "false" ) == 0 ||
 			strcasecmp( value, "no" ) == 0 ||
 			strcmp( value, "0" ) == 0) )
 			b = FALSE;
+
+		g_value_init( &gvalue, G_TYPE_BOOLEAN );
 		g_value_set_boolean( &gvalue, b );
 	}
 	else if( G_IS_PARAM_SPEC_INT( pspec ) ) {
-		g_value_init( &gvalue, G_TYPE_INT );
-		g_value_set_int( &gvalue, atoi( value ) );
-	}
-	else if( G_IS_PARAM_SPEC_UINT64( pspec ) ) {
-		g_value_init( &gvalue, G_TYPE_UINT64 );
-		g_value_set_uint64( &gvalue, atoll( value ) );
-	}
-	else if( G_IS_PARAM_SPEC_DOUBLE( pspec ) ) {
-		g_value_init( &gvalue, G_TYPE_DOUBLE );
-		g_value_set_double( &gvalue, atof( value ) );
-	}
-	else if( G_IS_PARAM_SPEC_ENUM( pspec ) ) {
-		GEnumValue *enum_value;
+		int i;
 
-		if( !(enum_value = g_enum_get_value_by_name( 
-			g_type_class_ref( otype ), value )) ) {
-			if( !(enum_value = g_enum_get_value_by_nick( 
-				g_type_class_ref( otype ), value )) ) {
-				vips_error( class->nickname, 
-					_( "enum '%s' has no member '%s'" ),
-					g_type_name( otype ), value );
-				return( -1 );
-			}
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
 		}
 
+		if( sscanf( value, "%d", &i ) != 1 ) {
+			vips_error( class->nickname,
+				_( "'%s' is not an integer" ), value );
+			return( -1 );
+		}
+
+		g_value_init( &gvalue, G_TYPE_INT );
+		g_value_set_int( &gvalue, i );
+	}
+	else if( G_IS_PARAM_SPEC_UINT64( pspec ) ) {
+		/* Not allways the same as guint64 :-( argh.
+		 */
+		long long l;
+
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
+		}
+
+		if( sscanf( value, "%Ld", &l ) != 1 ) {
+			vips_error( class->nickname,
+				_( "'%s' is not an integer" ), value );
+			return( -1 );
+		}
+
+		g_value_init( &gvalue, G_TYPE_UINT64 );
+		g_value_set_uint64( &gvalue, l );
+	}
+	else if( G_IS_PARAM_SPEC_DOUBLE( pspec ) ) {
+		double d;
+
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
+		}
+
+		if( sscanf( value, "%lg", &d ) != 1 ) {
+			vips_error( class->nickname,
+				_( "'%s' is not a double" ), value );
+			return( -1 );
+		}
+
+		g_value_init( &gvalue, G_TYPE_DOUBLE );
+		g_value_set_double( &gvalue, d );
+	}
+	else if( G_IS_PARAM_SPEC_ENUM( pspec ) ) {
+		int i;
+
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
+		}
+
+		if( (i = vips_enum_from_nick( class->nickname, 
+			otype, value )) < 0 ) 
+			return( -1 );
+
 		g_value_init( &gvalue, otype );
-		g_value_set_enum( &gvalue, enum_value->value );
+		g_value_set_enum( &gvalue, i );
 	}
 	else if( G_IS_PARAM_SPEC_FLAGS( pspec ) ) {
 		/* Hard to set from a symbolic name. Just take an int.
 		 */
+		int i;
+
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
+		}
+
+		if( sscanf( value, "%d", &i ) != 1 ) {
+			vips_error( class->nickname,
+				_( "'%s' is not an integer" ), value );
+			return( -1 );
+		}
+
 		g_value_init( &gvalue, otype );
-		g_value_set_flags( &gvalue, atoi( value ) );
+		g_value_set_flags( &gvalue, i );
 	}
 	else {
+		if( !value ) {
+			vips_object_no_value( object, name );
+			return( -1 );
+		}
+
 		g_value_init( &gvalue, G_TYPE_STRING );
 		g_value_set_string( &gvalue, value );
 	}
@@ -1536,7 +1701,7 @@ vips_object_set_argument_from_string( VipsObject *object,
  * output needs a filename, a double output just prints.
  */
 gboolean
-vips_object_get_argument_needs_string( VipsObject *object, const char *name )
+vips_object_argument_needsstring( VipsObject *object, const char *name )
 {
 	GParamSpec *pspec;
 	GType otype;
@@ -1545,7 +1710,7 @@ vips_object_get_argument_needs_string( VipsObject *object, const char *name )
 	VipsObjectClass *oclass;
 
 #ifdef DEBUG
-	printf( "vips_object_get_argument_needs_string: %s\n", name );
+	printf( "vips_object_argument_needsstring: %s\n", name );
 #endif /*DEBUG*/
 
 	if( vips_object_get_argument( object, name,
@@ -1619,7 +1784,7 @@ vips_object_get_argument_to_string( VipsObject *object,
 		 * vips_foreign_save_options() handles embedded options.
 		 */
 		g_object_get( object, name, &in, NULL );
-		if( vips_foreign_save_options( in, arg ) ) {
+		if( vips_foreign_save_options( in, arg, NULL ) ) {
 			g_object_unref( in );
 			return( -1 );
 		}
@@ -1705,6 +1870,80 @@ vips_object_new( GType type, VipsObjectSetArguments set, void *a, void *b )
 	}
 
 	return( object );
+}
+
+/**
+ * vips_object_set_valist:
+ * @object: object to set arguments on
+ * @ap: %NULL-terminated list of argument/value pairs
+ *
+ * See vips_object_set().
+ *
+ * Returns: 0 on success, -1 on error
+ */
+int
+vips_object_set_valist( VipsObject *object, va_list ap )
+{
+	char *name;
+
+	VIPS_DEBUG_MSG( "vips_object_set_valist:\n" );
+
+	for( name = va_arg( ap, char * ); name; name = va_arg( ap, char * ) ) {
+		GParamSpec *pspec;
+		VipsArgumentClass *argument_class;
+		VipsArgumentInstance *argument_instance;
+
+		VIPS_DEBUG_MSG( "\tname = '%s' (%p)\n", name, name );
+
+		if( vips_object_get_argument( VIPS_OBJECT( object ), name,
+			&pspec, &argument_class, &argument_instance ) )
+			return( -1 );
+
+		VIPS_ARGUMENT_COLLECT_SET( pspec, argument_class, ap );
+
+		g_object_set_property( G_OBJECT( object ), 
+			name, &value );
+
+		VIPS_ARGUMENT_COLLECT_GET( pspec, argument_class, ap );
+
+		VIPS_ARGUMENT_COLLECT_END
+	}
+
+	return( 0 );
+}
+
+/**
+ * vips_object_set:
+ * @object: object to set arguments on
+ * @...: %NULL-terminated list of argument/value pairs
+ *
+ * Set a list of vips object arguments. For example:
+ *
+ * |[
+ * vips_object_set (operation,
+ *   "input", in,
+ *   "output", &out,
+ *   NULL);
+ * ]|
+ *
+ * Input arguments are given in-line, output arguments are given as pointers
+ * to where the output value should be written.
+ *
+ * See also: vips_object_set_valist().
+ *
+ * Returns: 0 on success, -1 on error
+ */
+int
+vips_object_set( VipsObject *object, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, object );
+	result = vips_object_set_valist( object, ap );
+	va_end( ap );
+
+	return( result );
 }
 
 /* Set object args from a string. @p should be the initial left bracket and
@@ -2080,10 +2319,10 @@ vips_class_find( const char *basename, const char *nickname )
 	VipsObjectClass *class;
 	GType base;
 
-	if( !(base = g_type_from_name( classname )) || 
-		!(class = vips_class_map_all( base, 
-			(VipsClassMapFn) test_name, (void *) nickname )) ) 
+	if( !(base = g_type_from_name( classname )) )
 		return( NULL );
+	class = vips_class_map_all( base, 
+		(VipsClassMapFn) test_name, (void *) nickname );
 
 	return( class );
 }
@@ -2104,7 +2343,7 @@ vips_type_find( const char *basename, const char *nickname )
 void
 vips_object_local_cb( VipsObject *vobject, GObject *gobject )
 {
-	g_object_unref( gobject );
+	VIPS_FREEF( g_object_unref, gobject );
 }
 
 typedef struct {
@@ -2121,8 +2360,7 @@ vips_object_local_array_cb( GObject *parent, VipsObjectLocal *local )
 		VIPS_FREEF( g_object_unref, local->array[i] );
 
 	VIPS_FREEF( g_free, local->array );
-
-	g_free( local );
+	VIPS_FREEF( g_free, local );
 }
 
 /** 

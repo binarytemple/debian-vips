@@ -1,0 +1,339 @@
+<!-- ##### SECTION Title ##### -->
+histograms_lut
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION im_buildlut ##### -->
+<para>
+
+</para>
+
+@input: 
+@output: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_gammacorrect ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@exponent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_heq ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@bandno: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_hist ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@bandno: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_hist_indexed ##### -->
+<para>
+
+</para>
+
+@index: 
+@value: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_histcum ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_histeq ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_histgr ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@bandno: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_histnD ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@bins: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_histnorm ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_histplot ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_histspec ##### -->
+<para>
+
+</para>
+
+@in: 
+@ref: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_hsp ##### -->
+<para>
+
+</para>
+
+@in: 
+@ref: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_identity ##### -->
+<para>
+
+</para>
+
+@lut: 
+@bands: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_identity_ushort ##### -->
+<para>
+
+</para>
+
+@lut: 
+@bands: 
+@sz: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_invertlut ##### -->
+<para>
+
+</para>
+
+@input: 
+@output: 
+@lut_size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_ismonotonic ##### -->
+<para>
+
+</para>
+
+@lut: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_lhisteq ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@xwin: 
+@ywin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_maplut ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@lut: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_mpercent ##### -->
+<para>
+
+</para>
+
+@in: 
+@percent: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_mpercent_hist ##### -->
+<para>
+
+</para>
+
+@hist: 
+@percent: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_project ##### -->
+<para>
+
+</para>
+
+@in: 
+@hout: 
+@vout: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_stdif ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@a: 
+@m0: 
+@b: 
+@s0: 
+@xwin: 
+@ywin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_tone_analyse ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Ps: 
+@Pm: 
+@Ph: 
+@S: 
+@M: 
+@H: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_tone_build ##### -->
+<para>
+
+</para>
+
+@out: 
+@Lb: 
+@Lw: 
+@Ps: 
+@Pm: 
+@Ph: 
+@S: 
+@M: 
+@H: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_tone_build_range ##### -->
+<para>
+
+</para>
+
+@out: 
+@in_max: 
+@out_max: 
+@Lb: 
+@Lw: 
+@Ps: 
+@Pm: 
+@Ph: 
+@S: 
+@M: 
+@H: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_tone_map ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@lut: 
+@Returns: 
+
+

@@ -13,7 +13,7 @@ vipsthumbnail_SOURCES = vipsthumbnail.c
 find_mosaic_SOURCES = find_mosaic.c
 mergeup_SOURCES =  mergeup.c
 
-INCLUDES = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@
+AM_CPPFLAGS = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@
 AM_LDFLAGS = @LDFLAGS@ 
 LDADD = @VIPS_CFLAGS@ ${top_builddir}/libvips/libvips.la @VIPS_LIBS@
 if ENABLE_CXX
@@ -26,10 +26,10 @@ bin_SCRIPTS = \
 	batch_image_convert \
 	batch_rubber_sheet \
 	batch_crop \
-	vips-7.28
+	vips-7.34
 
 EXTRA_DIST = \
-	vips-7.28 \
+	vips-7.34 \
 	light_correct.in \
 	shrink_width.in \
 	batch_image_convert.in \

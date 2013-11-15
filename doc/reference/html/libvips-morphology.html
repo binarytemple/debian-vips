@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="ch02.html" title="VIPS operation API by section">
-<link rel="prev" href="libvips-mask.html" title="mask">
+<link rel="prev" href="VipsInterpolate.html" title="VipsInterpolate">
 <link rel="next" href="libvips-mosaicing.html" title="mosaicing">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libvips-mask.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="VipsInterpolate.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">VIPS Reference Manual</th>
@@ -50,10 +50,10 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code><span class="type">int</span> flag</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-morphology.html#im-dilate" title="im_dilate ()">im_dilate</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-mask.html#INTMASK:CAPS" title="INTMASK"><span class="type">INTMASK</span></a> *mask</code></em>);
+                                                         <em class="parameter"><code><span class="type">INTMASK</span> *mask</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-morphology.html#im-erode" title="im_erode ()">im_erode</a>                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-mask.html#INTMASK:CAPS" title="INTMASK"><span class="type">INTMASK</span></a> *mask</code></em>);
+                                                         <em class="parameter"><code><span class="type">INTMASK</span> *mask</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-morphology.html#im-label-regions" title="im_label_regions ()">im_label_regions</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *test</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> *segments</code></em>);
@@ -89,7 +89,7 @@ pixels from the result.
 </p>
 <p>
 If you combine the morphological operators with the mask rotators
-<a class="link" href="libvips-mask.html#im-rotate-imask45" title="im_rotate_imask45 ()"><code class="function">im_rotate_imask45()</code></a>, for example) and apply them repeatedly, you
+<code class="function">im_rotate_imask45()</code>, for example) and apply them repeatedly, you
 can achieve very complicated effects: you can thin, prune, fill, open edges,
 close gaps, and many others. For example, see `Fundamentals  of  Digital
 Image Processing' by A.  Jain, pp 384-388, Prentice-Hall, 1989 for more 
@@ -119,7 +119,7 @@ sets pixels in the output if any part of the mask matches, whereas
 <a class="link" href="libvips-morphology.html#im-erode" title="im_erode ()"><code class="function">im_erode()</code></a> sets pixels only if all of the mask matches.
 </p>
 <p>
-See <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-andimage"><code class="function">im_andimage()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-orimage"><code class="function">im_orimage()</code></a> and <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-eorimage"><code class="function">im_eorimage()</code></a>
+See <code class="function">im_andimage()</code>, <code class="function">im_orimage()</code> and <code class="function">im_eorimage()</code>
 for analogues of the usual set difference and set union operations.
 </p>
 </div>
@@ -169,7 +169,7 @@ See also: <a class="link" href="libvips-morphology.html#im-erode" title="im_erod
 <a name="im-dilate"></a><h3>im_dilate ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 im_dilate                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-mask.html#INTMASK:CAPS" title="INTMASK"><span class="type">INTMASK</span></a> *mask</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">INTMASK</span> *mask</code></em>);</pre>
 <p>
 <a class="link" href="libvips-morphology.html#im-dilate" title="im_dilate ()"><code class="function">im_dilate()</code></a> performs a morphological dilate operation on <em class="parameter"><code>in</code></em> using <em class="parameter"><code>mask</code></em> as a
 structuring element. The output pixel is set if any part of the mask 
@@ -179,7 +179,7 @@ matches, that is, the result is the logical OR of the selected input pixels.
 The image should have 0 (black) for no object and 255
 (non-zero) for an object. Note that this is the reverse of the usual
 convention for these operations, but more convenient when combined with the
-boolean operators <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-andimage"><code class="function">im_andimage()</code></a> and friends. The output image is the same
+boolean operators <code class="function">im_andimage()</code> and friends. The output image is the same
 size as the input image: edge pxels are made by expanding the input image
 as necessary in the manner of <a class="link" href="libvips-convolution.html#im-conv" title="im_conv ()"><code class="function">im_conv()</code></a>.
 </p>
@@ -191,7 +191,7 @@ based on the book "Fundamentals of Digital Image Processing" by A. Jain,
 pp 384-388, Prentice-Hall, 1989. 
 </p>
 <p>
-See the boolean operations <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-andimage"><code class="function">im_andimage()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-orimage"><code class="function">im_orimage()</code></a> and <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-eorimage"><code class="function">im_eorimage()</code></a> 
+See the boolean operations <code class="function">im_andimage()</code>, <code class="function">im_orimage()</code> and <code class="function">im_eorimage()</code> 
 for analogues of the usual set difference and set union operations.
 </p>
 <p>
@@ -228,7 +228,7 @@ See also: <a class="link" href="libvips-morphology.html#im-erode" title="im_erod
 <a name="im-erode"></a><h3>im_erode ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 im_erode                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-mask.html#INTMASK:CAPS" title="INTMASK"><span class="type">INTMASK</span></a> *mask</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">INTMASK</span> *mask</code></em>);</pre>
 <p>
 <a class="link" href="libvips-morphology.html#im-erode" title="im_erode ()"><code class="function">im_erode()</code></a> performs a morphological erode operation on <em class="parameter"><code>in</code></em> using <em class="parameter"><code>mask</code></em> as a
 structuring element. The whole mask must match for the output pixel to be
@@ -238,7 +238,7 @@ set, that is, the result is the logical AND of the selected input pixels.
 The image should have 0 (black) for no object and 255
 (non-zero) for an object. Note that this is the reverse of the usual
 convention for these operations, but more convenient when combined with the
-boolean operators <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-andimage"><code class="function">im_andimage()</code></a> and friends. The output image is the same
+boolean operators <code class="function">im_andimage()</code> and friends. The output image is the same
 size as the input image: edge pxels are made by expanding the input image
 as necessary in the manner of <a class="link" href="libvips-convolution.html#im-conv" title="im_conv ()"><code class="function">im_conv()</code></a>.
 </p>
@@ -250,7 +250,7 @@ based on the book "Fundamentals of Digital Image Processing" by A. Jain,
 pp 384-388, Prentice-Hall, 1989. 
 </p>
 <p>
-See the boolean operations <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-andimage"><code class="function">im_andimage()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-orimage"><code class="function">im_orimage()</code></a> and <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html#im-eorimage"><code class="function">im_eorimage()</code></a> 
+See the boolean operations <code class="function">im_andimage()</code>, <code class="function">im_orimage()</code> and <code class="function">im_eorimage()</code> 
 for analogues of the usual set difference and set union operations.
 </p>
 <p>
@@ -582,7 +582,7 @@ See also: <a class="link" href="libvips-convolution.html#im-conv" title="im_conv
 </div>
 <div class="refsect1">
 <a name="libvips-morphology.see-also"></a><h2>See Also</h2>
-<a href="http://http://www.vips.ecs.soton.ac.uk/libvips-boolean.html">boolean</a>
+boolean
 </div>
 </div>
 <div class="footer">

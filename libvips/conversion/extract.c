@@ -55,7 +55,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -82,7 +83,7 @@
 #include <vips/internal.h>
 #include <vips/debug.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
 #include "bandary.h"
 
@@ -134,22 +135,24 @@ vips_extract_area_gen( VipsRegion *or, void *seq, void *a, void *b,
 static int
 vips_extract_area_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsConversion *conversion = VIPS_CONVERSION( object );
 	VipsExtractArea *extract = (VipsExtractArea *) object;
 
-	if( VIPS_OBJECT_CLASS( vips_extract_area_parent_class )->build( object ) )
+	if( VIPS_OBJECT_CLASS( vips_extract_area_parent_class )->
+		build( object ) )
 		return( -1 );
 
 	if( extract->left + extract->width > extract->in->Xsize ||
 		extract->top + extract->height > extract->in->Ysize ||
 		extract->left < 0 || extract->top < 0 ||
 		extract->width <= 0 || extract->height <= 0 ) {
-		vips_error( "VipsExtractArea", "%s", _( "bad extract area" ) );
+		vips_error( class->nickname, "%s", _( "bad extract area" ) );
 		return( -1 );
 	}
 
 	if( vips_image_pio_input( extract->in ) || 
-		vips_check_coding_known( "VipsExtractArea", extract->in ) )  
+		vips_check_coding_known( class->nickname, extract->in ) )  
 		return( -1 );
 
 	if( vips_image_copy_fields( conversion->out, extract->in ) )
@@ -170,8 +173,8 @@ vips_extract_area_build( VipsObject *object )
 	return( 0 );
 }
 
-/* xy range we sanity check on ... just to stop crazy numbers from 1/0 etc.
- * causing g_assert() failures later.
+/* xy range we sanity check on ... just to stop crazy numbers from divide by 0 
+ * etc. causing g_assert() failures later.
  */
 #define RANGE (100000000)
 
@@ -180,6 +183,7 @@ vips_extract_area_class_init( VipsExtractAreaClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	VIPS_DEBUG_MSG( "vips_extract_area_class_init\n" );
 
@@ -189,6 +193,8 @@ vips_extract_area_class_init( VipsExtractAreaClass *class )
 	vobject_class->nickname = "extract_area";
 	vobject_class->description = _( "extract an area from an image" );
 	vobject_class->build = vips_extract_area_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 
 	VIPS_ARG_IMAGE( class, "input", 0, 
 		_( "Input" ), 
@@ -305,6 +311,7 @@ vips_extract_band_buffer( VipsBandary *bandary,
 static int
 vips_extract_band_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsBandary *bandary = (VipsBandary *) object;
 	VipsExtractBand *extract = (VipsExtractBand *) object;
 
@@ -314,7 +321,7 @@ vips_extract_band_build( VipsObject *object )
 		bandary->out_bands = extract->n;
 
 		if( extract->band + extract->n > extract->in->Bands ) {
-			vips_error( "VipsExtractBand", 
+			vips_error( class->nickname, 
 				"%s", _( "bad extract band" ) );
 			return( -1 );
 		}

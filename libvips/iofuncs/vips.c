@@ -35,7 +35,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -106,8 +107,12 @@
 #endif /*O_BINARY*/
 
 /* Open mode for image write ... on some systems, have to set BINARY too.
+ *
+ * We use O_RDWR not O_WRONLY since after writing we may want to rewind the 
+ * image and read from it.
+ *
  */
-#define MODE_WRITE BINARYIZE (O_WRONLY | O_CREAT | O_TRUNC)
+#define MODE_WRITE BINARYIZE (O_RDWR | O_CREAT | O_TRUNC)
 
 /* Mode for read/write. This is if we might later want to mmaprw () the file.
  */
@@ -950,8 +955,16 @@ vips_image_open_input( VipsImage *image )
 	gint64 rsize;
 
 	image->dtype = VIPS_IMAGE_OPENIN;
-	if( (image->fd = vips__open_image_read( image->filename )) == -1 ) 
-		return( -1 );
+
+	/* We may have an fd already, see vips_image_rewind_output().
+	 */
+	if( image->fd == -1 ) {
+		image->fd = vips__open_image_read( image->filename );
+		if( image->fd == -1 )
+			return( -1 );
+	}
+
+	vips__seek( image->fd, 0 );
 	if( read( image->fd, header, VIPS_SIZEOF_HEADER ) != 
 		VIPS_SIZEOF_HEADER ||
 		vips__read_header_bytes( image, header ) ) {

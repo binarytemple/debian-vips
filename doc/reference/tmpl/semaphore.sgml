@@ -1,0 +1,90 @@
+<!-- ##### SECTION Title ##### -->
+semaphore
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT VipsSemaphore ##### -->
+<para>
+
+</para>
+
+@name: 
+@v: 
+@mutex: 
+@cond: 
+
+<!-- ##### FUNCTION vips_semaphore_destroy ##### -->
+<para>
+
+</para>
+
+@s: 
+
+
+<!-- ##### FUNCTION vips_semaphore_down ##### -->
+<para>
+
+</para>
+
+@s: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_semaphore_downn ##### -->
+<para>
+
+</para>
+
+@s: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_semaphore_init ##### -->
+<para>
+
+</para>
+
+@s: 
+@v: 
+@name: 
+
+
+<!-- ##### FUNCTION vips_semaphore_up ##### -->
+<para>
+
+</para>
+
+@s: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_semaphore_upn ##### -->
+<para>
+
+</para>
+
+@s: 
+@n: 
+@Returns: 
+
+

@@ -99,7 +99,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -662,8 +663,8 @@ lr_blend_labpack( REGION *or, MergeInfo *inf, Overlapping *ovlap, Rect *oreg )
 
 		/* Unpack two bits we want.
 		 */
-		imb_LabQ2Lab( pr, r, oreg->width );
-		imb_LabQ2Lab( ps, s, oreg->width );
+		vips__LabQ2Lab_vec( r, pr, oreg->width );
+		vips__LabQ2Lab_vec( s, ps, oreg->width );
 
 		/* Blend as floats.
 		 */
@@ -671,7 +672,7 @@ lr_blend_labpack( REGION *or, MergeInfo *inf, Overlapping *ovlap, Rect *oreg )
 
 		/* Re-pack to output buffer.
 		 */
-		imb_Lab2LabQ( inf->merge, q, oreg->width );
+		vips__Lab2LabQ_vec( q, inf->merge, oreg->width );
 	}
 
 	return( 0 );
@@ -680,7 +681,7 @@ lr_blend_labpack( REGION *or, MergeInfo *inf, Overlapping *ovlap, Rect *oreg )
 static void *
 lock_free( GMutex *lock )
 {
-	g_mutex_free( lock );
+	vips_g_mutex_free( lock );
 
 	return( NULL );
 }
@@ -767,10 +768,10 @@ im__build_mergestate( const char *domain,
 	for( x = 0; x < ovlap->flsize; x++ )
 		ovlap->first[x] = -1;
 
-	ovlap->fl_lock = g_mutex_new();
+	ovlap->fl_lock = vips_g_mutex_new();
 	if( im_add_close_callback( out, 
 		(im_callback_fn) lock_free, ovlap->fl_lock, NULL ) ) {
-		g_mutex_free( ovlap->fl_lock );
+		vips_g_mutex_free( ovlap->fl_lock );
 		return( NULL );
 	}
 

@@ -1,0 +1,464 @@
+<!-- ##### SECTION Title ##### -->
+error
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION vips_check_8or16 ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_bandno ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@bandno: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_bands ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@bands: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_bands_1or3 ##### -->
+<para>
+
+</para>
+
+@domain: 
+@in: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_bands_1orn ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im1: 
+@im2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_bands_1orn_unary ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_bands_atleast ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@bands: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_bands_same ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im1: 
+@im2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_coding ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@coding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_coding_known ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_coding_noneorlabq ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_coding_same ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im1: 
+@im2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_complex ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_dmask ##### -->
+<para>
+
+</para>
+
+@domain: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_dmask_1d ##### -->
+<para>
+
+</para>
+
+@domain: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_format ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@fmt: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_format_same ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im1: 
+@im2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_hist ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_imask ##### -->
+<para>
+
+</para>
+
+@domain: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_int ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_matrix ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_mono ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_noncomplex ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_size_same ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im1: 
+@im2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_u8or16 ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_u8or16orf ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_uint ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_uintorf ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_uncoded ##### -->
+<para>
+
+</para>
+
+@domain: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_vector ##### -->
+<para>
+
+</para>
+
+@domain: 
+@n: 
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_check_vector_length ##### -->
+<para>
+
+</para>
+
+@domain: 
+@n: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_diag ##### -->
+<para>
+
+</para>
+
+@domain: 
+@fmt: 
+@...: 
+
+
+<!-- ##### FUNCTION vips_error ##### -->
+<para>
+
+</para>
+
+@domain: 
+@fmt: 
+@...: 
+
+
+<!-- ##### FUNCTION vips_error_buffer ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_error_clear ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_error_exit ##### -->
+<para>
+
+</para>
+
+@fmt: 
+@...: 
+
+
+<!-- ##### FUNCTION vips_error_g ##### -->
+<para>
+
+</para>
+
+@error: 
+
+
+<!-- ##### FUNCTION vips_error_system ##### -->
+<para>
+
+</para>
+
+@err: 
+@domain: 
+@fmt: 
+@...: 
+
+
+<!-- ##### FUNCTION vips_vdiag ##### -->
+<para>
+
+</para>
+
+@domain: 
+@fmt: 
+@ap: 
+
+
+<!-- ##### FUNCTION vips_verror ##### -->
+<para>
+
+</para>
+
+@domain: 
+@fmt: 
+@ap: 
+
+
+<!-- ##### FUNCTION vips_verror_system ##### -->
+<para>
+
+</para>
+
+@err: 
+@domain: 
+@fmt: 
+@ap: 
+
+
+<!-- ##### FUNCTION vips_vwarn ##### -->
+<para>
+
+</para>
+
+@domain: 
+@fmt: 
+@ap: 
+
+
+<!-- ##### FUNCTION vips_warn ##### -->
+<para>
+
+</para>
+
+@domain: 
+@fmt: 
+@...: 
+
+

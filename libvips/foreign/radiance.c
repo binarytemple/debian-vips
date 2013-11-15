@@ -6,6 +6,8 @@
  * 	- add radiance write
  * 20/12/11
  * 	- reworked as some fns ready for new-style classes
+ * 13/12/12
+ * 	- tag RGB rad images as scRGB
  */
 
 /*
@@ -24,7 +26,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -391,8 +394,11 @@ getheader(		/* get header from file */
 )
 {
 	char  buf[MAXLINE];
+	int n;
 
-	for ( ; ; ) {
+	/* give up if there are more than 1,000 lines of header, prevents 
+	 * us scanning entire files when testing for israd */
+	for (n = 0; n < 1000; n++) {
 		buf[MAXLINE-2] = '\n';
 		if (fgets(buf, MAXLINE, fp) == NULL)
 			return(-1);
@@ -409,6 +415,8 @@ getheader(		/* get header from file */
 		if (f != NULL && (*f)(buf, p) < 0)
 			return(-1);
 	}
+
+	return(0);
 }
 
 
@@ -900,7 +908,7 @@ rad2vips_get_header( Read *read, FILE *fin, VipsImage *out )
 	vips_image_set_string( out, "rad-format", read->format );
 
 	if( strcmp( read->format, COLRFMT ) == 0 )
-		out->Type = VIPS_INTERPRETATION_RGB;
+		out->Type = VIPS_INTERPRETATION_scRGB;
 	else if( strcmp( read->format, CIEFMT ) == 0 )
 		out->Type = VIPS_INTERPRETATION_XYZ;
 	else

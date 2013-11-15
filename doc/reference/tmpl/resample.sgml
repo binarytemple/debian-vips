@@ -1,0 +1,64 @@
+<!-- ##### SECTION Title ##### -->
+resample
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION vips_affine ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@a: 
+@b: 
+@c: 
+@d: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_quadratic ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@coeff: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_shrink ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@xshrink: 
+@yshrink: 
+@...: 
+@Returns: 
+
+

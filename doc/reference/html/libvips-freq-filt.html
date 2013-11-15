@@ -71,8 +71,6 @@ enum                <a class="link" href="libvips-freq-filt.html#VipsMaskType" t
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-freq-filt.html#im-phasecor-fft" title="im_phasecor_fft ()">im_phasecor_fft</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in1</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in2</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-freq-filt.html#im-rotquad" title="im_rotquad ()">im_rotquad</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -111,6 +109,8 @@ images to a displayable form.
         VIPS_MASK_FRACTAL_FLT = 18
 } VipsMaskType;
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -128,7 +128,7 @@ frequency domain images to filter them.
 </p>
 <p>
 All masks are created with the DC component at (0, 0), so you might want to
-rotate the quadrants with <a class="link" href="libvips-freq-filt.html#im-rotquad" title="im_rotquad ()"><code class="function">im_rotquad()</code></a> before viewing. The DC pixel always
+rotate the quadrants with <code class="function">im_rotquad()</code> before viewing. The DC pixel always
 has the value 1.0.
 </p>
 <p>
@@ -139,7 +139,7 @@ summarises the possible values:
 <p>
 </p>
 <div class="table">
-<a name="idp9872192"></a><p class="title"><b>Table 6. Parameters for <a class="link" href="libvips-freq-filt.html#im-create-fmask" title="im_create_fmask ()"><code class="function">im_create_fmask()</code></a></b></p>
+<a name="idp6347952"></a><p class="title"><b>Table 6. Parameters for <a class="link" href="libvips-freq-filt.html#im-create-fmask" title="im_create_fmask ()"><code class="function">im_create_fmask()</code></a></b></p>
 <div class="table-contents"><table summary="Parameters for im_create_fmask()" border="1">
 <colgroup>
 <col>
@@ -296,7 +296,7 @@ filtering images of gaussian noise in order to create surfaces of a given
 fractal dimension. <em class="parameter"><code>fractal_dimension</code></em> should be between 2 and 3.
 </p>
 <p>
-See also: <a class="link" href="libvips-freq-filt.html#im-flt-image-freq" title="im_flt_image_freq ()"><code class="function">im_flt_image_freq()</code></a>, <a class="link" href="libvips-freq-filt.html#im-rotquad" title="im_rotquad ()"><code class="function">im_rotquad()</code></a>,
+See also: <a class="link" href="libvips-freq-filt.html#im-flt-image-freq" title="im_flt_image_freq ()"><code class="function">im_flt_image_freq()</code></a>, <code class="function">im_rotquad()</code>,
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -318,10 +318,6 @@ See also: <a class="link" href="libvips-freq-filt.html#im-flt-image-freq" title=
 <td>mask type</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>Varargs</code></em> :</span></p></td>
-<td>mask parameters</td>
-</tr>
-<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>0 on success, -1 on error</td>
 </tr>
@@ -338,10 +334,10 @@ Make a displayable (ie. 8-bit unsigned int) power spectrum.
 </p>
 <p>
 If <em class="parameter"><code>in</code></em> is non-complex, it is transformed to Fourier space. Then the
-absolute value is passed through <a class="link" href="libvips-conversion.html#im-scaleps" title="im_scaleps ()"><code class="function">im_scaleps()</code></a>, and <a class="link" href="libvips-freq-filt.html#im-rotquad" title="im_rotquad ()"><code class="function">im_rotquad()</code></a>.
+absolute value is passed through <code class="function">im_scaleps()</code>, and <code class="function">im_rotquad()</code>.
 </p>
 <p>
-See also: <a class="link" href="libvips-conversion.html#im-scaleps" title="im_scaleps ()"><code class="function">im_scaleps()</code></a>, <a class="link" href="libvips-freq-filt.html#im-rotquad" title="im_rotquad ()"><code class="function">im_rotquad()</code></a>.
+See also: <code class="function">im_scaleps()</code>, <code class="function">im_rotquad()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -391,10 +387,6 @@ See also: <a class="link" href="libvips-freq-filt.html#im-create-fmask" title="i
 <td>mask type</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>Varargs</code></em> :</span></p></td>
-<td>mask parameters</td>
-</tr>
-<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>0 on success, -1 on error</td>
 </tr>
@@ -412,7 +404,7 @@ Generate an image of size <em class="parameter"><code>size</code></em> and fract
 should be between 2 and 3.
 </p>
 <p>
-See also: <a class="link" href="libvips-conversion.html#im-gaussnoise" title="im_gaussnoise ()"><code class="function">im_gaussnoise()</code></a>, <a class="link" href="libvips-freq-filt.html#im-flt-image-freq" title="im_flt_image_freq ()"><code class="function">im_flt_image_freq()</code></a>.
+See also: <code class="function">im_gaussnoise()</code>, <a class="link" href="libvips-freq-filt.html#im-flt-image-freq" title="im_flt_image_freq ()"><code class="function">im_flt_image_freq()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -591,7 +583,7 @@ Convert the two input images to Fourier space, calculate phase-correlation,
 back to real space.
 </p>
 <p>
-See also: <a class="link" href="libvips-freq-filt.html#im-fwfft" title="im_fwfft ()"><code class="function">im_fwfft()</code></a>, <a class="link" href="libvips-arithmetic.html#im-cross-phase" title="im_cross_phase ()"><code class="function">im_cross_phase()</code></a>,
+See also: <a class="link" href="libvips-freq-filt.html#im-fwfft" title="im_fwfft ()"><code class="function">im_fwfft()</code></a>, <code class="function">im_cross_phase()</code>,
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -603,37 +595,6 @@ See also: <a class="link" href="libvips-freq-filt.html#im-fwfft" title="im_fwfft
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in2</code></em> :</span></p></td>
 <td>second input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-rotquad"></a><h3>im_rotquad ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_rotquad                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>);</pre>
-<p>
-Rotate the quadrants of the image so that the point that was at the
-top-left is now in the centre. Handy for moving Fourier images to optical
-space.
-</p>
-<p>
-See also: <a class="link" href="libvips-conversion.html#im-wrap" title="im_wrap ()"><code class="function">im_wrap()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>

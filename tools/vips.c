@@ -38,6 +38,8 @@
  * 6/2/12
  * 	- long arg names in decls to help SWIG
  * 	- don't wrap im_remainderconst_vec()
+ * 31/12/12
+ * 	- parse options in two passes (thanks Haida)
  */
 
 /*
@@ -56,7 +58,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -332,7 +335,8 @@ vips2cpp( im_type_desc *ty )
 		IM_TYPE_DISPLAY,
 		IM_TYPE_IMAGEVEC,
 		IM_TYPE_DOUBLEVEC,
-		IM_TYPE_INTVEC
+		IM_TYPE_INTVEC,
+		IM_TYPE_INTERPOLATE
 	};
 
 	/* Corresponding C++ types.
@@ -348,7 +352,8 @@ vips2cpp( im_type_desc *ty )
 		"VDisplay",
 		"std::vector<VImage>",
 		"std::vector<double>",
-		"std::vector<int>"
+		"std::vector<int>",
+		"char*"
 	};
 
 	for( k = 0; k < IM_NUMBER( vtypes ); k++ )
@@ -771,6 +776,12 @@ print_cppdef( im_function *fn )
 		else if( strcmp( ty->type, IM_TYPE_INTVEC ) == 0 ) 
 			print_invec( j, fn->argv[j].name, 
 				"im_intvec_object", "int", "" );
+		else if( strcmp( ty->type, IM_TYPE_INTERPOLATE ) == 0 ) {
+			printf( "\tif( vips__input_interpolate_init( "
+				"&_vec.data(%d), %s ) )\n",
+				j, fn->argv[j].name );
+			printf( "\t\tverror();\n" );
+		}
 		else
 			/* Just use vips2cpp().
 			 */
@@ -897,6 +908,20 @@ print_cppdefs( int argc, char **argv )
 	return( 0 );
 }
 
+static void action_list( VipsBuf *buf );
+
+static int
+print_help( int argc, char **argv ) 
+{
+	char txt[1024];
+	VipsBuf buf = VIPS_BUF_STATIC( txt );
+
+	action_list( &buf ); 
+	printf( "%s", vips_buf_all( &buf ) );
+
+	return( 0 );
+}
+
 /* All our built-in actions.
  */
 
@@ -922,11 +947,28 @@ static ActionEntry actions[] = {
 		&empty_options[0], print_cppdefs },
 	{ "links", N_( "generate links for vips/bin" ),
 		&empty_options[0], print_links },
+	{ "help", N_( "list possible actions" ),
+		&empty_options[0], print_help },
 };
+
+static void
+action_list( VipsBuf *buf )
+{
+	int i;
+
+	vips_buf_appends( buf, _( "possible actions:\n" ) );
+	vips_buf_appendf( buf, "%7s - %s\n", 
+		"OPER", _( "execute vips operation OPER" ) );
+	for( i = 0; i < VIPS_NUMBER( actions ); i++ )
+		vips_buf_appendf( buf, "%7s - %s\n", 
+			actions[i].name, _( actions[i].description ) ); 
+}
 
 static void
 parse_options( GOptionContext *context, int *argc, char **argv )
 {
+	char txt[1024];
+	VipsBuf buf = VIPS_BUF_STATIC( txt );
 	GError *error = NULL;
 	int i, j;
 
@@ -936,24 +978,17 @@ parse_options( GOptionContext *context, int *argc, char **argv )
 		printf( "%d) %s\n", i, argv[i] );
 #endif /*DEBUG*/
 
+	action_list( &buf ); 
+	g_option_context_set_summary( context, vips_buf_all( &buf ) );
+
 	if( !g_option_context_parse( context, argc, &argv, &error ) ) {
 		if( error ) {
 			fprintf( stderr, "%s\n", error->message );
 			g_error_free( error );
 		}
 
-		error_exit( "%s", g_get_prgname() );
+		error_exit( NULL );
 	}
-
-	/* We support --plugin and --version for all cases.
-	 */
-	if( main_option_plugin ) {
-		if( !im_load_plugin( main_option_plugin ) )
-			error_exit( NULL ); 
-	}
-
-	if( main_option_version ) 
-		printf( "vips-%s\n", im_version_string() );
 
 	/* Remove any "--" argument. If one of our arguments is a negative
 	 * number, the user will need to have added the "--" flag to stop
@@ -970,17 +1005,16 @@ parse_options( GOptionContext *context, int *argc, char **argv )
 }
 
 static GOptionGroup *
-add_main_group( GOptionContext *context, VipsOperation *user_data )
+add_operation_group( GOptionContext *context, VipsOperation *user_data )
 {
-	GOptionGroup *main_group;
+	GOptionGroup *group;
 
-	main_group = g_option_group_new( NULL, NULL, NULL, user_data, NULL );
-	g_option_group_add_entries( main_group, main_option );
-	g_option_group_set_translation_domain( main_group, GETTEXT_PACKAGE );
-	g_option_context_set_main_group( context, main_group );
-	g_option_context_add_group( context, im_get_option_group() );
+	group = g_option_group_new( "operation", 
+		_( "Operation" ), _( "Operation help" ), user_data, NULL );
+	g_option_group_set_translation_domain( group, GETTEXT_PACKAGE );
+	g_option_context_add_group( context, group );
 
-	return( main_group );
+	return( group );
 }
 
 /* VIPS universal main program. 
@@ -991,10 +1025,13 @@ main( int argc, char **argv )
 	char *action;
 	GOptionContext *context;
 	GOptionGroup *main_group;
+	GOptionGroup *group;
 	VipsOperation *operation;
 	im_function *fn;
 	int i, j;
 	gboolean handled;
+
+	GError *error = NULL;
 
 	if( im_init_world( argv[0] ) )
 	        error_exit( NULL );
@@ -1010,11 +1047,61 @@ main( int argc, char **argv )
 		G_LOG_LEVEL_ERROR |
 		G_LOG_LEVEL_CRITICAL |
 		G_LOG_LEVEL_WARNING );
-	fprintf( stderr, "** DEBUG_FATAL\n" );
 #endif /*!DEBUG_FATAL*/
+
+	context = g_option_context_new( _( "[ACTION] [OPTIONS] [PARAMETERS] - "
+		"VIPS driver program" ) );
+
+	/* Add and parse the outermost options: the ones this program uses.
+	 * For example, we need
+	 * to be able to spot that in the case of "--plugin ./poop.plg" we
+	 * must remove two args.
+	 */
+	main_group = g_option_group_new( NULL, NULL, NULL, NULL, NULL );
+	g_option_group_add_entries( main_group, main_option );
+	g_option_group_set_translation_domain( main_group, GETTEXT_PACKAGE );
+	g_option_context_set_main_group( context, main_group );
+
+	/* Add the libvips options too.
+	 */
+	g_option_context_add_group( context, im_get_option_group() );
+
+	/* We add more options later, for example as options to vips8
+	 * operations. Ignore any unknown options in this first parse.
+	 */
+	g_option_context_set_ignore_unknown_options( context, TRUE );
+
+	/* Also disable help output: we want to be able to display full help
+	 * in a second pass after all options have been created.
+	 */
+	g_option_context_set_help_enabled( context, FALSE );
+
+	if( !g_option_context_parse( context, &argc, &argv, &error ) ) {
+		if( error ) {
+			fprintf( stderr, "%s\n", error->message );
+			g_error_free( error );
+		}
+
+		error_exit( NULL );
+	}
+
+	if( main_option_plugin ) {
+		if( !im_load_plugin( main_option_plugin ) )
+			error_exit( NULL ); 
+	}
+
+	if( main_option_version ) 
+		printf( "vips-%s\n", im_version_string() );
+
+	/* Reenable help and unknown option detection ready for the second
+	 * option parse.
+	 */
+	g_option_context_set_ignore_unknown_options( context, FALSE );
+	g_option_context_set_help_enabled( context, TRUE );
 
 	/* Try to find our action.
 	 */
+	handled = FALSE;
 	action = NULL;
 
 	/* Should we try to run the thing we are named as?
@@ -1024,7 +1111,8 @@ main( int argc, char **argv )
 
 	if( !action ) {
 		/* Look for the first non-option argument, if any, and make 
-		 * that our action.
+		 * that our action. The parse above will have removed most of
+		 * them, but --help (for example) could still remain. 
 		 */
 		for( i = 1; i < argc; i++ )
 			if( argv[i][0] != '-' ) {
@@ -1040,17 +1128,13 @@ main( int argc, char **argv )
 			}
 	}
 
-	context = g_option_context_new( _( "[ACTION] [OPTIONS] [PARAMETERS] - "
-		"VIPS driver program" ) );
-	handled = FALSE;
-
 	/* Could be one of our built-in actions.
 	 */
 	if( action ) 
 		for( i = 0; i < VIPS_NUMBER( actions ); i++ )
 			if( strcmp( action, actions[i].name ) == 0 ) {
-				main_group = add_main_group( context, NULL );
-				g_option_group_add_entries( main_group, 
+				group = add_operation_group( context, NULL );
+				g_option_group_add_entries( group, 
 					actions[i].group );
 				parse_options( context, &argc, argv );
 
@@ -1065,11 +1149,9 @@ main( int argc, char **argv )
 	 * since we don't want to use the vips7 compat wrappers in vips8
 	 * unless we have to. They don't support all args types.
 	 */
-	if( action && !handled && 
+	if( action && 
+		!handled && 
 		(fn = im_find_function( action )) ) {
-		(void) add_main_group( context, NULL );
-		parse_options( context, &argc, argv );
-
 		if( im_run_command( action, argc - 1, argv + 1 ) ) {
 			if( argc == 1 ) 
 				usage( fn );
@@ -1079,14 +1161,20 @@ main( int argc, char **argv )
 
 		handled = TRUE;
 	}
-	im_error_clear();
+
+	/* im_find_function() set an error msg.
+	 */
+	if( action &&
+		!handled )
+		im_error_clear();
 
 	/* Could be a vips8 VipsOperation.
 	 */
-	if( action && !handled && 
+	if( action && 
+		!handled && 
 		(operation = vips_operation_new( action )) ) {
-		main_group = add_main_group( context, operation );
-		vips_call_options( main_group, operation );
+		group = add_operation_group( context, operation );
+		vips_call_options( group, operation );
 		parse_options( context, &argc, argv );
 
 		if( vips_call_argv( operation, argc - 1, argv + 1 ) ) {
@@ -1105,23 +1193,24 @@ main( int argc, char **argv )
 
 		handled = TRUE;
 	}
-	im_error_clear();
 
-	if( action && !handled ) {
-		printf( "%s", _( "possible actions:\n" ) );
-		for( i = 0; i < VIPS_NUMBER( actions ); i++ )
-			printf( "%10s - %s\n", 
-				actions[i].name, _( actions[i].description ) ); 
-		printf( "%10s - %s\n", 
-			"<operation>", _( "execute named vips operation" ) );
+	/* vips_operation_new() sets an error msg for unknown operation.
+	 */
+	if( action &&
+		!handled )
+		im_error_clear();
 
+	if( action && 
+		!handled ) {
+		print_help( argc, argv );
 		error_exit( _( "unknown action \"%s\"" ), action );
 	}
 
-	if( !handled ) {
-		(void) add_main_group( context, NULL );
+	/* Still not handled? We may not have called parse_options(), so
+	 * --help args may not have been processed.
+	 */
+	if( !handled )
 		parse_options( context, &argc, argv );
-	}
 
 	g_option_context_free( context );
 

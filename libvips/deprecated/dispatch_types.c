@@ -25,7 +25,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -57,28 +58,12 @@
  */
 #define VEC_SEPS " "
 
-/* Init function for input displays.
+/* Init function for input displays. Just a stub nowadays.
  */
 static int
 input_display_init( im_object *obj, char *str )
 {
-	struct im_col_display *scr = im_col_display_name( str );
-
-        if( !scr ) {
-		int i;
-
-		vips_error( "input_display", 
-			_( "unknown display type \"%s\"" ), str );
-		vips_error( "input_display", "%s", 
-			_( "display should be one of:\n" ) );
-                for( i = 0; (scr = im_col_displays( i )); i++ )
-			vips_error( "input_display", 
-				"  '%s'\n", scr->d_name );
-
-		return( -1 );
-        }
-
-	*obj = scr;
+	*obj = NULL;
 
 	return( 0 );
 }
@@ -97,7 +82,7 @@ im_type_desc im__input_display = {
  */
 im_type_desc im__output_display = {
 	IM_TYPE_DISPLAY,		/* It's a display */
-	sizeof( struct im_col_display ),/* Memory to allocate */
+	sizeof( void * ),		/* Memory to allocate */
 	IM_TYPE_OUTPUT,			/* Output object */
 	NULL,				/* Init function */
 	NULL				/* Destroy function */
@@ -110,7 +95,7 @@ input_image_init( im_object *obj, char *str )
 {
 	IMAGE **im = (IMAGE **) obj;
 
-	return( !(*im = vips__deprecated_open_read( str )) );
+	return( !(*im = vips__deprecated_open_read( str, FALSE )) );
 }
 
 /* Input image type.
@@ -739,62 +724,6 @@ im__dmsprint( im_object obj )
 	return( 0 );
 }
 
-static char *decode_dtype( enum im_col_disp_type type )
-{
-	switch( type ) {
-	case DISP_BARCO: 
-		return( "DISP_BARCO" );
-	case DISP_DUMB: 
-		return( "DISP_DUMB" );
-	default:
-		return( "<unknown display type>" );
-	}
-}
-
-/* Print display stuff.
- */
-int
-im__displayprint( im_object obj )
-{
-	struct im_col_display *scr = (struct im_col_display *) obj;
-
-	printf( "im_col_display:\n" );
-	printf( "\td_name: %s\n", scr->d_name );
-	printf( "\td_type: %s\n", decode_dtype( scr->d_type ) );
-	printf( "\td_mat:\n" );
-	printf( "\t\t %g %g %g\n", 
-		scr->d_mat[0][0], scr->d_mat[0][1], scr->d_mat[0][2] );
-	printf( "\t\t %g %g %g\n", 
-		scr->d_mat[1][0], scr->d_mat[1][1], scr->d_mat[1][2] );
-	printf( "\t\t %g %g %g\n", 
-		scr->d_mat[2][0], scr->d_mat[2][1], scr->d_mat[2][2] );
-
-	printf( "\td_YCW: %g\n", scr->d_YCW );
-	printf( "\td_xCW: %g\n", scr->d_xCW );
-	printf( "\td_yCW: %g\n", scr->d_yCW );
-
-	printf( "\td_YCR: %g\n", scr->d_YCR );
-	printf( "\td_YCG: %g\n", scr->d_YCG );
-	printf( "\td_YCB: %g\n", scr->d_YCB );
-
-	printf( "\td_Vrwr: %d\n", scr->d_Vrwr );
-	printf( "\td_Vrwg: %d\n", scr->d_Vrwg );
-	printf( "\td_Vrwb: %d\n", scr->d_Vrwb );
-
-	printf( "\td_Y0R: %g\n", scr->d_Y0R );
-	printf( "\td_Y0G: %g\n", scr->d_Y0G );
-	printf( "\td_Y0B: %g\n", scr->d_Y0B );
-
-	printf( "\td_gammaR: %g\n", scr->d_gammaR );
-	printf( "\td_gammaG: %g\n", scr->d_gammaG );
-	printf( "\td_gammaB: %g\n", scr->d_gammaB );
-
-	printf( "\td_B: %g\n", scr->d_B );
-	printf( "\td_P: %g\n", scr->d_P );
-
-	return( 0 );
-}
-
 /* GValue
  */
 
@@ -870,9 +799,11 @@ im_type_desc im__output_gvalue = {
 };
 
 /* Init function for input interpolate.
+ *
+ * This is used as a helper function by the C++ interface, so amke it public.
  */
-static int
-input_interpolate_init( im_object *obj, char *str )
+int
+vips__input_interpolate_init( im_object *obj, char *str )
 {
 	GType type = g_type_from_name( "VipsInterpolate" );
 	VipsObjectClass *class = VIPS_OBJECT_CLASS( g_type_class_ref( type ) );
@@ -903,7 +834,7 @@ im_type_desc im__input_interpolate = {
 	IM_TYPE_INTERPOLATE,	
 	0,      			/* No storage required */
 	IM_TYPE_ARG,			/* It requires a command-line arg */
-	input_interpolate_init,		/* Init function */
+	vips__input_interpolate_init,	/* Init function */
 	input_interpolate_dest		/* Destroy function */
 };
 

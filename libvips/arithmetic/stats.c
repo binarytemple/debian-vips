@@ -45,7 +45,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -108,6 +109,7 @@ enum {
 static int
 vips_stats_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsStatistic *statistic = VIPS_STATISTIC( object ); 
 	VipsStats *stats = (VipsStats *) object;
 
@@ -118,7 +120,7 @@ vips_stats_build( VipsObject *object )
 	if( statistic->in ) {
 		int bands = vips_image_get_bands( statistic->in );
 
-		if( vips_check_noncomplex( "VipsStats", statistic->in ) )
+		if( vips_check_noncomplex( class->nickname, statistic->in ) )
 			return( -1 );
 
 		g_object_set( object, 
@@ -129,8 +131,7 @@ vips_stats_build( VipsObject *object )
 	if( VIPS_OBJECT_CLASS( vips_stats_parent_class )->build( object ) )
 		return( -1 );
 
-	pels = (gint64) 
-		vips_image_get_width( statistic->in ) * 
+	pels = (gint64) vips_image_get_width( statistic->in ) * 
 		vips_image_get_height( statistic->in );
 	vals = pels * vips_image_get_bands( statistic->in );
 

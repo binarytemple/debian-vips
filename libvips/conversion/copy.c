@@ -65,7 +65,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -92,7 +93,7 @@
 #include <vips/internal.h>
 #include <vips/debug.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
 typedef struct _VipsCopy {
 	VipsConversion parent_instance;
@@ -304,6 +305,7 @@ vips_copy_class_init( VipsCopyClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	VIPS_DEBUG_MSG( "vips_copy_class_init\n" );
 
@@ -313,6 +315,13 @@ vips_copy_class_init( VipsCopyClass *class )
 	vobject_class->nickname = "copy";
 	vobject_class->description = _( "copy an image" );
 	vobject_class->build = vips_copy_build;
+
+	/* We use copy to make fresh vipsimages to stop sharing, so don't
+	 * cache it. Plus copy is cheap.
+	 */
+	operation_class->flags = 
+		VIPS_OPERATION_SEQUENTIAL | 
+		VIPS_OPERATION_NOCACHE;
 
 	VIPS_ARG_IMAGE( class, "in", 1, 
 		_( "Input" ), 
@@ -449,4 +458,41 @@ vips_copy( VipsImage *in, VipsImage **out, ... )
 	va_end( ap );
 
 	return( result );
+}
+
+/**
+ * vips_copy_file:
+ * @in: input image
+ * @out: output image
+ * @...: %NULL-terminated list of optional named arguments
+ *
+ * A simple convenience function to copy an image to a file, then copy 
+ * again to output. If the image is already a file, just copy straight 
+ * through.
+ *
+ * The file is allocated with vips_image_new_temp_file(). 
+ * The file is automatically deleted when @out is closed.
+ *
+ * See also: vips_copy(), vips_image_new_temp_file().
+ *
+ * Returns: 0 on success, -1 on error
+ */
+int
+vips_copy_file( VipsImage *in, VipsImage **out, ... )
+{
+	VipsImage *file;
+
+	if( vips_image_isfile( in ) ) 
+		return( vips_copy( in, out, NULL ) ); 
+
+	if( !(file = vips_image_new_temp_file( "%s.v" )) )
+		return( -1 ); 
+	if( vips_image_write( in, file ) ||
+		vips_copy( file, out, NULL ) ) {
+		g_object_unref( file );
+		return( -1 );
+	}
+	g_object_unref( file );
+
+	return( 0 );
 }

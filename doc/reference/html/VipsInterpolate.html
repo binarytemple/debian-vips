@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="ch02.html" title="VIPS operation API by section">
 <link rel="prev" href="libvips-inplace.html" title="inplace">
-<link rel="next" href="libvips-mask.html" title="mask">
+<link rel="next" href="libvips-morphology.html" title="morphology">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">VIPS Reference Manual</th>
-<td><a accesskey="n" href="libvips-mask.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libvips-morphology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#VipsInterpolate.synopsis" class="shortcut">Top</a>
@@ -33,7 +33,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="VipsInterpolate.top_of_page"></a>VipsInterpolate</span></h2>
-<p>VipsInterpolate — various interpolators: nearest, bilinear, bicubic, and
+<p>VipsInterpolate — various interpolators: nearest, bilinear, and
 some non-linear</p>
 </td>
 <td valign="top" align="right"></td>
@@ -128,6 +128,8 @@ calculation. This is how many bits of precision they use.
 <div class="refsect2">
 <a name="VipsInterpolate-struct"></a><h3>VipsInterpolate</h3>
 <pre class="programlisting">typedef struct _VipsInterpolate VipsInterpolate;</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -230,7 +232,7 @@ See also: <a class="link" href="VipsInterpolate.html#VipsInterpolateMethod" titl
                                                          <em class="parameter"><code><span class="type">double</span> y</code></em>);</pre>
 <p>
 An interpolation function. It should read source pixels from <em class="parameter"><code>in</code></em> with
-<code class="function">IM_REGION_ADDR()</code>, it can look left and up from (x, y) by <em class="parameter"><code>window_offset</code></em>
+<a class="link" href="VipsRegion.html#VIPS-REGION-ADDR:CAPS" title="VIPS_REGION_ADDR()"><code class="function">VIPS_REGION_ADDR()</code></a>, it can look left and up from (x, y) by <em class="parameter"><code>window_offset</code></em>
 pixels and it can access pixels in a window of size <em class="parameter"><code>window_size</code></em>.
 </p>
 <p>

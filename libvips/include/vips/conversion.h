@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -44,6 +45,7 @@ extern "C" {
  * @VIPS_EXTEND_REPEAT: repeat the whole image
  * @VIPS_EXTEND_MIRROR: mirror the whole image
  * @VIPS_EXTEND_WHITE: extend with white (all bits set) pixels
+ * @VIPS_EXTEND_BACKGROUND: extend with colour from the @background property
  *
  * See vips_embed(), vips_conv(), vips_affine() and so on.
  *
@@ -61,6 +63,8 @@ extern "C" {
  * edges
  *
  * #VIPS_EXTEND_WHITE --- new pixels are white, ie. all bits are set
+
+ * #VIPS_EXTEND_BACKGROUND --- colour set from the @background property
  *
  * We have to specify the exact value of each enum member since we have to 
  * keep these frozen for back compat with vips7.
@@ -68,12 +72,13 @@ extern "C" {
  * See also: vips_embed().
  */
 typedef enum {
-	VIPS_EXTEND_BLACK = 0,
-	VIPS_EXTEND_COPY = 1,
-	VIPS_EXTEND_REPEAT = 2,
-	VIPS_EXTEND_MIRROR = 3,
-	VIPS_EXTEND_WHITE = 4,
-	VIPS_EXTEND_LAST = 5
+	VIPS_EXTEND_BLACK,
+	VIPS_EXTEND_COPY,
+	VIPS_EXTEND_REPEAT,
+	VIPS_EXTEND_MIRROR,
+	VIPS_EXTEND_WHITE,
+	VIPS_EXTEND_BACKGROUND,
+	VIPS_EXTEND_LAST
 } VipsExtend;
 
 /** 
@@ -104,6 +109,8 @@ typedef enum {
  *
  * Operations like vips_join() need to be told whether to align images on the
  * low or high coordinate edge, or centre.
+ *
+ *
  *
  * See also: vips_join().
  */
@@ -157,9 +164,13 @@ int vips_copy( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_tilecache( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
+int vips_linecache( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
 int vips_sequential( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_cache( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_copy_file( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 
 int vips_embed( VipsImage *in, VipsImage **out, 
@@ -179,6 +190,17 @@ int vips_extract_area( VipsImage *input, VipsImage **output,
 int vips_extract_band( VipsImage *input, VipsImage **output, int band, ... )
 	__attribute__((sentinel));
 int vips_replicate( VipsImage *in, VipsImage **out, int across, int down, ... )
+	__attribute__((sentinel));
+int vips_grid( VipsImage *in, VipsImage **out, 
+	int tile_height, int across, int down, ... )
+	__attribute__((sentinel));
+int vips_wrap( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_rot( VipsImage *in, VipsImage **out, VipsAngle angle, ... )
+	__attribute__((sentinel));
+int vips_zoom( VipsImage *in, VipsImage **out, int xfac, int yfac, ... )
+	__attribute__((sentinel));
+int vips_subsample( VipsImage *in, VipsImage **out, int xfac, int yfac, ... )
 	__attribute__((sentinel));
 
 int vips_cast( VipsImage *in, VipsImage **out, VipsBandFormat format, ... )
@@ -203,6 +225,10 @@ int vips_cast_complex( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_cast_dpcomplex( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
+int vips_scale( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_msb( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
 
 int vips_bandjoin( VipsImage **in, VipsImage **out, int n, ... )
 	__attribute__((sentinel));
@@ -210,46 +236,31 @@ int vips_bandjoin2( VipsImage *in1, VipsImage *in2, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_bandmean( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
+
+int vips_bandbool( VipsImage *in, VipsImage **out, 
+	VipsOperationBoolean operation, ... )
+	__attribute__((sentinel));
+int vips_bandand( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_bandor( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_bandeor( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+
 int vips_recomb( VipsImage *in, VipsImage **out, VipsImage *m, ... )
 	__attribute__((sentinel));
-int vips_black( VipsImage **out, int width, int height, ... )
-	__attribute__((sentinel));
-int vips_rot( VipsImage *in, VipsImage **out, VipsAngle angle, ... )
-	__attribute__((sentinel));
+
 int vips_ifthenelse( VipsImage *cond, VipsImage *in1, VipsImage *in2, 
 	VipsImage **out, ... )
 	__attribute__((sentinel));
+int vips_flatten( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
 
 
-
-
-
-
-int im_copy_file( VipsImage *in, VipsImage *out );
-
-int im_scale( VipsImage *in, VipsImage *out );
-int im_msb( VipsImage *in, VipsImage *out );
-int im_msb_band( VipsImage *in, VipsImage *out, int band );
-
-int im_scaleps( VipsImage *in, VipsImage *out );
 
 int im_falsecolour( VipsImage *in, VipsImage *out );
-int im_gaussnoise( VipsImage *out, int x, int y, double mean, double sigma );
-
-int im_text( VipsImage *out, const char *text, const char *font,
-	int width, int alignment, int dpi );
 
 int im_insertset( VipsImage *main, VipsImage *sub, VipsImage *out, int n, int *x, int *y );
-int im_grid( VipsImage *in, VipsImage *out, int tile_height, int across, int down );
-int im_wrap( VipsImage *in, VipsImage *out, int x, int y );
-
-int im_subsample( VipsImage *in, VipsImage *out, int xshrink, int yshrink );
-int im_zoom( VipsImage *in, VipsImage *out, int xfac, int yfac );
-
-int im_system( VipsImage *im, const char *cmd, char **out );
-VipsImage *im_system_image( VipsImage *im, 
-	const char *in_format, const char *out_format, const char *cmd_format, 
-	char **log );
 
 #ifdef __cplusplus
 }

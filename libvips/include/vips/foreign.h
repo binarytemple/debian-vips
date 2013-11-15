@@ -18,7 +18,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -136,6 +137,10 @@ typedef struct _VipsForeignLoad {
 	 * disc foreign or a memory buffer. This must be set by ->load().
 	 */
 	VipsImage *real;
+
+	/* Set this to tag the operation as nocache.
+	 */
+	gboolean nocache;
 } VipsForeignLoad;
 
 typedef struct _VipsForeignLoadClass {
@@ -294,10 +299,10 @@ int vips_foreign_load( const char *filename, VipsImage **out, ... )
 int vips_foreign_save( VipsImage *in, const char *filename, ... )
 	__attribute__((sentinel));
 
-int vips_foreign_load_options( const char *filename, VipsImage **out );
-int vips_foreign_save_options( VipsImage *in, const char *filename );
-
-void vips_foreign_operation_init( void );
+int vips_foreign_load_options( const char *filename, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_foreign_save_options( VipsImage *in, const char *filename, ... )
+	__attribute__((sentinel));
 
 int vips_openslideload( const char *filename, VipsImage **out, ... )
 	__attribute__((sentinel));
@@ -342,7 +347,7 @@ typedef enum {
 /**
  * VipsForeignTiffPredictor:
  * @VIPS_FOREIGN_TIFF_PREDICTOR_NONE: no prediction
- * @VIPS_FOREIGN_TIFF_PREDICTOR_HORIZONTAL: horizontal differenceing
+ * @VIPS_FOREIGN_TIFF_PREDICTOR_HORIZONTAL: horizontal differencing
  * @VIPS_FOREIGN_TIFF_PREDICTOR_FLOAT: float predictor
  *
  * The predictor can help deflate and lzw compression. The values are fixed by
@@ -402,6 +407,8 @@ int vips_magickload( const char *filename, VipsImage **out, ... )
 
 int vips_pngload( const char *filename, VipsImage **out, ... )
 	__attribute__((sentinel));
+int vips_pngload_buffer( void *buf, size_t len, VipsImage **out, ... )
+	__attribute__((sentinel));
 int vips_pngsave( VipsImage *in, const char *filename, ... )
 	__attribute__((sentinel));
 int vips_pngsave_buffer( VipsImage *in, void **buf, size_t *len, ... )
@@ -418,6 +425,39 @@ int vips_matload( const char *filename, VipsImage **out, ... )
 int vips_radload( const char *filename, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_radsave( VipsImage *in, const char *filename, ... )
+	__attribute__((sentinel));
+
+/**
+ * VipsForeignDzLayout:
+ * @VIPS_FOREIGN_DZ_LAYOUT_DZ: use DeepZoom directory layout
+ * @VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY: use Zoomify directory layout
+ * @VIPS_FOREIGN_DZ_LAYOUT_GOOGLE: use Google maps directory layout
+ *
+ * What directory layout and metadata standard to use. 
+ */
+typedef enum {
+	VIPS_FOREIGN_DZ_LAYOUT_DZ,
+	VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY,
+	VIPS_FOREIGN_DZ_LAYOUT_GOOGLE,
+	VIPS_FOREIGN_DZ_LAYOUT_LAST
+} VipsForeignDzLayout;
+
+/**
+ * VipsForeignDzDepth:
+ * @VIPS_FOREIGN_DZ_DEPTH_1PIXEL: create layers down to 1x1 pixel
+ * @VIPS_FOREIGN_DZ_DEPTH_1TILE: create layers down to 1x1 tile
+ * @VIPS_FOREIGN_DZ_DEPTH_1: only create a single layer
+ *
+ * How many pyramid layers to create.
+ */
+typedef enum {
+	VIPS_FOREIGN_DZ_DEPTH_1PIXEL,
+	VIPS_FOREIGN_DZ_DEPTH_1TILE,
+	VIPS_FOREIGN_DZ_DEPTH_1,
+	VIPS_FOREIGN_DZ_DEPTH_LAST
+} VipsForeignDzDepth;
+
+int vips_dzsave( VipsImage *in, const char *basename, ... )
 	__attribute__((sentinel));
 
 #ifdef __cplusplus

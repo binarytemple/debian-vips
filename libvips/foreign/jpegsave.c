@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -237,7 +238,7 @@ vips_foreign_save_jpeg_buffer_build( VipsObject *object )
 
 	area = vips_area_new_blob( (VipsCallbackFn) vips_free, obuf, olen );
 
-	g_object_set( file, "buf", area, NULL );
+	g_object_set( file, "buffer", area, NULL );
 
 	return( 0 );
 }

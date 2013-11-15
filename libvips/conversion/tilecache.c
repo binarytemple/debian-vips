@@ -1,5 +1,4 @@
-/* Tile cache from tiff2vips ... broken out so it can be shared with
- * openexr read.
+/* Simple tile or line cache.
  *
  * This isn't the same as the sinkscreen cache: we don't sub-divide, and we 
  * single-thread our callee.
@@ -15,6 +14,21 @@
  * 	- use im_prepare_to() and avoid making a sequence for every cache tile
  * 5/12/11
  * 	- rework as a class
+ * 23/6/12
+ * 	- listen for "minimise" signal
+ * 23/8/12
+ * 	- split to line and tile cache
+ * 	- use a hash table instead of a list
+ * 13/9/12
+ * 	- oops, linecache was oversized
+ * 12/11/12
+ * 	- make linecache 50% larger to give some slop room
+ * 8/10/12
+ * 	- make it optionally threaded
+ * 21/2/13
+ * 	- could deadlock if downstream raised an error (thanks Todd)
+ * 25/4/13
+ * 	- cache minimisation is optional, see "persistent" flag
  */
 
 /*
@@ -33,7 +47,8 @@
 
     You should have received a cache of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -60,26 +75,44 @@
 #include <vips/internal.h>
 #include <vips/debug.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
-/* Lower and upper bounds for tile cache size. Choose an exact number based on
- * tile size.
+/* A tile in cache can be in one of three states:
+ *
+ * DATA		- the tile holds valid pixels 
+ * CALC		- some thread somewhere is calculating it
+ * PEND		- some thread somewhere wants it
  */
-#define VIPS_MAX_TILE_CACHE (250)
-#define VIPS_MIN_TILE_CACHE (5)
+typedef enum VipsTileState {
+	VIPS_TILE_STATE_DATA,
+	VIPS_TILE_STATE_CALC,
+	VIPS_TILE_STATE_PEND
+} VipsTileState;
 
 /* A tile in our cache.
  */
-typedef struct {
-	struct _VipsTileCache *cache;
+typedef struct _VipsTile {
+	struct _VipsBlockCache *cache;
+
+	VipsTileState state;
 
 	VipsRegion *region;		/* Region with private mem for data */
-	int time;			/* Time of last use for flush */
-	int x;				/* xy pos in VIPS image cods */
-	int y;
-} Tile;
 
-typedef struct _VipsTileCache {
+	/* We count how many threads are relying on this tile. This tile can't
+	 * be flushed if ref_count > 0.
+	 */
+	int ref_count; 
+
+	/* Tile position. Just use left/top to calculate a hash. This is the
+	 * key for the hash table. Don't use region->valid in case the region
+	 * pointer is NULL.
+	 */
+	VipsRect pos; 
+
+	int time;			/* Time of last use for flush */
+} VipsTile;
+
+typedef struct _VipsBlockCache {
 	VipsConversion parent_instance;
 
 	VipsImage *in;
@@ -87,25 +120,347 @@ typedef struct _VipsTileCache {
 	int tile_height;
 	int max_tiles;
 	VipsCacheStrategy strategy;
+	gboolean threaded;
+	gboolean persistent;
 
-	/* VipsTileCache.
-	 */
 	int time;			/* Update ticks for LRU here */
 	int ntiles;			/* Current cache size */
 	GMutex *lock;			/* Lock everything here */
-	GSList *tiles;			/* List of tiles */
-} VipsTileCache;
+	GCond *new_tile;		/* A new tile is ready */
+	GHashTable *tiles;		/* Tiles, hashed by coordinates */
+} VipsBlockCache;
 
-typedef VipsConversionClass VipsTileCacheClass;
+typedef VipsConversionClass VipsBlockCacheClass;
 
-G_DEFINE_TYPE( VipsTileCache, vips_tile_cache, VIPS_TYPE_CONVERSION );
+G_DEFINE_TYPE( VipsBlockCache, vips_block_cache, VIPS_TYPE_CONVERSION );
+
+#define VIPS_TYPE_BLOCK_CACHE (vips_block_cache_get_type())
 
 static void
-tile_destroy( Tile *tile )
+vips_block_cache_drop_all( VipsBlockCache *cache )
 {
-	VipsTileCache *cache = tile->cache;
+	/* FIXME this is a disaster if active threads are working on tiles. We
+	 * should have something to block new requests, and only dispose once
+	 * all tiles are unreffed.
+	 */
+	g_hash_table_remove_all( cache->tiles ); 
+}
 
-	cache->tiles = g_slist_remove( cache->tiles, tile );
+static void
+vips_block_cache_dispose( GObject *gobject )
+{
+	VipsBlockCache *cache = (VipsBlockCache *) gobject;
+
+	vips_block_cache_drop_all( cache );
+	VIPS_FREEF( vips_g_mutex_free, cache->lock );
+	VIPS_FREEF( vips_g_cond_free, cache->new_tile );
+
+	G_OBJECT_CLASS( vips_block_cache_parent_class )->dispose( gobject );
+}
+
+static void
+vips_tile_touch( VipsTile *tile )
+{
+	g_assert( tile->cache->ntiles >= 0 );
+
+	tile->time = tile->cache->time++;
+}
+
+static int
+vips_tile_move( VipsTile *tile, int x, int y )
+{
+	/* We are changing x/y and therefore the hash value. We must unlink
+	 * from the old hash position and relink at the new place.
+	 */
+	g_hash_table_steal( tile->cache->tiles, &tile->pos );
+
+	tile->pos.left = x;
+	tile->pos.top = y;
+	tile->pos.width = tile->cache->tile_width;
+	tile->pos.height = tile->cache->tile_height;
+
+	g_hash_table_insert( tile->cache->tiles, &tile->pos, tile );
+
+	if( vips_region_buffer( tile->region, &tile->pos ) )
+		return( -1 );
+
+	/* No data yet, but someone must want it.
+	 */
+	tile->state = VIPS_TILE_STATE_PEND;
+
+	return( 0 );
+}
+
+static VipsTile *
+vips_tile_new( VipsBlockCache *cache, int x, int y )
+{
+	VipsTile *tile;
+
+	if( !(tile = VIPS_NEW( NULL, VipsTile )) )
+		return( NULL );
+
+	tile->cache = cache;
+	tile->state = VIPS_TILE_STATE_PEND;
+	tile->ref_count = 0;
+	tile->region = NULL;
+	tile->time = cache->time;
+	tile->pos.left = x;
+	tile->pos.top = y;
+	tile->pos.width = cache->tile_width;
+	tile->pos.height = cache->tile_height;
+	g_hash_table_insert( cache->tiles, &tile->pos, tile );
+	g_assert( cache->ntiles >= 0 );
+	cache->ntiles += 1;
+
+	if( !(tile->region = vips_region_new( cache->in )) ) {
+		g_hash_table_remove( cache->tiles, &tile->pos );
+		return( NULL );
+	}
+
+	vips__region_no_ownership( tile->region );
+
+	if( vips_tile_move( tile, x, y ) ) {
+		g_hash_table_remove( cache->tiles, &tile->pos );
+		return( NULL );
+	}
+
+	return( tile );
+}
+
+/* Do we have a tile in the cache?
+ */
+static VipsTile *
+vips_tile_search( VipsBlockCache *cache, int x, int y )
+{
+	VipsRect pos;
+	VipsTile *tile;
+
+	pos.left = x;
+	pos.top = y;
+	pos.width = cache->tile_width;
+	pos.height = cache->tile_height;
+	tile = (VipsTile *) g_hash_table_lookup( cache->tiles, &pos );
+
+	return( tile );
+}
+
+typedef struct _VipsTileSearch {
+	VipsTile *tile;
+
+	int oldest;
+	int topmost;
+} VipsTileSearch;
+
+static void 
+vips_tile_search_recycle( gpointer key, gpointer value, gpointer user_data )
+{
+	VipsTile *tile = (VipsTile *) value;
+	VipsBlockCache *cache = tile->cache;
+	VipsTileSearch *search = (VipsTileSearch *) user_data;
+
+	/* Only consider unreffed tiles for recycling.
+	 */
+	if( !tile->ref_count ) {
+		switch( cache->strategy ) {
+		case VIPS_CACHE_RANDOM:
+			if( tile->time < search->oldest ) {
+				search->oldest = tile->time;
+				search->tile = tile;
+			}
+			break;
+
+		case VIPS_CACHE_SEQUENTIAL:
+			if( tile->pos.top < search->topmost ) {
+				search->topmost = tile->pos.top;
+				search->tile = tile;
+			}
+			break;
+
+		default:
+			g_assert( 0 );
+		}
+	}
+}
+
+/* Find existing tile, make a new tile, or if we have a full set of tiles, 
+ * reuse one.
+ */
+static VipsTile *
+vips_tile_find( VipsBlockCache *cache, int x, int y )
+{
+	VipsTile *tile;
+	VipsTileSearch search;
+
+	/* In cache already?
+	 */
+	if( (tile = vips_tile_search( cache, x, y )) ) {
+		VIPS_DEBUG_MSG( "vips_tile_find: tile %d x %d in cache\n", 
+			x, y ); 
+		return( tile );
+	}
+
+	/* VipsBlockCache not full?
+	 */
+	if( cache->max_tiles == -1 ||
+		cache->ntiles < cache->max_tiles ) {
+		VIPS_DEBUG_MSG( "vips_tile_find: making new tile at %d x %d\n", 
+			x, y ); 
+		if( !(tile = vips_tile_new( cache, x, y )) )
+			return( NULL );
+
+		return( tile );
+	}
+
+	/* Reuse an old one.
+	 */
+	search.oldest = cache->time;
+	search.topmost = cache->in->Ysize;
+	search.tile = NULL;
+	g_hash_table_foreach( cache->tiles, vips_tile_search_recycle, &search );
+	tile = search.tile; 
+
+	if( !tile ) {
+		/* There are no tiles we can reuse -- we have to make another
+		 * for now. They will get culled down again next time around.
+		 */
+		if( !(tile = vips_tile_new( cache, x, y )) ) 
+			return( NULL );
+
+		return( tile );
+	}
+
+	VIPS_DEBUG_MSG( "tilecache: reusing tile %d x %d\n", 
+		tile->pos.left, tile->pos.top );
+
+	if( vips_tile_move( tile, x, y ) )
+		return( NULL );
+
+	return( tile );
+}
+
+static gboolean            
+vips_tile_unlocked( gpointer key, gpointer value, gpointer user_data )
+{
+	VipsTile *tile = (VipsTile *) value;
+
+	return( !tile->ref_count );
+}
+
+static void
+vips_block_cache_minimise( VipsImage *image, VipsBlockCache *cache )
+{
+	/* We can't drop tiles that are in use.
+	 */
+	g_mutex_lock( cache->lock );
+
+	g_hash_table_foreach_remove( cache->tiles, 
+		vips_tile_unlocked, NULL );
+
+	g_mutex_unlock( cache->lock );
+}
+
+static int
+vips_block_cache_build( VipsObject *object )
+{
+	VipsConversion *conversion = VIPS_CONVERSION( object );
+	VipsBlockCache *cache = (VipsBlockCache *) object;
+
+	VIPS_DEBUG_MSG( "vips_block_cache_build\n" );
+
+	if( VIPS_OBJECT_CLASS( vips_block_cache_parent_class )->
+		build( object ) )
+		return( -1 );
+
+	if( !cache->persistent )
+		g_signal_connect( conversion->out, "minimise", 
+			G_CALLBACK( vips_block_cache_minimise ), cache );
+
+	return( 0 );
+}
+
+static void
+vips_block_cache_class_init( VipsBlockCacheClass *class )
+{
+	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
+	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
+
+	VIPS_DEBUG_MSG( "vips_block_cache_class_init\n" );
+
+	gobject_class->dispose = vips_block_cache_dispose;
+	gobject_class->set_property = vips_object_set_property;
+	gobject_class->get_property = vips_object_get_property;
+
+	vobject_class->nickname = "blockcache";
+	vobject_class->description = _( "cache an image" );
+	vobject_class->build = vips_block_cache_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
+
+	VIPS_ARG_IMAGE( class, "in", 1, 
+		_( "Input" ), 
+		_( "Input image" ),
+		VIPS_ARGUMENT_REQUIRED_INPUT,
+		G_STRUCT_OFFSET( VipsBlockCache, in ) );
+
+	VIPS_ARG_INT( class, "tile_height", 4, 
+		_( "Tile height" ), 
+		_( "Tile height in pixels" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsBlockCache, tile_height ),
+		1, 1000000, 128 );
+
+	VIPS_ARG_ENUM( class, "strategy", 6, 
+		_( "Strategy" ), 
+		_( "Expected access pattern" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsBlockCache, strategy ),
+		VIPS_TYPE_CACHE_STRATEGY, VIPS_CACHE_RANDOM );
+
+	VIPS_ARG_BOOL( class, "threaded", 7, 
+		_( "Threaded" ), 
+		_( "Allow threaded access" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsBlockCache, threaded ),
+		FALSE );
+
+	VIPS_ARG_BOOL( class, "persistent", 8, 
+		_( "Persistent" ), 
+		_( "Keep cache between evaluations" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsBlockCache, persistent ),
+		FALSE );
+}
+
+static unsigned int
+vips_rect_hash( VipsRect *pos )
+{
+	guint hash;
+
+	/* We could shift down by the tile size?
+	 *
+	 * X discrimination is more important than Y, since
+	 * most tiles will have a similar Y. 
+	 */
+	hash = pos->left ^ (pos->top << 16);
+
+	return( hash );
+}
+
+static gboolean 
+vips_rect_equal( VipsRect *a, VipsRect *b )
+{
+	return( a->left == b->left && a->top == b->top );
+}
+
+static void
+vips_tile_destroy( VipsTile *tile )
+{
+	VipsBlockCache *cache = tile->cache;
+
+	VIPS_DEBUG_MSG( "vips_tile_destroy: tile %d, %d (%p)\n", 
+		tile->pos.left, tile->pos.top, tile ); 
+
 	cache->ntiles -= 1;
 	g_assert( cache->ntiles >= 0 );
 	tile->cache = NULL;
@@ -116,228 +471,131 @@ tile_destroy( Tile *tile )
 }
 
 static void
-vips_tile_cache_dispose( GObject *gobject )
+vips_block_cache_init( VipsBlockCache *cache )
 {
-	VipsTileCache *cache = (VipsTileCache *) gobject;
+	cache->tile_width = 128;
+	cache->tile_height = 128;
+	cache->max_tiles = 1000;
+	cache->strategy = VIPS_CACHE_RANDOM;
+	cache->threaded = FALSE;
+	cache->persistent = FALSE;
 
-	while( cache->tiles ) {
-		Tile *tile = (Tile *) cache->tiles->data;
-
-		tile_destroy( tile );
-	}
-
-	VIPS_FREEF( g_mutex_free, cache->lock );
-
-	G_OBJECT_CLASS( vips_tile_cache_parent_class )->dispose( gobject );
+	cache->time = 0;
+	cache->ntiles = 0;
+	cache->lock = vips_g_mutex_new();
+	cache->new_tile = vips_g_cond_new();
+	cache->tiles = g_hash_table_new_full( 
+		(GHashFunc) vips_rect_hash, 
+		(GEqualFunc) vips_rect_equal,
+		NULL,
+		(GDestroyNotify) vips_tile_destroy );
 }
 
-static Tile *
-tile_new( VipsTileCache *cache )
+typedef struct _VipsTileCache {
+	VipsBlockCache parent_instance;
+
+} VipsTileCache;
+
+typedef VipsBlockCacheClass VipsTileCacheClass;
+
+G_DEFINE_TYPE( VipsTileCache, vips_tile_cache, VIPS_TYPE_BLOCK_CACHE );
+
+static void
+vips_tile_unref( VipsTile *tile )
 {
-	Tile *tile;
+	g_assert( tile->ref_count > 0 );
 
-	if( !(tile = VIPS_NEW( NULL, Tile )) )
-		return( NULL );
-
-	tile->cache = cache;
-	tile->region = NULL;
-	tile->time = cache->time;
-	tile->x = -1;
-	tile->y = -1;
-	cache->tiles = g_slist_prepend( cache->tiles, tile );
-	g_assert( cache->ntiles >= 0 );
-	cache->ntiles += 1;
-
-	if( !(tile->region = vips_region_new( cache->in )) ) {
-		tile_destroy( tile );
-		return( NULL );
-	}
-	vips__region_no_ownership( tile->region );
-
-	return( tile );
-}
-
-static int
-tile_move( Tile *tile, int x, int y )
-{
-	VipsRect area;
-
-	tile->x = x;
-	tile->y = y;
-
-	area.left = x;
-	area.top = y;
-	area.width = tile->cache->tile_width;
-	area.height = tile->cache->tile_height;
-
-	if( vips_region_buffer( tile->region, &area ) )
-		return( -1 );
-
-	return( 0 );
-}
-
-/* Do we have a tile in the cache?
- */
-static Tile *
-tile_search( VipsTileCache *cache, int x, int y )
-{
-	GSList *p;
-
-	for( p = cache->tiles; p; p = p->next ) {
-		Tile *tile = (Tile *) p->data;
-
-		if( tile->x == x && tile->y == y )
-			return( tile );
-	}
-
-	return( NULL );
+	tile->ref_count -= 1;
 }
 
 static void
-tile_touch( Tile *tile )
+vips_tile_ref( VipsTile *tile )
 {
-	g_assert( tile->cache->ntiles >= 0 );
+	tile->ref_count += 1;
 
-	tile->time = tile->cache->time++;
+	g_assert( tile->ref_count > 0 );
 }
 
-/* Fill a tile with pixels.
- */
-static int
-tile_fill( Tile *tile, VipsRegion *in )
+static void
+vips_tile_cache_unref( GSList *work )
 {
-	VipsRect area;
-
-	VIPS_DEBUG_MSG( "tilecache: filling tile %d x %d\n", tile->x, tile->y );
-
-	area.left = tile->x;
-	area.top = tile->y;
-	area.width = tile->cache->tile_width;
-	area.height = tile->cache->tile_height;
-
-	if( vips_region_prepare_to( in, tile->region, 
-		&area, area.left, area.top ) ) 
-		return( -1 );
-
-	tile_touch( tile );
-
-	return( 0 );
-}
-
-/* Find existing tile, make a new tile, or if we have a full set of tiles, 
- * reuse LRU.
- */
-static Tile *
-tile_find( VipsTileCache *cache, VipsRegion *in, int x, int y )
-{
-	Tile *tile;
-	int oldest, topmost;
 	GSList *p;
 
-	/* In cache already?
-	 */
-	if( (tile = tile_search( cache, x, y )) ) {
-		tile_touch( tile );
+	for( p = work; p; p = p->next ) 
+		vips_tile_unref( (VipsTile *) p->data ); 
 
-		return( tile );
-	}
-
-	/* VipsTileCache not full?
-	 */
-	if( cache->max_tiles == -1 ||
-		cache->ntiles < cache->max_tiles ) {
-		if( !(tile = tile_new( cache )) ||
-			tile_move( tile, x, y ) ||
-			tile_fill( tile, in ) )
-			return( NULL );
-
-		return( tile );
-	}
-
-	/* Reuse an old one.
-	 */
-	switch( cache->strategy ) {
-	case VIPS_CACHE_RANDOM:
-		oldest = cache->time;
-		tile = NULL;
-		for( p = cache->tiles; p; p = p->next ) {
-			Tile *t = (Tile *) p->data;
-
-			if( t->time < oldest ) {
-				oldest = t->time;
-				tile = t;
-			}
-		}
-		break;
-
-	case VIPS_CACHE_SEQUENTIAL:
-		topmost = cache->in->Ysize;
-		tile = NULL;
-		for( p = cache->tiles; p; p = p->next ) {
-			Tile *t = (Tile *) p->data;
-
-			if( t->y < topmost ) {
-				topmost = t->y;
-				tile = t;
-			}
-		}
-		break;
-
-	default:
-		g_assert( 0 );
-	}
-
-	g_assert( tile );
-
-	VIPS_DEBUG_MSG( "tilecache: reusing tile %d x %d\n", tile->x, tile->y );
-
-	if( tile_move( tile, x, y ) ||
-		tile_fill( tile, in ) )
-		return( NULL );
-
-	return( tile );
+	g_slist_free( work );
 }
 
-/* Copy rect from @from to @to.
+/* Make a set of work tiles.
  */
-static void
-copy_region( VipsRegion *from, VipsRegion *to, VipsRect *area )
+static GSList *
+vips_tile_cache_ref( VipsBlockCache *cache, VipsRect *r )
 {
-	int y;
+	const int tw = cache->tile_width;
+	const int th = cache->tile_height;
 
-	/* Area should be inside both from and to.
+	/* Find top left of tiles we need.
 	 */
-	g_assert( vips_rect_includesrect( &from->valid, area ) );
-	g_assert( vips_rect_includesrect( &to->valid, area ) );
+	const int xs = (r->left / tw) * tw;
+	const int ys = (r->top / th) * th;
 
-	/* Loop down common area, copying.
+	GSList *work;
+	VipsTile *tile;
+	int x, y;
+
+	/* Ref all the tiles we will need.
 	 */
-	for( y = area->top; y < VIPS_RECT_BOTTOM( area ); y++ ) {
-		VipsPel *p = VIPS_REGION_ADDR( from, area->left, y );
-		VipsPel *q = VIPS_REGION_ADDR( to, area->left, y );
+	work = NULL;
+	for( y = ys; y < VIPS_RECT_BOTTOM( r ); y += th )
+		for( x = xs; x < VIPS_RECT_RIGHT( r ); x += tw ) {
+			if( !(tile = vips_tile_find( cache, x, y )) ) {
+				vips_tile_cache_unref( work );
+				return( NULL );
+			}
 
-		memcpy( q, p, VIPS_IMAGE_SIZEOF_PEL( from->im ) * area->width );
-	}
+			vips_tile_touch( tile );
+
+			vips_tile_ref( tile ); 
+
+			/* We must append, since we want to keep tile ordering
+			 * for sequential sources.
+			 */
+			work = g_slist_append( work, tile );
+
+			VIPS_DEBUG_MSG( "vips_tile_cache_ref: "
+				"tile %d, %d (%p)\n", x, y, tile ); 
+		}
+
+	return( work );
 }
 
-/* Generate func.
+static void
+vips_tile_paste( VipsTile *tile, VipsRegion *or )
+{
+	VipsRect hit;
+
+	/* The part of the tile that we need.
+	 */
+	vips_rect_intersectrect( &or->valid, &tile->pos, &hit );
+	if( !vips_rect_isempty( &hit ) )
+		vips_region_copy( tile->region, or, &hit, hit.left, hit.top ); 
+}
+
+/* Also called from vips_line_cache_gen(), beware.
  */
 static int
 vips_tile_cache_gen( VipsRegion *or, 
 	void *seq, void *a, void *b, gboolean *stop )
 {
 	VipsRegion *in = (VipsRegion *) seq;
-	VipsTileCache *cache = (VipsTileCache *) b;
-	const int tw = cache->tile_width;
-	const int th = cache->tile_height;
+	VipsBlockCache *cache = (VipsBlockCache *) b;
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( cache );
 	VipsRect *r = &or->valid;
 
-	/* Find top left of tiles we need.
-	 */
-	int xs = (r->left / tw) * tw;
-	int ys = (r->top / th) * th;
-
-	int x, y;
+	VipsTile *tile;
+	GSList *work;
+	GSList *p;
 
 	g_mutex_lock( cache->lock );
 
@@ -345,30 +603,120 @@ vips_tile_cache_gen( VipsRegion *or,
 		"left = %d, top = %d, width = %d, height = %d\n",
 		r->left, r->top, r->width, r->height );
 
-	for( y = ys; y < VIPS_RECT_BOTTOM( r ); y += th )
-		for( x = xs; x < VIPS_RECT_RIGHT( r ); x += tw ) {
-			Tile *tile;
-			VipsRect tarea;
-			VipsRect hit;
+	/* Ref all the tiles we will need.
+	 */
+	work = vips_tile_cache_ref( cache, r );
 
-			if( !(tile = tile_find( cache, in, x, y )) ) {
-				g_mutex_unlock( cache->lock );
-				return( -1 );
+	while( work ) {
+		/* Search for data tiles: easy, we can just paste those in.
+		 */
+		for(;;) { 
+			for( p = work; p; p = p->next ) { 
+				tile = (VipsTile *) p->data;
+
+				if( tile->state == VIPS_TILE_STATE_DATA ) 
+					break;
 			}
 
-			/* The area of the tile.
-			 */
-			tarea.left = x;
-			tarea.top = y;
-			tarea.width = tw;
-			tarea.height = th;
+			if( !p )
+				break;
 
-			/* The part of the tile that we need.
-			 */
-			vips_rect_intersectrect( &tarea, r, &hit );
+			VIPS_DEBUG_MSG( "vips_tile_cache_gen: pasting %p\n", 
+				tile ); 
 
-			copy_region( tile->region, or, &hit );
+			vips_tile_paste( tile, or );
+
+			/* We're done with this tile.
+			 */
+			work = g_slist_remove( work, tile );
+			vips_tile_unref( tile ); 
 		}
+
+		/* Calculate the first PEND tile we find on the work list. We
+		 * don't calculate all PEND tiles since after the first, more
+		 * DATA tiles might heve been made available by other threads
+		 * and we want to get them out of the way as soon as we can.
+		 */
+		for( p = work; p; p = p->next ) { 
+			tile = (VipsTile *) p->data;
+
+			if( tile->state == VIPS_TILE_STATE_PEND ) {
+				int result;
+
+				tile->state = VIPS_TILE_STATE_CALC;
+
+				VIPS_DEBUG_MSG( "vips_tile_cache_gen: "
+					"calc of %p\n", tile ); 
+
+				/* In threaded mode, we let other threads run
+				 * while we calc this tile. In non-threaded
+				 * mode, we keep the lock and make 'em wait.
+				 */
+				if( cache->threaded ) 
+					g_mutex_unlock( cache->lock );
+
+				result = vips_region_prepare_to( in, 
+					tile->region, 
+					&tile->pos, 
+					tile->pos.left, tile->pos.top );
+
+				if( cache->threaded ) 
+					g_mutex_lock( cache->lock );
+
+				/* If there was an error calculating this
+				 * tile, just warn and carry on.
+				 *
+				 * This can happen with things like reading
+				 * .scn files via openslide. We don't want the
+				 * read to fail because of one broken tile.
+				 */
+				if( result ) {
+					VIPS_DEBUG_MSG( "vips_tile_cache_gen: "
+						"error on tile %p\n", tile ); 
+
+					vips_warn( class->nickname,
+						_( "error reading tile %dx%d: "
+							"%s" ),
+						tile->pos.left, tile->pos.top,
+						vips_error_buffer() ); 
+					vips_error_clear();
+
+					vips_region_black( tile->region );
+				}
+
+				tile->state = VIPS_TILE_STATE_DATA;
+
+				vips_tile_touch( tile );
+
+				/* Let everyone know there's a new DATA tile. 
+				 * They need to all check their work lists.
+				 */
+				g_cond_broadcast( cache->new_tile );
+
+				break;
+			}
+		}
+
+		/* There are no PEND or DATA tiles, we must need a tile some
+		 * other thread is currently calculating.
+		 *
+		 * We must block until the CALC tiles we need are done.
+		 */
+		if( !p && 
+			work ) {
+			for( p = work; p; p = p->next ) { 
+				tile = (VipsTile *) p->data;
+
+				g_assert( tile->state == VIPS_TILE_STATE_CALC );
+			}
+
+			VIPS_DEBUG_MSG( "vips_tile_cache_gen: waiting\n" ); 
+
+			g_cond_wait( cache->new_tile, cache->lock );
+
+			VIPS_DEBUG_MSG( "vips_tile_cache_gen: awake!\n" ); 
+		}
+	}
 
 	g_mutex_unlock( cache->lock );
 
@@ -379,24 +727,26 @@ static int
 vips_tile_cache_build( VipsObject *object )
 {
 	VipsConversion *conversion = VIPS_CONVERSION( object );
+	VipsBlockCache *block_cache = (VipsBlockCache *) object;
 	VipsTileCache *cache = (VipsTileCache *) object;
 
 	VIPS_DEBUG_MSG( "vips_tile_cache_build\n" );
 
-	if( VIPS_OBJECT_CLASS( vips_tile_cache_parent_class )->build( object ) )
+	if( VIPS_OBJECT_CLASS( vips_tile_cache_parent_class )->
+		build( object ) )
 		return( -1 );
 
-	if( vips_image_pio_input( cache->in ) )
+	if( vips_image_pio_input( block_cache->in ) )
 		return( -1 );
 
-	if( vips_image_copy_fields( conversion->out, cache->in ) )
+	if( vips_image_copy_fields( conversion->out, block_cache->in ) )
 		return( -1 );
         vips_demand_hint( conversion->out, 
-		VIPS_DEMAND_STYLE_SMALLTILE, cache->in, NULL );
+		VIPS_DEMAND_STYLE_SMALLTILE, block_cache->in, NULL );
 
 	if( vips_image_generate( conversion->out,
 		vips_start_one, vips_tile_cache_gen, vips_stop_one, 
-		cache->in, cache ) )
+		block_cache->in, cache ) )
 		return( -1 );
 
 	return( 0 );
@@ -410,61 +760,32 @@ vips_tile_cache_class_init( VipsTileCacheClass *class )
 
 	VIPS_DEBUG_MSG( "vips_tile_cache_class_init\n" );
 
-	gobject_class->dispose = vips_tile_cache_dispose;
 	gobject_class->set_property = vips_object_set_property;
 	gobject_class->get_property = vips_object_get_property;
 
 	vobject_class->nickname = "tilecache";
-	vobject_class->description = _( "cache an image" );
+	vobject_class->description = _( "cache an image as a set of tiles" );
 	vobject_class->build = vips_tile_cache_build;
-
-	VIPS_ARG_IMAGE( class, "in", 1, 
-		_( "Input" ), 
-		_( "Input image" ),
-		VIPS_ARGUMENT_REQUIRED_INPUT,
-		G_STRUCT_OFFSET( VipsTileCache, in ) );
 
 	VIPS_ARG_INT( class, "tile_width", 3, 
 		_( "Tile width" ), 
 		_( "Tile width in pixels" ),
 		VIPS_ARGUMENT_OPTIONAL_INPUT,
-		G_STRUCT_OFFSET( VipsTileCache, tile_width ),
+		G_STRUCT_OFFSET( VipsBlockCache, tile_width ),
 		1, 1000000, 128 );
 
-	VIPS_ARG_INT( class, "tile_height", 3, 
-		_( "Tile height" ), 
-		_( "Tile height in pixels" ),
-		VIPS_ARGUMENT_OPTIONAL_INPUT,
-		G_STRUCT_OFFSET( VipsTileCache, tile_height ),
-		1, 1000000, 128 );
-
-	VIPS_ARG_INT( class, "max_tiles", 3, 
+	VIPS_ARG_INT( class, "max_tiles", 5, 
 		_( "Max tiles" ), 
 		_( "Maximum number of tiles to cache" ),
 		VIPS_ARGUMENT_OPTIONAL_INPUT,
-		G_STRUCT_OFFSET( VipsTileCache, max_tiles ),
+		G_STRUCT_OFFSET( VipsBlockCache, max_tiles ),
 		-1, 1000000, 1000 );
 
-	VIPS_ARG_ENUM( class, "strategy", 3, 
-		_( "Strategy" ), 
-		_( "Expected access pattern" ),
-		VIPS_ARGUMENT_OPTIONAL_INPUT,
-		G_STRUCT_OFFSET( VipsTileCache, strategy ),
-		VIPS_TYPE_CACHE_STRATEGY, VIPS_CACHE_RANDOM );
 }
 
 static void
 vips_tile_cache_init( VipsTileCache *cache )
 {
-	cache->tile_width = 128;
-	cache->tile_height = 128;
-	cache->max_tiles = 1000;
-	cache->strategy = VIPS_CACHE_RANDOM;
-
-	cache->time = 0;
-	cache->ntiles = 0;
-	cache->lock = g_mutex_new();
-	cache->tiles = NULL;
 }
 
 /**
@@ -479,6 +800,8 @@ vips_tile_cache_init( VipsTileCache *cache )
  * @tile_height: height of tiles in cache
  * @max_tiles: maximum number of tiles to cache
  * @strategy: hint expected access pattern #VipsCacheStrategy
+ * @threaded: allow many threads
+ * @persistent: don't drop cache at end of computation
  *
  * This operation behaves rather like vips_copy() between images
  * @in and @out, except that it keeps a cache of computed pixels. 
@@ -496,11 +819,14 @@ vips_tile_cache_init( VipsTileCache *cache )
  * By default, @tile_width and @tile_height are 128 pixels, and the operation
  * will cache up to 1,000 tiles. @strategy defaults to #VIPS_CACHE_RANDOM.
  *
- * This is a lower-level operation than vips_image_cache() since it does no 
- * subdivision and it single-threads its callee. It is suitable for caching 
- * the output of operations like exr2vips() on tiled images.
+ * Normally, only a single thread at once is allowed to calculate tiles. If
+ * you set @threaded to %TRUE, vips_tilecache() will allow many threads to
+ * calculate tiles at once, and share the cache between them.
  *
- * See also: vips_image_cache().
+ * Normally the cache is dropped when computation finishes. Set @persistent to
+ * %TRUE to keep the cache between computations.
+ *
+ * See also: vips_cache(), vips_linecache().
  *
  * Returns: 0 on success, -1 on error.
  */
@@ -512,6 +838,157 @@ vips_tilecache( VipsImage *in, VipsImage **out, ... )
 
 	va_start( ap, out );
 	result = vips_call_split( "tilecache", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+typedef struct _VipsLineCache {
+	VipsBlockCache parent_instance;
+
+} VipsLineCache;
+
+typedef VipsBlockCacheClass VipsLineCacheClass;
+
+G_DEFINE_TYPE( VipsLineCache, vips_line_cache, VIPS_TYPE_BLOCK_CACHE );
+
+static int
+vips_line_cache_gen( VipsRegion *or, 
+	void *seq, void *a, void *b, gboolean *stop )
+{
+	VipsBlockCache *block_cache = (VipsBlockCache *) b;
+
+	g_mutex_lock( block_cache->lock );
+
+	/* We size up the cache to the largest request.
+	 */
+	if( or->valid.height > 
+		block_cache->max_tiles * block_cache->tile_height ) 
+		block_cache->max_tiles = 
+			1 + (or->valid.height / block_cache->tile_height);
+
+	g_mutex_unlock( block_cache->lock );
+
+	return( vips_tile_cache_gen( or, seq, a, b, stop ) ); 
+}
+
+static int
+vips_line_cache_build( VipsObject *object )
+{
+	VipsConversion *conversion = VIPS_CONVERSION( object );
+	VipsBlockCache *block_cache = (VipsBlockCache *) object;
+	VipsLineCache *cache = (VipsLineCache *) object;
+
+	int tile_width;
+	int tile_height;
+	int nlines;
+
+	VIPS_DEBUG_MSG( "vips_line_cache_build\n" );
+
+	if( VIPS_OBJECT_CLASS( vips_line_cache_parent_class )->
+		build( object ) )
+		return( -1 );
+
+	/* tile_height is set by a param, or defaulted below.
+	 */
+	block_cache->tile_width = block_cache->in->Xsize;
+
+	/* Enough lines for two complete buffers would be exactly right. Make
+	 * it 3 to give us some slop room. 
+	 *
+	 * This can go up with request size, see vips_line_cache_gen().
+	 */
+	vips_get_tile_size( block_cache->in, 
+		&tile_width, &tile_height, &nlines );
+	block_cache->max_tiles = 3 * (1 + nlines / block_cache->tile_height);
+
+	VIPS_DEBUG_MSG( "vips_line_cache_build: max_tiles = %d, "
+		"tile_height = %d\n",
+		block_cache->max_tiles,
+		block_cache->tile_height );
+
+	if( vips_image_pio_input( block_cache->in ) )
+		return( -1 );
+
+	if( vips_image_copy_fields( conversion->out, block_cache->in ) )
+		return( -1 );
+        vips_demand_hint( conversion->out, 
+		VIPS_DEMAND_STYLE_THINSTRIP, block_cache->in, NULL );
+
+	if( vips_image_generate( conversion->out,
+		vips_start_one, vips_line_cache_gen, vips_stop_one, 
+		block_cache->in, cache ) )
+		return( -1 );
+
+	return( 0 );
+}
+
+static void
+vips_line_cache_class_init( VipsLineCacheClass *class )
+{
+	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
+	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+
+	VIPS_DEBUG_MSG( "vips_line_cache_class_init\n" );
+
+	gobject_class->set_property = vips_object_set_property;
+	gobject_class->get_property = vips_object_get_property;
+
+	vobject_class->nickname = "linecache";
+	vobject_class->description = _( "cache an image as a set of lines" );
+	vobject_class->build = vips_line_cache_build;
+
+}
+
+static void
+vips_line_cache_init( VipsLineCache *cache )
+{
+}
+
+/**
+ * vips_linecache:
+ * @in: input image
+ * @out: output image
+ * @...: %NULL-terminated list of optional named arguments
+ *
+ * Optional arguments:
+ *
+ * @strategy: hint expected access pattern #VipsCacheStrategy
+ * @tile_height: height of tiles in cache
+ * @threaded: allow many threads
+ *
+ * This operation behaves rather like vips_copy() between images
+ * @in and @out, except that it keeps a cache of computed pixels. 
+ * This cache is made of a set of scanlines. The number of lines cached is
+ * equal to the maximum prepare request.
+ *
+ * Each cache tile is made with a single call to 
+ * vips_image_prepare(). 
+ *
+ * When the cache fills, a tile is chosen for reuse. If @strategy is
+ * #VIPS_CACHE_RANDOM, then the least-recently-used tile is reused. If 
+ * @strategy is #VIPS_CACHE_SEQUENTIAL, the top-most tile is reused.
+ * @strategy defaults to #VIPS_CACHE_RANDOM.
+ *
+ * @tile_height can be used to set the size of the strips that
+ * vips_linecache() uses. The default is 1 (a single scanline).
+ *
+ * Normally, only a single thread at once is allowed to calculate tiles. If
+ * you set @threaded to %TRUE, vips_tilecache() will allow many threads to
+ * calculate tiles at once, and share the cache between them.
+ *
+ * See also: vips_cache(), vips_tilecache(). 
+ *
+ * Returns: 0 on success, -1 on error.
+ */
+int
+vips_linecache( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "linecache", ap, in, out );
 	va_end( ap );
 
 	return( result );

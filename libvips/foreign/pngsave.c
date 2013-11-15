@@ -2,6 +2,8 @@
  *
  * 2/12/11
  * 	- wrap a class around the png writer
+ * 16/7/12
+ * 	- compression should be 0-9, not 1-10
  */
 
 /*
@@ -20,7 +22,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -104,7 +107,7 @@ vips_foreign_save_png_class_init( VipsForeignSavePngClass *class )
 		_( "Compression factor" ),
 		VIPS_ARGUMENT_OPTIONAL_INPUT,
 		G_STRUCT_OFFSET( VipsForeignSavePng, compression ),
-		1, 10, 6 );
+		0, 9, 6 );
 
 	VIPS_ARG_BOOL( class, "interlace", 7, 
 		_( "Interlace" ), 
@@ -206,7 +209,7 @@ vips_foreign_save_png_buffer_build( VipsObject *object )
 
 	area = vips_area_new_blob( (VipsCallbackFn) vips_free, obuf, olen );
 
-	g_object_set( object, "buf", area, NULL );
+	g_object_set( object, "buffer", area, NULL );
 
 	return( 0 );
 }

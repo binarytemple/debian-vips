@@ -37,13 +37,20 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="VipsObject.top_of_page"></a>VipsObject</span></h2>
-<p>VipsObject</p>
+<p>VipsObject — the VIPS base object class</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
+<div class="refsect1">
+<a name="VipsObject.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
 <div class="refsynopsisdiv">
 <a name="VipsObject.synopsis"></a><h2>Synopsis</h2>
-<a name="VipsArgumentFlags"></a><pre class="synopsis">#define             <a class="link" href="VipsObject.html#VIPS-ARGUMENT-COLLECT-END:CAPS" title="VIPS_ARGUMENT_COLLECT_END">VIPS_ARGUMENT_COLLECT_END</a>
+<pre class="synopsis">
+#include &lt;vips/vips.h&gt;
+
+#define             <a class="link" href="VipsObject.html#VIPS-ARGUMENT-COLLECT-END:CAPS" title="VIPS_ARGUMENT_COLLECT_END">VIPS_ARGUMENT_COLLECT_END</a>
 #define             <a class="link" href="VipsObject.html#VIPS-ARGUMENT-COLLECT-GET:CAPS" title="VIPS_ARGUMENT_COLLECT_GET()">VIPS_ARGUMENT_COLLECT_GET</a>           (PSPEC,
                                                          ARG_CLASS,
                                                          AP)
@@ -54,7 +61,6 @@
                                                          PSPEC,
                                                          ARG_CLASS,
                                                          ARG_INSTANCE)
-#define             <a class="link" href="VipsObject.html#VIPS-ARGUMENT-FOR-ALL-END:CAPS" title="VIPS_ARGUMENT_FOR_ALL_END">VIPS_ARGUMENT_FOR_ALL_END</a>
 #define             <a class="link" href="VipsObject.html#VIPS-ARGUMENT-OPTIONAL-INPUT:CAPS" title="VIPS_ARGUMENT_OPTIONAL_INPUT">VIPS_ARGUMENT_OPTIONAL_INPUT</a>
 #define             <a class="link" href="VipsObject.html#VIPS-ARGUMENT-OPTIONAL-OUTPUT:CAPS" title="VIPS_ARGUMENT_OPTIONAL_OUTPUT">VIPS_ARGUMENT_OPTIONAL_OUTPUT</a>
 #define             <a class="link" href="VipsObject.html#VIPS-ARGUMENT-REQUIRED-INPUT:CAPS" title="VIPS_ARGUMENT_REQUIRED_INPUT">VIPS_ARGUMENT_REQUIRED_INPUT</a>
@@ -120,6 +126,13 @@
                                                          MIN,
                                                          MAX,
                                                          VALUE)
+#define             <a class="link" href="VipsObject.html#VIPS-ARG-INTERPOLATE:CAPS" title="VIPS_ARG_INTERPOLATE()">VIPS_ARG_INTERPOLATE</a>                (CLASS,
+                                                         NAME,
+                                                         PRIORITY,
+                                                         LONG,
+                                                         DESC,
+                                                         FLAGS,
+                                                         OFFSET)
 #define             <a class="link" href="VipsObject.html#VIPS-ARG-POINTER:CAPS" title="VIPS_ARG_POINTER()">VIPS_ARG_POINTER</a>                    (CLASS,
                                                          NAME,
                                                          PRIORITY,
@@ -153,7 +166,7 @@
                                                          <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentClass" title="VipsArgumentClass"><span class="type">VipsArgumentClass</span></a> *Param3</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);
-enum                <a class="link" href="VipsObject.html#VipsArgumentFlags-enum" title="enum VipsArgumentFlags">VipsArgumentFlags</a>;
+enum                <a class="link" href="VipsObject.html#VipsArgumentFlags" title="enum VipsArgumentFlags">VipsArgumentFlags</a>;
                     <a class="link" href="VipsObject.html#VipsArgumentInstance" title="VipsArgumentInstance">VipsArgumentInstance</a>;
 <span class="returnvalue">void</span> *              (<a class="link" href="VipsObject.html#VipsArgumentMapFn" title="VipsArgumentMapFn ()">*VipsArgumentMapFn</a>)                (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> *Param2</code></em>,
@@ -195,10 +208,14 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
 <span class="returnvalue">void</span> *              <a class="link" href="VipsObject.html#vips-class-map-all" title="vips_class_map_all ()">vips_class_map_all</a>                  (<em class="parameter"><code><span class="type">GType</span> base</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsObject.html#VipsClassMapFn" title="VipsClassMapFn ()"><span class="type">VipsClassMapFn</span></a> fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="VipsObject.html#vips-object-argument-isset" title="vips_object_argument_isset ()">vips_object_argument_isset</a>          (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="VipsObject.html#vips-object-argument-needsstring" title="vips_object_argument_needsstring ()">vips_object_argument_needsstring</a>    (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsObject.html#vips-object-build" title="vips_object_build ()">vips_object_build</a>                   (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-class-install-argument" title="vips_object_class_install_argument ()">vips_object_class_install_argument</a>  (<em class="parameter"><code><a class="link" href="VipsObject.html#VipsObjectClass" title="struct VipsObjectClass"><span class="type">VipsObjectClass</span></a> *Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentFlags"><span class="type">VipsArgumentFlags</span></a> flags</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentFlags" title="enum VipsArgumentFlags"><span class="type">VipsArgumentFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> priority</code></em>,
                                                          <em class="parameter"><code><span class="type">guint</span> offset</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-dump" title="vips_object_dump ()">vips_object_dump</a>                    (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
@@ -208,12 +225,7 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> **pspec</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentClass" title="VipsArgumentClass"><span class="type">VipsArgumentClass</span></a> **argument_class</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentInstance" title="VipsArgumentInstance"><span class="type">VipsArgumentInstance</span></a> **argument_instance</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="VipsObject.html#vips-object-get-argument-assigned" title="vips_object_get_argument_assigned ()">vips_object_get_argument_assigned</a>   (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);
-<a class="link" href="VipsObject.html#VipsArgumentFlags"><span class="returnvalue">VipsArgumentFlags</span></a>   <a class="link" href="VipsObject.html#vips-object-get-argument-flags" title="vips_object_get_argument_flags ()">vips_object_get_argument_flags</a>      (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="VipsObject.html#vips-object-get-argument-needs-string" title="vips_object_get_argument_needs_string ()">vips_object_get_argument_needs_string</a>
-                                                        (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+<a class="link" href="VipsObject.html#VipsArgumentFlags" title="enum VipsArgumentFlags"><span class="returnvalue">VipsArgumentFlags</span></a>   <a class="link" href="VipsObject.html#vips-object-get-argument-flags" title="vips_object_get_argument_flags ()">vips_object_get_argument_flags</a>      (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsObject.html#vips-object-get-argument-priority" title="vips_object_get_argument_priority ()">vips_object_get_argument_priority</a>   (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);
@@ -230,7 +242,7 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
                                                          <em class="parameter"><code><span class="type">int</span> n</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-local-cb" title="vips_object_local_cb ()">vips_object_local_cb</a>                (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *vobject</code></em>,
                                                          <em class="parameter"><code><span class="type">GObject</span> *gobject</code></em>);
-<span class="returnvalue">void</span> *              <a class="link" href="VipsObject.html#vips-object-map" title="vips_object_map ()">vips_object_map</a>                     (<em class="parameter"><code><a href="http://http://www.vips.ecs.soton.ac.uk/libvips-util.html#VipsSListMap2Fn"><span class="type">VipsSListMap2Fn</span></a> fn</code></em>,
+<span class="returnvalue">void</span> *              <a class="link" href="VipsObject.html#vips-object-map" title="vips_object_map ()">vips_object_map</a>                     (<em class="parameter"><code><span class="type">VipsSListMap2Fn</span> fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);
 <a class="link" href="VipsObject.html" title="VipsObject"><span class="returnvalue">VipsObject</span></a> *        <a class="link" href="VipsObject.html#vips-object-new" title="vips_object_new ()">vips_object_new</a>                     (<em class="parameter"><code><span class="type">GType</span> type</code></em>,
@@ -248,6 +260,8 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-rewind" title="vips_object_rewind ()">vips_object_rewind</a>                  (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="VipsObject.html#vips-object-sanity" title="vips_object_sanity ()">vips_object_sanity</a>                  (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-sanity-all" title="vips_object_sanity_all ()">vips_object_sanity_all</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="VipsObject.html#vips-object-set" title="vips_object_set ()">vips_object_set</a>                     (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsObject.html#vips-object-set-argument-from-string" title="vips_object_set_argument_from_string ()">vips_object_set_argument_from_string</a>
                                                         (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
@@ -260,6 +274,8 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
                                                          <em class="parameter"><code>const <span class="type">char</span> *value</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-set-static" title="vips_object_set_static ()">vips_object_set_static</a>              (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> static_object</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="VipsObject.html#vips-object-set-valist" title="vips_object_set_valist ()">vips_object_set_valist</a>              (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><span class="type">va_list</span> ap</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-summary" title="vips_object_summary ()">vips_object_summary</a>                 (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libvips-buf.html#VipsBuf" title="VipsBuf"><span class="type">VipsBuf</span></a> *buf</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="VipsObject.html#vips-object-summary-class" title="vips_object_summary_class ()">vips_object_summary_class</a>           (<em class="parameter"><code><a class="link" href="VipsObject.html#VipsObjectClass" title="struct VipsObjectClass"><span class="type">VipsObjectClass</span></a> *klass</code></em>,
@@ -284,14 +300,9 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
 <div class="refsect1">
 <a name="VipsObject.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GFlags
-   +----VipsArgumentFlags
-</pre>
-<pre class="synopsis">
   GObject
    +----VipsObject
          +----<a class="link" href="VipsOperation.html" title="VipsOperation">VipsOperation</a>
-         +----<a href="http://http://www.vips.ecs.soton.ac.uk/VipsFormat.html">VipsFormat</a>
          +----<a class="link" href="VipsImage.html" title="VipsImage">VipsImage</a>
          +----<a class="link" href="VipsInterpolate.html" title="VipsInterpolate">VipsInterpolate</a>
          +----<a class="link" href="VipsRegion.html" title="VipsRegion">VipsRegion</a>
@@ -315,117 +326,179 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
 </div>
 <div class="refsect1">
 <a name="VipsObject.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> class and associated types and macros.
+</p>
+<p>
+<a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> is the base class for all objects in libvips. It has the
+following major features:
+</p>
+<p>
+<span class="emphasis"><em>Functional class creation</em></span> Vips objects have a very 
+regular
+lifecycle: initialise, build, use, destroy. They behave rather like
+function calls and are free of side-effects. 
+</p>
+<p>
+<span class="emphasis"><em>Run-time introspection</em></span> Vips objects can be fully 
+introspected at
+run-time. There is not need for a separate source-code analysis. 
+</p>
+<p>
+<span class="emphasis"><em>Command-line interface</em></span> Vips objects have an 
+automatic command-line
+line interface with a set of virtual methods.
+</p>
 </div>
 <div class="refsect1">
 <a name="VipsObject.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-COLLECT-END:CAPS"></a><h3>VIPS_ARGUMENT_COLLECT_END</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_COLLECT_END</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-COLLECT-GET:CAPS"></a><h3>VIPS_ARGUMENT_COLLECT_GET()</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_COLLECT_GET( PSPEC, ARG_CLASS, AP )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-COLLECT-SET:CAPS"></a><h3>VIPS_ARGUMENT_COLLECT_SET()</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_COLLECT_SET( PSPEC, ARG_CLASS, AP )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-FOR-ALL:CAPS"></a><h3>VIPS_ARGUMENT_FOR_ALL()</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_FOR_ALL( OBJECT, PSPEC, ARG_CLASS, ARG_INSTANCE )</pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-ARGUMENT-FOR-ALL-END:CAPS"></a><h3>VIPS_ARGUMENT_FOR_ALL_END</h3>
-<pre class="programlisting">#define VIPS_ARGUMENT_FOR_ALL_END } } }
-</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-OPTIONAL-INPUT:CAPS"></a><h3>VIPS_ARGUMENT_OPTIONAL_INPUT</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_OPTIONAL_INPUT</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-OPTIONAL-OUTPUT:CAPS"></a><h3>VIPS_ARGUMENT_OPTIONAL_OUTPUT</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_OPTIONAL_OUTPUT</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-REQUIRED-INPUT:CAPS"></a><h3>VIPS_ARGUMENT_REQUIRED_INPUT</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_REQUIRED_INPUT</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARGUMENT-REQUIRED-OUTPUT:CAPS"></a><h3>VIPS_ARGUMENT_REQUIRED_OUTPUT</h3>
 <pre class="programlisting">#define             VIPS_ARGUMENT_REQUIRED_OUTPUT</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-BOOL:CAPS"></a><h3>VIPS_ARG_BOOL()</h3>
 <pre class="programlisting">#define             VIPS_ARG_BOOL( CLASS, NAME, PRIORITY, LONG, DESC, \
             	FLAGS, OFFSET, VALUE )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-BOXED:CAPS"></a><h3>VIPS_ARG_BOXED()</h3>
 <pre class="programlisting">#define             VIPS_ARG_BOXED( CLASS, NAME, PRIORITY, LONG, DESC, \
             	FLAGS, OFFSET, TYPE )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-DOUBLE:CAPS"></a><h3>VIPS_ARG_DOUBLE()</h3>
 <pre class="programlisting">#define             VIPS_ARG_DOUBLE( CLASS, NAME, PRIORITY, LONG, DESC, \
             	FLAGS, OFFSET, MIN, MAX, VALUE )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-ENUM:CAPS"></a><h3>VIPS_ARG_ENUM()</h3>
 <pre class="programlisting">#define             VIPS_ARG_ENUM( CLASS, NAME, PRIORITY, LONG, DESC, \
             	FLAGS, OFFSET, TYPE, VALUE )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-FLAGS:CAPS"></a><h3>VIPS_ARG_FLAGS()</h3>
 <pre class="programlisting">#define             VIPS_ARG_FLAGS( CLASS, NAME, PRIORITY, LONG, DESC, \
             	FLAGS, OFFSET, TYPE, VALUE )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-IMAGE:CAPS"></a><h3>VIPS_ARG_IMAGE()</h3>
 <pre class="programlisting">#define             VIPS_ARG_IMAGE( CLASS, NAME, PRIORITY, LONG, DESC, FLAGS, OFFSET )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-INT:CAPS"></a><h3>VIPS_ARG_INT()</h3>
 <pre class="programlisting">#define             VIPS_ARG_INT( CLASS, NAME, PRIORITY, LONG, DESC, \
             	FLAGS, OFFSET, MIN, MAX, VALUE )</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-ARG-INTERPOLATE:CAPS"></a><h3>VIPS_ARG_INTERPOLATE()</h3>
+<pre class="programlisting">#define             VIPS_ARG_INTERPOLATE( CLASS, NAME, PRIORITY, LONG, DESC, FLAGS, OFFSET )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-POINTER:CAPS"></a><h3>VIPS_ARG_POINTER()</h3>
 <pre class="programlisting">#define             VIPS_ARG_POINTER( CLASS, NAME, PRIORITY, LONG, DESC, FLAGS, OFFSET )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-STRING:CAPS"></a><h3>VIPS_ARG_STRING()</h3>
 <pre class="programlisting">#define             VIPS_ARG_STRING( CLASS, NAME, PRIORITY, LONG, DESC, FLAGS, OFFSET, \
             	VALUE )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-ARG-UINT64:CAPS"></a><h3>VIPS_ARG_UINT64()</h3>
 <pre class="programlisting">#define             VIPS_ARG_UINT64( CLASS, NAME, PRIORITY, LONG, DESC, \
             	FLAGS, OFFSET, MIN, MAX, VALUE )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VIPS-UNREF:CAPS"></a><h3>VIPS_UNREF()</h3>
 <pre class="programlisting">#define VIPS_UNREF( X ) VIPS_FREEF( g_object_unref, (X) )
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -436,6 +509,8 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
 	/* More stuff, see below */
 } VipsArgument;
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -452,6 +527,8 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
 	guint offset;		/* G_STRUCT_OFFSET of member in object */
 } VipsArgumentClass;
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -461,10 +538,12 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
                                                          <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentClass" title="VipsArgumentClass"><span class="type">VipsArgumentClass</span></a> *Param3</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsArgumentFlags-enum"></a><h3>enum VipsArgumentFlags</h3>
+<a name="VipsArgumentFlags"></a><h3>enum VipsArgumentFlags</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_ARGUMENT_NONE = 0,
 	VIPS_ARGUMENT_REQUIRED = 1,
@@ -472,7 +551,8 @@ struct              <a class="link" href="VipsObject.html#VipsObjectClass" title
 	VIPS_ARGUMENT_SET_ONCE = 4,
 	VIPS_ARGUMENT_SET_ALWAYS = 8,
 	VIPS_ARGUMENT_INPUT = 16,
-	VIPS_ARGUMENT_OUTPUT = 32
+	VIPS_ARGUMENT_OUTPUT = 32,
+	VIPS_ARGUMENT_DEPRECATED = 64
 } VipsArgumentFlags;
 </pre>
 <p>
@@ -490,6 +570,12 @@ us. We also automatically watch for "destroy" and unlink.
 example, VipsImage::width is a property that gives access to the Xsize
 member of struct _VipsImage. We default its 'assigned' to TRUE
 since the field is always set directly by C.
+</p>
+<p>
+<em class="parameter"><code>VIPS_ARGUMENT_DEPRECATED</code></em> arguments are not shown in help text, are not
+looked for if required, are not checked for "have-been-set". You can
+deprecate a required argument, but you must obviously add a new required
+argument if you do.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -529,6 +615,11 @@ since the field is always set directly by C.
 <td>is an output argument (depends on us)
 </td>
 </tr>
+<tr>
+<td><p><a name="VIPS-ARGUMENT-DEPRECATED:CAPS"></a><span class="term"><code class="literal">VIPS_ARGUMENT_DEPRECATED</code></span></p></td>
+<td>just there for back-compat, hide 
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -556,6 +647,8 @@ since the field is always set directly by C.
 	gulong close_id;	
 } VipsArgumentInstance;
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -566,23 +659,31 @@ since the field is always set directly by C.
                                                          <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentInstance" title="VipsArgumentInstance"><span class="type">VipsArgumentInstance</span></a> *Param4</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VipsArgumentTable"></a><h3>VipsArgumentTable</h3>
 <pre class="programlisting">typedef GHashTable VipsArgumentTable;
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VipsClassMapFn"></a><h3>VipsClassMapFn ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span> *              (*VipsClassMapFn)                   (<em class="parameter"><code><a class="link" href="VipsObject.html#VipsObjectClass" title="struct VipsObjectClass"><span class="type">VipsObjectClass</span></a> *Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *Param2</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VipsObject-struct"></a><h3>struct VipsObject</h3>
 <pre class="programlisting">struct VipsObject;</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -600,7 +701,9 @@ since the field is always set directly by C.
 	 */
 	void (*summary_class)( struct _VipsObjectClass *, VipsBuf * );
 
-	/* Try to print a one-line summary for the object, handy for debugging.
+	/* Try to print a one-line summary for the object, the user can see
+	 * this output via things like "header fred.tif", --vips-cache-trace,
+	 * etc. 
 	 */
 	void (*summary)( VipsObject *, VipsBuf * );
 
@@ -667,15 +770,26 @@ since the field is always set directly by C.
 	 */
 	const char *description;
 
-	/* Table of arguments for this class and any derived classes. Order
-	 * is important, so keep a traverse list too. We can't rely on the
-	 * ordering given by g_object_class_list_properties() since it comes
-	 * from a hash :-(
+	/* Hash from pspec to VipsArgumentClass.
+	 *
+	 * This records the VipsArgumentClass for every pspec used in 
+	 * VipsObject and any subclass (ie. everywhere), so it's huge. Don't
+	 * loop over this hash! Fine for lookups though.
 	 */
 	VipsArgumentTable *argument_table;
+
+	/* A sorted (by priority) list of the VipsArgumentClass for this class 
+	 * and any superclasses. This is small and specific to this class.
+	 *
+	 * Use the stored GType to work out when to restart the list for a
+	 * subclass.
+	 */
 	GSList *argument_table_traverse;
+	GType argument_table_traverse_gtype;
 };
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -683,6 +797,8 @@ since the field is always set directly by C.
 <pre class="programlisting"><span class="returnvalue">void</span> *              (*VipsObjectSetArguments)           (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *Param2</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *Param3</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -690,12 +806,16 @@ since the field is always set directly by C.
 <pre class="programlisting"><span class="returnvalue">void</span> *              (*VipsTypeMap2Fn)                   (<em class="parameter"><code><span class="type">GType</span> Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *Param2</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *Param3</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VipsTypeMapFn"></a><h3>VipsTypeMapFn ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span> *              (*VipsTypeMapFn)                    (<em class="parameter"><code><span class="type">GType</span> Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *Param2</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -711,6 +831,8 @@ Convenience ... given the VipsArgumentClass, get the VipsArgumentInstance.
 <a name="vips--argument-table-lookup"></a><h3>vips__argument_table_lookup ()</h3>
 <pre class="programlisting"><a class="link" href="VipsObject.html#VipsArgument" title="VipsArgument"><span class="returnvalue">VipsArgument</span></a> *      vips__argument_table_lookup         (<em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentTable" title="VipsArgumentTable"><span class="type">VipsArgumentTable</span></a> *Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> *Param2</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -719,6 +841,8 @@ Convenience ... given the VipsArgumentClass, get the VipsArgumentInstance.
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>,
                                                          <em class="parameter"><code><span class="type">GObject</span> **member</code></em>,
                                                          <em class="parameter"><code><span class="type">GObject</span> *argument</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -809,17 +933,56 @@ Loop over all the subclasses of a base type. Non-abstract classes only.
 </div>
 <hr>
 <div class="refsect2">
+<a name="vips-object-argument-isset"></a><h3>vips_object_argument_isset ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_object_argument_isset          (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
+<p>
+Convenience: has an argument been assigned. Useful for bindings.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>the object to fetch the args from</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>arg to fetch</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<code class="literal">TRUE</code> if the argument has been assigned.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-object-argument-needsstring"></a><h3>vips_object_argument_needsstring ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_object_argument_needsstring    (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="vips-object-build"></a><h3>vips_object_build ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_object_build                   (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-class-install-argument"></a><h3>vips_object_class_install_argument ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_class_install_argument  (<em class="parameter"><code><a class="link" href="VipsObject.html#VipsObjectClass" title="struct VipsObjectClass"><span class="type">VipsObjectClass</span></a> *Param1</code></em>,
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentFlags"><span class="type">VipsArgumentFlags</span></a> flags</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsObject.html#VipsArgumentFlags" title="enum VipsArgumentFlags"><span class="type">VipsArgumentFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> priority</code></em>,
                                                          <em class="parameter"><code><span class="type">guint</span> offset</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -873,35 +1036,8 @@ Look up the three things you need to work with a vips argument.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-object-get-argument-assigned"></a><h3>vips_object_get_argument_assigned ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_object_get_argument_assigned   (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
-<p>
-Convenience: has an argument been assigned. Useful for bindings.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
-<td>the object to fetch the args from</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
-<td>arg to fetch</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<code class="literal">TRUE</code> if the arguent has been assigned.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="vips-object-get-argument-flags"></a><h3>vips_object_get_argument_flags ()</h3>
-<pre class="programlisting"><a class="link" href="VipsObject.html#VipsArgumentFlags"><span class="returnvalue">VipsArgumentFlags</span></a>   vips_object_get_argument_flags      (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+<pre class="programlisting"><a class="link" href="VipsObject.html#VipsArgumentFlags" title="enum VipsArgumentFlags"><span class="returnvalue">VipsArgumentFlags</span></a>   vips_object_get_argument_flags      (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
 <p>
 Convenience: get the flags for an argument. Useful for bindings.
@@ -923,13 +1059,6 @@ Convenience: get the flags for an argument. Useful for bindings.
 </tr>
 </tbody>
 </table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-object-get-argument-needs-string"></a><h3>vips_object_get_argument_needs_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_object_get_argument_needs_string
-                                                        (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -963,6 +1092,8 @@ Convenience: get the priority for an argument. Useful for bindings.
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_object_get_argument_to_string  (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *arg</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -971,11 +1102,15 @@ Convenience: get the priority for an argument. Useful for bindings.
                                                          <em class="parameter"><code><span class="type">guint</span> property_id</code></em>,
                                                          <em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-local"></a><h3>vips_object_local()</h3>
 <pre class="programlisting">#define             vips_object_local( V, G )</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1034,11 +1169,13 @@ See also: <a class="link" href="VipsObject.html#vips-object-local" title="vips_o
 <a name="vips-object-local-cb"></a><h3>vips_object_local_cb ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_local_cb                (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *vobject</code></em>,
                                                          <em class="parameter"><code><span class="type">GObject</span> *gobject</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-map"></a><h3>vips_object_map ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span> *              vips_object_map                     (<em class="parameter"><code><a href="http://http://www.vips.ecs.soton.ac.uk/libvips-util.html#VipsSListMap2Fn"><span class="type">VipsSListMap2Fn</span></a> fn</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span> *              vips_object_map                     (<em class="parameter"><code><span class="type">VipsSListMap2Fn</span> fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
 <p>
@@ -1111,51 +1248,115 @@ non-<code class="literal">NULL</code> value from <em class="parameter"><code>fn<
 <a name="vips-object-new-from-string"></a><h3>vips_object_new_from_string ()</h3>
 <pre class="programlisting"><a class="link" href="VipsObject.html" title="VipsObject"><span class="returnvalue">VipsObject</span></a> *        vips_object_new_from_string         (<em class="parameter"><code><a class="link" href="VipsObject.html#VipsObjectClass" title="struct VipsObjectClass"><span class="type">VipsObjectClass</span></a> *object_class</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *p</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-preclose"></a><h3>vips_object_preclose ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_preclose                (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-print-all"></a><h3>vips_object_print_all ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_print_all               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-print-dump"></a><h3>vips_object_print_dump ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_print_dump              (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-print-name"></a><h3>vips_object_print_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_print_name              (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-print-summary"></a><h3>vips_object_print_summary ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_print_summary           (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-print-summary-class"></a><h3>vips_object_print_summary_class ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_print_summary_class     (<em class="parameter"><code><a class="link" href="VipsObject.html#VipsObjectClass" title="struct VipsObjectClass"><span class="type">VipsObjectClass</span></a> *klass</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-rewind"></a><h3>vips_object_rewind ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_rewind                  (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-sanity"></a><h3>vips_object_sanity ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_object_sanity                  (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-sanity-all"></a><h3>vips_object_sanity_all ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_sanity_all              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-object-set"></a><h3>vips_object_set ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_object_set                     (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Set a list of vips object arguments. For example:
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+vips_object_set (operation,
+  "input", in,
+  "output", &amp;out,
+  NULL);
+</pre></div>
+<p>
+</p>
+<p>
+Input arguments are given in-line, output arguments are given as pointers
+to where the output value should be written.
+</p>
+<p>
+See also: <a class="link" href="VipsObject.html#vips-object-set-valist" title="vips_object_set_valist ()"><code class="function">vips_object_set_valist()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>object to set arguments on</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of argument/value pairs</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -1164,6 +1365,8 @@ non-<code class="literal">NULL</code> value from <em class="parameter"><code>fn<
                                                         (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *value</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1172,18 +1375,51 @@ non-<code class="literal">NULL</code> value from <em class="parameter"><code>fn<
                                                          <em class="parameter"><code><span class="type">guint</span> property_id</code></em>,
                                                          <em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>,
                                                          <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-set-required"></a><h3>vips_object_set_required ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_object_set_required            (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *value</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-object-set-static"></a><h3>vips_object_set_static ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_set_static              (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> static_object</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-object-set-valist"></a><h3>vips_object_set_valist ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_object_set_valist              (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><span class="type">va_list</span> ap</code></em>);</pre>
+<p>
+See <a class="link" href="VipsObject.html#vips-object-set" title="vips_object_set ()"><code class="function">vips_object_set()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>object to set arguments on</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ap</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of argument/value pairs</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -1224,17 +1460,23 @@ The inverse of <a class="link" href="VipsObject.html#vips-object-new-from-string
 <div class="refsect2">
 <a name="vips-object-unref-outputs"></a><h3>vips_object_unref_outputs ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_object_unref_outputs           (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-type-depth"></a><h3>vips_type_depth ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_type_depth                     (<em class="parameter"><code><span class="type">GType</span> type</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-type-find"></a><h3>vips_type_find ()</h3>
 <pre class="programlisting"><span class="returnvalue">GType</span>               vips_type_find                      (<em class="parameter"><code>const <span class="type">char</span> *basename</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *nickname</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1314,6 +1556,8 @@ non-<code class="literal">NULL</code> value from <em class="parameter"><code>fn<
 <a name="vips-value-is-null"></a><h3>vips_value_is_null ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_value_is_null                  (<em class="parameter"><code><span class="type">GParamSpec</span> *psoec</code></em>,
                                                          <em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+<p>
+</p>
 </div>
 </div>
 <div class="refsect1">
@@ -1338,19 +1582,68 @@ non-<code class="literal">NULL</code> value from <em class="parameter"><code>fn<
 <a name="VipsObject-close"></a><h3>The <code class="literal">"close"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *vipsobject,
                                                         <span class="type">gpointer</span>    user_data)       : <code class="literal">Run Last</code></pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vipsobject</code></em> :</span></p></td>
+<td>the object which received the signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VipsObject-postclose"></a><h3>The <code class="literal">"postclose"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *vipsobject,
                                                         <span class="type">gpointer</span>    user_data)       : <code class="literal">Run Last</code></pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vipsobject</code></em> :</span></p></td>
+<td>the object which received the signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="VipsObject-preclose"></a><h3>The <code class="literal">"preclose"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *vipsobject,
                                                         <span class="type">gpointer</span>    user_data)       : <code class="literal">Run Last</code></pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vipsobject</code></em> :</span></p></td>
+<td>the object which received the signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
+</div>
+<div class="refsect1">
+<a name="VipsObject.see-also"></a><h2>See Also</h2>
+operation
 </div>
 </div>
 <div class="footer">

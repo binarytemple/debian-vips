@@ -1,0 +1,367 @@
+<!-- ##### SECTION Title ##### -->
+type
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT VipsArea ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF VipsArrayDouble ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF VipsArrayInt ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT VipsThing ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION vips__meta_init_types ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips__type_leak ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_area_copy ##### -->
+<para>
+
+</para>
+
+@area: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_area_get_data ##### -->
+<para>
+
+</para>
+
+@area: 
+@length: 
+@n: 
+@type: 
+@sizeof_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_area_new ##### -->
+<para>
+
+</para>
+
+@free_fn: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_area_new_array ##### -->
+<para>
+
+</para>
+
+@type: 
+@sizeof_type: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_area_new_array_object ##### -->
+<para>
+
+</para>
+
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_area_new_blob ##### -->
+<para>
+
+</para>
+
+@free_fn: 
+@data: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_area_unref ##### -->
+<para>
+
+</para>
+
+@area: 
+
+
+<!-- ##### FUNCTION vips_array_double_new ##### -->
+<para>
+
+</para>
+
+@array: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_array_double_newv ##### -->
+<para>
+
+</para>
+
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_array_int_new ##### -->
+<para>
+
+</para>
+
+@array: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_array_int_newv ##### -->
+<para>
+
+</para>
+
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_thing_get_i ##### -->
+<para>
+
+</para>
+
+@thing: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_thing_new ##### -->
+<para>
+
+</para>
+
+@i: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_area ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_array ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@type: 
+@sizeof_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_array_double ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_array_int ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_array_object ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_blob ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_ref_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_save_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_area ##### -->
+<para>
+
+</para>
+
+@value: 
+@free_fn: 
+@data: 
+
+
+<!-- ##### FUNCTION vips_value_set_array ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@type: 
+@sizeof_type: 
+
+
+<!-- ##### FUNCTION vips_value_set_array_double ##### -->
+<para>
+
+</para>
+
+@value: 
+@array: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_array_int ##### -->
+<para>
+
+</para>
+
+@value: 
+@array: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_array_object ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_blob ##### -->
+<para>
+
+</para>
+
+@value: 
+@free_fn: 
+@data: 
+@length: 
+
+
+<!-- ##### FUNCTION vips_value_set_ref_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_save_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@str: 
+
+
+<!-- ##### FUNCTION vips_value_set_save_stringf ##### -->
+<para>
+
+</para>
+
+@value: 
+@fmt: 
+@...: 
+
+
