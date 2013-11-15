@@ -10,8 +10,13 @@
  * 	- split to a buffer hash per thread
  * 	- reuse buffer mallocs when we can 
  * 20/2/07
- * 	- add im_buffer_cache_list_t and we can avoid some hash ops on
+ * 	- add VipsBufferCacheList and we can avoid some hash ops on
  * 	  done/undone
+ * 5/3/10
+ * 	- move invalid stuff to region
+ * 	- move link maintenance to im_demand_hint
+ * 21/9/11
+ * 	- switch to vips_tracked_malloc()
  */
 
 /*
@@ -41,8 +46,8 @@
  */
 
 /*
-#define DEBUG
 #define DEBUG_CREATE
+#define DEBUG
  */
 
 #ifdef HAVE_CONFIG_H
@@ -52,20 +57,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include <vips/vips.h>
 #include <vips/internal.h>
 #include <vips/thread.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 #ifdef DEBUG
 /* Track all regions here for debugging.
  */
-static GSList *im__buffers_all = NULL;
+static GSList *vips__buffers_all = NULL;
 #endif /*DEBUG*/
 
 #ifdef DEBUG_CREATE
@@ -75,14 +75,14 @@ static int buffer_cache_n = 0;
 #ifdef HAVE_THREADS
 static GPrivate *thread_buffer_cache_key = NULL;
 #else /*!HAVE_THREADS*/
-static im_buffer_cache_t *thread_buffer_cache = NULL;
+static VipsBufferCache *thread_buffer_cache = NULL;
 #endif /*HAVE_THREADS*/
 
 /* Only need this if we're threading and need to do a lot of start/stop.
  */
 #ifdef HAVE_THREADS
 static void
-buffer_cache_free( im_buffer_cache_t *cache )
+buffer_cache_free( VipsBufferCache *cache )
 {
 #ifdef DEBUG_CREATE
 	buffer_cache_n -= 1;
@@ -92,13 +92,13 @@ buffer_cache_free( im_buffer_cache_t *cache )
 	printf( "\t(%d cachees left)\n", buffer_cache_n );
 #endif /*DEBUG_CREATE*/
 
-	IM_FREEF( g_hash_table_destroy, cache->hash );
-	IM_FREE( cache );
+	VIPS_FREEF( g_hash_table_destroy, cache->hash );
+	VIPS_FREE( cache );
 }
 #endif /*HAVE_THREADS*/
 
 static void
-buffer_cache_list_free( im_buffer_cache_list_t *cache_list )
+buffer_cache_list_free( VipsBufferCacheList *cache_list )
 {
 	GSList *p;
 
@@ -106,22 +106,21 @@ buffer_cache_list_free( im_buffer_cache_list_t *cache_list )
 	 * unref.
 	 */
 	for( p = cache_list->buffers; p; p = p->next ) {
-		im_buffer_t *buffer = (im_buffer_t *) p->data;
+		VipsBuffer *buffer = (VipsBuffer *) p->data;
 
 		buffer->done = FALSE;
 	}
 
 	g_slist_free( cache_list->buffers );
-	im_free( cache_list );
+	g_free( cache_list );
 }
 
-static im_buffer_cache_list_t *
-buffer_cache_list_new( im_buffer_cache_t *cache, IMAGE *im )
+static VipsBufferCacheList *
+buffer_cache_list_new( VipsBufferCache *cache, VipsImage *im )
 {
-	im_buffer_cache_list_t *cache_list;
+	VipsBufferCacheList *cache_list;
 
-	if( !(cache_list = IM_NEW( NULL, im_buffer_cache_list_t )) )
-		return( NULL );
+	cache_list = g_new( VipsBufferCacheList, 1 );
 	cache_list->buffers = NULL;
 	cache_list->thread = g_thread_self();
 	cache_list->cache = cache;
@@ -136,14 +135,12 @@ buffer_cache_list_new( im_buffer_cache_t *cache, IMAGE *im )
 	return( cache_list );
 }
 
-static im_buffer_cache_t *
+static VipsBufferCache *
 buffer_cache_new( void )
 {
-	im_buffer_cache_t *cache;
+	VipsBufferCache *cache;
 
-	if( !(cache = IM_NEW( NULL, im_buffer_cache_t )) )
-		return( NULL );
-
+	cache = g_new( VipsBufferCache, 1 );
 	cache->hash = g_hash_table_new_full( g_direct_hash, g_direct_equal, 
 		NULL, (GDestroyNotify) buffer_cache_list_free );
 	cache->thread = g_thread_self();
@@ -161,10 +158,10 @@ buffer_cache_new( void )
 
 /* Get the buffer cache. 
  */
-static im_buffer_cache_t *
+static VipsBufferCache *
 buffer_cache_get( void )
 {
-	im_buffer_cache_t *cache;
+	VipsBufferCache *cache;
 
 #ifdef HAVE_THREADS
 	if( !(cache = g_private_get( thread_buffer_cache_key )) ) {
@@ -183,17 +180,17 @@ buffer_cache_get( void )
 /* Pixels have been calculated: publish for other parts of this thread to see.
  */
 void 
-im_buffer_done( im_buffer_t *buffer )
+vips_buffer_done( VipsBuffer *buffer )
 {
 	if( !buffer->done ) {
-		IMAGE *im = buffer->im;
-		im_buffer_cache_t *cache = buffer_cache_get();
-		im_buffer_cache_list_t *cache_list;
+		VipsImage *im = buffer->im;
+		VipsBufferCache *cache = buffer_cache_get();
+		VipsBufferCacheList *cache_list;
 
 #ifdef DEBUG
-		printf( "im_buffer_done: thread %p adding "
-			"buffer %p to cache %p\n",
-			g_thread_self(), buffer, cache );
+		printf( "vips_buffer_done: thread %p adding to cache %p\n",
+			g_thread_self(), cache );
+		vips_buffer_print( buffer ); 
 #endif /*DEBUG*/
 
 		/* Look up and update the buffer list. 
@@ -203,8 +200,8 @@ im_buffer_done( im_buffer_t *buffer )
 			g_hash_table_insert( cache->hash, im, cache_list );
 		}
 
-		assert( !g_slist_find( cache_list->buffers, buffer ) );
-		assert( cache_list->thread == cache->thread );
+		g_assert( !g_slist_find( cache_list->buffers, buffer ) );
+		g_assert( cache_list->thread == cache->thread );
 
 		cache_list->buffers = 
 			g_slist_prepend( cache_list->buffers, buffer );
@@ -216,26 +213,26 @@ im_buffer_done( im_buffer_t *buffer )
 /* Take off the public 'done' list. 
  */
 void
-im_buffer_undone( im_buffer_t *buffer )
+vips_buffer_undone( VipsBuffer *buffer )
 {
 	if( buffer->done ) {
-		IMAGE *im = buffer->im;
-		im_buffer_cache_t *cache = buffer->cache;
-		im_buffer_cache_list_t *cache_list;
+		VipsImage *im = buffer->im;
+		VipsBufferCache *cache = buffer->cache;
+		VipsBufferCacheList *cache_list;
 
 #ifdef DEBUG
-		printf( "im_buffer_undone: thread %p removing "
+		printf( "vips_buffer_undone: thread %p removing "
 			"buffer %p from cache %p\n",
 			g_thread_self(), buffer, cache );
 #endif /*DEBUG*/
 
-		assert( cache->thread == g_thread_self() );
+		g_assert( cache->thread == g_thread_self() );
 
 		cache_list = g_hash_table_lookup( cache->hash, im );
 
-		assert( cache_list );
-		assert( cache_list->thread == cache->thread );
-		assert( g_slist_find( cache_list->buffers, buffer ) );
+		g_assert( cache_list );
+		g_assert( cache_list->thread == cache->thread );
+		g_assert( g_slist_find( cache_list->buffers, buffer ) );
 
 		cache_list->buffers = 
 			g_slist_remove( cache_list->buffers, buffer );
@@ -243,76 +240,73 @@ im_buffer_undone( im_buffer_t *buffer )
 		buffer->cache = NULL;
 
 #ifdef DEBUG
-		printf( "im_buffer_undone: %d buffers left\n",
-			g_slist_length( buffers ) );
+		printf( "vips_buffer_undone: %d buffers left\n",
+			g_slist_length( cache_list->buffers ) );
 #endif /*DEBUG*/
 	}
 }
 
 void
-im_buffer_unref( im_buffer_t *buffer )
+vips_buffer_unref( VipsBuffer *buffer )
 {
 #ifdef DEBUG
-	printf( "** im_buffer_unref: left = %d, top = %d, "
+	printf( "** vips_buffer_unref: left = %d, top = %d, "
 		"width = %d, height = %d (%p)\n",
 		buffer->area.left, buffer->area.top, 
 		buffer->area.width, buffer->area.height, 
 		buffer );
 #endif /*DEBUG*/
 
-	assert( buffer->ref_count > 0 );
+	g_assert( buffer->ref_count > 0 );
 
 	buffer->ref_count -= 1;
 
 	if( buffer->ref_count == 0 ) {
 #ifdef DEBUG
 		if( !buffer->done )
-			printf( "im_buffer_unref: buffer was not done\n" );
+			printf( "vips_buffer_unref: buffer was not done\n" );
 #endif /*DEBUG*/
 
-		im_buffer_undone( buffer );
+		vips_buffer_undone( buffer );
 
 		buffer->im = NULL;
-		IM_FREE( buffer->buf );
+		vips_tracked_free( buffer->buf );
 		buffer->bsize = 0;
-		im_free( buffer );
+		g_free( buffer );
 
 #ifdef DEBUG
-		g_mutex_lock( im__global_lock );
-		assert( g_slist_find( im__buffers_all, buffer ) );
-		im__buffers_all = g_slist_remove( im__buffers_all, buffer );
+		g_mutex_lock( vips__global_lock );
+		g_assert( g_slist_find( vips__buffers_all, buffer ) );
+		vips__buffers_all = g_slist_remove( vips__buffers_all, buffer );
 		printf( "%d buffers in vips\n", 
-			g_slist_length( im__buffers_all ) );
-		g_mutex_unlock( im__global_lock );
+			g_slist_length( vips__buffers_all ) );
+		g_mutex_unlock( vips__global_lock );
 #endif /*DEBUG*/
 	}
 }
 
 /* Make a new buffer.
  */
-static im_buffer_t *
-buffer_new( IMAGE *im, Rect *area )
+VipsBuffer *
+vips_buffer_new( VipsImage *im, VipsRect *area )
 {
-	im_buffer_t *buffer;
+	VipsBuffer *buffer;
 
-	if( !(buffer = IM_NEW( NULL, im_buffer_t )) )
-		return( NULL );
-
+	buffer = g_new( VipsBuffer, 1 );
 	buffer->ref_count = 1;
 	buffer->im = im;
 	buffer->area = *area;
 	buffer->done = FALSE;
 	buffer->cache = NULL;
-	buffer->invalid = FALSE;
-	buffer->bsize = (size_t) IM_IMAGE_SIZEOF_PEL( im ) * 
+	buffer->bsize = (size_t) VIPS_IMAGE_SIZEOF_PEL( im ) * 
 		area->width * area->height;
-	if( !(buffer->buf = im_malloc( NULL, buffer->bsize )) ) {
-		im_buffer_unref( buffer );
+	if( !(buffer->buf = vips_tracked_malloc( buffer->bsize )) ) {
+		vips_buffer_unref( buffer );
 		return( NULL );
 	}
 
 #ifdef DEBUG
-	printf( "** buffer_new: left = %d, top = %d, "
+	printf( "** vips_buffer_new: left = %d, top = %d, "
 		"width = %d, height = %d (%p)\n",
 		buffer->area.left, buffer->area.top, 
 		buffer->area.width, buffer->area.height, 
@@ -320,34 +314,33 @@ buffer_new( IMAGE *im, Rect *area )
 #endif /*DEBUG*/
 
 #ifdef DEBUG
-	g_mutex_lock( im__global_lock );
-	im__buffers_all = g_slist_prepend( im__buffers_all, buffer );
-	printf( "%d buffers in vips\n", g_slist_length( im__buffers_all ) );
-	g_mutex_unlock( im__global_lock );
+	g_mutex_lock( vips__global_lock );
+	vips__buffers_all = g_slist_prepend( vips__buffers_all, buffer );
+	printf( "%d buffers in vips\n", g_slist_length( vips__buffers_all ) );
+	g_mutex_unlock( vips__global_lock );
 #endif /*DEBUG*/
 
 	return( buffer );
 }
 
 static int
-buffer_move( im_buffer_t *buffer, Rect *area )
+buffer_move( VipsBuffer *buffer, VipsRect *area )
 {
-	IMAGE *im = buffer->im;
+	VipsImage *im = buffer->im;
 	size_t new_bsize;
 
-	assert( buffer->ref_count == 1 );
+	g_assert( buffer->ref_count == 1 );
 
 	buffer->area = *area;
-	im_buffer_undone( buffer );
-	assert( !buffer->done );
-	buffer->invalid = FALSE;
+	vips_buffer_undone( buffer );
+	g_assert( !buffer->done );
 
-	new_bsize = (size_t) IM_IMAGE_SIZEOF_PEL( im ) * 
+	new_bsize = (size_t) VIPS_IMAGE_SIZEOF_PEL( im ) * 
 		area->width * area->height;
 	if( buffer->bsize < new_bsize ) {
 		buffer->bsize = new_bsize;
-		IM_FREE( buffer->buf );
-		if( !(buffer->buf = im_malloc( NULL, buffer->bsize )) ) 
+		vips_tracked_free( buffer->buf );
+		if( !(buffer->buf = vips_tracked_malloc( buffer->bsize )) ) 
 			return( -1 );
 	}
 
@@ -356,23 +349,26 @@ buffer_move( im_buffer_t *buffer, Rect *area )
 
 /* Find an existing buffer that encloses area and return a ref.
  */
-static im_buffer_t *
-buffer_find( IMAGE *im, Rect *r )
+static VipsBuffer *
+buffer_find( VipsImage *im, VipsRect *r )
 {
-	im_buffer_cache_t *cache = buffer_cache_get();
-	im_buffer_cache_list_t *cache_list;
-	im_buffer_t *buffer;
+	VipsBufferCache *cache = buffer_cache_get();
+	VipsBufferCacheList *cache_list;
+	VipsBuffer *buffer;
 	GSList *p;
-	Rect *area;
+	VipsRect *area;
 
 	cache_list = g_hash_table_lookup( cache->hash, im );
 	p = cache_list ? cache_list->buffers : NULL;
 
 	/* This needs to be quick :-( don't use
-	 * im_slist_map2()/im_rect_includesrect(), do the search inline.
+	 * vips_slist_map2()/vips_rect_includesrect(), do the search inline.
+	 *
+	 * FIXME we return the first enclosing buffer, perhaps we should
+	 * search for the largest? 
 	 */
 	for( ; p; p = p->next ) {
-		buffer = (im_buffer_t *) p->data;
+		buffer = (VipsBuffer *) p->data;
 		area = &buffer->area;
 
 		if( area->left <= r->left &&
@@ -382,7 +378,7 @@ buffer_find( IMAGE *im, Rect *r )
 			buffer->ref_count += 1;
 
 #ifdef DEBUG
-			printf( "im_buffer_find: left = %d, top = %d, "
+			printf( "vips_buffer_find: left = %d, top = %d, "
 				"width = %d, height = %d, count = %d (%p)\n",
 				buffer->area.left, buffer->area.top, 
 				buffer->area.width, buffer->area.height, 
@@ -402,193 +398,81 @@ buffer_find( IMAGE *im, Rect *r )
 
 /* Return a ref to a buffer that encloses area.
  */
-im_buffer_t *
-im_buffer_ref( IMAGE *im, Rect *area )
+VipsBuffer *
+vips_buffer_ref( VipsImage *im, VipsRect *area )
 {
-	im_buffer_t *buffer;
+	VipsBuffer *buffer;
 
 	if( !(buffer = buffer_find( im, area )) ) 
 		/* No existing buffer ... make a new one.
 		 */
-		if( !(buffer = buffer_new( im, area )) ) 
+		if( !(buffer = vips_buffer_new( im, area )) ) 
 			return( NULL );
 
 	return( buffer );
 }
 
-/* Unref old, ref new, in a single operation. Move the buffer if we can.
+/* Unref old, ref new, in a single operation. Reuse stuff if we can. The
+ * buffer we return might or might not be done.
  */
-im_buffer_t *
-im_buffer_unref_ref( im_buffer_t *old_buffer, IMAGE *im, Rect *area )
+VipsBuffer *
+vips_buffer_unref_ref( VipsBuffer *old_buffer, VipsImage *im, VipsRect *area )
 {
-	im_buffer_t *buffer;
+	VipsBuffer *buffer;
 
-	assert( !old_buffer || old_buffer->im == im );
+	g_assert( !old_buffer || old_buffer->im == im );
 
-	if( (buffer = buffer_find( im, area )) && !buffer->invalid ) {
-		/* The new area has an OK buffer already: use that.
-		 */
-		IM_FREEF( im_buffer_unref, old_buffer );
+	/* Is the current buffer OK?
+	 */
+	if( old_buffer && 
+		vips_rect_includesrect( &old_buffer->area, area ) ) 
+		return( old_buffer );
+
+	/* Does the new area already have a buffer?
+	 */
+	if( (buffer = buffer_find( im, area )) ) {
+		VIPS_FREEF( vips_buffer_unref, old_buffer );
+		return( buffer );
 	}
-	else if( old_buffer && old_buffer->ref_count == 1 ) {
-		/* The old buffer is not shared ... we can reuse it.
-		 */
-		buffer = old_buffer;
-		if( buffer_move( buffer, area ) ) {
-			im_buffer_unref( buffer );
+
+	/* Is the current buffer unshared? We can just move it.
+	 */
+	if( old_buffer && old_buffer->ref_count == 1 ) {
+		if( buffer_move( old_buffer, area ) ) {
+			vips_buffer_unref( old_buffer );
 			return( NULL );
 		}
+
+		return( old_buffer );
 	}
-	else {
-		/* Old buffer in use ... need another.
-		 */
-		IM_FREEF( im_buffer_unref, old_buffer );
-		if( !(buffer = buffer_new( im, area )) ) 
-			return( NULL );
-	}
+
+	/* Fallback ... unref the old one, make a new one.
+	 */
+	VIPS_FREEF( vips_buffer_unref, old_buffer );
+	if( !(buffer = vips_buffer_new( im, area )) ) 
+		return( NULL );
 
 	return( buffer );
 }
 
 void
-im_buffer_print( im_buffer_t *buffer )
+vips_buffer_print( VipsBuffer *buffer )
 {
-	printf( "im_buffer_t: %p ref_count = %d, ", buffer, buffer->ref_count );
+	printf( "VipsBuffer: %p ref_count = %d, ", buffer, buffer->ref_count );
 	printf( "im = %p, ", buffer->im );
 	printf( "area.left = %d, ", buffer->area.left );
 	printf( "area.top = %d, ", buffer->area.top );
 	printf( "area.width = %d, ", buffer->area.width );
 	printf( "area.height = %d, ", buffer->area.height );
 	printf( "done = %d, ", buffer->done );
-	printf( "invalid = %d, ", buffer->invalid );
 	printf( "buf = %p, ", buffer->buf );
 	printf( "bsize = %zd\n", buffer->bsize );
-}
-
-/* Make a parent/child link. child is one of parent's inputs.
- */
-void 
-im__link_make( IMAGE *parent, IMAGE *child )
-{
-	assert( parent );
-	assert( child );
-
-	parent->children = g_slist_prepend( parent->children, child );
-	child->parents = g_slist_prepend( child->parents, parent );
-
-	/* Propogate the progress indicator.
-	 */
-	if( child->progress && !parent->progress ) 
-		parent->progress = child->progress;
-}
-
-/* Break link. child is one of parent's inputs.
- */
-static void *
-im__link_break( IMAGE *parent, IMAGE *child )
-{
-	assert( parent );
-	assert( child );
-	assert( g_slist_find( parent->children, child ) );
-	assert( g_slist_find( child->parents, parent ) );
-
-	parent->children = g_slist_remove( parent->children, child );
-	child->parents = g_slist_remove( child->parents, parent );
-
-	/* Unlink the progress chain.
-	 */
-	if( parent->progress && parent->progress == child->progress ) 
-		parent->progress = NULL;
-
-	return( NULL );
-}
-
-static void *
-im__link_break_rev( IMAGE *child, IMAGE *parent )
-{
-	return( im__link_break( parent, child ) );
-}
-
-/* An IMAGE is going ... break all links.
- */
-void
-im__link_break_all( IMAGE *im )
-{
-	im_slist_map2( im->parents, 
-		(VSListMap2Fn) im__link_break, im, NULL );
-	im_slist_map2( im->children, 
-		(VSListMap2Fn) im__link_break_rev, im, NULL );
-}
-
-static void *
-im__link_mapp( IMAGE *im, VSListMap2Fn fn, int *serial, void *a, void *b )
-{
-	void *res;
-
-	/* Loop?
-	 */
-	if( im->serial == *serial )
-		return( NULL );
-	im->serial = *serial;
-
-	if( (res = fn( im, a, b )) )
-		return( res );
-
-	return( im_slist_map4( im->parents, 
-		(VSListMap4Fn) im__link_mapp, fn, serial, a, b ) );
-}
-
-/* Apply a function to an image and all it's parents, direct and indirect. 
- */
-void *
-im__link_map( IMAGE *im, VSListMap2Fn fn, void *a, void *b )
-{
-	static int serial = 0;
-
-	serial += 1;
-	return( im__link_mapp( im, fn, &serial, a, b ) );
-}
-
-static void *
-im_invalidate_region( REGION *reg )
-{
-	if( reg->buffer )
-		reg->buffer->invalid = TRUE;
-
-	return( NULL );
-}
-
-static void *
-im_invalidate_image( IMAGE *im )
-{
-	(void) im_slist_map2( im->regions,
-		(VSListMap2Fn) im_invalidate_region, NULL, NULL );
-	if( im__trigger_callbacks( im->invalidatefns ) )
-		return( im );
-
-	return( NULL );
-}
-
-/**
- * im_invalidate:
- * @im: #IMAGE to invalidate
- *
- * Invalidate all pixel caches on an #IMAGE and any derived images. The 
- * "invalidate" callback is triggered for all invalidated images.
- *
- * See also: im_add_invalidate_callback().
- */
-void
-im_invalidate( IMAGE *im )
-{
-	(void) im__link_map( im, 
-		(VSListMap2Fn) im_invalidate_image, NULL, NULL );
 }
 
 /* Init the buffer cache system.
  */
 void
-im__buffer_init( void )
+vips__buffer_init( void )
 {
 #ifdef HAVE_THREADS
 	if( !thread_buffer_cache_key ) 

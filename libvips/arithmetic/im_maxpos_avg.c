@@ -59,9 +59,21 @@
 #include <vips/vips.h>
 #include <vips/internal.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
+/* Get the value of pixel (0, 0). Use this to init the min/max value for
+ * im_max()/im_stats()/etc.
+ */
+int
+im__value( IMAGE *im, double *value )
+{
+	IMAGE *t;
+
+	if( !(t = im_open_local( im, "im__value", "p" )) ||
+		im_extract_areabands( im, t, 0, 0, 1, 1, 0, 1 ) ||
+		im_avg( t, value ) )
+		return( -1 );
+
+	return( 0 );
+}
 
 /* A position and maximum.
  */
@@ -158,7 +170,7 @@ maxposavg_stop( void *seq, void *a, void *b )
 /* Loop over region, adding to seq.
  */
 static int
-maxposavg_scan( REGION *reg, void *seq, void *a, void *b )
+maxposavg_scan( REGION *reg, void *seq, void *a, void *b, gboolean *stop )
 {
 	const Rect *r = &reg->valid;
 	const int sz = IM_REGION_N_ELEMENTS( reg );
@@ -174,7 +186,7 @@ maxposavg_scan( REGION *reg, void *seq, void *a, void *b )
 	occurences = maxposavg->occurences;
 
 	for( y = 0; y < r->height; y++ ) { 
-		PEL *in = (PEL *) IM_REGION_ADDR( reg, r->left, r->top + y ); 
+		VipsPel *in = VIPS_REGION_ADDR( reg, r->left, r->top + y ); 
 
 		switch( reg->im->BandFmt ) {
 		case IM_BANDFMT_UCHAR:		LOOP( unsigned char ); break; 
@@ -235,16 +247,16 @@ im_maxpos_avg( IMAGE *in, double *xpos, double *ypos, double *out )
 
 	/* We use square mod for scanning, for speed.
 	 */
-	if( im_iscomplex( in ) )
+	if( vips_bandfmt_iscomplex( in->BandFmt ) )
 		global_maxposavg->max *= global_maxposavg->max;
 
-	if( im_iterate( in, maxposavg_start, maxposavg_scan, maxposavg_stop, 
+	if( vips_sink( in, maxposavg_start, maxposavg_scan, maxposavg_stop, 
 		in, global_maxposavg ) ) 
 		return( -1 );
 
 	/* Back to modulus.
 	 */
-	if( im_iscomplex( in ) )
+	if( vips_bandfmt_iscomplex( in->BandFmt ) )
 		global_maxposavg->max = sqrt( global_maxposavg->max );
 
 	if( xpos )

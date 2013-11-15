@@ -1,19 +1,4 @@
-/* @(#) Function which returns an int.  This integer is the threshold 
- * @(#) above which there are percent values of the input images
- * @(#)  If for instance precent=.1, the number of pels of the input image
- * @(#) with values greater than the returned int will correspond to
- * @(#) 10% of all pels of the image.
- * @(#) One band IM_BANDFMT_UCHAR images only.
- * @(#)
- * @(#) Function im_mpercent() assumes that input
- * @(#) is either memory mapped or in a buffer.
- * @(#)
- * @(#) int im_percent(in, percent)
- * @(#) IMAGE *in;
- * @(#) double percent;
- * @(#)
- * @(#) Returns 0 on success and -1 on error
- *
+/* find percent of pixels
  * Copyright: 1990, N. Dessipris
  *
  * Author: N. Dessipris
@@ -24,6 +9,8 @@
  *	- ANSIfied a little
  * 19/1/07
  * 	- redone with the vips hist operators
+ * 25/3/10
+ * 	- gtkdoc
  */
 
 /*
@@ -62,29 +49,38 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
-/* What threshold will select a specified percentage of the pixels in the
- * image. 
+/**
+ * im_mpercent_hist:
+ * @hist: input histogram image
+ * @percent: threshold percentage
+ * @out: output threshold value
+ *
+ * Just like im_mpercent(), except it works on an image histogram. Handy if
+ * you want to run im_mpercent() several times without having to recompute the
+ * histogram each time.
+ *
+ * See also: im_mpercent().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
-im_mpercent( IMAGE *in, double percent, int *out )
-{	
+im_mpercent_hist( IMAGE *hist, double percent, int *out )
+{
 	IMAGE *base;
 	IMAGE *t[6];
 	double pos;
 
-	if( !(base = im_open( "im_mpercent1", "p" )) )
+	if( im_check_hist( "im_mpercent", hist ) )
+		return( -1 );
+
+	if( !(base = im_open( "im_mpercent", "p" )) )
 		return( -1 );
 	if( im_open_local_array( base, t, 6, "im_mpercent", "p" ) ) {
 		im_close( base );
 		return( -1 );
 	}
 
-	if( im_histgr( in, t[0], -1 ) ||
-		im_histcum( t[0], t[1] ) ||
+	if( im_histcum( hist, t[1] ) ||
 		im_histnorm( t[1], t[2] ) ||
 		im_lessconst( t[2], t[3], percent * t[2]->Xsize ) ||
 		im_fliphor( t[3], t[4] ) ||
@@ -96,6 +92,41 @@ im_mpercent( IMAGE *in, double percent, int *out )
 	im_close( base );
 
 	*out = pos;
+
+	return( 0 );
+}
+
+/**
+ * im_mpercent:
+ * @in: input image
+ * @percent: threshold percentage
+ * @out: output threshold value
+ *
+ * im_mpercent() returns (through the @out parameter) the threshold above 
+ * which there are @percent values of @in. If for example percent=.1, the
+ * number of pels of the input image with values greater than the returned 
+ * int will correspond to 10% of all pels of the image.
+ *
+ * The function works for uchar and ushort images only.  It can be used 
+ * to threshold the scaled result of a filtering operation.
+ *
+ * See also: im_histgr(), im_profile().
+ *
+ * Returns: 0 on success, -1 on error
+ */
+int
+im_mpercent( IMAGE *in, double percent, int *out )
+{
+	IMAGE *t;
+
+	if( !(t = im_open( "im_mpercent1", "p" )) )
+		return( -1 );
+	if( im_histgr( in, t, -1 ) ||
+		im_mpercent_hist( t, percent, out ) ) {
+		im_close( t );
+		return( -1 );
+	}
+	im_close( t );
 
 	return( 0 );
 }

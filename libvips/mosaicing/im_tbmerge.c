@@ -68,6 +68,9 @@
  * 20/6/05
  *	- now requires all bands == 0 for transparency (used to just check
  *	  band 0)
+ * 24/1/11
+ * 	- gtk-doc
+ * 	- match formats and bands automatically
  */
 
 /*
@@ -112,16 +115,12 @@
 
 #include "merge.h"
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Return the position of the first non-zero pel from the top.
  */
 static int
 find_top( REGION *ir, int *pos, int x, int y, int h )
 {
-	PEL *pr = (PEL *) IM_REGION_ADDR( ir, x, y );
+	VipsPel *pr = IM_REGION_ADDR( ir, x, y );
 	IMAGE *im = ir->im;
 	int ls = IM_REGION_LSKIP( ir ) / IM_IMAGE_SIZEOF_ELEMENT( im );
 	int b = im->Bands;
@@ -129,7 +128,7 @@ find_top( REGION *ir, int *pos, int x, int y, int h )
 
 	/* Double the number of bands in a complex.
 	 */
-	if( im_iscomplex( im ) )
+	if( vips_bandfmt_iscomplex( im->BandFmt ) )
 		b *= 2;
 
 /* Search for the first non-zero band element from the top edge of the image.
@@ -175,7 +174,7 @@ find_top( REGION *ir, int *pos, int x, int y, int h )
 static int
 find_bot( REGION *ir, int *pos, int x, int y, int h )
 {
-	PEL *pr = (PEL *) IM_REGION_ADDR( ir, x, y );
+	VipsPel *pr = IM_REGION_ADDR( ir, x, y );
 	IMAGE *im = ir->im;
 	int ls = IM_REGION_LSKIP( ir ) / IM_IMAGE_SIZEOF_ELEMENT( ir->im );
 	int b = im->Bands;
@@ -183,7 +182,7 @@ find_bot( REGION *ir, int *pos, int x, int y, int h )
 
 	/* Double the number of bands in a complex.
 	 */
-	if( im_iscomplex( im ) )
+	if( vips_bandfmt_iscomplex( im->BandFmt ) )
 		b *= 2;
 
 /* Search for the first non-zero band element from the top edge of the image.
@@ -502,9 +501,9 @@ tb_blend( REGION *or, MergeInfo *inf, Overlapping *ovlap, Rect *oreg )
 	 */
 	for( y = oreg->top, yr = prr.top, ys = psr.top; 
 		y < IM_RECT_BOTTOM( oreg ); y++, yr++, ys++ ) { 
-		PEL *pr = (PEL *) IM_REGION_ADDR( rir, prr.left, yr );
-		PEL *ps = (PEL *) IM_REGION_ADDR( sir, psr.left, ys );
-		PEL *q = (PEL *) IM_REGION_ADDR( or, oreg->left, y );
+		VipsPel *pr = IM_REGION_ADDR( rir, prr.left, yr );
+		VipsPel *ps = IM_REGION_ADDR( sir, psr.left, ys );
+		VipsPel *q = IM_REGION_ADDR( or, oreg->left, y );
 
 		const int j = oreg->left - ovlap->overlap.left;
 		const int *first = ovlap->first + j;
@@ -580,9 +579,9 @@ tb_blend_labpack( REGION *or, MergeInfo *inf, Overlapping *ovlap, Rect *oreg )
 	 */
 	for( y = oreg->top, yr = prr.top, ys = psr.top; 
 		y < IM_RECT_BOTTOM( oreg ); y++, yr++, ys++ ) { 
-		PEL *pr = (PEL *) IM_REGION_ADDR( rir, prr.left, yr );
-		PEL *ps = (PEL *) IM_REGION_ADDR( sir, psr.left, ys );
-		PEL *q = (PEL *) IM_REGION_ADDR( or, oreg->left, y );
+		VipsPel *pr = IM_REGION_ADDR( rir, prr.left, yr );
+		VipsPel *ps = IM_REGION_ADDR( sir, psr.left, ys );
+		VipsPel *q = IM_REGION_ADDR( or, oreg->left, y );
 
 		const int j = oreg->left - ovlap->overlap.left;
 		const int *first = ovlap->first + j;
@@ -616,12 +615,13 @@ build_tbstate( IMAGE *ref, IMAGE *sec, IMAGE *out, int dx, int dy, int mwidth )
 {
    	Overlapping *ovlap;
 
-	if( !(ovlap = im__build_mergestate( ref, sec, out, dx, dy, mwidth )) )
+	if( !(ovlap = im__build_mergestate( "im_tbmerge", 
+		ref, sec, out, dx, dy, mwidth )) )
 		return( NULL );
 
 	/* Select blender.
 	 */
-	switch( ref->Coding ) {
+	switch( ovlap->ref->Coding ) {
 	case IM_CODING_LABQ:
 		ovlap->blend = tb_blend_labpack;
 		break;
@@ -665,20 +665,6 @@ im__tbmerge( IMAGE *ref, IMAGE *sec, IMAGE *out, int dx, int dy, int mwidth )
 {  
 	Overlapping *ovlap;
 
-	/* Check IMAGEs parameters
-	 */
-	if( ref->Bands != sec->Bands || 
-		ref->BandFmt != sec->BandFmt ||
-		ref->Coding != sec->Coding ) {
-		im_error( "im_tbmerge", 
-			"%s", _( "input images incompatible" ) );
-		return( -1 );
-	}
-	if( ref->Coding != IM_CODING_NONE && ref->Coding != IM_CODING_LABQ ) {
-		im_error( "im_tbmerge", 
-			"%s", _( "inputs not uncoded or IM_CODING_LABQ" ) );
-		return( -1 );
-	}
 	if( dy > 0 || dy < 1 - ref->Ysize ) {
 		/* No overlap, use insert instead.
 		 */
@@ -689,8 +675,6 @@ im__tbmerge( IMAGE *ref, IMAGE *sec, IMAGE *out, int dx, int dy, int mwidth )
 
 		return( 0 );
 	}
-	if( im_piocheck( ref, out ) || im_piocheck( sec, out ) )
-		return( -1 );
 
 	/* Build state for this join.
 	 */
@@ -720,6 +704,43 @@ im__tbmerge( IMAGE *ref, IMAGE *sec, IMAGE *out, int dx, int dy, int mwidth )
 	return ( 0 );
 }
 
+/**
+ * im_tbmerge:
+ * @ref: reference image
+ * @sec: secondary image
+ * @out: output image
+ * @dx: displacement of ref from sec
+ * @dy: displacement of ref from sec
+ * @mwidth: maximum seam width
+ *
+ * This operation joins two images top-bottom (with @ref on the top) with a 
+ * smooth seam.
+ *
+ * If the number of bands differs, one of the images 
+ * must have one band. In this case, an n-band image is formed from the 
+ * one-band image by joining n copies of the one-band image together, and then
+ * the two n-band images are operated upon.
+ *
+ * The two input images are cast up to the smallest common type (see table 
+ * Smallest common format in 
+ * <link linkend="VIPS-arithmetic">arithmetic</link>).
+ *
+ * @dx and @dy give the displacement of @sec relative to @ref, in other words,
+ * the vector to get from the origin of @sec to the origin of @ref, in other
+ * words, @dx will generally be a negative number. 
+ *
+ * @mwidth limits  the  maximum height of the
+ * blend area.  A value of "-1" means "unlimited". The two images are blended 
+ * with a raised cosine. 
+ *
+ * Pixels with all bands equal to zero are "transparent", that
+ * is, zero pixels in the overlap area do not  contribute  to  the  merge.
+ * This makes it possible to join non-rectangular images.
+ *
+ * See also: im_lrmosaic(), im_lrmerge(), im_match_linear(), im_insert().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int
 im_tbmerge( IMAGE *ref, IMAGE *sec, IMAGE *out, int dx, int dy, int mwidth )
 { 

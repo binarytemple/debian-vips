@@ -1,16 +1,4 @@
-/* @(#) Make an image containting text as a bitmap. One band uchar output,
- * @(#) with 0 - 255 for black - white.
- * @(#)
- * @(#) int 
- * @(#) im_text( IMAGE *out, const char *text, const char *font, 
- * @(#) 	int width, int alignment, int dpi ) 
- * @(#)
- * @(#) Font is a Pango font specification, eg. "Sans 12", or "Times News
- * @(#) Roman Italic 12". text should be coded as utf-8. dpi is resolution
- * @(#) in dots per inch. alignment is 0, 1 and 2 for right, centre and left 
- * @(#) alignment. width is the wrap width in pixels.
- * @(#)
- * @(#) Returns 0 on success and -1 on error.
+/* im_text
  *
  * Written on: 20/5/04
  * 29/7/04
@@ -20,6 +8,8 @@
  * 5/4/06
  * 	- return an error for im_text( "" ) rather than trying to make an
  * 	  empty image
+ * 2/2/10
+ * 	- gtkdoc
  */
 
 /*
@@ -63,10 +53,6 @@
 #include <pango/pangoft2.h>
 #endif /*HAVE_PANGOFT2*/
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 #ifdef HAVE_PANGOFT2
 
 static PangoLayout *
@@ -108,7 +94,7 @@ text_ft_to_vips( FT_Bitmap *bitmap, IMAGE *out )
 
 	for( y = 0; y < bitmap->rows; y++ ) 
 		if( im_writeline( y, out, 
-			(PEL *) bitmap->buffer + y * bitmap->pitch ) )
+			(VipsPel *) bitmap->buffer + y * bitmap->pitch ) )
 			return( -1 );
 
 	return( 0 );
@@ -190,6 +176,37 @@ text_render_to_image( PangoContext *context, IMAGE *out,
 	return( 0 );
 }
 
+/**
+ * im_text:
+ * @out: output image
+ * @text: utf-8 text string to render
+ * @font: font to render with
+ * @width: render within this many pixels across
+ * @alignment: left/centre/right alignment
+ * @dpi: render at this resolution
+ *
+ * Draw the string @text to an image. @out is a one-band 8-bit
+ * unsigned char image, with 0 for no text and 255 for text. Values inbetween
+ * are used for anti-aliasing.
+ *
+ * @text is the text to render as a UTF-8 string. It can contain Pango markup,
+ * for example "&lt;i&gt;The&lt;/i&gt;Guardian".
+ *
+ * @font is the font to render with, selected by fontconfig. Examples might be
+ * "sans 12" or perhaps "bitstream charter bold 10".
+ *
+ * @width is the maximum number of pixels across to draw within. If the
+ * generated text is wider than this, it will wrap to a new line. In this
+ * case, @alignment can be used to set the alignment style for multi-line
+ * text. 0 means left-align, 1 centre, 2 right-align.
+ *
+ * @dpi sets the resolution to render at. "sans 12" at 72 dpi draws characters
+ * approximately 12 pixels high.
+ *
+ * See also: im_make_xy(), im_black(), im_gaussnoise().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_text( IMAGE *out, const char *text, const char *font, 
 	int width, int alignment, int dpi )

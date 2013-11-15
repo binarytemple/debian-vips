@@ -38,19 +38,51 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /** 
  * SECTION: other
  * @short_description: miscellaneous operators
  * @stability: Stable
  * @include: vips/vips.h
  *
- * Various small things.
+ * These functions generate various test images. You can combine them with
+ * the arithmetic and rotate functions to build more complicated images.
  *
+ * The im_benchmark() operations are for testing the VIPS SMP system.
  */
+
+/* Args for im_sines.
+ */
+static im_arg_desc sines_args[] = {
+	IM_OUTPUT_IMAGE( "out" ),
+	IM_INPUT_INT( "xsize" ),
+	IM_INPUT_INT( "ysize" ),
+	IM_INPUT_DOUBLE( "horfreq" ),
+	IM_INPUT_DOUBLE( "verfreq" )
+};
+
+/* Call im_sines via arg vector.
+ */
+static int
+sines_vec( im_object *argv )
+{
+	int xsize = *((int *) argv[1]);
+	int ysize = *((int *) argv[2]);
+	double horfreq = *((double *) argv[3]);
+	double verfreq = *((double *) argv[4]);
+
+	return( im_sines( argv[0], xsize, ysize, horfreq, verfreq ) );
+}
+
+/* Description of im_sines.
+ */ 
+static im_function sines_desc = {
+	"im_sines", 			/* Name */
+	"generate 2D sine image",
+	0,				/* Flags */
+	sines_vec, 			/* Dispatch function */
+	IM_NUMBER( sines_args ), 	/* Size of arg list */
+	sines_args 			/* Arg list */
+};
 
 /* Args for im_eye.
  */
@@ -330,6 +362,7 @@ static im_function *other_list[] = {
 	&fgrey_desc,
 	&fzone_desc,
 	&make_xy_desc,
+	&sines_desc,
 	&zone_desc
 };
 

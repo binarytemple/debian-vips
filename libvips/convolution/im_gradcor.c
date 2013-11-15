@@ -1,23 +1,12 @@
-/* @(#) Like im_spcor(), but with a new metric.
- * @(#)
- * @(#) takes the gradient images of the two images, and takes the dot-product
- * @(#) correlation of the two vector images.
- * @(#)
- * @(#) (vector images are never really used, the two components are
- * @(#) calculated separately)
- * @(#)
- * @(#) The vector expression of this method is my (tcv) own creation. It is
- * @(#) equivalent to the complex-number method of:
- * @(#)
- * @(#) ARGYRIOU, V. et al. 2003.  Estimation of sub-pixel motion using
- * @(#) gradient cross correlation.  Electronics Letters, 39 (13).
- * @(#)
- * @(#) It's suitability for sub-pixel alignment is not (yet) tested.
+/* im_gradcor
  *
  * Copyright: 2007 Nottingham Trent University
  *
  * Author: Tom Vajzovic
  * Written on: 2007-06-07
+ * 3/2/10
+ * 	- gtkdoc
+ * 	- cleanups
  */
 
 /*
@@ -57,10 +46,6 @@
 #include <stdlib.h>
 
 #include <vips/vips.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 
 /** LOCAL TYPES **/
@@ -112,18 +97,14 @@ int im_gradcor_raw( IMAGE *large, IMAGE *small, IMAGE *out ){
   if( im_piocheck( large, out ) || im_pincheck( small ) )
     return -1;
 
-  if( ! im_isint( large ) || ! im_isint( small ) ){
-    im_error( FUNCTION_NAME, "image does not have integer band format" );
-    return -1;
-  }
-  if( large-> Coding || small-> Coding ){
-    im_error( FUNCTION_NAME, "image is not uncoded" );
-    return -1;
-  }
-  if( 1 != large-> Bands || 1 != small-> Bands ){
-    im_error( FUNCTION_NAME, "image is multi-band" );
-    return -1;
-  }
+  if( im_check_uncoded( "im_gradcor", large ) ||
+	im_check_mono( "im_gradcor", large ) || 
+	im_check_uncoded( "im_gradcor", small ) ||
+	im_check_mono( "im_gradcor", small ) || 
+	im_check_format_same( "im_gradcor", large, small ) ||
+	im_check_int( "im_gradcor", large ) )
+	return( -1 );
+
   if( large-> Xsize < small-> Xsize || large-> Ysize < small-> Ysize ){
     im_error( FUNCTION_NAME, "second image must be smaller than first" );
     return -1;
@@ -151,6 +132,32 @@ int im_gradcor_raw( IMAGE *large, IMAGE *small, IMAGE *out ){
 #undef FUNCTION_NAME
 }
 
+/**
+ * im_gradcor:
+ * @in: input image
+ * @ref: reference image
+ * @out: output image
+ *
+ * Calculate a correlation surface.
+ *
+ * @ref is placed at every position in @in and a correlation coefficient
+ * calculated. One-band, integer images only. @in and @ref must have the
+ * same #VipsBandFmt. The output
+ * image is always %IM_BANDFMT_FLOAT. @ref must be smaller than @in. The output
+ * image is the same size as the input. 
+ *
+ * The method takes the gradient images of the two images then takes the 
+ * dot-product correlation of the two vector images.
+ * The vector expression of this method is my (tcv) own creation. It is
+ * equivalent to the complex-number method of:
+ * 
+ * ARGYRIOU, V. et al. 2003. Estimation of sub-pixel motion using
+ * gradient cross correlation. Electronics Letters, 39 (13).
+ *
+ * See also: im_spcor().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_gradcor( IMAGE *in, IMAGE *ref, IMAGE *out )
 {
@@ -172,24 +179,35 @@ im_gradcor( IMAGE *in, IMAGE *ref, IMAGE *out )
 #undef FUNCTION_NAME
 }
 
+/**
+ * im_grad_x:
+ * @in: input image
+ * @out: output image
+ *
+ * Find horizontal differences between adjacent pixels.
+ *
+ * Generates an image where the value of each pixel is the difference between
+ * it and the pixel to its right. The output has the same height as the input
+ * and one pixel less width. One-band integer formats only. The result is
+ * always %IM_BANDFMT_INT.
+ *
+ * This operation is much faster than (though equivalent to) im_conv() with the
+ * mask [[-1, 1]].
+ *
+ * See also: im_grad_y(), im_conv().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int im_grad_x( IMAGE *in, IMAGE *out ){
 #define FUNCTION_NAME "im_grad_x"
 
   if( im_piocheck( in, out ) )
     return -1;
 
-  if( ! im_isint( in ) ){
-    im_error( FUNCTION_NAME, "image does not have integer band format" );
-    return -1;
-  }
-  if( in-> Coding ){
-    im_error( FUNCTION_NAME, "image is not uncoded" );
-    return -1;
-  }
-  if( 1 != in-> Bands ){
-    im_error( FUNCTION_NAME, "image is multi-band" );
-    return -1;
-  }
+  if( im_check_uncoded( "im_grad_x", in ) ||
+	im_check_mono( "im_grad_x", in ) || 
+	im_check_int( "im_grad_x", in ) )
+	return( -1 );
   if( im_cp_desc( out, in ) )
     return -1;
 
@@ -227,6 +245,8 @@ int im_grad_x( IMAGE *in, IMAGE *out ){
       RETURN_GENERATE( double );
 #endif
 #undef RETURN_GENERATE
+    default:
+      g_assert( 0 );
   }
 
   /* Keep gcc happy.
@@ -235,24 +255,37 @@ int im_grad_x( IMAGE *in, IMAGE *out ){
 #undef FUNCTION_NAME
 }
 
+
+/**
+ * im_grad_y:
+ * @in: input image
+ * @out: output image
+ *
+ * Find vertical differences between adjacent pixels.
+ *
+ * Generates an image where the value of each pixel is the difference between
+ * it and the pixel below it. The output has the same width as the input
+ * and one pixel less height. One-band integer formats only. The result is
+ * always %IM_BANDFMT_INT.
+ *
+ * This operation is much faster than (though equivalent to) im_conv() with the
+ * mask [[-1], [1]].
+ *
+ * See also: im_grad_x(), im_conv().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int im_grad_y( IMAGE *in, IMAGE *out ){
 #define FUNCTION_NAME "im_grad_y"
 
   if( im_piocheck( in, out ) )
     return -1;
 
-  if( ! im_isint( in ) ){
-    im_error( FUNCTION_NAME, "image does not have integer band format" );
-    return -1;
-  }
-  if( in-> Coding ){
-    im_error( FUNCTION_NAME, "image is not uncoded" );
-    return -1;
-  }
-  if( 1 != in-> Bands ){
-    im_error( FUNCTION_NAME, "image is multi-band" );
-    return -1;
-  }
+  if( im_check_uncoded( "im_grad_y", in ) ||
+	im_check_mono( "im_grad_y", in ) || 
+	im_check_int( "im_grad_y", in ) )
+	return( -1 );
+
   if( im_cp_desc( out, in ) )
     return -1;
 
@@ -290,6 +323,8 @@ int im_grad_y( IMAGE *in, IMAGE *out ){
       RETURN_GENERATE( double );
 #endif
 #undef RETURN_GENERATE
+    default:
+      g_assert( 0 );
   }
 
   /* Keep gcc happy.
@@ -419,6 +454,8 @@ static int gradcor_gen( REGION *to_make, void *vptr_seq, void *unrequired, void 
     case IM_BANDFMT_INT:
       FILL_BUFFERS( signed int )
       break;
+    default:
+      g_assert( 0 );
   }
   { /* write to output */
     size_t write_skip= IM_REGION_LSKIP( to_make ) / sizeof( float );

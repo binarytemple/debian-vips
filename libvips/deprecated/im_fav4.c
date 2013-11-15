@@ -37,11 +37,6 @@ Copyright (C) 1992, Kirk Martinez, History of Art Dept, Birkbeck College
 #include <string.h>
 
 #include <vips/vips.h>
-#include <vips/deprecated.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 #define ARGS "fav4: frame average 4 frames\nARGS: im1 im2 im3 im4 outfile"
 #define NFRAMES 4

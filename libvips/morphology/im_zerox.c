@@ -1,16 +1,4 @@
-/* @(#) Functions which detects the +ve and -ve edges of
- * @(#) zero crossings of an image depending on the flag 
- * @(#) Function im_zerox() assumes that the imin file is an integer image
- * @(#) either memory mapped or in a buffer.
- * @(#)  The output image is byte with 
- * @(#)  zero crossing set to 255 and all othre values set to zero
- * @(#)
- * @(#) int im_zerox(pimin, pimout, flag)
- * @(#) IMAGE *pimin, *pimout;
- * @(#) int flag;
- * @(#)
- * @(#) All functions return 0 on success and -1 on error
- * @(#)
+/* detect zero-crossings
  *
  * Copyright: 1990, N. Dessipris.
  *
@@ -22,6 +10,9 @@
  *	- some bugs removed
  * 11/5/06
  * 	- small clean ups
+ * 11/11/10
+ * 	- small cleanups
+ * 	- gtkdoc
  */
 
 /*
@@ -60,11 +51,7 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
-#define loop( TYPE ) \
+#define LOOP( TYPE ) { \
 	for( i = 0; i < ne; i++ ) { \
 		TYPE p1 = ((TYPE *)p)[i]; \
 		TYPE p2 = ((TYPE *)p)[i + ba]; \
@@ -75,7 +62,8 @@
 			q[i] = 255; \
 		else \
 			q[i] = 0; \
-	}
+	} \
+}
 
 /* Zerox generate function.
  */
@@ -108,47 +96,61 @@ zerox_gen( REGION *or, void *seq, void *a, void *b )
 		return( -1 );
 	
 	for( y = to; y < bo; y++ ) {
-		PEL *p = (PEL *) IM_REGION_ADDR( ir, le, y );
-		PEL *q = (PEL *) IM_REGION_ADDR( or, le, y );
+		VipsPel *p = IM_REGION_ADDR( ir, le, y );
+		VipsPel *q = IM_REGION_ADDR( or, le, y );
 
 		switch( in->BandFmt ) {
-		case IM_BANDFMT_CHAR:           loop( signed char ); break;
-		case IM_BANDFMT_SHORT:          loop( signed short ); break;
-		case IM_BANDFMT_INT:            loop( signed int ); break;
-		case IM_BANDFMT_FLOAT:          loop( float ); break;
-		case IM_BANDFMT_DOUBLE:         loop( double ); break;
+		case IM_BANDFMT_CHAR:           LOOP( signed char ); break;
+		case IM_BANDFMT_SHORT:          LOOP( signed short ); break;
+		case IM_BANDFMT_INT:            LOOP( signed int ); break;
+		case IM_BANDFMT_FLOAT:          LOOP( float ); break;
+		case IM_BANDFMT_DOUBLE:         LOOP( double ); break;
 
 		default:
-			error_exit( "im_zerox: internal error" );
-			/*NOTREACHED*/
+			g_assert( 0 );
 		}
 	}
 
 	return( 0 );
 } 
 
+/**
+ * im_zerox:
+ * @in: input image
+ * @out: output image
+ * @sign: detect positive or negative zero crossings
+ *
+ * im_zerox() detects the positive or negative zero crossings @in, 
+ * depending on @sign. If @sign is -1, negative zero crossings are returned,
+ * if @sign is 1, positive zero crossings are returned.
+ *
+ * The output image is byte with zero crossing set to 255 and all other values
+ * set to zero. Input can have any number of channels, and be any non-complex 
+ * type.
+ *
+ * See also: im_conv(), im_rot90.
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
-im_zerox( IMAGE *in, IMAGE *out, int flag )
+im_zerox( IMAGE *in, IMAGE *out, int sign )
 {
-	IMAGE *t1 = im_open_local( out, "im_zerox#1" , "p" );
+	IMAGE *t1;
 
-	if( !t1 )
-		return( -1 );
-	if( flag != -1 && flag != 1 ) {
-		im_error( "im_zerox", "%s", _( "flag not -1 ot 1" ) );
-		return( -1 );
-	}
-        if( im_piocheck( in, t1 ) )
-		return( -1 );
-	if( im_iscomplex( in ) || in->Coding != IM_CODING_NONE ) {
-		im_error( "im_zerox", "%s", _( "non-complex uncoded only" ) );
+	if( sign != -1 && sign != 1 ) {
+		im_error( "im_zerox", "%s", _( "flag not -1 or 1" ) );
 		return( -1 );
 	}
 	if( in->Xsize < 2 ) {
 		im_error( "im_zerox", "%s", _( "image too narrow" ) );
 		return( -1 );
 	}
-	if( im_isuint( in ) )
+	if( !(t1 = im_open_local( out, "im_zerox" , "p" )) ||
+		im_piocheck( in, t1 ) ||
+		im_check_uncoded( "im_zerox", in ) ||
+		im_check_noncomplex( "im_zerox", in ) )
+		return( -1 );
+	if( vips_bandfmt_isuint( in->BandFmt ) )
 		/* Unsigned type, therefore there will be no zero-crossings.
 		 */
 		return( im_black( out, in->Xsize, in->Ysize, in->Bands ) );
@@ -168,7 +170,7 @@ im_zerox( IMAGE *in, IMAGE *out, int flag )
 	/* Generate image.
 	 */
 	if( im_generate( t1, im_start_one, zerox_gen, im_stop_one, 
-		in, GINT_TO_POINTER( flag ) ) )
+		in, GINT_TO_POINTER( sign ) ) )
 		return( -1 );
 
 	/* Now embed it in a larger image.

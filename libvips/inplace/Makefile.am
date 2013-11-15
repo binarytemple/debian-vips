@@ -1,15 +1,16 @@
 noinst_LTLIBRARIES = libinplace.la
 
 libinplace_la_SOURCES = \
-	im_circle.c \
-	im_flood.c \
-	im_flood_other.c \
-	im_insertplace.c \
-	im_paintrect.c \
-	im_plotmask.c \
-	inplace_dispatch.c \
-	line_draw.c \
-	plot_point.c \
-	smudge_area.c
+	draw.c \
+	draw.h \
+	flood.c \
+	im_draw_circle.c \
+	im_draw_line.c \
+	im_draw_image.c \
+	im_draw_rect.c \
+	im_draw_mask.c \
+	im_draw_point.c \
+	im_draw_smudge.c \
+	inplace_dispatch.c
 
 INCLUDES = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 

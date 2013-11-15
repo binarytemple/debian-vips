@@ -56,11 +56,6 @@
 #include <assert.h>
 
 #include <vips/vips.h>
-#include <vips/deprecated.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 extern int im_gfadd();
 extern int im_gaddim();

@@ -1,22 +1,17 @@
-/* @(#) Creates a lut for transforming imagein (with histin) according to 
- * @(#) the pdf of imageref (with histref).  The lut should have been set
- * @(#) by a call to im_setbuf() or im_openout(). histin and histref
- * @(#) should have been set by a call to im_mmapin() or they are buffer images
- * @(#)
- * @(#) Usage: int im_histspec(in, ref, out)
- * @(#) IMAGE *histin, *histref, *out;
- * @(#)
- * @(#) Returns 0 on success and -1 on error
- * @(#)
+/* match PDFs
  *
  * Copyright: 1991, N. Dessipris.
  *
  * Author: Nicos Dessipris
  * Written on: 19/07/1990
  * Modified on: 26/03/1991
+ *
  * 1/3/01 JC
- * - bleurg! rewritten, now does 16 bits as well, bugs removed, faster,
- *   smaller
+ * 	- bleurg! rewritten, now does 16 bits as well, bugs removed, faster,
+ *     	  smaller
+ * 24/3/10
+ * 	- gtkdoc
+ * 	- small cleanups
  */
 
 /*
@@ -56,10 +51,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /*
 #define DEBUG
  */
@@ -73,35 +64,29 @@
 static int
 match( IMAGE *in, IMAGE *ref, IMAGE *out )
 {
-	const int inpx = in->Xsize * in->Ysize;
-	const int refpx = ref->Xsize * ref->Ysize;
+	const guint64 inpx = VIPS_IMAGE_N_PELS( in );
+	const guint64 refpx = VIPS_IMAGE_N_PELS( ref );
 	const int bands = in->Bands;	
 
 	unsigned int *inbuf;		/* in and ref, padded to same size */
 	unsigned int *refbuf;
 	unsigned int *outbuf;		/* Always output as uint */
 
-	int px;				/* Number of pixels */
-	int max;			/* px * bands */
+	guint64 px;			/* Number of pixels */
+	guint64 max;			/* px * bands */
 
-	int i, j;
+	guint64 i, j;
 
-	if( im_iocheck( in, out ) || im_iocheck( ref, out ) )
-		return( -1 );
-	if( in->Coding != IM_CODING_NONE || ref->Coding != IM_CODING_NONE ) {
-                im_error( "im_histspec", "%s", _( "not uncoded" ) );
+	if( im_iocheck( in, out ) || 
+		im_iocheck( ref, out ) ||
+		im_check_uncoded( "im_histspec", in ) ||
+		im_check_format( "im_histspec", in, IM_BANDFMT_UINT ) ||
+		im_check_coding_same( "im_histspec", in, ref ) ||
+		im_check_format_same( "im_histspec", in, ref ) ||
+		im_check_bands_same( "im_histspec", in, ref ) ||
+		im_check_hist( "im_histspec", in ) ||
+		im_check_hist( "im_histspec", ref ) )
                 return( -1 );
-	}
-	if( in->BandFmt != IM_BANDFMT_UINT || 
-		ref->BandFmt != IM_BANDFMT_UINT ) {
-                im_error( "im_histspec", "%s", _( "bad band format" ) );
-                return( -1 );
-	}
-	if( in->Bands != ref->Bands ) {
-                im_error( "im_histspec", "%s", 
-			_( "input histograms differ in number of bands" ) );
-                return( -1 );
-	}
 
 	/* How big?
 	 */
@@ -109,13 +94,11 @@ match( IMAGE *in, IMAGE *ref, IMAGE *out )
 		px = 256;
 	else if( inpx <= 65536 && refpx <= 65536 )
 		px = 65536;
-	else {
-		im_error( "im_histspec", "%s", _( "luts too large" ) );
-		return( -1 );
-	}
+	else 
+		px = IM_MAX( inpx, refpx );
 	max = px * bands;
 
-	/* Unpack to equal sized buffers.
+	/* Unpack to equal-sized buffers.
 	 */
 	inbuf = IM_ARRAY( out, max, unsigned int );
 	refbuf = IM_ARRAY( out, max, unsigned int );
@@ -165,31 +148,44 @@ match( IMAGE *in, IMAGE *ref, IMAGE *out )
 	out->Xsize = px;
 	out->Ysize = 1;
 	out->Type = IM_TYPE_HISTOGRAM;
+        if( im_setupout( out ) )
+		return( -1 );
 
-        if( im_setupout( out ) || im_writeline( 0, out, (PEL *) outbuf ) )
+        if( im_writeline( 0, out, (VipsPel *) outbuf ) )
 		return( -1 );
 
 	return( 0 );
 }
 
+/**
+ * im_histspec:
+ * @in: input histogram
+ * @ref: reference histogram 
+ * @out: output histogram
+ *
+ * Creates a lut which, when applied to the image from which histogram @in was
+ * formed, will produce an image whose PDF matches that of the image from 
+ * which @ref was formed.
+ *
+ * See also: im_hsp(), im_histgr(), im_maplut().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_histspec( IMAGE *in, IMAGE *ref, IMAGE *out )
 {
 	IMAGE *t[5];
-	int px;
+	guint64 px;
 	int fmt;
 
-	if( im_open_local_array( out, t, 5, "im_histspec", "p" ) )
+	if( im_check_uint( "im_histspec", in ) ||
+		im_check_uint( "im_histspec", ref ) )
 		return( -1 );
-	if( !im_isuint( in ) || !im_isuint( ref ) ) {
-                im_error( "im_histspec", "%s", 
-			_( "input luts are not some unsigned integer type" ) );
-                return( -1 );
-	}
 
 	/* Match hists.
 	 */
-	if( im_histeq( in, t[0] ) || 
+	if( im_open_local_array( out, t, 5, "im_histspec", "p" ) ||
+		im_histeq( in, t[0] ) || 
 		im_clip2fmt( t[0], t[1], IM_BANDFMT_UINT ) ||
 		im_histeq( ref, t[2] ) || 
 		im_clip2fmt( t[2], t[3], IM_BANDFMT_UINT ) ||
@@ -198,7 +194,7 @@ im_histspec( IMAGE *in, IMAGE *ref, IMAGE *out )
 
 	/* Clip type down.
 	 */
-	px = t[4]->Xsize * t[4]->Ysize;
+	px = VIPS_IMAGE_N_PELS( t[4] );
 	if( px <= 256 ) 
 		fmt = IM_BANDFMT_UCHAR;
 	else if( px <= 65536 ) 

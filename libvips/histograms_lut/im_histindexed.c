@@ -2,6 +2,8 @@
  *
  * 13/10/09
  * 	- from im_histgr.c
+ * 24/3/10
+ * 	- gtkdoc
  */
 
 /*
@@ -40,10 +42,6 @@
 #include <string.h>
 
 #include <vips/vips.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 /* Accumulate a histogram in one of these.
  */
@@ -153,7 +151,7 @@ hist_stop( void *seq, void *a, void *b )
 /* A uchar index image.
  */
 static int
-hist_scan_uchar( REGION *reg, void *seq, void *a, void *b )
+hist_scan_uchar( REGION *reg, void *seq, void *a, void *b, gboolean *stop )
 {
 	Histogram *hist = (Histogram *) seq;
 	Rect *r = &reg->valid;
@@ -171,8 +169,8 @@ hist_scan_uchar( REGION *reg, void *seq, void *a, void *b )
 	/* Accumulate!
 	 */
 	for( y = 0; y < r->height; y++ ) {
-		PEL *i = (PEL *) IM_REGION_ADDR( reg, r->left, r->top + y );
-		PEL *v = (PEL *) IM_REGION_ADDR( hist->vreg, 
+		VipsPel *i = IM_REGION_ADDR( reg, r->left, r->top + y );
+		VipsPel *v = IM_REGION_ADDR( hist->vreg, 
 			r->left, r->top + y );
 
 		switch( value->BandFmt ) {
@@ -228,7 +226,7 @@ hist_scan_uchar( REGION *reg, void *seq, void *a, void *b )
 /* A ushort index image.
  */
 static int
-hist_scan_ushort( REGION *reg, void *seq, void *a, void *b )
+hist_scan_ushort( REGION *reg, void *seq, void *a, void *b, gboolean *stop )
 {
 	Histogram *hist = (Histogram *) seq;
 	Rect *r = &reg->valid;
@@ -249,7 +247,7 @@ hist_scan_ushort( REGION *reg, void *seq, void *a, void *b )
 	for( y = 0; y < r->height; y++ ) {
 		unsigned short *i = (unsigned short *) IM_REGION_ADDR( reg, 
 				r->left, r->top + y );
-		PEL *v = (PEL *) IM_REGION_ADDR( hist->vreg, 
+		VipsPel *v = IM_REGION_ADDR( hist->vreg, 
 			r->left, r->top + y );
 
 		switch( value->BandFmt ) {
@@ -294,18 +292,38 @@ hist_write( IMAGE *out, Histogram *hist )
 	if( im_setupout( out ) )
 		return( -1 );
 
-	if( im_writeline( 0, out, (PEL *) hist->bins ) )
+	if( im_writeline( 0, out, (VipsPel *) hist->bins ) )
 		return( -1 );
 
 	return( 0 );
 }
 
+/**
+ * im_hist_indexed:
+ * @index: input image
+ * @value: input image
+ * @out: output image
+ *
+ * Make a histogram of @value, but use image @index to pick the bins. In other
+ * words, element zero in @out contains the sum of all the pixels in @value
+ * whose corresponding pixel in @index is zero.
+ *
+ * @index must have just one band and be u8 or u16. @value must be
+ * non-complex. @out always has the same size and format as @value.
+ *
+ * This operation is useful in conjunction with im_label_regions(). You can
+ * use it to find the centre of gravity of blobs in an image, for example.
+ *
+ * See also: im_histgr(), im_label_regions().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_hist_indexed( IMAGE *index, IMAGE *value, IMAGE *out )
 {
 	int size;		/* Length of hist */
 	Histogram *mhist;
-	im_generate_fn scanfn;
+	VipsGenerateFn scanfn;
 
 	/* Check images. PIO from in, WIO to out.
 	 */
@@ -315,7 +333,7 @@ im_hist_indexed( IMAGE *index, IMAGE *value, IMAGE *out )
 		im_check_uncoded( "im_hist_indexed", index ) ||
 		im_check_uncoded( "im_hist_indexed", value ) ||
 		im_check_noncomplex( "im_hist_indexed", value ) ||
-		im_check_same_size( "im_hist_indexed", index, value ) ||
+		im_check_size_same( "im_hist_indexed", index, value ) ||
 		im_check_u8or16( "im_hist_indexed", index ) ||
 		im_check_mono( "im_hist_indexed", index ) )
 		return( -1 );
@@ -338,7 +356,7 @@ im_hist_indexed( IMAGE *index, IMAGE *value, IMAGE *out )
 
 	/* Accumulate data.
 	 */
-	if( im_iterate( index, 
+	if( vips_sink( index, 
 		hist_start, scanfn, hist_stop, mhist, NULL ) ||
 		hist_write( out, mhist ) ) {
 		hist_free( mhist );

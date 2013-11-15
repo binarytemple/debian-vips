@@ -36,10 +36,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /** 
  * SECTION: conversion
  * @short_description: convert images in some way: change band format, change header, insert, extract, join
@@ -56,7 +52,7 @@
  * matrices and back, change header fields, and a few others.
  *
  * The second group move pixels about in some way. You can flip, rotate,
- * extract, insert and join pairs of iamges in various ways.
+ * extract, insert and join pairs of images in various ways.
  *
  */
 
@@ -73,7 +69,7 @@ system_vec( im_object *argv )
 	return( 0 );
 }
 
-static im_arg_desc system_arg_types[] = {
+static im_arg_desc system_args[] = {
 	IM_INPUT_IMAGE( "im" ),
 	IM_INPUT_STRING( "command" ),
 	IM_OUTPUT_STRING( "output" )
@@ -84,8 +80,54 @@ static im_function system_desc = {
 	"run command on image",		/* Description */
 	0,				/* Flags */
 	system_vec, 			/* Dispatch function */
-	IM_NUMBER( system_arg_types ),	/* Size of arg list */
-	system_arg_types 		/* Arg list */
+	IM_NUMBER( system_args ),	/* Size of arg list */
+	system_args 			/* Arg list */
+};
+
+static int
+system_image_vec( im_object *argv )
+{
+	IMAGE *in = argv[0];
+	IMAGE *out = argv[1];
+	char *in_format = argv[2];
+	char *out_format = argv[3];
+	char *cmd = argv[4];
+	char **log = (char **) &argv[5];
+
+	IMAGE *out_image;
+
+	if( !(out_image = im_system_image( in, 
+		in_format, out_format, cmd, log )) ) {
+		im_error( "im_system_image", "%s", *log );
+		return( -1 );
+	}
+
+	if( im_copy( out_image, out ) ||
+		im_add_close_callback( out, 
+			(im_callback_fn) im_close, out_image, NULL ) ) {
+		im_close( out_image );
+		return( -1 );
+	}
+
+	return( 0 );
+}
+
+static im_arg_desc system_image_args[] = {
+	IM_INPUT_IMAGE( "in" ),
+	IM_OUTPUT_IMAGE( "out" ),
+	IM_INPUT_STRING( "in_format" ),
+	IM_INPUT_STRING( "out_format" ),
+	IM_INPUT_STRING( "command" ),
+	IM_OUTPUT_STRING( "log" )
+};
+
+static im_function system_image_desc = {
+	"im_system_image",		/* Name */
+	"run command on image, with image output",/* Description */
+	0,				/* Flags */
+	system_image_vec, 		/* Dispatch function */
+	IM_NUMBER( system_image_args ),	/* Size of arg list */
+	system_image_args 		/* Arg list */
 };
 
 static int
@@ -155,35 +197,6 @@ static im_function gaussnoise_desc = {
 	gaussnoise_args 		/* Arg list */
 };
 
-/* Args to im_addgnoise.
- */
-static im_arg_desc addgnoise_args[] = {
-	IM_INPUT_IMAGE( "in" ),
-	IM_OUTPUT_IMAGE( "out" ),
-	IM_INPUT_DOUBLE( "sigma" )
-};
-
-/* Call im_addgnoise via arg vector.
- */
-static int
-addgnoise_vec( im_object *argv )
-{
-	double sigma = *((double *) argv[2]);
-
-	return( im_addgnoise( argv[0], argv[1], sigma ) );
-}
-
-/* Description of im_addgnoise.
- */ 
-static im_function addgnoise_desc = {
-	"im_addgnoise", 		/* Name */
-	"add gaussian noise with mean 0 and std. dev. sigma",
-	IM_FN_PIO,			/* Flags */
-	addgnoise_vec, 			/* Dispatch function */
-	IM_NUMBER( addgnoise_args ), 	/* Size of arg list */
-	addgnoise_args 			/* Arg list */
-};
-
 /* Args to im_extract.
  */
 static im_arg_desc extract_args[] = {
@@ -201,15 +214,14 @@ static im_arg_desc extract_args[] = {
 static int
 extract_vec( im_object *argv )
 {
-	IMAGE_BOX box;
+	int left = *((int *) argv[2]);
+	int top = *((int *) argv[3]);
+	int width = *((int *) argv[4]);
+	int height = *((int *) argv[5]);
+	int band = *((int *) argv[6]);
 
-	box.xstart = *((int *) argv[2]);
-	box.ystart = *((int *) argv[3]);
-	box.xsize = *((int *) argv[4]);
-	box.ysize = *((int *) argv[5]);
-	box.chsel = *((int *) argv[6]);
-
-	return( im_extract( argv[0], argv[1], &box ) );
+	return( im_extract_areabands( argv[0], argv[1], 
+		left, top, width, height, band, 1 ) );
 }
 
 /* Description of im_extract.
@@ -547,25 +559,6 @@ static im_function c2amph_desc = {
 	one_in_one_out 			/* Arg list */
 };
 
-/* Call im_clip via arg vector.
- */
-static int
-clip_vec( im_object *argv )
-{
-	return( im_clip( argv[0], argv[1] ) );
-}
-
-/* Description of im_clip.
- */
-static im_function clip_desc = {
-	"im_clip", 			/* Name */
-	"convert to unsigned 8-bit integer",
-	IM_FN_PTOP | IM_FN_PIO,		/* Flags */
-	clip_vec, 			/* Dispatch function */
-	IM_NUMBER( one_in_one_out ), 	/* Size of arg list */
-	one_in_one_out 			/* Arg list */
-};
-
 /* Call im_ri2c via arg vector.
  */
 static int
@@ -619,25 +612,6 @@ static im_function c2real_desc = {
 	"extract real part of complex image",
 	IM_FN_PTOP | IM_FN_PIO,		/* Flags */
 	c2real_vec, 			/* Dispatch function */
-	IM_NUMBER( one_in_one_out ), 	/* Size of arg list */
-	one_in_one_out 			/* Arg list */
-};
-
-/* Call im_c2ps via arg vector.
- */
-static int
-c2ps_vec( im_object *argv )
-{
-	return( im_c2ps( argv[0], argv[1] ) );
-}
-
-/* Description of im_c2ps.
- */
-static im_function c2ps_desc = {
-	"im_c2ps", 			/* Name */
-	"find power spectrum of complex image",
-	IM_FN_PTOP | IM_FN_PIO,		/* Flags */
-	c2ps_vec, 			/* Dispatch function */
 	IM_NUMBER( one_in_one_out ), 	/* Size of arg list */
 	one_in_one_out 			/* Arg list */
 };
@@ -1079,65 +1053,6 @@ static im_function tbjoin_desc = {
 	two_in_one_out 			/* Arg list */
 };
 
-/* Args to im_mask2vips.
- */
-static im_arg_desc mask2vips_args[] = {
-	IM_INPUT_DMASK( "input" ),
-	IM_OUTPUT_IMAGE( "output" ),
-};
-
-/* Call im_mask2vips via arg vector.
- */
-static int
-mask2vips_vec( im_object *argv )
-{
-	im_mask_object *mo = argv[0];
-
-	return( im_mask2vips( mo->mask, argv[1] ) );
-}
-
-/* Description of im_mask2vips.
- */
-static im_function mask2vips_desc = {
-	"im_mask2vips", 		/* Name */
-	"convert DOUBLEMASK to VIPS image",
-	0,				/* Flags */
-	mask2vips_vec, 			/* Dispatch function */
-	IM_NUMBER( mask2vips_args ), 	/* Size of arg list */
-	mask2vips_args 			/* Arg list */
-};
-
-/* Args to im_vips2mask.
- */
-static im_arg_desc vips2mask_args[] = {
-	IM_INPUT_IMAGE( "input" ),
-	IM_OUTPUT_DMASK( "output" ),
-};
-
-/* Call im_vips2mask via arg vector.
- */
-static int
-vips2mask_vec( im_object *argv )
-{
-	im_mask_object *mo = argv[1];
-
-	if( !(mo->mask = im_vips2mask( argv[0], mo->name )) )
-		return( -1 );
-
-	return( 0 );
-}
-
-/* Description of im_vips2mask.
- */
-static im_function vips2mask_desc = {
-	"im_vips2mask", 		/* Name */
-	"convert VIPS image to DOUBLEMASK",
-	0,				/* Flags */
-	vips2mask_vec, 			/* Dispatch function */
-	IM_NUMBER( vips2mask_args ), 	/* Size of arg list */
-	vips2mask_args 			/* Arg list */
-};
-
 /* Call im_scale via arg vector.
  */
 static int
@@ -1335,18 +1250,18 @@ static im_arg_desc wrap_args[] = {
 static int
 wrap_vec (im_object * argv)
 {
-  return im_wrap( (IMAGE*)argv[0], (IMAGE*)argv[1], *(int*)argv[2], *(int*)argv[3] );
+  return im_wrap( argv[0], argv[1], *(int*)argv[2], *(int*)argv[3] );
 }
 
 /* Description of im_wrap.
  */
 static im_function wrap_desc = {
-  "im_wrap",		/* Name */
+  "im_wrap",			/* Name */
   "shift image origin, wrapping at sides",
   IM_FN_PIO | IM_FN_TRANSFORM,	/* Flags */
-  wrap_vec,		/* Dispatch function */
+  wrap_vec,			/* Dispatch function */
   IM_NUMBER (wrap_args),	/* Size of arg list */
-  wrap_args		/* Arg list */
+  wrap_args			/* Arg list */
 };
 
 /* Args for im_embed.
@@ -1357,8 +1272,8 @@ static im_arg_desc embed_args[] = {
 	IM_INPUT_INT( "type" ),
 	IM_INPUT_INT( "x" ),
 	IM_INPUT_INT( "y" ),
-	IM_INPUT_INT( "w" ),
-	IM_INPUT_INT( "h" )
+	IM_INPUT_INT( "width" ),
+	IM_INPUT_INT( "height" )
 };
 
 /* Call im_embed via arg vector.
@@ -1369,10 +1284,10 @@ embed_vec( im_object *argv )
 	int type = *((int *) argv[2]);
 	int x = *((int *) argv[3]);
 	int y = *((int *) argv[4]);
-	int w = *((int *) argv[5]);
-	int h = *((int *) argv[6]);
+	int width = *((int *) argv[5]);
+	int height = *((int *) argv[6]);
 
-	return( im_embed( argv[0], argv[1], type, x, y, w, h ) );
+	return( im_embed( argv[0], argv[1], type, x, y, width, height ) );
 }
 
 /* Description of im_embed.
@@ -1382,23 +1297,20 @@ static im_function embed_desc = {
 	"embed in within a set of borders", 
 	IM_FN_PIO | IM_FN_TRANSFORM,	/* Flags */
 	embed_vec, 			/* Dispatch function */
-	IM_NUMBER( embed_args ), 		/* Size of arg list */
+	IM_NUMBER( embed_args ), 	/* Size of arg list */
 	embed_args 			/* Arg list */
 };
 
 /* Package up all these functions.
  */
 static im_function *conv_list[] = {
-	&addgnoise_desc,
 	&gaussnoise_desc,
 	&bandjoin_desc,
 	&black_desc,
 	&c2amph_desc,
 	&c2imag_desc,
-	&c2ps_desc,
 	&c2real_desc,
 	&c2rect_desc,
-	&clip_desc,
 	&clip2fmt_desc,
 	&copy_desc,
 	&copy_file_desc,
@@ -1421,7 +1333,6 @@ static im_function *conv_list[] = {
 	&insert_noexpand_desc,
 	&embed_desc,
 	&lrjoin_desc,
-	&mask2vips_desc,
         &msb_desc,
         &msb_band_desc,
 	&replicate_desc,
@@ -1433,9 +1344,9 @@ static im_function *conv_list[] = {
 	&scaleps_desc,
 	&subsample_desc,
 	&system_desc,
+	&system_image_desc,
 	&tbjoin_desc,
 	&text_desc,
-	&vips2mask_desc,
 	&wrap_desc,
 	&zoom_desc
 };

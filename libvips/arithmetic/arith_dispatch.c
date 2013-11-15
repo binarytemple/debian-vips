@@ -38,10 +38,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /** 
  * SECTION: arithmetic
  * @short_description: operations which perform pixel arithmetic, trig, log, statistics
@@ -767,7 +763,7 @@ ceil_vec( im_object *argv )
  */ 
 static im_function ceil_desc = {
 	"im_ceil", 			/* Name */
-	N_( "round to smallest integal value not less than" ),
+	N_( "round to smallest integer value not less than" ),
 	IM_FN_PIO | IM_FN_PTOP,		/* Flags */
 	ceil_vec, 			/* Dispatch function */
 	IM_NUMBER( one_in_one_out ), 	/* Size of arg list */
@@ -786,7 +782,7 @@ floor_vec( im_object *argv )
  */ 
 static im_function floor_desc = {
 	"im_floor", 			/* Name */
-	N_( "round to largest integal value not greater than" ),
+	N_( "round to largest integer value not greater than" ),
 	IM_FN_PIO | IM_FN_PTOP,		/* Flags */
 	floor_vec, 			/* Dispatch function */
 	IM_NUMBER( one_in_one_out ), 	/* Size of arg list */
@@ -805,7 +801,7 @@ rint_vec( im_object *argv )
  */ 
 static im_function rint_desc = {
 	"im_rint", 			/* Name */
-	N_( "round to nearest integal value" ),
+	N_( "round to nearest integer value" ),
 	IM_FN_PIO | IM_FN_PTOP,		/* Flags */
 	rint_vec, 			/* Dispatch function */
 	IM_NUMBER( one_in_one_out ), 	/* Size of arg list */

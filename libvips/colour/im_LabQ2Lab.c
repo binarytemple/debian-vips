@@ -53,19 +53,15 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* imb_LabQ2Lab: CONVERT n pels from packed 32bit Lab to float values
  * in a buffer
- * ARGS:   PEL *inp       pointer to first byte of Lab32 buffer
+ * ARGS:   VipsPel *inp       pointer to first byte of Lab32 buffer
  * float *outbuf   destination buffer
  *	int n           number of pels to process
  * (C) K.Martinez 2/5/93
  */
 void
-imb_LabQ2Lab( PEL *inp, float *outbuf, int n )        
+imb_LabQ2Lab( VipsPel *inp, float *outbuf, int n )        
 {
 	signed char *b;		/* to read input bytes */
 	int l;
@@ -117,15 +113,9 @@ imb_LabQ2Lab( PEL *inp, float *outbuf, int n )
 int
 im_LabQ2Lab( IMAGE *in,  IMAGE *out )
 {
-	/* check for coded Lab type 
-	 */
-	if( in->Coding != IM_CODING_LABQ ) {
-		im_error( "im_LabQ2Lab", "%s", _( "not a LabQ image" ) );
+	if( im_check_coding_labq( "im_LabQ2Lab", in ) )
 		return( -1 );
-	}
 
-	/* set up output image 
-	 */
 	if( im_cp_desc( out, in ) )
 		return( -1 );
 	out->Bands = 3;

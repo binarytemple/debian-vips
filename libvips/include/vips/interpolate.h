@@ -60,8 +60,8 @@ typedef struct _VipsInterpolate {
  * function for it to speed up dispatch. Write to the memory at "out",
  * interpolate the value at position (x, y) in "in".
  */
-typedef void (*VipsInterpolateMethod)( VipsInterpolate *, 
-	PEL *out, REGION *in, double x, double y );
+typedef void (*VipsInterpolateMethod)( VipsInterpolate *interpolate,
+	void *out, VipsRegion *in, double x, double y );
 
 typedef struct _VipsInterpolateClass {
 	VipsObjectClass parent_class;
@@ -79,28 +79,29 @@ typedef struct _VipsInterpolateClass {
 	 */
 	int window_size;
 
-	/* Stencils are offset by this much. Default to window_size / 2 
-	 * (centering) if undefined. 
+	/* Stencils are offset by this much. Default to window_size / 2 - 1
+	 * (centering) if get_window_offset is NULL and window_offset is -1.
 	 */
 	int (*get_window_offset)( VipsInterpolate * );
+	int window_offset;
 } VipsInterpolateClass;
 
 GType vips_interpolate_get_type( void );
-void vips_interpolate( VipsInterpolate *interpolate, 
-	PEL *out, REGION *in, double x, double y );
-VipsInterpolateMethod vips_interpolate_get_method( VipsInterpolate * );
+void vips_interpolate( VipsInterpolate *interpolate,
+	void *out, VipsRegion *in, double x, double y );
+VipsInterpolateMethod vips_interpolate_get_method( VipsInterpolate *interpolate );
 int vips_interpolate_get_window_size( VipsInterpolate *interpolate );
 int vips_interpolate_get_window_offset( VipsInterpolate *interpolate );
 
 /* How many bits of precision we keep for transformations, ie. how many
  * pre-computed matricies we have.
  */
-#define VIPS_TRANSFORM_SHIFT (5)
+#define VIPS_TRANSFORM_SHIFT (6)
 #define VIPS_TRANSFORM_SCALE (1 << VIPS_TRANSFORM_SHIFT)
 
 /* How many bits of precision we keep for interpolation, ie. where the decimal
  * is in the fixed-point tables. For 16-bit pixels, we need 16 bits for the
- * data and 4 bits to add 16 values together. That leaves 12 bits for the 
+ * data and 4 bits to add 16 values together. That leaves 12 bits for the
  * fractional part.
  */
 #define VIPS_INTERPOLATE_SHIFT (12)
@@ -110,16 +111,11 @@ int vips_interpolate_get_window_offset( VipsInterpolate *interpolate );
  */
 VipsInterpolate *vips_interpolate_nearest_static( void );
 VipsInterpolate *vips_interpolate_bilinear_static( void );
-VipsInterpolate *vips_interpolate_bicubic_static( void );
 
-/* Convenience: make an interpolator from a nickname. g_object_unref() when 
+/* Convenience: make an interpolator from a nickname. g_object_unref() when
  * you're done with it.
  */
 VipsInterpolate *vips_interpolate_new( const char *nickname );
-
-/* Register base vips types, called during startup.
- */
-void vips__interpolate_init( void );
 
 #ifdef __cplusplus
 }

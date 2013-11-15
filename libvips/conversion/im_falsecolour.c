@@ -1,17 +1,4 @@
-/* @(#) Maps a one band uchar in image to a 3 band uchar out image. The
- * @(#) colours are chosen to give an image of uniform luminance, but 
- * @(#) with a wide range of hues.
- * @(#)
- * @(#) Input should be either memory mapped or in buffer, out should have
- * @(#) been set by a call to im_openout() or im_setbuf().
- * @(#)
- * @(#) Usage: 
- * @(#) 
- * @(#) 	int 
- * @(#) 	im_falsecolour( IMAGE *in, IMAGE *out )
- * @(#)
- * @(#) Returns 0 on success and -1 on error
- * @(#)
+/* im_falsecolour
  *
  * 23/6/95 JC
  *	- rewritten for PIO
@@ -20,6 +7,11 @@
  * 	- uses falsecolour scale from PET scanner
  * 7/4/06
  * 	- hmm, reversed scale
+ * 29/1/10
+ * 	- cleanups
+ * 	- gtkdoc
+ * 12/7/11
+ * 	- force input to mono 8-bit for the user
  */
 
 /*
@@ -57,10 +49,6 @@
 #include <stdlib.h>
 
 #include <vips/vips.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 /* Falsecolour scale nicked from a PET scan.
  */
@@ -323,25 +311,37 @@ static unsigned char PET_colour[][3] = {
 	{ 174, 0, 0 }
 };
 
-/* False colour. One band uchar images only.
+/**
+ * im_falsecolour:
+ * @in: input image
+ * @out: output image
+ *
+ * Force @in to 1 band, 8-bit, then transform to 
+ * 3-band 8-bit image with a false colour
+ * map. The map is supposed to make small differences in brightness more
+ * obvious.
+ *
+ * See also: im_maplut().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_falsecolour( IMAGE *in, IMAGE *out )
 {
+	IMAGE *t[2];
 	IMAGE *lut;
 
-	/* Check our args. 
+	/* Check our args, force to mono 8-bit. 
 	 */
-	if( im_piocheck( in, out ) ) 
+	if( im_piocheck( in, out ) || 
+		im_check_uncoded( "im_falsecolour", in ) ||
+		im_open_local_array( out, t, 2, "im_falsecolour", "p" ) ||
+		im_extract_band( in, t[0], 0 ) ||
+		im_clip2fmt( t[0], t[1], IM_BANDFMT_UCHAR ) )
 		return( -1 );
-	if( in->Bands != 1 || in->Coding != IM_CODING_NONE ||
-		in->BandFmt != IM_BANDFMT_UCHAR ) {
-		im_error( "im_falsecolour", 
-			"%s", _( "input image not one band uchar uncoded" ) );
-		return( -1 );
-	}
+	in = t[1];
 
-	if( !(lut = im_image( (PEL *) PET_colour, 
+	if( !(lut = im_image( (VipsPel *) PET_colour, 
 		1, 256, 3, IM_BANDFMT_UCHAR )) )
 		return( -1 );
 	if( im_maplut( in, out, lut ) ) {

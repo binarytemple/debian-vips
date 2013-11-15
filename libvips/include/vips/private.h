@@ -32,151 +32,140 @@
 
  */
 
-#ifndef IM_PRIVATE_H
-#define IM_PRIVATE_H
+#ifndef VIPS_PRIVATE_H
+#define VIPS_PRIVATE_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif /*__cplusplus*/
 
-#define IM_SPARE (8)
+#define VIPS_SPARE (8)
 
-/* Private to iofuncs: the image size above which we switch from
- * mmap()-whole-image behaviour to mmap()-window, plus window margins.
- *
- * Always use mmap windows, they put a lot less strain on the VM system when
- * we have many open images.
+/* Private to iofuncs: the minimum number of scanlines we add above and below 
+ * the window as a margin for slop.
  */
-#define IM__MMAP_LIMIT (0)
-#define IM__WINDOW_MARGIN (128)
+#define VIPS__WINDOW_MARGIN_PIXELS (128)
+
+/* Private to iofuncs: add at least this many bytes above and below the window. 
+ * There's no point mapping just a few KB of a small image.
+ */
+#define VIPS__WINDOW_MARGIN_BYTES (1024 * 1024 * 10)
 
 /* sizeof() a VIPS header on disc.
  */
-#define IM_SIZEOF_HEADER (64)
-
-typedef unsigned char PEL;			/* useful datum		*/
-
-/* Types of image descriptor we may have. The type field is advisory only: it
- * does not imply that any fields in IMAGE have valid data.
- */
-typedef enum {
-	IM_NONE,		/* no type set */
-	IM_SETBUF,		/* malloced memory array */
-	IM_SETBUF_FOREIGN,	/* memory array, don't free on close */
-	IM_OPENIN,		/* input from fd */
-	IM_MMAPIN,		/* memory mapped input file */
-	IM_MMAPINRW,		/* memory mapped read/write file */
-	IM_OPENOUT,		/* output to fd */
-	IM_PARTIAL		/* partial image */
-} im_desc_type;
+#define VIPS_SIZEOF_HEADER (64)
 
 /* What we track for each mmap window. Have a list of these on an openin
- * IMAGE.
+ * VipsImage.
  */
 typedef struct {
 	int ref_count;		/* # of regions referencing us */
-	struct _VipsImage *im;	/* IMAGE we are attached to */
+	struct _VipsImage *im;	/* VipsImage we are attached to */
 
 	int top; 		/* Area of image we have mapped, in pixels */
 	int height;
-	char *data;		/* First pixel of line 'top' */
+	VipsPel *data;		/* First pixel of line 'top' */
 
-	PEL *baseaddr;		/* Base of window */
+	void *baseaddr;		/* Base of window */
 	size_t length;		/* Size of window */
-} im_window_t;
+} VipsWindow;
 
 /* window manager.
  */
-im_window_t *im_window_ref( struct _VipsImage *im, int top, int height );
-int im_window_unref( im_window_t *window );
-void im_window_print( im_window_t *window );
+VipsWindow *vips_window_ref( struct _VipsImage *im, int top, int height );
+int vips_window_unref( VipsWindow *window );
+void vips_window_print( VipsWindow *window );
 
 /* Per-thread buffer cache. Held in a GPrivate.
  */
-typedef struct im__buffer_cache_t {
-	GHashTable *hash;	/* Hash to im_buffer_cache_list_t* */
+typedef struct {
+	GHashTable *hash;	/* Hash to VipsBufferCacheList* */
 	GThread *thread;	/* Just for sanity checking */
-} im_buffer_cache_t;
+} VipsBufferCache;
 
-/* Per-image buffer cache. Hash to this from im_buffer_cache_t.
+/* Per-image buffer cache. Hash to this from VipsBufferCache.
  * We can't store the GSList directly in the hash table, as GHashTable lacks an
  * update operation and we'd need to _remove() and _insert() on every list
  * operation.
  */
-typedef struct im__buffer_cache_list_t {
-	GSList *buffers;	/* GSList of im_buffer_t* */
+typedef struct _VipsBufferCacheList {
+	GSList *buffers;	/* GSList of VipsBuffer* */
 	GThread *thread;	/* Just for sanity checking */
 	struct _VipsImage *im;
-	im_buffer_cache_t *cache;
-} im_buffer_cache_list_t;
+	VipsBufferCache *cache;
+} VipsBufferCacheList;
 
 /* What we track for each pixel buffer. 
  */
-typedef struct im__buffer_t {
+typedef struct _VipsBuffer {
 	int ref_count;		/* # of regions referencing us */
-	struct _VipsImage *im;	/* IMAGE we are attached to */
+	struct _VipsImage *im;	/* VipsImage we are attached to */
 
-	Rect area;		/* Area this pixel buffer covers */
+	VipsRect area;		/* Area this pixel buffer covers */
 	gboolean done;		/* Calculated and in cache */
-	im_buffer_cache_t *cache;
-	gboolean invalid;	/* Needs to be recalculated */
-	char *buf;		/* Private malloc() area */
+	VipsBufferCache *cache;
+	VipsPel *buf;		/* Private malloc() area */
 	size_t bsize;		/* Size of private malloc() */
-} im_buffer_t;
+} VipsBuffer;
 
-void im_buffer_done( im_buffer_t *buffer );
-void im_buffer_undone( im_buffer_t *buffer );
-void im_buffer_unref( im_buffer_t *buffer );
-im_buffer_t *im_buffer_ref( struct _VipsImage *im, Rect *area );
-im_buffer_t *im_buffer_unref_ref( im_buffer_t *buffer, 
-	struct _VipsImage *im, Rect *area );
-void im_buffer_print( im_buffer_t *buffer );
+void vips_buffer_done( VipsBuffer *buffer );
+void vips_buffer_undone( VipsBuffer *buffer );
+void vips_buffer_unref( VipsBuffer *buffer );
+VipsBuffer *vips_buffer_new( struct _VipsImage *im, VipsRect *area );
+VipsBuffer *vips_buffer_ref( struct _VipsImage *im, VipsRect *area );
+VipsBuffer *vips_buffer_unref_ref( VipsBuffer *buffer, 
+	struct _VipsImage *im, VipsRect *area );
+void vips_buffer_print( VipsBuffer *buffer );
 
 /* Sections of region.h that are private to VIPS.
  */
 
 /* Region types.
  */
-typedef enum region_type {
-	IM_REGION_NONE,
-	IM_REGION_BUFFER,	/* a pixel buffer */
-	IM_REGION_OTHER_REGION, /* memory on another region */
-	IM_REGION_OTHER_IMAGE,	/* memory on another image */
-	IM_REGION_WINDOW	/* mmap() buffer on fd on another image */
+typedef enum _RegionType {
+	VIPS_REGION_NONE,
+	VIPS_REGION_BUFFER,		/* A VipsBuffer */
+	VIPS_REGION_OTHER_REGION, 	/* Memory on another region */
+	VIPS_REGION_OTHER_IMAGE,	/* Memory on another image */
+	VIPS_REGION_WINDOW		/* A VipsWindow on fd */
 } RegionType;
 
-/* Private to iofuncs: the size of the `tiles' requested by im_generate()
- * when acting as a data sink.
+/* Private to iofuncs: the size of the `tiles' requested by 
+ * vips_image_generate() when acting as a data sink.
  */
-#define IM__TILE_WIDTH (64)
-#define IM__TILE_HEIGHT (64)
+#define VIPS__TILE_WIDTH (128)
+#define VIPS__TILE_HEIGHT (128)
 
 /* The height of the strips for the other two request styles.
  */
-#define IM__THINSTRIP_HEIGHT (1)
-#define IM__FATSTRIP_HEIGHT (16)
+#define VIPS__THINSTRIP_HEIGHT (1)
+#define VIPS__FATSTRIP_HEIGHT (16)
 
 /* Functions on regions.
  */
-struct _REGION;
-void im__region_take_ownership( struct _REGION *reg );
-void im__region_check_ownership( struct _REGION *reg );
-void im__region_no_ownership( struct _REGION *reg );
+struct _VipsRegion;
+void vips__region_take_ownership( struct _VipsRegion *reg );
+void vips__region_check_ownership( struct _VipsRegion *reg );
+void vips__region_no_ownership( struct _VipsRegion *reg );
 
-void im__copy_region( struct _REGION *reg, struct _REGION *dest, Rect *r, int x, int y );
-void im__find_demand_size( struct _VipsImage *im, int *pw, int *ph );
+int vips__region_start( struct _VipsRegion *reg );
+void vips__region_stop( struct _VipsRegion *reg );
 
-int im__call_start( struct _REGION *reg );
-void im__call_stop( struct _REGION *reg );
+typedef int (*VipsRegionFillFn)( struct _VipsRegion *, void * );
+int vips_region_fill( struct _VipsRegion *reg, 
+	VipsRect *r, VipsRegionFillFn fn, void *a );
 
-typedef int (*im_region_fill_fn)( struct _REGION *, void * );
-int im_region_fill( struct _REGION *reg, Rect *r, im_region_fill_fn fn, void *a );
-void im_region_print( struct _REGION *region );
+int vips__image_wio_output( struct _VipsImage *image );
+int vips__image_pio_output( struct _VipsImage *image );
 
-int im_prepare_many( struct _REGION **reg, Rect *r );
+VipsArgumentInstance *vips__argument_get_instance( 
+	VipsArgumentClass *argument_class,
+	VipsObject *object);
+VipsArgument *vips__argument_table_lookup( VipsArgumentTable *table, 
+	GParamSpec *pspec);
 
 #ifdef __cplusplus
 }
 #endif /*__cplusplus*/
 
-#endif /*IM_PRIVATE_H*/
+#endif /*VIPS_PRIVATE_H*/

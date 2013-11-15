@@ -31,8 +31,8 @@
 
  */
 
-#ifndef IM_INTERNAL_H
-#define IM_INTERNAL_H
+#ifndef VIPS_INTERNAL_H
+#define VIPS_INTERNAL_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,74 +44,100 @@ extern "C" {
  * We don't refcount at this level ... large meta values are refcounted by
  * their GValue implementation, see eg. MetaArea.
  */
-typedef struct _Meta {
-	IMAGE *im;
+typedef struct _VipsMeta {
+	VipsImage *im;
 
 	char *field;			/* strdup() of field name */
 	GValue value;			/* copy of value */
-} Meta;
+} VipsMeta;
 
-void im__meta_init_types( void );
-void im__meta_destroy( IMAGE *im );
-int im__meta_cp( IMAGE *, const IMAGE * );
+void vips__meta_init_types( void );
+void vips__meta_destroy( VipsImage *im );
+int vips__meta_cp( VipsImage *, const VipsImage * );
 
 /* Default tile geometry.
  */
-extern int im__tile_width;
-extern int im__tile_height;
-extern int im__fatstrip_height;
-extern int im__thinstrip_height;
+extern int vips__tile_width;
+extern int vips__tile_height;
+extern int vips__fatstrip_height;
+extern int vips__thinstrip_height;
 
 /* Default n threads.
  */
-extern int im__concurrency;
+extern int vips__concurrency;
 
 /* Give progress feedback.
  */
-extern int im__progress;
+extern int vips__progress;
 
-typedef int (*im__fftproc_fn)( IMAGE *, IMAGE *, IMAGE * );
+/* A string giving the image size (in bytes of uncompressed image) above which 
+ * we decompress to disc on open. 
+ */
+extern char *vips__disc_threshold;
+
+/* Cache size settings.
+ */
+extern char *vips__cache_max;
+extern char *vips__cache_max_mem;
+extern char *vips__cache_max_files;
+extern gboolean vips__cache_dump;
+extern gboolean vips__cache_trace;
+
+typedef int (*im__fftproc_fn)( VipsImage *, VipsImage *, VipsImage * );
 
 /* iofuncs
  */
-IMAGE *im_init( const char * );
-IMAGE *im_openout( const char * );
-IMAGE *im_open_vips( const char * );
-int im_openin( IMAGE *image );
-int im_openinrw( IMAGE *image );
-IMAGE *im_setbuf( const char * );
-IMAGE *im_partial( const char * );
+int vips__open_image_read( const char *filename );
+int vips__open_image_write( const char *filename, gboolean temp );
+int vips_image_open_input( VipsImage *image );
+int vips_image_open_output( VipsImage *image );
 
-int im_mapfile( IMAGE * );
-int im_mapfilerw( IMAGE * );
-int im_remapfilerw( IMAGE *image );
+void vips__link_break_all( VipsImage *im );
+void *vips__link_map( VipsImage *im, VipsSListMap2Fn fn, void *a, void *b );
 
-IMAGE *im_open_header( const char * );
+char *vips__b64_encode( const unsigned char *data, size_t data_length );
+unsigned char *vips__b64_decode( const char *buffer, size_t *data_length );
 
-int im_unmapfile( IMAGE * );
-void im__read_4byte( int msb_first, unsigned char *to, unsigned char **from );
-void im__read_2byte( int msb_first, unsigned char *to, unsigned char **from );
-void im__write_4byte( unsigned char **to, unsigned char *from );
-void im__write_2byte( unsigned char **to, unsigned char *from );
+void *vips__mmap( int fd, int writeable, size_t length, gint64 offset );
+int vips__munmap( void *start, size_t length );
+int vips_mapfile( VipsImage * );
+int vips_mapfilerw( VipsImage * );
+int vips_remapfilerw( VipsImage * );
 
-int im__ftruncate( int fd, gint64 pos );
-int im__seek( int fd, gint64 pos );
-int im__get_bytes( const char *filename, unsigned char buf[], int len );
-gint64 im__image_pixel_length( IMAGE *im );
+void vips__buffer_init( void );
 
-int im__open_image_file( const char * );
+void vips__copy_4byte( int swap, unsigned char *to, unsigned char *from );
+void vips__copy_2byte( gboolean swap, unsigned char *to, unsigned char *from );
+
+guint32 vips__file_magic( const char *filename );
+int vips__has_extension_block( VipsImage *im );
+void *vips__read_extension_block( VipsImage *im, int *size );
+int vips__write_extension_block( VipsImage *im, void *buf, int size );
+int vips__writehist( VipsImage *image );
+int vips__read_header_bytes( VipsImage *im, unsigned char *from );
+int vips__write_header_bytes( VipsImage *im, unsigned char *to );
+
+extern GMutex *vips__global_lock;
+
+int vips__formatalike_vec( VipsImage **in, VipsImage **out, int n );
+int vips__sizealike_vec( VipsImage **in, VipsImage **out, int n );
+int vips__bandup( const char *domain, VipsImage *in, VipsImage **out, int n );
+int vips__bandalike_vec( const char *domain, 
+	VipsImage **in, VipsImage **out, int n, int base_bands );
+
+int vips__formatalike( VipsImage *in1, VipsImage *in2, 
+	VipsImage **out1, VipsImage **out2 );
+int vips__sizealike( VipsImage *in1, VipsImage *in2, 
+	VipsImage **out1, VipsImage **out2 );
+int vips__bandalike( const char *domain, 
+	VipsImage *in1, VipsImage *in2, VipsImage **out1, VipsImage **out2 );
+
+int vips_foreign_tilecache( VipsImage *in, VipsImage **out, int strip_height );
+
+
+
+
 void im__format_init( void );
-void im__type_init( void );
-int im__read_header_bytes( IMAGE *im, unsigned char *from );
-int im__write_header_bytes( IMAGE *im, unsigned char *to );
-int im__has_extension_block( IMAGE *im );
-void *im__read_extension_block( IMAGE *im, int *size );
-int im__write_extension_block( IMAGE *im, void *buf, int size );
-int im__writehist( IMAGE *image );
-int im__start_eval( IMAGE *im );
-int im__handle_eval( IMAGE *im, int w, int h );
-int im__end_eval( IMAGE *im );
-int im__time_destroy( IMAGE *im );
 
 void im__tiff_register( void );
 void im__jpeg_register( void );
@@ -122,94 +148,84 @@ void im__analyze_register( void );
 void im__exr_register( void );
 void im__magick_register( void );
 
-extern int im__read_test;
-extern int im__mmap_limit;
-extern GMutex *im__global_lock;
+int im__bandup( const char *domain, VipsImage *in, VipsImage *out, int n );
+int im__bandalike_vec( const char *domain, VipsImage **in, VipsImage **out, int n );
+int im__bandalike( const char *domain, 
+	VipsImage *in1, VipsImage *in2, VipsImage *out1, VipsImage *out2 );
+int im__formatalike_vec( VipsImage **in, VipsImage **out, int n );
+int im__formatalike( VipsImage *in1, VipsImage *in2, VipsImage *out1, VipsImage *out2 );
+int im__sizealike_vec( VipsImage **in, VipsImage **out, int n );
+int im__sizealike( VipsImage *in1, VipsImage *in2, 
+	VipsImage *out1, VipsImage *out2 );
 
-typedef enum {
-	IM__RGB,	/* 1 or 3 bands (like PPM) */
-	IM__RGBA,	/* 1, 2, 3 or 4 bands (like PNG) */
-	IM__RGB_CMYK	/* 1, 3 or 4 bands (like JPEG) */
-} im__saveable_t;
-
-IMAGE *im__convert_saveable( IMAGE *in, im__saveable_t saveable );
-
-void im__link_make( IMAGE *parent, IMAGE *child );
-void im__link_break_all( IMAGE *im );
-void *im__link_map( IMAGE *im, VSListMap2Fn fn, void *a, void *b );
-
-GValue *im__gvalue_ref_string_new( const char *text );
-void im__gslist_gvalue_free( GSList *list );
-GSList *im__gslist_gvalue_copy( const GSList *list );
-GSList *im__gslist_gvalue_merge( GSList *a, const GSList *b );
-char *im__gslist_gvalue_get( const GSList *list );
-
-void im__buffer_init( void );
-
-int im__bandup( IMAGE *in, IMAGE *out, int n );
-int im__bandalike( IMAGE *in1, IMAGE *in2, IMAGE *out1, IMAGE *out2 );
-int im__formatalike( IMAGE *in1, IMAGE *in2, IMAGE *out1, IMAGE *out2 );
-int im__arith_binary( const char *name, 
-	IMAGE *in1, IMAGE *in2, IMAGE *out, 
+int im__arith_binary( const char *domain, 
+	VipsImage *in1, VipsImage *in2, VipsImage *out, 
 	int format_table[10], 
 	im_wrapmany_fn fn, void *b );
-int im__arith_binary_const( const char *name,
-	IMAGE *in, IMAGE *out, 
-	int n, double *c, VipsBandFmt vfmt,
+int im__arith_binary_const( const char *domain,
+	VipsImage *in, VipsImage *out, 
+	int n, double *c, VipsBandFormat vfmt,
 	int format_table[10], 
 	im_wrapone_fn fn1, im_wrapone_fn fnn );
-int im__value( IMAGE *im, double *value );
+int im__value( VipsImage *im, double *value );
 typedef int (*im__wrapscan_fn)( void *p, int n, void *seq, void *a, void *b );
-int im__wrapscan( IMAGE *in, 
-	im_start_fn start, im__wrapscan_fn scan, im_stop_fn stop,
+int im__wrapscan( VipsImage *in, 
+	VipsStartFn start, im__wrapscan_fn scan, VipsStopFn stop,
 	void *a, void *b );
 int im__colour_difference( const char *domain,
-	IMAGE *in1, IMAGE *in2, IMAGE *out, 
+	VipsImage *in1, VipsImage *in2, VipsImage *out, 
 	im_wrapmany_fn buffer_fn, void *a, void *b );
 int im__colour_unary( const char *domain,
-	IMAGE *in, IMAGE *out, VipsType type,
+	VipsImage *in, VipsImage *out, VipsInterpretation interpretation,
 	im_wrapone_fn buffer_fn, void *a, void *b );
+VipsImage **im__insert_base( const char *domain, 
+	VipsImage *in1, VipsImage *in2, VipsImage *out );
 
-int im__test_kill( IMAGE *im );
-void *im__mmap( int fd, int writeable, size_t length, gint64 offset );
-int im__munmap( void *start, size_t length );
-int im__write( int, const void *, size_t );
-void im__change_suffix( const char *name, char *out, int mx,
-        const char *new_suff, const char **olds, int nolds );
-void im__print_all( void );
-void im__print_one( int );
-int im__trigger_callbacks( GSList *cblist );
-int im__close( IMAGE * );
-int im__handle_eval( IMAGE *im, int w, int h );
-int im__fft_sp( float *rvec, float *ivec, int logrows, int logcols );
-int im__fftproc( IMAGE *dummy, IMAGE *in, IMAGE *out, im__fftproc_fn fn );
-int im__mean_std_double_buffer( double *buffer, int size,
-	double *pmean, double *pstd );
-int im__mean_std_int_buffer( int *buffer, int size,
-	double *pmean, double *pstd );
-int im__find_lroverlap( IMAGE *ref_in, IMAGE *sec_in, IMAGE *out,
+/* Structure for holding the lookup tables for XYZ<=>rgb conversion.
+ * Also holds the luminance to XYZ matrix and the inverse one.
+ */
+struct im_col_tab_disp {
+	/*< private >*/
+	float	t_Yr2r[1501];		/* Conversion of Yr to r */
+	float	t_Yg2g[1501];		/* Conversion of Yg to g */
+	float	t_Yb2b[1501];		/* Conversion of Yb to b */
+	float	t_r2Yr[1501];		/* Conversion of r to Yr */
+	float	t_g2Yg[1501];		/* Conversion of g to Yg */
+	float	t_b2Yb[1501];		/* Conversion of b to Yb */
+	float	mat_XYZ2lum[3][3];	/* XYZ to Yr, Yg, Yb matrix */
+	float	mat_lum2XYZ[3][3];	/* Yr, Yg, Yb to XYZ matrix */
+	float rstep, gstep, bstep;
+	float ristep, gistep, bistep;
+};
+
+struct im_col_tab_disp *im_col_make_tables_RGB( VipsImage *im, 
+	struct im_col_display *d );
+struct im_col_tab_disp *im_col_display_get_table( struct im_col_display *d );
+
+int im__fftproc( VipsImage *dummy, 
+	VipsImage *in, VipsImage *out, im__fftproc_fn fn );
+
+int im__find_lroverlap( VipsImage *ref_in, VipsImage *sec_in, VipsImage *out,
         int bandno_in,
         int xref, int yref, int xsec, int ysec,
         int halfcorrelation, int halfarea,
         int *dx0, int *dy0,
         double *scale1, double *angle1, double *dx1, double *dy1 );
-int im__find_tboverlap( IMAGE *ref_in, IMAGE *sec_in, IMAGE *out,
+int im__find_tboverlap( VipsImage *ref_in, VipsImage *sec_in, VipsImage *out,
         int bandno_in,
         int xref, int yref, int xsec, int ysec,
         int halfcorrelation, int halfarea,
         int *dx0, int *dy0,
         double *scale1, double *angle1, double *dx1, double *dy1 );
-int im__find_best_contrast( IMAGE *image,
+int im__find_best_contrast( VipsImage *image,
 	int xpos, int ypos, int xsize, int ysize,
 	int xarray[], int yarray[], int cont[],
 	int nbest, int hcorsize );
-int im__balance( IMAGE *ref, IMAGE *sec, IMAGE *out,
-	IMAGE **ref_out, IMAGE **sec_out, int dx, int dy, int balancetype );
-void im__black_region( REGION *reg );
+int im__balance( VipsImage *ref, VipsImage *sec, VipsImage *out,
+	VipsImage **ref_out, VipsImage **sec_out, int dx, int dy, int balancetype );
 
 void imb_Lab2LCh( float *, float *, int );
 void imb_LCh2Lab( float *, float *, int );
-void imb_XYZ2Lab_tables( void );
 
 /* A colour temperature.
  */
@@ -219,8 +235,8 @@ typedef struct {
 
 void imb_XYZ2Lab( float *, float *, int, im_colour_temperature * );
 void imb_Lab2XYZ( float *, float *, int, im_colour_temperature * );
-void imb_LabQ2Lab( PEL *, float *, int );
-void imb_Lab2LabQ( float *, PEL *, int );
+void imb_LabQ2Lab( VipsPel *, float *, int );
+void imb_Lab2LabQ( float *, VipsPel *, int );
 void imb_LabS2Lab( signed short *, float *, int );
 void imb_Lab2LabS( float *, signed short *, int n );
 
@@ -243,11 +259,41 @@ void im_free_dmat();
 
 int im_invmat( double **, int );
 
-int im_conv_f_raw( IMAGE *in, IMAGE *out, DOUBLEMASK *mask );
-int im_convsep_f_raw( IMAGE *in, IMAGE *out, DOUBLEMASK *mask );
+int *im_offsets45( int size );
+int *im_offsets90( int size );
+
+int im_conv_f_raw( VipsImage *in, VipsImage *out, DOUBLEMASK *mask );
+int im_convsep_f_raw( VipsImage *in, VipsImage *out, DOUBLEMASK *mask );
+
+int im__fmaskcir( VipsImage *out, VipsMaskType flag, va_list ap );
+
+/* inplace
+ */
+
+VipsPel *im__vector_to_ink( const char *domain, VipsImage *im, int n, double *vec );
+VipsImage *im__inplace_base( const char *domain, 
+	VipsImage *main, VipsImage *sub, VipsImage *out );
+
+/* Register base vips interpolators, called during startup.
+ */
+void vips__interpolate_init( void );
+
+/* Register wrappers for all the vips7 operations.
+ */
+void vips__init_wrap7_classes( void );
+
+/* Start up various packages.
+ */
+void vips_arithmetic_operation_init( void );
+void vips_conversion_operation_init( void );
+
+guint64 vips__parse_size( const char *size_string );
+
+IMAGE *vips__deprecated_open_read( const char *filename );
+IMAGE *vips__deprecated_open_write( const char *filename );
 
 #ifdef __cplusplus
 }
 #endif /*__cplusplus*/
 
-#endif /*IM_INTERNAL_H*/
+#endif /*VIPS_INTERNAL_H*/

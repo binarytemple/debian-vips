@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- 3,html --> 
 <meta name="src" content="vipsmanual.tex"> 
-<meta name="date" content="2009-11-30 16:39:00"> 
+<meta name="date" content="2012-05-07 10:17:00"> 
 <link rel="stylesheet" type="text/css" href="vipsmanual.css"> 
 </head><body 
 >
@@ -480,9 +480,9 @@ across the region.
 <!--l. 372--><p class="indent" >  Figure&#x00A0;<a 
 href="#x22-950015">3.5<!--tex4ht:ref: fg:paverage --></a> is a version of <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">average()</span></span></span> which uses
-regions rather than WIO input. Two things: first, we should
-really be using <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">im_iterate()</span></span></span>, see <span 
+regions rather than WIO input. Two things: first, we
+should really be using <span class="obeylines-h"><span class="verb"><span 
+class="pcrr7t-">vips_sink()</span></span></span>, see <span 
 class="cmsy-10">§</span><a 
 href="#x22-960003.3.4">3.3.4<!--tex4ht:ref: sec:sequence --></a>, to do
 the rectangle algebra for us. Secondly, note that we
@@ -648,15 +648,15 @@ use.
 class="pcrr7t-">average()</span></span></span> which consume
 images but produce no image output, VIPS provides
 <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">im_iterate()</span></span></span>. This has type:
+class="pcrr7t-">vips_sink()</span></span></span>. This has type:
                                                                                        
 
                                                                                        
   <div class="verbatim" id="verbatim-161">
-int&#x00A0;im_iterate(&#x00A0;IMAGE&#x00A0;&#x22C6;in,
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;void&#x00A0;&#x22C6;(&#x22C6;start_fn)(),
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;int&#x00A0;(&#x22C6;process_fn)(),
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;int&#x00A0;(&#x22C6;stop_fn)(),
+int&#x00A0;vips_sink(&#x00A0;VipsImage&#x00A0;&#x22C6;in,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;VipsStart&#x00A0;start,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;VipsGenerate&#x00A0;generate,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;VipsStop&#x00A0;stop,
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;void&#x00A0;&#x22C6;a,&#x00A0;void&#x00A0;&#x22C6;b&#x00A0;)
 </div>
 <!--l. 502--><p class="nopar" >
@@ -673,17 +673,7 @@ exactly one sequence. To make it possible for the sequences
 to each contribute to the result of the function in an orderly
 manner, VIPS also guarantees that all start and stop
 functions are mutually exclusive.
-<!--l. 513--><p class="indent" >  A note on types: <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">&#x003C;vips/region.h&#x003E;</span></span></span> declares
-prototypes for <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">im_iterate()</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">im_generate()</span></span></span>
-(see <span 
-class="cmsy-10">§</span><a 
-href="#x22-970003.3.5">3.3.5<!--tex4ht:ref: sec:generate --></a>), but does not give prototypes for the function
-arguments. This loses a little type-safety, but gains some
-convenience.
-<!--l. 518--><p class="indent" >  An example should make this clearer. This version of
+<!--l. 513--><p class="indent" >  An example should make this clearer. This version of
 <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">average()</span></span></span> is very similar to the average function in the
 VIPS library &#8212; it is only missing polymorphism.
@@ -691,7 +681,7 @@ VIPS library &#8212; it is only missing polymorphism.
                                                                                        
 
                                                                                        
-<!--l. 523--><p class="indent" >  <a 
+<!--l. 518--><p class="indent" >  <a 
  id="x22-960017"></a><hr class="float"><div class="float" 
 >
                                            
@@ -738,7 +728,7 @@ VIPS library &#8212; it is only missing polymorphism.
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;0&#x00A0;);
 &#x00A0;<br />}
 </div>
-<!--l. 562--><p class="nopar" >
+<!--l. 557--><p class="nopar" >
 <br /><div class="caption" 
 ><span class="id">Figure&#x00A0;3.7: </span><span  
 class="content">Final PIO average of image</span></div><!--tex4ht:label?: x22-960017 -->
@@ -751,7 +741,7 @@ class="content">Final PIO average of image</span></div><!--tex4ht:label?: x22-96
                                                                                        
 
                                                                                        
-<!--l. 568--><p class="indent" >  <a 
+<!--l. 563--><p class="indent" >  <a 
  id="x22-960028"></a><hr class="float"><div class="float" 
 >
                                            
@@ -790,7 +780,7 @@ class="content">Final PIO average of image</span></div><!--tex4ht:label?: x22-96
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;0&#x00A0;);
 &#x00A0;<br />}
 </div>
-<!--l. 599--><p class="nopar" >
+<!--l. 594--><p class="nopar" >
 <br /><div class="caption" 
 ><span class="id">Figure&#x00A0;3.8: </span><span  
 class="content">Final PIO average of image (cont.)</span></div><!--tex4ht:label?: x22-960028 -->
@@ -803,7 +793,7 @@ class="content">Final PIO average of image (cont.)</span></div><!--tex4ht:label?
                                                                                        
 
                                                                                        
-<!--l. 604--><p class="indent" >  <a 
+<!--l. 599--><p class="indent" >  <a 
  id="x22-960039"></a><hr class="float"><div class="float" 
 >
                                            
@@ -835,7 +825,7 @@ class="content">Final PIO average of image (cont.)</span></div><!--tex4ht:label?
 &#x00A0;<br />
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;/&#x22C6;&#x00A0;Loop&#x00A0;over&#x00A0;the&#x00A0;image&#x00A0;in&#x00A0;pieces,&#x00A0;and&#x00A0;possibly&#x00A0;in&#x00A0;parallel.
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x22C6;/
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;if(&#x00A0;im_iterate(&#x00A0;im,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;if(&#x00A0;vips_sink(&#x00A0;im,
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;average_start,&#x00A0;average_process,&#x00A0;average_stop,
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;gtotal,&#x00A0;NULL&#x00A0;)&#x00A0;)
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;-1&#x00A0;);
@@ -847,7 +837,7 @@ class="content">Final PIO average of image (cont.)</span></div><!--tex4ht:label?
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;0&#x00A0;);
 &#x00A0;<br />}
 </div>
-<!--l. 640--><p class="nopar" >
+<!--l. 635--><p class="nopar" >
 <br /><div class="caption" 
 ><span class="id">Figure&#x00A0;3.9: </span><span  
 class="content">Final PIO average of image (cont.)</span></div><!--tex4ht:label?: x22-960039 -->
@@ -856,7 +846,7 @@ class="content">Final PIO average of image (cont.)</span></div><!--tex4ht:label?
 
                                                                                        
   </div><hr class="endfloat" />
-<!--l. 644--><p class="indent" >  There are a couple of variations on <span class="obeylines-h"><span class="verb"><span 
+<!--l. 639--><p class="indent" >  There are a couple of variations on <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_prepare()</span></span></span>:
 you can use <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_prepare_to()</span></span></span> to force writing to a
@@ -865,15 +855,15 @@ class="pcrr7t-">im_prepare_thread()</span></span></span> to use
 threaded evaluation. See the man pages.
   <h4 class="subsectionHead"><span class="titlemark">3.3.5    </span> <a 
  id="x22-970003.3.5"></a>Output to regions</h4>
-<!--l. 651--><p class="noindent" >Regions are written to in just the same way they are
+<!--l. 646--><p class="noindent" >Regions are written to in just the same way they are
 read from &#8212; by writing to a pointer found with the
 <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">IM_REGION_ADDR()</span></span></span> macro.
-<!--l. 654--><p class="indent" >  <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">im_iterate()</span></span></span> does input &#8212; <span class="obeylines-h"><span class="verb"><span 
+<!--l. 649--><p class="indent" >  <span class="obeylines-h"><span class="verb"><span 
+class="pcrr7t-">vips_sink()</span></span></span> does input &#8212; <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_generate()</span></span></span> does
 output. It has the same type as <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">im_iterate()</span></span></span>:
+class="pcrr7t-">vips_sink()</span></span></span>:
                                                  <div class="verbatim" id="verbatim-165">
   int
  &#x00A0;<br />im_generate(&#x00A0;IMAGE&#x00A0;&#x22C6;out,
@@ -882,16 +872,16 @@ class="pcrr7t-">im_iterate()</span></span></span>:
  &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;int&#x00A0;(&#x22C6;stop_fn)(),
  &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;void&#x00A0;&#x22C6;a,&#x00A0;void&#x00A0;&#x22C6;b&#x00A0;) 
 </div>
-<!--l. 664--><p class="nopar" >
-<!--l. 666--><p class="indent" >  The region given to the process function is ready for
+<!--l. 659--><p class="nopar" >
+<!--l. 661--><p class="indent" >  The region given to the process function is ready for
 output. Each time the process function is called, it should
 fill in the pels in the region it was given. Note that, unlike
 <span class="obeylines-h"><span class="verb"><span 
-class="pcrr7t-">im_iterate()</span></span></span>, the areas the process function is asked to
+class="pcrr7t-">vips_sink()</span></span></span>, the areas the process function is asked to
 produce are not guaranteed to be either disjoint or complete.
 Again, VIPS may start up many process functions if it sees
 fit.
-<!--l. 672--><p class="indent" >    Here is <span class="obeylines-h"><span class="verb"><span 
+<!--l. 667--><p class="indent" >    Here is <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">invert()</span></span></span>, rewritten to use PIO. This piece of
 code makes use of a pair of standard start and stop functions
 provided by the VIPS library: <span class="obeylines-h"><span class="verb"><span 
@@ -911,8 +901,8 @@ REGION&#x00A0;&#x22C6;
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;im_region_create(&#x00A0;in&#x00A0;)&#x00A0;);
 &#x00A0;<br />}
 </div>
-<!--l. 684--><p class="nopar" >
-<!--l. 686--><p class="noindent" >and:
+<!--l. 679--><p class="nopar" >
+<!--l. 681--><p class="noindent" >and:
                                                  <div class="verbatim" id="verbatim-167">
   int
  &#x00A0;<br />im_stop_one(&#x00A0;REGION&#x00A0;&#x22C6;seq&#x00A0;)
@@ -920,15 +910,15 @@ REGION&#x00A0;&#x22C6;
  &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;im_region_free(&#x00A0;seq&#x00A0;)&#x00A0;);
  &#x00A0;<br />} 
 </div>
-<!--l. 695--><p class="nopar" >
-<!--l. 697--><p class="indent" >  They are useful for simple functions which expect only one
+<!--l. 690--><p class="nopar" >
+<!--l. 692--><p class="indent" >  They are useful for simple functions which expect only one
 input image. See the manual page for <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_start_many()</span></span></span>
 for many-input functions.
                                                                                        
 
                                                                                        
-<!--l. 702--><p class="indent" >  <a 
+<!--l. 697--><p class="indent" >  <a 
  id="x22-9700110"></a><hr class="float"><div class="float" 
 >
                                            
@@ -971,7 +961,7 @@ for many-input functions.
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;0&#x00A0;);
 &#x00A0;<br />}
 </div>
-<!--l. 737--><p class="nopar" >
+<!--l. 732--><p class="nopar" >
 <br /><div class="caption" 
 ><span class="id">Figure&#x00A0;3.10: </span><span  
 class="content">PIO invert</span></div><!--tex4ht:label?: x22-9700110 -->
@@ -984,7 +974,7 @@ class="content">PIO invert</span></div><!--tex4ht:label?: x22-9700110 -->
                                                                                        
 
                                                                                        
-<!--l. 743--><p class="indent" >  <a 
+<!--l. 738--><p class="indent" >  <a 
  id="x22-9700211"></a><hr class="float"><div class="float" 
 >
                                            
@@ -1029,7 +1019,7 @@ class="content">PIO invert</span></div><!--tex4ht:label?: x22-9700110 -->
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;0&#x00A0;);
 &#x00A0;<br />}
 </div>
-<!--l. 780--><p class="nopar" >
+<!--l. 775--><p class="nopar" >
 <br /><div class="caption" 
 ><span class="id">Figure&#x00A0;3.11: </span><span  
 class="content">PIO invert (cont.)</span></div><!--tex4ht:label?: x22-9700211 -->
@@ -1038,7 +1028,7 @@ class="content">PIO invert (cont.)</span></div><!--tex4ht:label?: x22-9700211 --
 
                                                                                        
   </div><hr class="endfloat" />
-<!--l. 784--><p class="indent" >  Functions have some choice about the way they write
+<!--l. 779--><p class="indent" >  Functions have some choice about the way they write
 their output. Usually, they should just write to the region
 they were given by <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_generate()</span></span></span>. They can, if they
@@ -1049,7 +1039,7 @@ the source for <span class="obeylines-h"><span class="verb"><span
 class="pcrr7t-">im_copy()</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_extract()</span></span></span> for
 examples of these tricks.
-<!--l. 790--><p class="indent" >  Note also the call to <span class="obeylines-h"><span class="verb"><span 
+<!--l. 785--><p class="indent" >  Note also the call to <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_demand_hint()</span></span></span>. This
 function hints to the IO system, suggesting the sorts of
 shapes of region this function is happiest with. VIPS
@@ -1058,14 +1048,14 @@ can have a dramatic effect on the speed of your function.
 See the man page for full details.
   <h4 class="subsectionHead"><span class="titlemark">3.3.6    </span> <a 
  id="x22-980003.3.6"></a>Callbacks</h4>
-<!--l. 799--><p class="noindent" >VIPS lets you attach callbacks to image descriptors. These
+<!--l. 794--><p class="noindent" >VIPS lets you attach callbacks to image descriptors. These
 are functions you provide that VIPS will call when certain
 events occur. There are more callbacks than are listed here:
 see the man page for full details.
-<!--l. 803--><p class="noindent" >
+<!--l. 798--><p class="noindent" >
   <h5 class="subsubsectionHead"><a 
  id="x22-990003.3.6"></a>Close callbacks</h5>
-<!--l. 805--><p class="noindent" >These callbacks are invoked just before an image is
+<!--l. 800--><p class="noindent" >These callbacks are invoked just before an image is
 closed. They are useful for freeing objects which are
 associated with the image. All callbacks are triggered
 in the reverse order to the order in which they were
@@ -1073,7 +1063,7 @@ attached. This is sometimes important when freeing objects
 which contain pointers to other objects. Close callbacks
 are guaranteed to be called, and to be called exactly
 once.
-<!--l. 812--><p class="indent" >  Use <span class="obeylines-h"><span class="verb"><span 
+<!--l. 807--><p class="indent" >  Use <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_add_close_callback()</span></span></span> to add a close
 callback:
                                                  <div class="verbatim" id="verbatim-170">
@@ -1082,37 +1072,37 @@ callback:
  &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;im_callback_fn,
  &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;void&#x00A0;&#x22C6;,&#x00A0;void&#x00A0;&#x22C6;&#x00A0;) 
 </div>
-<!--l. 819--><p class="nopar" >
-<!--l. 821--><p class="indent" >  As with <span class="obeylines-h"><span class="verb"><span 
+<!--l. 814--><p class="nopar" >
+<!--l. 816--><p class="indent" >  As with <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_generate()</span></span></span>, the two <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">void</span><span 
 class="pcrr7t-">&#x00A0;&#x22C6;</span></span></span> pointers
 are carried around for you by VIPS and may be used as your
 function sees fit.
-<!--l. 825--><p class="noindent" >
+<!--l. 820--><p class="noindent" >
     <h5 class="subsubsectionHead"><a 
  id="x22-1000003.3.6"></a>Preclose callbacks</h5>
-<!--l. 827--><p class="noindent" >Preclose callbacks are called before any shutdown has
+<!--l. 822--><p class="noindent" >Preclose callbacks are called before any shutdown has
 occured. Everything is still alive and your callback can do
 anything to the image. Preclose callbacks are guaranteed to
 be called, and to be called exactly once. See the manual
 page for <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_add_preclose_callback()</span></span></span> for full
 details.
-<!--l. 832--><p class="noindent" >
+<!--l. 827--><p class="noindent" >
     <h5 class="subsubsectionHead"><a 
  id="x22-1010003.3.6"></a>Eval callbacks</h5>
-<!--l. 834--><p class="noindent" >These are callbacks which are invoked periodically by VIPS
+<!--l. 829--><p class="noindent" >These are callbacks which are invoked periodically by VIPS
 during evaluation. The callback has access to a struct
 containing information about the progress of evaluation,
 useful for user-interfaces built on top of VIPS. See the
 manual page for <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">im_add_eval_callback()</span></span></span> for full
 details.
-<!--l. 839--><p class="noindent" >
+<!--l. 834--><p class="noindent" >
     <h4 class="subsectionHead"><span class="titlemark">3.3.7    </span> <a 
  id="x22-1020003.3.7"></a>Memory allocation revisited</h4>
-<!--l. 841--><p class="noindent" >When you are using PIO, memory allocation becomes
+<!--l. 836--><p class="noindent" >When you are using PIO, memory allocation becomes
 rather more complicated than it was before. There are
 essentially two types of memory which your function might
 want to use for working space: memory which is associated
@@ -1122,7 +1112,7 @@ pipeline and be running at the same time &#8212; you can&#8217;t just
 use global variables), and memory which is local to
 each sequence which VIPS starts on your argument
 image.
-<!--l. 849--><p class="indent" >    The first type, memory local to this function instance,
+<!--l. 844--><p class="indent" >    The first type, memory local to this function instance,
 typically holds copies of any parameters passed to your
                                                                                        
 
@@ -1130,7 +1120,7 @@ typically holds copies of any parameters passed to your
 image processing function, and links to any read-only tables
 used by sequences which you run over the image. This
 should be allocated in your main function.
-<!--l. 854--><p class="indent" >  The second type of memory, memory local to a sequence,
+<!--l. 849--><p class="indent" >  The second type of memory, memory local to a sequence,
 should be allocated in a start function. Because this space is
 private to a sequence, it may be written to. Start and
 stop functions are guaranteed to be single-threaded, so

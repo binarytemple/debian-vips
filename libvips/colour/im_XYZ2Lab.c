@@ -15,6 +15,8 @@
  *	- ahem, build the LUT outside the eval thread
  * 2/11/09
  * 	- gtkdoc
+ * 3/8/11
+ * 	- fix a race in the table build
  */
 
 /*
@@ -52,11 +54,8 @@
 #include <math.h>
 
 #include <vips/vips.h>
+#include <vips/thread.h>
 #include <vips/internal.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 #ifndef HAVE_CBRT
 #define cbrt( X ) pow( (X), 1.0 / 3.0 )
@@ -68,20 +67,19 @@
 
 float cbrt_table[QUANT_ELEMENTS];
 
-void
+static void
 imb_XYZ2Lab_tables( void )
 {
 	static int built_tables = 0;
 
-	int was_built;
 	int i;
 
 	g_mutex_lock( im__global_lock );
-	was_built = built_tables;
-	built_tables = 1;
-	g_mutex_unlock( im__global_lock );
-	if( was_built )
+
+	if( built_tables ) {
+		g_mutex_unlock( im__global_lock );
 		return;
+	}
 
 	for( i = 0; i < QUANT_ELEMENTS; i++ ) {
 		float Y = (double) i / QUANT_ELEMENTS;
@@ -91,6 +89,10 @@ imb_XYZ2Lab_tables( void )
 		else 
 			cbrt_table[i] = cbrt( Y );
 	}
+
+	built_tables = 1;
+
+	g_mutex_unlock( im__global_lock );
 }
 
 /* Process a buffer of data.
@@ -99,6 +101,8 @@ void
 imb_XYZ2Lab( float *p, float *q, int n, im_colour_temperature *temp )
 {
 	int x;
+
+        imb_XYZ2Lab_tables();
 
 	for( x = 0; x < n; x++ ) {
 		float nX, nY, nZ;
@@ -164,7 +168,6 @@ im_XYZ2Lab_temp( IMAGE *in, IMAGE *out, double X0, double Y0, double Z0 )
 	temp->X0 = X0;
 	temp->Y0 = Y0;
 	temp->Z0 = Z0;
-        imb_XYZ2Lab_tables();
 
 	return( im__colour_unary( "im_XYZ2Lab", in, out, IM_TYPE_LAB,
 		(im_wrapone_fn) imb_XYZ2Lab, temp, NULL ) );

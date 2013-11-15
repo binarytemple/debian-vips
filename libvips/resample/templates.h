@@ -4,7 +4,7 @@
 /*
 
     This file is part of VIPS.
-    
+
     VIPS is free software; you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -51,43 +51,48 @@
 #define FAST_PSEUDO_FLOOR(x) ( (int)(x) - ( (x) < 0. ) )
 
 /*
- * FAST_MINMOD is an implementation of the minmod function which only
- * needs two conditional moves.  (Nicolas: I think that this may be
- * the very first two branch minmod.) The product of the two arguments
- * and a useful difference involving them are precomputed as far ahead
- * of branching as possible.
+ * Various casts which assume that the data is already in range. (That
+ * is, they are to be used with monotone samplers.)
  */
-#define FAST_MINMOD(a,b,ab,abminusaa) \
-        ( (ab)>=0. ? ( (abminusaa)>=0. ? (a) : (b) ) : 0. )
+template <typename T> static T inline
+to_fptypes( const double val )
+{
+	const T newval = val;
 
-/*
- * Comment from Nicolas: I don't understand why the following restrict
- * defs cannot be offloaded to config files.
- */
-#ifndef restrict
-#ifdef __restrict
-#define restrict __restrict
-#else
-#ifdef __restrict__
-#define restrict __restrict__
-#else
-#define restrict
-#endif
-#endif
-#endif
+	return( newval );
+}
+
+template <typename T> static T inline
+to_withsign( const double val )
+{
+	const int sign_of_val = 2 * ( val >= 0. ) - 1;
+	const int rounded_abs_val = .5 + sign_of_val * val;
+	const T newval = sign_of_val * rounded_abs_val;
+
+	return( newval );
+}
+
+template <typename T> static T inline
+to_nosign( const double val )
+{
+	const T newval = .5 + val;
+
+	return( newval );
+}
 
 /*
  * Various bilinear implementation templates. Note that no clampling
  * is used: There is an assumption that the data is such that
  * over/underflow is not an issue:
  */
-/* 
+
+/*
  * Bilinear interpolation for float and double types. The first four
  * inputs are weights, the last four are the corresponding pixel
  * values:
  */
 template <typename T> static T inline
-bilinear_fptypes( 
+bilinear_fptypes(
 	const double w_times_z,
 	const double x_times_z,
 	const double w_times_y,
@@ -106,11 +111,11 @@ bilinear_fptypes(
 	return( newval );
 }
 
-/* 
+/*
  * Bilinear interpolation for signed integer types:
  */
 template <typename T> static T inline
-bilinear_withsign( 
+bilinear_withsign(
 	const double w_times_z,
 	const double x_times_z,
 	const double w_times_y,
@@ -139,7 +144,7 @@ bilinear_withsign(
  * Bilinear Interpolation for unsigned integer types:
  */
 template <typename T> static T inline
-bilinear_nosign( 
+bilinear_nosign(
 	const double w_times_z,
 	const double x_times_z,
 	const double w_times_y,
@@ -153,7 +158,7 @@ bilinear_nosign(
 		w_times_z * tre_thr +
 		x_times_z * tre_thrfou +
 		w_times_y * trequa_thr +
-		x_times_y * trequa_thrfou + 
+		x_times_y * trequa_thrfou +
 		0.5;
 
 	return( newval );
@@ -166,32 +171,32 @@ bilinear_nosign(
 /* Fixed-point integer bicubic, used for 8 and 16-bit types.
  */
 template <typename T> static int inline
-bicubic_int( 
+bicubic_int(
 	const T uno_one, const T uno_two, const T uno_thr, const T uno_fou,
 	const T dos_one, const T dos_two, const T dos_thr, const T dos_fou,
 	const T tre_one, const T tre_two, const T tre_thr, const T tre_fou,
 	const T qua_one, const T qua_two, const T qua_thr, const T qua_fou,
 	const int* restrict cx, const int* restrict cy )
 {
-	const int r0 = 
+	const int r0 =
 		(cx[0] * uno_one +
 		 cx[1] * uno_two +
 		 cx[2] * uno_thr +
 		 cx[3] * uno_fou) >> VIPS_INTERPOLATE_SHIFT;
 
-	const int r1 = 
+	const int r1 =
 		(cx[0] * dos_one +
 		 cx[1] * dos_two +
 		 cx[2] * dos_thr +
 		 cx[3] * dos_fou) >> VIPS_INTERPOLATE_SHIFT;
 
-	const int r2 = 
+	const int r2 =
 		(cx[0] * tre_one +
 		 cx[1] * tre_two +
 		 cx[2] * tre_thr +
 		 cx[3] * tre_fou) >> VIPS_INTERPOLATE_SHIFT;
 
-	const int r3 = 
+	const int r3 =
 		(cx[0] * qua_one +
 		 cx[1] * qua_two +
 		 cx[2] * qua_thr +
@@ -203,17 +208,17 @@ bicubic_int(
 		 cy[3] * r3) >> VIPS_INTERPOLATE_SHIFT );
 }
 
-/* Floating-point bicubic, used for int/float/double types. 
+/* Floating-point bicubic, used for int/float/double types.
  */
 template <typename T> static T inline
-bicubic_float( 
+bicubic_float(
 	const T uno_one, const T uno_two, const T uno_thr, const T uno_fou,
 	const T dos_one, const T dos_two, const T dos_thr, const T dos_fou,
 	const T tre_one, const T tre_two, const T tre_thr, const T tre_fou,
 	const T qua_one, const T qua_two, const T qua_thr, const T qua_fou,
 	const double* restrict cx, const double* restrict cy )
 {
-	return( 
+	return(
 		cy[0] * (cx[0] * uno_one +
 			 cx[1] * uno_two +
 			 cx[2] * uno_thr +
@@ -235,21 +240,31 @@ bicubic_float(
 			 cx[3] * qua_fou) );
 }
 
-/* Given an offset in [0,1] (we can have x == 1 when building tables), 
- * calculate c0, c1, c2, c3, the catmull-rom coefficients. This is called 
- * from the interpolator as well as from the table builder. 
+/* Given an offset in [0,1] (we can have x == 1 when building tables),
+ * calculate c0, c1, c2, c3, the catmull-rom coefficients. This is called
+ * from the interpolator as well as from the table builder.
  */
 static void inline
 calculate_coefficients_catmull( const double x, double c[4] )
 {
-	const double dx = 1. - x;
-	const double x2 = dx * x;
-	const double mx2 = -.5 * x2;
+	/* Nicolas believes that the following is an hitherto unknown
+	 * hyper-efficient method of computing Catmull-Rom coefficients. It
+	 * only uses 4* & 1+ & 5- for a total of only 10 flops to compute
+	 * four coefficients.
+	 */
+	const double cr1  = 1. - x;
+	const double cr2  = -.5 * x;
+	const double cr3  = cr1 * cr2;
+	const double cone = cr1 * cr3;
+	const double cfou = x * cr3;
+	const double cr4  = cfou - cone;
+	const double ctwo = cr1 - cone + cr4;
+	const double cthr = x - cfou - cr4;
 
-	g_assert( x >= 0 && x <= 1 );
+	g_assert( x >= 0. && x <= 1. );
 
-	c[0] = mx2 * dx;
-	c[1] = x2 * (-1.5 * x + 1.) + dx;
-	c[2] = 1. - (mx2 + c[1]);
-	c[3] = mx2 * x;
+	c[0] = cone;
+	c[3] = cfou;
+	c[1] = ctwo;
+	c[2] = cthr;
 }

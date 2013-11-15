@@ -66,10 +66,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* @(#) convert float Lab to packed Lab32 format 10 11 11 bits
  * works only on buffers, not IMAGEs
  * Copyright 1993 K.Martinez
@@ -152,7 +148,7 @@ im_Lab2LabQ( IMAGE *in, IMAGE *out )
 	if( im_cp_desc( out, t[0] ) )
 		return( -1 );
 	out->Bands = 4;
-	out->Type = IM_TYPE_LAB;
+	out->Type = IM_TYPE_LABQ;
 	out->BandFmt = IM_BANDFMT_UCHAR;
 	out->Coding = IM_CODING_LABQ;
 

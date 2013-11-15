@@ -1,11 +1,4 @@
-/* @(#) transform with log10(1.0 + pow(x, 0.25)) + .5, then scale so max
- * @(#) == 255.
- * @(#)
- * @(#) int im_scaleps(in, out)
- * @(#) IMAGE *in, *out;
- * @(#)
- * @(#) All functions return 0 on success and -1 on error
- * @(#)
+/* im_scaleps
  *
  * Copyright: 1990, N. Dessipris.
  *
@@ -21,6 +14,8 @@
  * 11/7/02 JC
  *	- rewritten ... got rid of the stuff for handling -ves, never used
  *	  (and was broken anyway)
+ * 1/2/10
+ * 	- gtkdoc
  */
 
 /*
@@ -60,11 +55,17 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
-/* Scale, as noted above.
+/**
+ * im_scaleps:
+ * @in: input image
+ * @out: output image
+ *
+ * Scale a power spectrum. Transform with log10(1.0 + pow(x, 0.25)) + .5, 
+ * then scale so max == 255.
+ *
+ * See also: im_scale().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int 
 im_scaleps( IMAGE *in, IMAGE *out )
@@ -90,7 +91,7 @@ im_scaleps( IMAGE *in, IMAGE *out )
 		im_lintra( 1.0, t[0], 1.0, t[1] ) ||
 		im_log10tra( t[1], t[2] ) ||
 		im_lintra( scale, t[2], 0.0, t[3] ) ||
-		im_clip( t[3], out ) )
+		im_clip2fmt( t[3], out, IM_BANDFMT_UCHAR ) )
 		return( -1 );
 
 	return( 0 );

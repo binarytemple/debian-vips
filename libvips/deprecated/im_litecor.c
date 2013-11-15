@@ -65,11 +65,6 @@
 #include <stdlib.h>
 
 #include <vips/vips.h>
-#include <vips/deprecated.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 /*   If maximum output is > 255 scale output between minout and maxout,
  * by normalising maxout to 255.

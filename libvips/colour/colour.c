@@ -67,10 +67,6 @@
 #include <vips/vips.h>
 #include <vips/internal.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Have the tables been made?
  */
 static int made_ucs_tables = 0;
@@ -126,11 +122,11 @@ im_col_Ch2ab( float C, float h, float *a, float *b )
 /**
  * im_col_XYZ2Lab:
  * @X: Input CIE XYZ colour
- * @Y: 
- * @Z: 
+ * @Y: Input CIE XYZ colour
+ * @Z: Input CIE XYZ colour
  * @L: return CIE Lab value
- * @a: 
- * @b: 
+ * @a: return CIE Lab value
+ * @b: return CIE Lab value
  *
  * Calculate Lab from XYZ, D65.
  * 
@@ -157,11 +153,11 @@ im_col_XYZ2Lab( float X, float Y, float Z, float *L, float *a, float *b )
 /**
  * im_col_Lab2XYZ:
  * @L: Input CIE Lab value
- * @a: 
- * @b: 
+ * @a: Input CIE Lab value
+ * @b: Input CIE Lab value
  * @X: Return CIE XYZ colour
- * @Y: 
- * @Z: 
+ * @Y: Return CIE XYZ colour
+ * @Z: Return CIE XYZ colour
  *
  * Calculate XYZ from Lab, D65.
  * 
@@ -188,11 +184,11 @@ im_col_Lab2XYZ( float L, float a, float b, float *X, float *Y, float *Z )
 /**
  * im_col_pythagoras:
  * @L1: Input coordinate 1
- * @a1: 
- * @b1: 
+ * @a1: Input coordinate 1
+ * @b1: Input coordinate 1
  * @L2: Input coordinate 2
- * @a2: 
- * @b2: 
+ * @a2: Input coordinate 2
+ * @b2: Input coordinate 2
  *
  * Pythagorean distance between two points in colour space. Lab/XYZ/UCS etc.
  */
@@ -262,7 +258,7 @@ make_LI( void )
 
 /**
  * im_col_Lucs2L:
- * @L: L ucs
+ * @Lucs: L ucs
  *
  * Calculate L from Lucs using a table. Call im_col_make_tables_UCS() at
  * least once before using this function.
@@ -531,11 +527,11 @@ im_col_make_tables_UCS( void )
 /**
  * im_col_dECMC:
  * @L1: Input coordinate 1
- * @a1: 
- * @b1: 
+ * @a1: Input coordinate 1
+ * @b1: Input coordinate 1
  * @L2: Input coordinate 2
- * @a2: 
- * @b2: 
+ * @a2: Input coordinate 2
+ * @b2: Input coordinate 2
  * 
  * CMC colour difference from a pair of Lab values.
  *
@@ -617,11 +613,11 @@ im_col_ab2h( double a, double b )
 /**
  * im_col_dE00:
  * @L1: Input coordinate 1
- * @a1: 
- * @b1: 
+ * @a1: Input coordinate 1
+ * @b1: Input coordinate 1
  * @L2: Input coordinate 2
- * @a2: 
- * @b2: 
+ * @a2: Input coordinate 2
+ * @b2: Input coordinate 2
  *
  * CIEDE2000, from: 
  * 
@@ -764,4 +760,153 @@ im_col_dE00( float L1, float a1, float b1,
 
 	return( dE00 );
 }
+
+/* Quick hack wrappers for common colour functions in the new style.
+ */
+
+int
+vips_LabQ2disp( VipsImage *in, VipsImage **out, 
+	struct im_col_display *disp, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, disp );
+	result = vips_call_split( "im_LabQ2disp", ap, in, out, disp );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_rad2float( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_rad2float", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_float2rad( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_float2rad", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_LabS2LabQ( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_LabS2LabQ", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_LabQ2Lab( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_LabQ2Lab", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_Lab2LabQ( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_Lab2LabQ", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_LCh2Lab( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_LCh2Lab", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_Yxy2Lab( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_Yxy2Lab", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_UCS2XYZ( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_UCS2XYZ", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_Lab2XYZ( VipsImage *in, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "im_Lab2XYZ", ap, in, out );
+	va_end( ap );
+
+	return( result );
+}
+
+int
+vips_XYZ2disp( VipsImage *in, VipsImage **out, 
+	struct im_col_display *disp, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, disp );
+	result = vips_call_split( "im_XYZ2disp", ap, in, out, disp );
+	va_end( ap );
+
+	return( result );
+}
+
 

@@ -191,7 +191,7 @@ public:
 	 */
 
 	// Plain constructors
-	VImage( const char *name, const char *mode = "r" ) throw( VError );
+	VImage( const char *name, const char *mode = "rd" ) throw( VError );
 	VImage( void *data, int width, int height, 
 		int bands, TBandFmt format ) throw( VError );
 	VImage( _VipsImage *image );
@@ -202,8 +202,9 @@ public:
 	// 		"file.jpg", "temp.v" );
 	// Runs im_jpeg2vips to the temp file, then opens that and returns
 	// it. Useful for opening very large files without using a lot of RAM.
-	// Now superceeded by the format API, though that's not yet wrapped in
+	// Now superseded by the format API, though that's not yet wrapped in
 	// C++
+	// Also replaced by the new default "rd" mode
 	static VImage convert2disc( const char* convert, 
 		const char* in, const char* disc ) throw( VError );
 
@@ -255,8 +256,11 @@ public:
 	// we don't wrap GValue, so we can't wrap these for now
 	void meta_set( const char *field, GValue *value ) throw( VError );
 	void meta_get( const char *field, GValue *value_copy ) throw( VError );
-	GType meta_get_typeof( const char *field ) throw( VError );
 #endif /*SWIG*/
+
+	// We can wrap these, fwiw
+	gboolean meta_remove( const char *field );
+	GType meta_get_typeof( const char *field );
 
 	// convenience functions
 	int meta_get_int( const char *field ) throw( VError );

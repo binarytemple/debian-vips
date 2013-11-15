@@ -1,28 +1,4 @@
-/* @(#) Map an image through another image, acting as a LUT (Look Up Table). 
- * @(#) The lut may have any type, and the output image will be that type.
- * @(#) 
- * @(#) The input image must be an unsigned integer types, that is, it must
- * @(#) be one of IM_BANDFMT_UCHAR, IM_BANDFMT_USHORT or IM_BANDFMT_UINT.
- * @(#) 
- * @(#) If the input is IM_BANDFMT_UCHAR, then the LUT must have 256 elements, 
- * @(#) in other words, lut->Xsize * lut->Ysize == 256.
- * @(#)  
- * @(#) If the input is IM_BANDFMT_USHORT or IM_BANDFMT_UINT, then the lut 
- * @(#) may have any number of elements, and input pels whose value is 
- * @(#) greater than lut->Xsize * lut->Ysize are mapped with the last LUT 
- * @(#) element.
- * @(#) 
- * @(#) If LUT has one band, then all bands of input pass through it. If LUT
- * @(#) has same number of bands as input, then each band is LUTed
- * @(#) separately. If input has one band, then LUT may have many bands and
- * @(#) the output will have the same number of bands as the LUT.
- * @(#)
- * @(#) int 
- * @(#) im_maplut( in, out, lut )
- * @(#) IMAGE *in, *out, *lut;
- * @(#)
- * @(#) Returns 0 on success and -1 on error
- * @(#)
+/* map though a LUT
  *
  * Modified:
  * 18/6/93 JC
@@ -50,6 +26,9 @@
  *	  years :-)
  * 7/11/07
  * 	- new eval start/end system
+ * 25/3/10
+ * 	- gtkdoc
+ * 	- small cleanups
  */
 
 /*
@@ -89,10 +68,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Struct we carry for LUT operations.
  */
 typedef struct {
@@ -101,7 +76,7 @@ typedef struct {
 	int es;			/* IM_IMAGE_SIZEOF_ELEMENT() for lut image */
 	int sz;			/* Number of elements in minor dimension */
 	int clp;		/* Value we clip against */
-	PEL **table;		/* Lut converted to 2d array */
+	VipsPel **table;		/* Lut converted to 2d array */
 	int overflow;		/* Number of overflows for non-uchar lut */
 } LutInfo;
 
@@ -130,11 +105,11 @@ lut_end( LutInfo *st )
 static LutInfo *
 build_luts( IMAGE *out, IMAGE *lut )
 {
-	LutInfo *st = IM_NEW( out, LutInfo );
+	LutInfo *st;
 	int i, x;
-	PEL *q;
+	VipsPel *q;
 
-	if( !st )
+	if( !(st = IM_NEW( out, LutInfo )) )
                 return( NULL );
 
 	/* Make luts. We unpack the LUT image into a C 2D array to speed
@@ -155,15 +130,15 @@ build_luts( IMAGE *out, IMAGE *lut )
 
 	/* Attach tables.
 	 */
-	if( !(st->table = IM_ARRAY( out, lut->Bands, PEL * )) ) 
+	if( !(st->table = IM_ARRAY( out, lut->Bands, VipsPel * )) ) 
                 return( NULL );
 	for( i = 0; i < lut->Bands; i++ )
-		if( !(st->table[i] = IM_ARRAY( out, st->sz * st->es, PEL )) )
+		if( !(st->table[i] = IM_ARRAY( out, st->sz * st->es, VipsPel )) )
 			return( NULL );
 
 	/* Scan LUT and fill table.
 	 */
-	q = (PEL *) lut->data;
+	q = (VipsPel *) lut->data;
 	for( x = 0; x < st->sz; x++ )
 		for( i = 0; i < st->nb; i++ ) {
 			memcpy( st->table[i] + x * st->es, q, st->es );
@@ -226,7 +201,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	\
 	for( y = to; y < bo; y++ ) { \
 		for( z = 0; z < b; z++ ) { \
-			PEL *p = (PEL *) IM_REGION_ADDR( ir, le, y ); \
+			VipsPel *p = IM_REGION_ADDR( ir, le, y ); \
 			OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ); \
 			OUT *tlut = (OUT *) st->table[z]; \
 			\
@@ -243,16 +218,16 @@ maplut_start( IMAGE *out, void *a, void *b )
 	\
 	for( y = to; y < bo; y++ ) { \
 		for( z = 0; z < b; z++ ) { \
-			PEL *p = (PEL *) IM_REGION_ADDR( ir, le, y ) + z; \
-			OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ) + z*2; \
+			VipsPel *p = IM_REGION_ADDR( ir, le, y ) + z; \
+			OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ) + z * 2; \
 			OUT *tlut = (OUT *) st->table[z]; \
 			\
 			for( x = 0; x < ne; x += b ) { \
-				int n = p[x]*2; \
+				int n = p[x] * 2; \
 				\
 				q[0] = tlut[n]; \
 				q[1] = tlut[n + 1]; \
-				q += b*2; \
+				q += b * 2; \
 			} \
 		} \
 	} \
@@ -287,7 +262,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	for( y = to; y < bo; y++ ) { \
 		for( z = 0; z < b; z++ ) { \
 			IN *p = (IN *) IM_REGION_ADDR( ir, le, y ) + z; \
-			OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ) + z*2; \
+			OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ) + z * 2; \
 			OUT *tlut = (OUT *) st->table[z]; \
 			\
 			for( x = 0; x < ne; x += b ) { \
@@ -298,10 +273,10 @@ maplut_start( IMAGE *out, void *a, void *b )
 					seq->overflow++; \
 				} \
 				\
-				q[0] = tlut[ index*2 ]; \
-				q[1] = tlut[ index*2+1 ]; \
+				q[0] = tlut[index * 2]; \
+				q[1] = tlut[index * 2 + 1]; \
 				\
-				q += b*2; \
+				q += b * 2; \
 			} \
 		} \
 	} \
@@ -314,7 +289,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	\
 	for( y = to; y < bo; y++ ) { \
 		OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ); \
-		PEL *p = (PEL *) IM_REGION_ADDR( ir, le, y ); \
+		VipsPel *p = IM_REGION_ADDR( ir, le, y ); \
 		\
 		for( x = 0; x < ne; x++ ) \
 			q[x] = tlut[p[x]]; \
@@ -328,7 +303,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	\
 	for( y = to; y < bo; y++ ) { \
 		OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ); \
-		PEL *p = (PEL *) IM_REGION_ADDR( ir, le, y ); \
+		VipsPel *p = IM_REGION_ADDR( ir, le, y ); \
 		\
 		for( x = 0; x < ne; x++ ) { \
 			int n = p[x] * 2; \
@@ -378,8 +353,8 @@ maplut_start( IMAGE *out, void *a, void *b )
 				seq->overflow++; \
 			} \
 			\
-			q[0] = tlut[index*2]; \
-			q[1] = tlut[index*2 + 1]; \
+			q[0] = tlut[index * 2]; \
+			q[1] = tlut[index * 2 + 1]; \
 			q += 2; \
 		} \
 	} \
@@ -392,7 +367,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	\
 	for( y = to; y < bo; y++ ) { \
 		OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ); \
-		PEL *p = (PEL *) IM_REGION_ADDR( ir, le, y ); \
+		VipsPel *p = IM_REGION_ADDR( ir, le, y ); \
 		\
 		for( i = 0, x = 0; x < np; x++ ) { \
 			int n = p[x]; \
@@ -410,7 +385,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	\
 	for( y = to; y < bo; y++ ) { \
 		OUT *q = (OUT *) IM_REGION_ADDR( or, le, y ); \
-		PEL *p = (PEL *) IM_REGION_ADDR( ir, le, y ); \
+		VipsPel *p = IM_REGION_ADDR( ir, le, y ); \
 		\
 		for( x = 0; x < np; x++ ) { \
 			int n = p[x] * 2; \
@@ -465,8 +440,8 @@ maplut_start( IMAGE *out, void *a, void *b )
 			} \
 			\
 			for( z = 0; z < st->nb; z++ ) { \
-				q[0] = tlut[z][n*2]; \
-				q[1] = tlut[z][n*2 + 1]; \
+				q[0] = tlut[z][n * 2]; \
+				q[1] = tlut[z][n * 2 + 1]; \
 				q += 2; \
 			} \
 		} \
@@ -481,8 +456,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	case IM_BANDFMT_USHORT:		GEN( unsigned short, OUT ); break; \
 	case IM_BANDFMT_UINT:		GEN( unsigned int, OUT ); break; \
 	default: \
-		im_error( "im_maplut", "%s", _( "bad input file" ) ); \
-		return( -1 ); \
+		g_assert( 0 ); \
 	}
 
 /* Switch for LUT types. One function for non-complex images, a
@@ -512,8 +486,7 @@ maplut_start( IMAGE *out, void *a, void *b )
 	case IM_BANDFMT_DPCOMPLEX:	inner_switch( UCHAR_FC, GEN_FC, \
 					double ); break; \
 	default: \
-		im_error( "im_maplut", "%s", _( "bad lut file" ) ); \
-		return( -1 ); \
+		g_assert( 0 ); \
 	}
 
 /* Do a map.
@@ -529,8 +502,8 @@ maplut_gen( REGION *or, void *vseq, void *a, void *b )
 	int le = r->left;
 	int to = r->top;
 	int bo = IM_RECT_BOTTOM(r);
-	int np = r->width;		/* Pels across region */
-	int ne = IM_REGION_N_ELEMENTS( or );		/* Number of elements */
+	int np = r->width;			/* Pels across region */
+	int ne = IM_REGION_N_ELEMENTS( or );	/* Number of elements */
 	int x, y, z, i;
 
 	/* Get input ready.
@@ -557,54 +530,71 @@ maplut_gen( REGION *or, void *vseq, void *a, void *b )
 	return( 0 );
 }
 
+/* Save a bit of typing.
+ */
+#define UC IM_BANDFMT_UCHAR
+#define US IM_BANDFMT_USHORT
+#define UI IM_BANDFMT_UINT
+
+/* Type mapping: go to uchar or ushort.
+ */
+static int bandfmt_maplut[10] = {
+/* UC   C  US   S  UI   I   F   X  D   DX */
+   UC, UC, US, US, UI, UI, UI, UI, UI, UI
+};
+
+/**
+ * im_maplut:
+ * @in: input image
+ * @out: output image
+ * @lut: look-up table
+ *
+ * Map an image through another image acting as a LUT (Look Up Table). 
+ * The lut may have any type, and the output image will be that type.
+ * 
+ * The input image will be cast to one of the unsigned integer types, that is,
+ * IM_BANDFMT_UCHAR, IM_BANDFMT_USHORT or IM_BANDFMT_UINT.
+ * 
+ * If @lut is too small for the input type (for example, if @in is
+ * IM_BANDFMT_UCHAR but @lut only has 100 elements), the lut is padded out
+ * by copying the last element. Overflows are reported at the end of 
+ * computation.
+ * If @lut is too large, extra values are ignored. 
+ * 
+ * If @lut has one band, then all bands of @in pass through it. If @lut
+ * has same number of bands as @in, then each band is mapped
+ * separately. If @in has one band, then @lut may have many bands and
+ * the output will have the same number of bands as @lut.
+ *
+ * See also: im_histgr(), im_identity().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_maplut( IMAGE *in, IMAGE *out, IMAGE *lut )
 {
+	IMAGE *t;
 	LutInfo *st;
-
-	/* Check lut.
-	 */
-	if( lut->Coding != IM_CODING_NONE ) {
-                im_error( "im_maplut", "%s", _( "lut is not uncoded" ) );
-                return( -1 );
-	}
-	if( lut->Xsize * lut->Ysize > 100000 ) {
-                im_error( "im_maplut", "%s", _( "lut seems very large!" ) );
-                return( -1 );
-	}
 
 	/* Check input output. Old-style IO from lut, for simplicity.
 	 */
-	if( im_piocheck( in, out ) || im_incheck( lut ) )
+	if( im_check_hist( "im_maplut", lut ) ||
+		im_check_uncoded( "im_maplut", lut ) ||
+		im_check_uncoded( "im_maplut", in ) ||
+		im_check_bands_1orn( "im_maplut", in, lut ) ||
+		im_piocheck( in, out ) || 
+		im_incheck( lut ) )
 		return( -1 );
 
-	/* Check args.
+	/* Cast in to u8/u16/u32.
 	 */
-        if( in->Coding != IM_CODING_NONE ) {
-                im_error( "im_maplut", "%s", _( "input is not uncoded" ) );
-                return( -1 );
-	}
-        if( !im_isuint( in ) ) {
-                im_error( "im_maplut", "%s", 
-			_( "input is not some unsigned integer type" ) );
-                return( -1 );
-	}
-	if( in->Bands != 1 && lut->Bands != 1 && lut->Bands != in->Bands ) {
-                im_error( "im_maplut", "%s", _( "lut should have 1 band, "
-			"or same number of bands as input, "
-			"or any number of bands if input has 1 band" ) );
-                return( -1 );
-	}
-	if( in->BandFmt == IM_BANDFMT_UCHAR && 
-		lut->Xsize * lut->Ysize != 256 ) {
-		im_error( "im_maplut", "%s", _( "input is uchar and lut "
-			"does not have 256 elements" ) );
+	if( !(t = im_open_local( out, "im_maplut", "p" )) ||
+		im_clip2fmt( in, t, bandfmt_maplut[in->BandFmt] ) )
 		return( -1 );
-	}
 
 	/* Prepare the output header.
 	 */
-        if( im_cp_descv( out, in, lut, NULL ) )
+        if( im_cp_descv( out, t, lut, NULL ) )
                 return( -1 );
 
 	/* Force output to be the same type as lut.
@@ -624,12 +614,12 @@ im_maplut( IMAGE *in, IMAGE *out, IMAGE *lut )
 
 	/* Set demand hints.
 	 */
-	if( im_demand_hint( out, IM_THINSTRIP, in, NULL ) )
+	if( im_demand_hint( out, IM_THINSTRIP, t, NULL ) )
 		return( -1 );
 
 	/* Process!
 	 */
-        if( im_generate( out, maplut_start, maplut_gen, maplut_stop, in, st ) )
+        if( im_generate( out, maplut_start, maplut_gen, maplut_stop, t, st ) )
                 return( -1 );
 
         return( 0 );

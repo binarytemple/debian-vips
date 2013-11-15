@@ -1,28 +1,12 @@
-/* @(#) im_complass: Optimised convolution for line detection
- * @(#) Uses the entered mask and 7 rotated versions of it (each by 45 degrees)
- * @(#)
- * @(#) Usage 
- * @(#) int im_compass( in, out, m )
- * @(#) IMAGE *in, *out;
- * @(#) INTMASK *m;
- * @(#)
- * @(#) Returns 0 on sucess and -1 on error
- * @(#)
- * @(#) Returns an int pointer to valid offsets for rotating a square mask 
- * @(#) of odd size by 45 degrees.
- * @(#)
- * @(#) Usage 
- * @(#) int *im_offsets45( size )
- * @(#) int size;
- * @(#)
- * @(#) Returns an int pointer to valid offsets on sucess and -1 on error
- * @(#)
+/* im_compass
  * 
  * Author: N. Dessipris (Copyright, N. Dessipris 1991)
  * Written on: 08/05/1991
  * Modified on: 
  * 11/3/01 JC
  *	- rewritten, calling im_conv() and im_maxvalue()
+ * 3/2/10
+ * 	- gtkdoc
  */
 
 /*
@@ -56,17 +40,22 @@
 #endif /*HAVE_CONFIG_H*/
 #include <vips/intl.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <assert.h>
-
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
+/**
+ * im_compass:
+ * @in: input image
+ * @out: output image
+ * @mask: convolution mask
+ *
+ * @in is convolved 8 times with @mask, each time @mask is rotated by 45
+ * degrees. Each output pixel is the largest absolute value of the 8
+ * convolutions.
+ *
+ * See also: im_lindetect(), im_gradient(), im_conv().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_compass( IMAGE *in, IMAGE *out, INTMASK *mask )
 {
@@ -80,10 +69,8 @@ im_compass( IMAGE *in, IMAGE *out, INTMASK *mask )
 
 	for( i = 0; i < 8; i++ ) {
 		if( im_conv( in, filtered[i], mask ) ||
-		    !(mask = (INTMASK *) im_local( out, 
-			(im_construct_fn) im_rotate_imask45,
-			(im_callback_fn) im_free_imask,
-			mask, mask->filename, NULL )) )
+			!(mask = im_local_imask( out, 
+				im_rotate_imask45( mask, mask->filename ) )) )
 			return( -1 );
 	}
 
@@ -94,6 +81,20 @@ im_compass( IMAGE *in, IMAGE *out, INTMASK *mask )
 	return( im_maxvalue( absed, out, 8 ) );
 }
 
+/**
+ * im_lindetect:
+ * @in: input image
+ * @out: output image
+ * @mask: convolution mask
+ *
+ * @in is convolved four times with @mask, each time @mask is rotated by 45
+ * degrees. Each output pixel is the largest absolute value of the four
+ * convolutions.
+ *
+ * See also: im_compass(), im_gradient(), im_conv().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_lindetect( IMAGE *in, IMAGE *out, INTMASK *mask )
 {
@@ -107,10 +108,8 @@ im_lindetect( IMAGE *in, IMAGE *out, INTMASK *mask )
 
 	for( i = 0; i < 4; i++ ) {
 		if( im_conv( in, filtered[i], mask ) ||
-		    !(mask = (INTMASK *) im_local( out, 
-			(im_construct_fn) im_rotate_imask45,
-			(im_callback_fn) im_free_imask,
-			mask, mask->filename, NULL )) )
+			!(mask = im_local_imask( out, 
+				im_rotate_imask45( mask, mask->filename ) )) )
 			return( -1 );
 	}
 
@@ -121,20 +120,30 @@ im_lindetect( IMAGE *in, IMAGE *out, INTMASK *mask )
 	return( im_maxvalue( absed, out, 4 ) );
 }
 
-#define GTEMPS (4)
-
+/**
+ * im_gradient:
+ * @in: input image
+ * @out: output image
+ * @mask: convolution mask
+ *
+ * @in is convolved with @mask and with @mask after a 90 degree rotation. The
+ * result is the sum of the absolute value of the two convolutions. 
+ *
+ * See also: im_lindetect(), im_gradient(), im_conv().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int
 im_gradient( IMAGE *in, IMAGE *out, INTMASK *mask )
 {
-	IMAGE *t[GTEMPS];
+	IMAGE *t[4];
 	INTMASK *rmask;
 
-	if( im_open_local_array( out, t, GTEMPS, "im_gradient", "p" ) )
+	if( im_open_local_array( out, t, 4, "im_gradient", "p" ) )
 		return( -1 );
 
-	if( !(rmask = (INTMASK *) im_local( out, 
-		(im_construct_fn) im_rotate_imask90,
-		(im_callback_fn) im_free_imask, mask, mask->filename, NULL )) )
+	if( !(rmask = im_local_imask( out, 
+		im_rotate_imask90( mask, mask->filename ) )) ) 
 		return( -1 );
 
 	if( im_conv( in, t[0], mask ) ||

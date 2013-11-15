@@ -12,6 +12,8 @@
  * 	- add .v suffix (thanks Roland)
  * 	- use vipsbuf
  * 	- rewrite to make it simpler
+ * 2/2/10
+ * 	- gtkdoc
  */
 
 /*
@@ -57,40 +59,32 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 #define IM_MAX_STRSIZE (4096)
 
-#ifdef OS_WIN32
-#define popen(b,m) _popen(b,m)
-#define pclose(f) _pclose(f)
-#endif /*OS_WIN32*/
-
-/* Do popen(), with printf-style args.
- */
-static FILE *
-popenf( const char *fmt, const char *mode, ... )
-{
-        va_list args;
-	char buf[IM_MAX_STRSIZE];
-	FILE *fp;
-
-        va_start( args, mode );
-        (void) im_vsnprintf( buf, IM_MAX_STRSIZE, fmt, args );
-        va_end( args );
-
-        if( !(fp = popen( buf, mode )) ) {
-		im_error( "popenf", "%s", strerror( errno ) );
-		return( NULL );
-	}
-
-	return( fp );
-}
-
-/* Run a command on an IMAGE ... copy to tmp (if necessary), run 
- * command on it, unlink (if we copied), return stdout from command.
+/**
+ * im_system:
+ * @im: image to run command on
+ * @cmd: command to run
+ * @out: stdout of command is returned here
+ *
+ * im_system() runs a command on an image, returning the command's output as a
+ * string. The command is executed with popen(), the first '%%s' in the 
+ * command being substituted for a filename.
+ *
+ * If the IMAGE is a file on disc, then the filename will be the name of the 
+ * real file. If the image is in memory, or the result of a computation, 
+ * then a new file is created in the temporary area called something like 
+ * "vips_XXXXXX.v", and that filename given to the command. The file is 
+ * deleted when the command finishes.
+ *
+ * See im_system_image() for details on how VIPS selects a temporary
+ * directory.
+ *
+ * In all cases, @log must be freed with im_free().
+ *
+ * See also: im_system_image().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_system( IMAGE *im, const char *cmd, char **out )
@@ -100,7 +94,7 @@ im_system( IMAGE *im, const char *cmd, char **out )
 	if( !im_isfile( im ) ) {
 		IMAGE *disc;
 
-		if( !(disc = im__open_temp()) )
+		if( !(disc = im__open_temp( "%s.v" )) )
 			return( -1 );
 		if( im_copy( im, disc ) ||
 			im_system( disc, cmd, out ) ) {
@@ -109,12 +103,11 @@ im_system( IMAGE *im, const char *cmd, char **out )
 		}
 		im_close( disc );
 	}
-	else if( (fp = popenf( cmd, "r", im->filename )) ) {
+	else if( (fp = im_popenf( cmd, "r", im->filename )) ) {
 		char line[IM_MAX_STRSIZE];
-		VipsBuf buf;
-		char str[IM_MAX_STRSIZE];
+		char txt[IM_MAX_STRSIZE];
+		VipsBuf buf = VIPS_BUF_STATIC( txt );
 
-		vips_buf_init_static( &buf, str, IM_MAX_STRSIZE );
 		while( fgets( line, IM_MAX_STRSIZE, fp ) ) 
 			if( !vips_buf_appends( &buf, line ) )
 				break; 

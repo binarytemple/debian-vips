@@ -40,14 +40,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <assert.h>
 
 #include <vips/vips.h>
 #include <vips/buf.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 /**
  * SECTION: buf
@@ -79,12 +74,11 @@
 
 /* Largest string we can append in one operation.
  */
-#define MAX_STRSIZE (16000)
+#define MAX_STRSIZE (100000)
 
 /** 
  * VIPS_BUF_STATIC:
  * @TEXT: the storage area to use
- * @MAX: the size of the storage area
  *
  * Initialize a heap buffer. For example:
  *
@@ -137,7 +131,7 @@ void
 vips_buf_destroy( VipsBuf *buf )
 {
 	if( buf->dynamic ) {
-		IM_FREE( buf->base );
+		VIPS_FREE( buf->base );
 	}
 
 	vips_buf_init( buf );
@@ -213,7 +207,7 @@ vips_buf_set_dynamic( VipsBuf *buf, int mx )
 	else {
 		vips_buf_destroy( buf );
 
-		if( !(buf->base = IM_ARRAY( NULL, mx, char )) )
+		if( !(buf->base = VIPS_ARRAY( NULL, mx, char )) )
 			/* No error return, so just block writes.
 			 */
 			buf->full = TRUE;
@@ -276,7 +270,7 @@ vips_buf_appendns( VipsBuf *buf, const char *str, int sz )
 	 */
 	len = strlen( str );
 	if( sz >= 0 )
-		n = IM_MIN( sz, len );
+		n = VIPS_MIN( sz, len );
 	else
 		n = len;
 
@@ -286,7 +280,7 @@ vips_buf_appendns( VipsBuf *buf, const char *str, int sz )
 
 	/* Amount we actually copy.
 	 */
-	cpy = IM_MIN( n, avail );
+	cpy = VIPS_MIN( n, avail );
 
 	strncpy( buf->base + buf->i, str, cpy );
 	buf->i += cpy;
@@ -340,10 +334,10 @@ vips_buf_appendc( VipsBuf *buf, char ch )
 /**
  * vips_buf_change:
  * @buf: the buffer
- * @old: the string to search for
- * @new: the string to substitute
+ * @o: the string to search for
+ * @n: the string to substitute
  *
- * Swap the rightmost occurence of @old for @new.
+ * Swap the rightmost occurence of @o for @n.
  * 
  * Returns: %FALSE on overflow, %TRUE otherwise.
  */
@@ -365,7 +359,7 @@ vips_buf_change( VipsBuf *buf, const char *old, const char *new )
 	/* Find pos of old.
 	 */
 	for( i = buf->i - olen; i > 0; i-- )
-		if( im_isprefix( old, buf->base + i ) )
+		if( vips_isprefix( old, buf->base + i ) )
 			break;
 	g_assert( i >= 0 );
 
@@ -421,7 +415,7 @@ vips_buf_appendf( VipsBuf *buf, const char *fmt, ... )
 	va_list ap;
 
         va_start( ap, fmt );
-        (void) im_vsnprintf( str, MAX_STRSIZE, fmt, ap );
+        (void) vips_vsnprintf( str, MAX_STRSIZE, fmt, ap );
         va_end( ap );
 
 	return( vips_buf_appends( buf, str ) );
@@ -442,7 +436,7 @@ vips_buf_vappendf( VipsBuf *buf, const char *fmt, va_list ap )
 {
 	char str[MAX_STRSIZE];
 
-        (void) im_vsnprintf( str, MAX_STRSIZE, fmt, ap );
+        (void) vips_vsnprintf( str, MAX_STRSIZE, fmt, ap );
 
 	return( vips_buf_appends( buf, str ) );
 }
@@ -505,6 +499,55 @@ vips_buf_appendgv( VipsBuf *buf, GValue *value )
 	g_free( str_value );
 
 	return( result );
+}
+
+/**
+ * vips_buf_append_size:
+ * @buf: the buffer
+ * @n: the number of bytes
+ *
+ * Turn a number of bytes into a sensible string ... eg "12", "12KB", "12MB",
+ * "12GB" etc.
+ * 
+ * Returns: %FALSE on overflow, %TRUE otherwise.
+ */
+gboolean
+vips_buf_append_size( VipsBuf *buf, size_t n )
+{
+	const static char *names[] = { 
+		/* File length unit.
+		 */
+		N_( "bytes" ), 
+
+		/* Kilo byte unit.
+		 */
+		N_( "KB" ), 
+
+		/* Mega byte unit.
+		 */
+		N_( "MB" ), 
+
+		/* Giga byte unit.
+		 */
+		N_( "GB" ), 
+
+		/* Tera byte unit.
+		 */
+		N_( "TB" ) 
+	};
+
+	double sz = n;
+	int i;
+
+	for( i = 0; sz > 1024 && i < VIPS_NUMBER( names ); sz /= 1024, i++ )
+		;
+
+	if( i == 0 )
+		/* No decimal places for bytes.
+		 */
+		return( vips_buf_appendf( buf, "%g %s", sz, _( names[i] ) ) );
+	else
+		return( vips_buf_appendf( buf, "%.2f %s", sz, _( names[i] ) ) );
 }
 
 /**
