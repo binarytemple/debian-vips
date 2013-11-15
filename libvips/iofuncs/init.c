@@ -228,6 +228,11 @@ vips_init( const char *argv0 )
 	bindtextdomain( GETTEXT_PACKAGE, name );
 	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" );
 
+	/* Default info setting from env.
+	 */
+	if( g_getenv( "IM_INFO" ) ) 
+		vips__info = 1;
+
 	/* Register base vips types.
 	 */
 	(void) vips_image_get_type();
@@ -249,6 +254,8 @@ vips_init( const char *argv0 )
 	vips_foreign_operation_init();
 	vips_resample_operation_init();
 	vips_colour_operation_init();
+	vips_histogram_operation_init();
+	vips_convolution_operation_init();
 
 	/* Load up any plugins in the vips libdir. We don't error on failure,
 	 * it's too annoying to have VIPS refuse to start because of a broken
@@ -318,7 +325,7 @@ vips_leak( void )
 		vips_tracked_get_files() ) {
 		vips_buf_appendf( &buf, "memory: %d allocations, %zd bytes\n",
 			vips_tracked_get_allocs(), vips_tracked_get_mem() );
-		vips_buf_appendf( &buf, "\nfiles: %d open\n",
+		vips_buf_appendf( &buf, "files: %d open\n",
 			vips_tracked_get_files() );
 	}
 
@@ -407,6 +414,9 @@ vips_set_fatal_cb( const gchar *option_name, const gchar *value,
 }
 
 static GOptionEntry option_entries[] = {
+	{ "vips-info", 0, G_OPTION_FLAG_HIDDEN, 
+		G_OPTION_ARG_NONE, &vips__info, 
+		N_( "show informative messages" ), NULL },
 	{ "vips-fatal", 0, G_OPTION_FLAG_HIDDEN | G_OPTION_FLAG_NO_ARG, 
 		G_OPTION_ARG_CALLBACK, (gpointer) &vips_set_fatal_cb, 
 		N_( "abort on first error or warning" ), NULL },

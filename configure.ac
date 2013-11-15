@@ -2,7 +2,7 @@
 
 # also update the version number in the m4 macros below
 
-AC_INIT([vips], [7.34.2], [vipsip@jiscmail.ac.uk])
+AC_INIT([vips], [7.36.3], [vipsip@jiscmail.ac.uk])
 # required for gobject-introspection
 AC_PREREQ(2.62)
 
@@ -16,8 +16,8 @@ AC_CONFIG_MACRO_DIR([m4])
 
 # user-visible library versioning
 m4_define([vips_major_version], [7])
-m4_define([vips_minor_version], [34])
-m4_define([vips_micro_version], [2])
+m4_define([vips_minor_version], [36])
+m4_define([vips_micro_version], [3])
 m4_define([vips_version],
           [vips_major_version.vips_minor_version.vips_micro_version])
 
@@ -36,9 +36,9 @@ VIPS_VERSION_STRING=$VIPS_VERSION-`date`
 #   binary interface changes backwards compatible?: increment age
 #   binary interface changes not backwards compatible?: reset age to 0
 
-LIBRARY_CURRENT=34
-LIBRARY_REVISION=5
-LIBRARY_AGE=3
+LIBRARY_CURRENT=35
+LIBRARY_REVISION=3
+LIBRARY_AGE=0
 
 # patched into include/vips/version.h
 AC_SUBST(VIPS_VERSION)
@@ -306,7 +306,6 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_FUNC_MEMCMP
 AC_FUNC_MMAP
-AC_FUNC_MKDIR
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([getcwd gettimeofday getwd memset munmap putenv realpath strcasecmp strchr strcspn strdup strerror strrchr strspn vsnprintf realpath mkstemp mktemp random rand sysconf atexit])
 AC_CHECK_LIB(m,cbrt,[AC_DEFINE(HAVE_CBRT,1,[have cbrt() in libm.])])
@@ -528,6 +527,20 @@ if test x"$with_cfitsio" != "xno"; then
     ])
 fi
 
+# libwebp
+AC_ARG_WITH([libwebp], 
+  AS_HELP_STRING([--without-libwebp], [build without libwebp (default: test)]))
+
+if test x"$with_libwebp" != "xno"; then
+  PKG_CHECK_MODULES(LIBWEBP, libwebp,
+    [AC_DEFINE(HAVE_LIBWEBP,1,[define if you have libwebp installed.])
+     with_libwebp=yes
+     PACKAGES_USED="$PACKAGES_USED libwebp"],
+    [AC_MSG_WARN([libwebp not found; disabling libwebp support])
+     with_libwebp=no
+    ])
+fi
+
 # pangoft2
 AC_ARG_WITH([pangoft2], 
   AS_HELP_STRING([--without-pangoft2], 
@@ -675,14 +688,14 @@ fi
 # Gather all up for VIPS_CFLAGS, VIPS_INCLUDES, VIPS_LIBS and VIPS_CXX_LIBS
 # sort includes to get longer, more specific dirs first
 # helps, for example, selecting graphicsmagick over imagemagick
-VIPS_CFLAGS=`for i in $VIPS_CFLAGS $GTHREAD_CFLAGS $REQUIRED_CFLAGS $PANGOFT2_CFLAGS $FFTW_CFLAGS $MAGICK_CFLAGS $PNG_CFLAGS $EXIF_CFLAGS $MATIO_CFLAGS $CFITSIO_CFLAGS $OPENEXR_CFLAGS $OPENSLIDE_CFLAGS $ORC_CFLAGS $TIFF_CFLAGS $LCMS_CFLAGS
+VIPS_CFLAGS=`for i in $VIPS_CFLAGS $GTHREAD_CFLAGS $REQUIRED_CFLAGS $PANGOFT2_CFLAGS $FFTW_CFLAGS $MAGICK_CFLAGS $PNG_CFLAGS $EXIF_CFLAGS $MATIO_CFLAGS $CFITSIO_CFLAGS $LIBWEBP_CFLAGS $OPENEXR_CFLAGS $OPENSLIDE_CFLAGS $ORC_CFLAGS $TIFF_CFLAGS $LCMS_CFLAGS
 do 
   echo $i 
 done | sort -ru`
 VIPS_CFLAGS=`echo $VIPS_CFLAGS`
 VIPS_CFLAGS="$VIPS_DEBUG_FLAGS $VIPS_CFLAGS"
 VIPS_INCLUDES="$PNG_INCLUDES $TIFF_INCLUDES $ZIP_INCLUDES $JPEG_INCLUDES" 
-VIPS_LIBS="$MAGICK_LIBS $PNG_LIBS $TIFF_LIBS $ZIP_LIBS $JPEG_LIBS $GTHREAD_LIBS $REQUIRED_LIBS $PANGOFT2_LIBS $FFTW_LIBS $ORC_LIBS $LCMS_LIBS $OPENEXR_LIBS $OPENSLIDE_LIBS $CFITSIO_LIBS $MATIO_LIBS $EXIF_LIBS -lm"
+VIPS_LIBS="$MAGICK_LIBS $PNG_LIBS $TIFF_LIBS $ZIP_LIBS $JPEG_LIBS $GTHREAD_LIBS $REQUIRED_LIBS $PANGOFT2_LIBS $FFTW_LIBS $ORC_LIBS $LCMS_LIBS $OPENEXR_LIBS $OPENSLIDE_LIBS $CFITSIO_LIBS $LIBWEBP_LIBS $MATIO_LIBS $EXIF_LIBS -lm"
 
 # we need this to generate paths in swig/python/setup.py.in
 AC_SUBST(top_srcdir)
@@ -710,7 +723,7 @@ AC_OUTPUT([
 	libvips/deprecated/Makefile 
 	libvips/foreign/Makefile 
 	libvips/freq_filt/Makefile 
-	libvips/histograms_lut/Makefile 
+	libvips/histogram/Makefile 
 	libvips/inplace/Makefile 
 	libvips/iofuncs/Makefile 
 	libvips/morphology/Makefile 
@@ -759,6 +772,7 @@ file import with OpenSlide:		$with_openslide
   (requires openslide-3.3.0 or later)
 file import with matio: 		$with_matio
 file import with cfitsio: 		$with_cfitsio
+file import/export with libwebp:	$with_libwebp
 text rendering with pangoft2: 		$with_pangoft2
 file import/export with libpng: 	$with_png
   (requires libpng-1.2.9 or later)

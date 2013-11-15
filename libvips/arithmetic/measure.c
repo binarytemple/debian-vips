@@ -85,10 +85,6 @@ typedef VipsOperationClass VipsMeasureClass;
 
 G_DEFINE_TYPE( VipsMeasure, vips_measure, VIPS_TYPE_OPERATION );
 
-/* Address a double in our array image.
- */
-#define ARY( im, x, y ) ((double *) VIPS_IMAGE_ADDR( im, x, y ))
-
 static int
 vips_measure_build( VipsObject *object )
 {
@@ -108,7 +104,7 @@ vips_measure_build( VipsObject *object )
 	bands = vips_image_get_bands( measure->in );
 
 	g_object_set( object, 
-		"out", vips_image_new_array( bands, measure->h * measure->v ),
+		"out", vips_image_new_matrix( bands, measure->h * measure->v ),
 		NULL );
 
 	/* left/top/width/height default to the size of the image.
@@ -166,8 +162,8 @@ vips_measure_build( VipsObject *object )
 						   "avg = %g, sdev = %g" ), 
 						i, j, b, avg, dev );
 
-				*ARY( measure->out, b, i + j * measure->h ) = 
-					avg;
+				*VIPS_MATRIX( measure->out, 
+					b, i + j * measure->h ) = avg;
 			}
 		}
 	}

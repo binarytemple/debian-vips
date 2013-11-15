@@ -66,17 +66,7 @@
 #include <vips/buf.h>
 #include <vips/internal.h>
 
-/* jpeglib includes jconfig.h, which can define HAVE_STDLIB_H ... which we
- * also define. Make sure it's turned off.
- */
-#ifdef HAVE_STDLIB_H
-#undef HAVE_STDLIB_H
-#endif /*HAVE_STDLIB_H*/
-
-#include <jpeglib.h>
-#include <jerror.h>
-
-#include "jpeg.h"
+#include "vipsjpeg.h"
 
 typedef struct _VipsForeignSaveJpeg {
 	VipsForeignSave parent_object;
@@ -88,6 +78,10 @@ typedef struct _VipsForeignSaveJpeg {
 	/* Profile to embed .. "none" means don't attach a profile.
 	 */
 	char *profile;
+
+	/* Compute optimal Huffman coding tables.
+	 */
+	gboolean optimize_coding;
 
 } VipsForeignSaveJpeg;
 
@@ -134,6 +128,13 @@ vips_foreign_save_jpeg_class_init( VipsForeignSaveJpegClass *class )
 		VIPS_ARGUMENT_OPTIONAL_INPUT,
 		G_STRUCT_OFFSET( VipsForeignSaveJpeg, profile ),
 		NULL );
+
+	VIPS_ARG_BOOL( class, "optimize_coding", 12,
+		_( "optimize_coding" ),
+		_( "Compute optimal Huffman coding tables" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsForeignSaveJpeg, optimize_coding ),
+		FALSE );
 }
 
 static void
@@ -168,7 +169,7 @@ vips_foreign_save_jpeg_file_build( VipsObject *object )
 		return( -1 );
 
 	if( vips__jpeg_write_file( save->ready, file->filename,
-		jpeg->Q, jpeg->profile ) )
+		jpeg->Q, jpeg->profile, jpeg->optimize_coding ) )
 		return( -1 );
 
 	return( 0 );
@@ -233,12 +234,12 @@ vips_foreign_save_jpeg_buffer_build( VipsObject *object )
 		return( -1 );
 
 	if( vips__jpeg_write_buffer( save->ready, 
-		&obuf, &olen, jpeg->Q, jpeg->profile ) )
+		&obuf, &olen, jpeg->Q, jpeg->profile, jpeg->optimize_coding ) )
 		return( -1 );
 
 	area = vips_area_new_blob( (VipsCallbackFn) vips_free, obuf, olen );
-
 	g_object_set( file, "buffer", area, NULL );
+	vips_area_unref( area );
 
 	return( 0 );
 }
@@ -294,7 +295,7 @@ vips_foreign_save_jpeg_mime_build( VipsObject *object )
 		return( -1 );
 
 	if( vips__jpeg_write_buffer( save->ready, 
-		&obuf, &olen, jpeg->Q, jpeg->profile ) )
+		&obuf, &olen, jpeg->Q, jpeg->profile, jpeg->optimize_coding ) )
 		return( -1 );
 
 	printf( "Content-length: %zd\r\n", olen );

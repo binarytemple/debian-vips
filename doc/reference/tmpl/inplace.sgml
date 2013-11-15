@@ -22,17 +22,18 @@ inplace
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### USER_FUNCTION VipsPlotFn ##### -->
+<!-- ##### FUNCTION im_draw_rect ##### -->
 <para>
 
 </para>
 
 @image: 
-@x: 
-@y: 
-@a: 
-@b: 
-@c: 
+@left: 
+@top: 
+@width: 
+@height: 
+@fill: 
+@ink: 
 @Returns: 
 
 
@@ -47,6 +48,80 @@ inplace
 @radius: 
 @fill: 
 @ink: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_image ##### -->
+<para>
+
+</para>
+
+@image: 
+@sub: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsPlotFn ##### -->
+<para>
+
+</para>
+
+@image: 
+@x: 
+@y: 
+@a: 
+@b: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_line_user ##### -->
+<para>
+
+</para>
+
+@image: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+@plot: 
+@a: 
+@b: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_line ##### -->
+<para>
+
+</para>
+
+@image: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+@ink: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_lineset ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@ink: 
+@n: 
+@x1v: 
+@y1v: 
+@x2v: 
+@y2v: 
 @Returns: 
 
 
@@ -90,49 +165,6 @@ inplace
 @Returns: 
 
 
-<!-- ##### FUNCTION im_draw_image ##### -->
-<para>
-
-</para>
-
-@image: 
-@sub: 
-@x: 
-@y: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_draw_line ##### -->
-<para>
-
-</para>
-
-@image: 
-@x1: 
-@y1: 
-@x2: 
-@y2: 
-@ink: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_draw_line_user ##### -->
-<para>
-
-</para>
-
-@image: 
-@x1: 
-@y1: 
-@x2: 
-@y2: 
-@plot: 
-@a: 
-@b: 
-@c: 
-@Returns: 
-
-
 <!-- ##### FUNCTION im_draw_mask ##### -->
 <para>
 
@@ -158,17 +190,14 @@ inplace
 @Returns: 
 
 
-<!-- ##### FUNCTION im_draw_rect ##### -->
+<!-- ##### FUNCTION im_read_point ##### -->
 <para>
 
 </para>
 
 @image: 
-@left: 
-@top: 
-@width: 
-@height: 
-@fill: 
+@x: 
+@y: 
 @ink: 
 @Returns: 
 
@@ -183,35 +212,6 @@ inplace
 @top: 
 @width: 
 @height: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_lineset ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@mask: 
-@ink: 
-@n: 
-@x1v: 
-@y1v: 
-@x2v: 
-@y2v: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_read_point ##### -->
-<para>
-
-</para>
-
-@image: 
-@x: 
-@y: 
-@ink: 
 @Returns: 
 
 

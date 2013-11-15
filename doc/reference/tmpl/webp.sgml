@@ -1,0 +1,100 @@
+<!-- ##### SECTION Title ##### -->
+webp
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION vips__iswebp ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__webp_read_file_header ##### -->
+<para>
+
+</para>
+
+@name: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__webp_read_file ##### -->
+<para>
+
+</para>
+
+@name: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__webp_read_buffer_header ##### -->
+<para>
+
+</para>
+
+@buf: 
+@len: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__webp_read_buffer ##### -->
+<para>
+
+</para>
+
+@buf: 
+@len: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__webp_write_file ##### -->
+<para>
+
+</para>
+
+@out: 
+@filename: 
+@Q: 
+@lossless: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__webp_write_buffer ##### -->
+<para>
+
+</para>
+
+@out: 
+@buf: 
+@len: 
+@Q: 
+@lossless: 
+@Returns: 
+
+

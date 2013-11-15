@@ -1,0 +1,141 @@
+<!-- ##### SECTION Title ##### -->
+histogram
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION vips_maplut ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@lut: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_percent ##### -->
+<para>
+
+</para>
+
+@in: 
+@percent: 
+@threshold: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_stdif ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hist_cum ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hist_norm ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hist_equal ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hist_plot ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hist_match ##### -->
+<para>
+
+</para>
+
+@in: 
+@ref: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hist_local ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hist_ismonotonic ##### -->
+<para>
+
+</para>
+
+@in: 
+@monotonic: 
+@...: 
+@Returns: 
+
+

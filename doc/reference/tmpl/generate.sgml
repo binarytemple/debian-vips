@@ -22,19 +22,6 @@ generate
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### USER_FUNCTION VipsGenerateFn ##### -->
-<para>
-
-</para>
-
-@out: 
-@seq: 
-@a: 
-@b: 
-@stop: 
-@Returns: 
-
-
 <!-- ##### USER_FUNCTION VipsRegionWrite ##### -->
 <para>
 
@@ -46,14 +33,15 @@ generate
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION VipsSinkNotify ##### -->
+<!-- ##### FUNCTION vips_sink_disc ##### -->
 <para>
 
 </para>
 
 @im: 
-@rect: 
+@write_fn: 
 @a: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION VipsStartFn ##### -->
@@ -67,56 +55,25 @@ generate
 @Returns: 
 
 
+<!-- ##### USER_FUNCTION VipsGenerateFn ##### -->
+<para>
+
+</para>
+
+@out: 
+@seq: 
+@a: 
+@b: 
+@stop: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION VipsStopFn ##### -->
 <para>
 
 </para>
 
 @seq: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_allocate_input_array ##### -->
-<para>
-
-</para>
-
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_demand_hint ##### -->
-<para>
-
-</para>
-
-@image: 
-@hint: 
-@...: 
-
-
-<!-- ##### FUNCTION vips_demand_hint_array ##### -->
-<para>
-
-</para>
-
-@image: 
-@hint: 
-@in: 
-
-
-<!-- ##### FUNCTION vips_image_generate ##### -->
-<para>
-
-</para>
-
-@im: 
-@start_fn: 
-@generate_fn: 
-@stop_fn: 
 @a: 
 @b: 
 @Returns: 
@@ -136,13 +93,45 @@ generate
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_sink_disc ##### -->
+<!-- ##### FUNCTION vips_sink_tile ##### -->
 <para>
 
 </para>
 
 @im: 
-@write_fn: 
+@tile_width: 
+@tile_height: 
+@start_fn: 
+@generate_fn: 
+@stop_fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsSinkNotify ##### -->
+<para>
+
+</para>
+
+@im: 
+@rect: 
+@a: 
+
+
+<!-- ##### FUNCTION vips_sink_screen ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@tile_width: 
+@tile_height: 
+@max_tiles: 
+@priority: 
+@notify: 
 @a: 
 @Returns: 
 
@@ -165,51 +154,29 @@ generate
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_sink_screen ##### -->
+<!-- ##### FUNCTION vips_start_one ##### -->
 <para>
 
 </para>
 
-@in: 
 @out: 
-@mask: 
-@tile_width: 
-@tile_height: 
-@max_tiles: 
-@priority: 
-@notify: 
 @a: 
+@b: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_sink_tile ##### -->
+<!-- ##### FUNCTION vips_stop_one ##### -->
 <para>
 
 </para>
 
-@im: 
-@tile_width: 
-@tile_height: 
-@start_fn: 
-@generate_fn: 
-@stop_fn: 
+@seq: 
 @a: 
 @b: 
 @Returns: 
 
 
 <!-- ##### FUNCTION vips_start_many ##### -->
-<para>
-
-</para>
-
-@out: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_start_one ##### -->
 <para>
 
 </para>
@@ -231,14 +198,47 @@ generate
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_stop_one ##### -->
+<!-- ##### FUNCTION vips_allocate_input_array ##### -->
 <para>
 
 </para>
 
-@seq: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_generate ##### -->
+<para>
+
+</para>
+
+@im: 
+@start_fn: 
+@generate_fn: 
+@stop_fn: 
 @a: 
 @b: 
 @Returns: 
+
+
+<!-- ##### FUNCTION vips_demand_hint_array ##### -->
+<para>
+
+</para>
+
+@image: 
+@hint: 
+@in: 
+
+
+<!-- ##### FUNCTION vips_demand_hint ##### -->
+<para>
+
+</para>
+
+@image: 
+@hint: 
+@...: 
 
 

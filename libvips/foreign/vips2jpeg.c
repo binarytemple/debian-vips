@@ -56,6 +56,8 @@
  * 	- update exif image dimensions
  * 21/11/12
  * 	- attach IPCT data (app13), thanks Gary
+ * 2/10/13 Lovell Fuller
+ * 	- add optimize_coding parameter
  */
 
 /*
@@ -119,17 +121,8 @@
 #endif /*UNTAGGED_EXIF*/
 #endif /*HAVE_EXIF*/
 
-/* jpeglib includes jconfig.h, which can define HAVE_STDLIB_H ... which we
- * also define. Make sure it's turned off.
- */
-#ifdef HAVE_STDLIB_H
-#undef HAVE_STDLIB_H
-#endif /*HAVE_STDLIB_H*/
-
-#include <jpeglib.h>
-#include <jerror.h>
-
 #include "jpeg.h"
+#include "vipsjpeg.h"
 
 /* New output message method - send to VIPS.
  */
@@ -381,7 +374,7 @@ vips_exif_set_double( ExifData *ed,
 	sizeof_component = entry->size / entry->components;
 	offset = component * sizeof_component;
 
-	VIPS_DEBUG_MSG( "vips_exif_set_double: %s = \"%s\"\n",
+	VIPS_DEBUG_MSG( "vips_exif_set_double: %s = %g\n",
 		exif_tag_get_title( entry->tag ), value );
 
 	if( entry->format == EXIF_FORMAT_RATIONAL ) {
@@ -452,7 +445,7 @@ static int
 set_exif_resolution( ExifData *ed, VipsImage *im )
 {
 	double xres, yres;
-	char *p;
+	const char *p;
 	int unit;
 
 	VIPS_DEBUG_MSG( "set_exif_resolution: vips res of %g, %g\n",
@@ -505,7 +498,7 @@ set_exif_resolution( ExifData *ed, VipsImage *im )
 static int
 set_exif_dimensions( ExifData *ed, VipsImage *im )
 {
-	VIPS_DEBUG_MSG( "set_exif_dimensions: vips size of %g, %g\n",
+	VIPS_DEBUG_MSG( "set_exif_dimensions: vips size of %d, %d\n",
 		im->Xsize, im->Ysize );
 
 	if( write_tag( ed, 2, EXIF_TAG_PIXEL_X_DIMENSION, 
@@ -578,7 +571,7 @@ static void
 vips_exif_update_entry( ExifEntry *entry, VipsExif *ve )
 {
 	char name[256];
-	char *value;
+	const char *value;
 
 	vips_snprintf( name, 256, "exif-ifd%d-%s", 
 		exif_entry_get_ifd( entry ),
@@ -847,7 +840,8 @@ write_jpeg_block( REGION *region, Rect *area, void *a )
 /* Write a VIPS image to a JPEG compress struct.
  */
 static int
-write_vips( Write *write, int qfac, const char *profile )
+write_vips( Write *write, int qfac, const char *profile, 
+	gboolean optimize_coding )
 {
 	VipsImage *in;
 	J_COLOR_SPACE space;
@@ -900,6 +894,10 @@ write_vips( Write *write, int qfac, const char *profile )
         jpeg_set_defaults( &write->cinfo );
         jpeg_set_quality( &write->cinfo, qfac, TRUE );
 
+ 	/* Compute optimal Huffman coding tables.
+	 */
+	write->cinfo.optimize_coding = optimize_coding;
+
 	/* Build compress tables.
 	 */
 	jpeg_start_compress( &write->cinfo, TRUE );
@@ -942,7 +940,8 @@ write_vips( Write *write, int qfac, const char *profile )
  */
 int
 vips__jpeg_write_file( VipsImage *in, 
-	const char *filename, int Q, const char *profile )
+	const char *filename, int Q, const char *profile, 
+	gboolean optimize_coding )
 {
 	Write *write;
 
@@ -972,7 +971,7 @@ vips__jpeg_write_file( VipsImage *in,
 
 	/* Convert!
 	 */
-	if( write_vips( write, Q, profile ) ) {
+	if( write_vips( write, Q, profile, optimize_coding ) ) {
 		write_destroy( write );
 		return( -1 );
 	}
@@ -1218,7 +1217,8 @@ buf_dest( j_compress_ptr cinfo, void **obuf, size_t *olen )
 
 int
 vips__jpeg_write_buffer( VipsImage *in, 
-	void **obuf, size_t *olen, int Q, const char *profile )
+	void **obuf, size_t *olen, int Q, const char *profile, 
+	gboolean optimize_coding )
 {
 	Write *write;
 
@@ -1247,7 +1247,7 @@ vips__jpeg_write_buffer( VipsImage *in,
 
 	/* Convert!
 	 */
-	if( write_vips( write, Q, profile ) ) {
+	if( write_vips( write, Q, profile, optimize_coding ) ) {
 		write_destroy( write );
 
 		return( -1 );

@@ -22,6 +22,24 @@ rect
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### STRUCT VipsRect ##### -->
+<para>
+
+</para>
+
+@left: 
+@top: 
+@width: 
+@height: 
+
+<!-- ##### MACRO VIPS_RECT_RIGHT ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
 <!-- ##### MACRO VIPS_RECT_BOTTOM ##### -->
 <para>
 
@@ -38,14 +56,6 @@ rect
 @R: 
 
 
-<!-- ##### MACRO VIPS_RECT_RIGHT ##### -->
-<para>
-
-</para>
-
-@R: 
-
-
 <!-- ##### MACRO VIPS_RECT_VCENTRE ##### -->
 <para>
 
@@ -54,32 +64,12 @@ rect
 @R: 
 
 
-<!-- ##### STRUCT VipsRect ##### -->
-<para>
-
-</para>
-
-@left: 
-@top: 
-@width: 
-@height: 
-
-<!-- ##### FUNCTION vips_rect_dup ##### -->
+<!-- ##### FUNCTION vips_rect_isempty ##### -->
 <para>
 
 </para>
 
 @r: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_rect_equalsrect ##### -->
-<para>
-
-</para>
-
-@r1: 
-@r2: 
 @Returns: 
 
 
@@ -104,22 +94,13 @@ rect
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_rect_intersectrect ##### -->
+<!-- ##### FUNCTION vips_rect_equalsrect ##### -->
 <para>
 
 </para>
 
 @r1: 
 @r2: 
-@out: 
-
-
-<!-- ##### FUNCTION vips_rect_isempty ##### -->
-<para>
-
-</para>
-
-@r: 
 @Returns: 
 
 
@@ -132,12 +113,14 @@ rect
 @n: 
 
 
-<!-- ##### FUNCTION vips_rect_normalise ##### -->
+<!-- ##### FUNCTION vips_rect_intersectrect ##### -->
 <para>
 
 </para>
 
-@r: 
+@r1: 
+@r2: 
+@out: 
 
 
 <!-- ##### FUNCTION vips_rect_unionrect ##### -->
@@ -148,5 +131,22 @@ rect
 @r1: 
 @r2: 
 @out: 
+
+
+<!-- ##### FUNCTION vips_rect_dup ##### -->
+<para>
+
+</para>
+
+@r: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rect_normalise ##### -->
+<para>
+
+</para>
+
+@r: 
 
 

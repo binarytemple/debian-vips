@@ -1477,7 +1477,45 @@ im_black( IMAGE *out, int x, int y, int bands )
 }
 
 int 
-im_gaussnoise( IMAGE *out, int x, int y, double mean, double sigma )
+im_identity_ushort( VipsImage *lut, int bands, int sz )
+{
+	VipsImage *t;
+
+	if( vips_identity( &t, 
+		"bands", bands,
+		"ushort", TRUE,
+		"size", sz,
+		NULL ) )
+		return( -1 );
+	if( vips_image_write( t, lut ) ) {
+		g_object_unref( t );
+		return( -1 );
+	}
+	g_object_unref( t );
+
+	return( 0 );
+}
+
+int 
+im_identity( VipsImage *lut, int bands )
+{
+	VipsImage *t;
+
+	if( vips_identity( &t, 
+		"bands", bands,
+		NULL ) )
+		return( -1 );
+	if( vips_image_write( t, lut ) ) {
+		g_object_unref( t );
+		return( -1 );
+	}
+	g_object_unref( t );
+
+	return( 0 );
+}
+
+int 
+im_gaussnoise( VipsImage *out, int x, int y, double mean, double sigma )
 {
 	VipsImage *t;
 
@@ -2489,6 +2527,103 @@ im_fgrey( IMAGE *out, const int xsize, const int ysize )
 }
 
 int
+im_buildlut( DOUBLEMASK *input, VipsImage *out )
+{
+	VipsImage *mat;
+	VipsImage *x;
+
+	mat = vips_image_new();
+	if( im_mask2vips( input, mat ) )
+		return( -1 );
+	if( vips_buildlut( mat, &x, 
+		NULL ) ) {
+		g_object_unref( mat );
+		return( -1 );
+	}
+	g_object_unref( mat );
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int
+im_invertlut( DOUBLEMASK *input, VipsImage *out, int size )
+{
+	VipsImage *mat;
+	VipsImage *x;
+
+	mat = vips_image_new();
+	if( im_mask2vips( input, mat ) )
+		return( -1 );
+	if( vips_invertlut( mat, &x, 
+		"size", size, 
+		NULL ) ) {
+		g_object_unref( mat );
+		return( -1 );
+	}
+	g_object_unref( mat );
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_tone_build_range( IMAGE *out, 
+	int in_max, int out_max,
+	double Lb, double Lw,
+	double Ps, double Pm, double Ph, 
+	double S, double M, double H )
+{
+	VipsImage *t;
+
+	if( vips_tonelut( &t, 
+		"in_max", in_max,
+		"out_max", out_max,
+		"Lb", Lb,
+		"Lw", Lw,
+		"Ps", Ps,
+		"Pm", Pm,
+		"Ph", Ph,
+		"S", S,
+		"M", M,
+		"H", H,
+		NULL ) )
+		return( -1 );
+	if( vips_image_write( t, out ) ) {
+		g_object_unref( t );
+		return( -1 );
+	}
+	g_object_unref( t );
+
+	return( 0 );
+}
+
+int 
+im_tone_build( IMAGE *out, 
+	double Lb, double Lw,
+	double Ps, double Pm, double Ph, 
+	double S, double M, double H )
+{
+	IMAGE *t1;
+
+	if( !(t1 = im_open_local( out, "im_tone_build", "p" )) ||
+		im_tone_build_range( t1, 32767, 32767,
+			Lb, Lw, Ps, Pm, Ph, S, M, H ) ||
+		im_clip2fmt( t1, out, IM_BANDFMT_SHORT ) )
+		return( -1 );
+
+	return( 0 );
+}
+
+int
 im_rightshift_size( IMAGE *in, IMAGE *out, 
 	int xshift, int yshift, int band_fmt )
 {
@@ -3245,7 +3380,384 @@ im_cross_phase( IMAGE *in1, IMAGE *in2, IMAGE *out )
 	return( 0 );
 }
 
-/* This is used by vipsthumbnail and the carrierwave shrinker to cache the
+int 
+im_maplut( IMAGE *in, IMAGE *out, IMAGE *lut )
+{
+	VipsImage *x;
+
+	if( vips_maplut( in, &x, lut, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int
+im_ismonotonic( IMAGE *lut, int *out )
+{
+	gboolean monotonic;
+
+	if( vips_hist_ismonotonic( lut, &monotonic, NULL ) )
+		return( -1 );
+
+	*out = monotonic ? 255 : 0; 
+
+	return( 0 );
+}
+
+int 
+im_histcum( IMAGE *in, IMAGE *out )
+{
+	VipsImage *x;
+
+	if( vips_hist_cum( in, &x, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_histnorm( IMAGE *in, IMAGE *out )
+{
+	VipsImage *x;
+
+	if( vips_hist_norm( in, &x, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_histeq( IMAGE *in, IMAGE *out )
+{
+	IMAGE *t1;
+
+	if( !(t1 = im_open_local( out, "im_histeq", "p" )) ||
+		im_histcum( in, t1 ) || 
+		im_histnorm( t1, out ) )
+		return( -1 );
+
+	return( 0 );
+}
+
+int 
+im_heq( VipsImage *in, VipsImage *out, int bandno )
+{
+	VipsImage *x;
+
+	if( vips_hist_equal( in, &x, "band", bandno, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 ); 
+}
+
+int 
+im_hist( IMAGE *in, IMAGE *out, int bandno )
+{
+	IMAGE *hist;
+
+	if( !(hist = im_open_local( out, "im_hist", "p" )) ||
+		im_histgr( in, hist, bandno ) ||
+		im_histplot( hist, out ) )
+		return( -1 );
+
+	return( 0 );
+}
+
+int 
+im_histgr( IMAGE *in, IMAGE *out, int bandno )
+{
+	VipsImage *x;
+
+	if( vips_hist_find( in, &x, 
+		"band", bandno,
+		NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_stdif( IMAGE *in, IMAGE *out, 
+	double a, double m0, double b, double s0, 
+	int width, int height )
+{
+	VipsImage *x;
+
+	if( vips_stdif( in, &x, width, height, 
+		"a", a,
+		"b", b,
+		"m0", m0,
+		"s0", s0,
+		NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_lhisteq( VipsImage *in, VipsImage *out, int width, int height )
+{
+	VipsImage *x;
+
+	if( vips_hist_local( in, &x, width, height, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_histnD( VipsImage *in, VipsImage *out, int bins )
+{
+	VipsImage *x;
+
+	if( vips_hist_find_ndim( in, &x, 
+		"bins", bins,
+		NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_hist_indexed( VipsImage *index, VipsImage *value, VipsImage *out )
+{
+	VipsImage *x;
+
+	if( vips_hist_find_indexed( value, index, &x, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_project( IMAGE *in, IMAGE *hout, IMAGE *vout )
+{
+	VipsImage *x, *y;
+
+	if( vips_project( in, &x, &y, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, hout ) ) {
+		g_object_unref( x );
+		g_object_unref( y );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	if( im_copy( y, vout ) ) {
+		g_object_unref( y );
+		return( -1 );
+	}
+	g_object_unref( y );
+
+	return( 0 );
+}
+
+int 
+im_profile( IMAGE *in, IMAGE *out, int dir )
+{
+	VipsImage *columns, *rows;
+	VipsImage *t1, *t2;
+
+	if( vips_profile( in, &columns, &rows, NULL ) )
+		return( -1 );
+	if( dir == 0 ) {
+		t1 = columns;
+		g_object_unref( rows );
+	}
+	else {
+		t1 = rows;
+		g_object_unref( columns );
+	}
+
+	if( vips_cast( t1, &t2, VIPS_FORMAT_USHORT, NULL ) ) {
+		g_object_unref( t1 );
+		return( -1 );
+	}
+	g_object_unref( t1 );
+
+	if( im_copy( t2, out ) ) {
+		g_object_unref( t2 );
+		return( -1 );
+	}
+	g_object_unref( t2 );
+
+	return( 0 ); 
+}
+
+int
+im_mpercent( IMAGE *in, double percent, int *out )
+{
+	if( vips_percent( in, percent * 100.0, out, NULL ) )
+		return( -1 ); 
+
+	return( 0 );
+}
+
+int
+im_mpercent_hist( IMAGE *in, double percent, int *out )
+{
+	/* Hard to do this in a wrapper.
+	 */
+	vips_error( "im_mpercent_hist", "%s", _( "no compat implemented" ) ); 
+
+	return( -1 ); 
+}
+
+int 
+im_hsp( IMAGE *in, IMAGE *ref, IMAGE *out )
+{
+	IMAGE *t[3];
+
+	if( im_open_local_array( out, t, 3, "im_hsp", "p" ) ||
+		im_histgr( in, t[0], -1 ) || 
+		im_histgr( ref, t[1], -1 ) ||
+		im_histspec( t[0], t[1], t[2] ) ||
+		im_maplut( in, out, t[2] ) )
+		return( -1 );
+
+	return( 0 );
+}
+
+static int
+match( VipsImage *in, VipsImage *ref, VipsImage *out )
+{
+	VipsImage *x;
+
+	if( vips_hist_match( in, ref, &x, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_histspec( IMAGE *in, IMAGE *ref, IMAGE *out )
+{
+	IMAGE *t[5];
+	guint64 px;
+	int fmt;
+
+	if( im_check_uint( "im_histspec", in ) ||
+		im_check_uint( "im_histspec", ref ) )
+		return( -1 );
+
+	if( im_open_local_array( out, t, 5, "im_histspec", "p" ) ||
+		im_histeq( in, t[0] ) || 
+		im_histeq( ref, t[2] ) ||
+		match( t[0], t[2], t[4] ) )
+		return( -1 );
+
+	px = VIPS_IMAGE_N_PELS( t[4] );
+	if( px <= 256 ) 
+		fmt = IM_BANDFMT_UCHAR;
+	else if( px <= 65536 ) 
+		fmt = IM_BANDFMT_USHORT;
+	else 
+		fmt = IM_BANDFMT_UINT;
+
+	if( im_clip2fmt( t[4], out, fmt ) )
+		return( -1 );
+
+        return( 0 );
+}
+
+int 
+im_falsecolour( IMAGE *in, IMAGE *out )
+{
+	VipsImage *x;
+
+	if( vips_falsecolour( in, &x, NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+int 
+im_gammacorrect( IMAGE *in, IMAGE *out, double exponent )
+{
+	VipsImage *x;
+
+	if( vips_gammacorrect( in, &x, 
+		"exponent", exponent,
+		NULL ) )
+		return( -1 );
+
+	if( im_copy( x, out ) ) {
+		g_object_unref( x );
+		return( -1 );
+	}
+	g_object_unref( x );
+
+	return( 0 );
+}
+
+/* This is used by the carrierwave shrinker to cache the
  * output of shrink before doing the final affine.
  *
  * We use the vips8 threaded tilecache to avoid a deadlock: suppose thread1,
@@ -3255,10 +3767,10 @@ im_cross_phase( IMAGE *in1, IMAGE *in2, IMAGE *out )
  *
  * With an unthreaded tilecache (as we had before), thread2 will get
  * the cache lock and start evaling the second block of the shrink. When it
- * reaches the png reader it will stall untilthe first block has been used ...
+ * reaches the png reader it will stall until the first block has been used ...
  * but it never will, since thread1 will block on this cache lock. 
  *
- * This function is only used in those two places (I think), so it's OK to
+ * This function is only used in this place (I think), so it's OK to
  * hard-wire this to be a sequential threaded cache. 
  */
 int
@@ -3271,7 +3783,7 @@ im_tile_cache( IMAGE *in, IMAGE *out,
 		"tile_width", tile_width, 
 		"tile_height", tile_height, 
 		"max_tiles", max_tiles, 
-		"strategy", VIPS_CACHE_SEQUENTIAL,
+		"access", VIPS_ACCESS_SEQUENTIAL,
 		"threaded", TRUE, 
 		NULL ) )
 		return( -1 );

@@ -1,0 +1,55 @@
+<!-- ##### SECTION Title ##### -->
+VipsHistogram
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### USER_FUNCTION VipsHistogramProcessFn ##### -->
+<para>
+
+</para>
+
+@histogram: 
+@out: 
+@in: 
+@width: 
+
+
+<!-- ##### STRUCT VipsHistogram ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG VipsHistogram:out ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT VipsHistogramClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@format_table: 
+@process: 
+

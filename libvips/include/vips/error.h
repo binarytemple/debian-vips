@@ -38,6 +38,9 @@ extern "C" {
 const char *vips_error_buffer( void );
 void vips_error_clear( void );
 
+void vips_error_freeze( void );
+void vips_error_thaw( void );
+
 void vips_error( const char *domain, const char *fmt, ... )
 	__attribute__((format(printf, 2, 3)));
 void vips_verror( const char *domain, const char *fmt, va_list ap );
@@ -49,9 +52,9 @@ void vips_error_g( GError **error );
 void vips_warn( const char *domain, const char *fmt, ... )
 	__attribute__((format(printf, 2, 3)));
 void vips_vwarn( const char *domain, const char *fmt, va_list ap );
-void vips_diag( const char *domain, const char *fmt, ... )
+void vips_info( const char *domain, const char *fmt, ... )
 	__attribute__((format(printf, 2, 3)));
-void vips_vdiag( const char *domain, const char *fmt, va_list ap );
+void vips_vinfo( const char *domain, const char *fmt, va_list ap );
 
 void vips_error_exit( const char *fmt, ... )
 	__attribute__((noreturn, format(printf, 1, 2)));

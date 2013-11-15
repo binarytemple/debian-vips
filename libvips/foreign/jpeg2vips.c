@@ -1,4 +1,4 @@
-/* wrap jpeg libray for read
+/* wrap jpeg library for read
  *
  * 28/11/03 JC
  *	- better no-overshoot on tile loop
@@ -119,17 +119,8 @@
 #include <vips/buf.h>
 #include <vips/internal.h>
 
-/* jpeglib includes jconfig.h, which can define HAVE_STDLIB_H ... which we
- * also define. Make sure it's turned off.
- */
-#ifdef HAVE_STDLIB_H
-#undef HAVE_STDLIB_H
-#endif /*HAVE_STDLIB_H*/
-
-#include <jpeglib.h>
-#include <jerror.h>
-
 #include "jpeg.h"
+#include "vipsjpeg.h"
 
 /* Stuff we track during a read.
  */
@@ -143,6 +134,10 @@ typedef struct _ReadJpeg {
 	/* Fail on warnings.
 	 */
 	gboolean fail;
+
+	/* Use a read behind buffer.
+	 */
+	gboolean readbehind; 
 
 	/* Used for file input only.
 	 */
@@ -164,9 +159,6 @@ readjpeg_free( ReadJpeg *jpeg )
 
 	result = 0;
 
-	if( setjmp( jpeg->eman.jmp ) ) 
-		return( -1 );
-
 	if( jpeg->eman.pub.num_warnings != 0 ) {
 		if( jpeg->fail ) {
 			vips_error( "VipsJpeg", "%s", vips_error_buffer() );
@@ -185,13 +177,20 @@ readjpeg_free( ReadJpeg *jpeg )
 	}
 
 	if( jpeg->decompressing ) {
-		jpeg_finish_decompress( &jpeg->cinfo );
+		/* jpeg_finish_decompress() can fail ... catch any errors.
+		 */
+		if( !setjmp( jpeg->eman.jmp ) ) 
+			jpeg_finish_decompress( &jpeg->cinfo );
+
 		jpeg->decompressing = FALSE;
 	}
 
 	VIPS_FREEF( fclose, jpeg->eman.fp );
 	VIPS_FREE( jpeg->filename );
 	jpeg->eman.fp = NULL;
+
+	/* I don't think this can fail.
+	 */
 	jpeg_destroy_decompress( &jpeg->cinfo );
 
 	return( result );
@@ -204,15 +203,17 @@ readjpeg_close( VipsObject *object, ReadJpeg *jpeg )
 }
 
 static ReadJpeg *
-readjpeg_new( VipsImage *out, int shrink, gboolean fail )
+readjpeg_new( VipsImage *out, int shrink, gboolean fail, gboolean readbehind )
 {
 	ReadJpeg *jpeg;
 
 	if( !(jpeg = VIPS_NEW( out, ReadJpeg )) )
 		return( NULL );
+
 	jpeg->out = out;
 	jpeg->shrink = shrink;
 	jpeg->fail = fail;
+	jpeg->readbehind = readbehind;
 	jpeg->filename = NULL;
 	jpeg->decompressing = FALSE;
 
@@ -220,6 +221,13 @@ readjpeg_new( VipsImage *out, int shrink, gboolean fail )
 	jpeg->eman.pub.error_exit = vips__new_error_exit;
 	jpeg->eman.pub.output_message = vips__new_output_message;
 	jpeg->eman.fp = NULL;
+
+	/* jpeg_create_decompress() can fail on some sanity checks. Don't
+	 * readjpeg_free() since we don't want to jpeg_destroy_decompress().
+	 */
+	if( setjmp( jpeg->eman.jmp ) ) 
+		return( NULL );
+
         jpeg_create_decompress( &jpeg->cinfo );
 
 	g_signal_connect( out, "close", 
@@ -954,6 +962,9 @@ read_jpeg_image( ReadJpeg *jpeg, VipsImage *out )
 		jpeg, NULL ) ||
 		vips_sequential( t[0], &t[1], 
 			"tile_height", 8,
+			"access", jpeg->readbehind ? 
+				VIPS_ACCESS_SEQUENTIAL : 
+				VIPS_ACCESS_SEQUENTIAL_UNBUFFERED,
 			NULL ) ||
 		vips_image_write( t[1], out ) )
 		return( -1 );
@@ -965,12 +976,12 @@ read_jpeg_image( ReadJpeg *jpeg, VipsImage *out )
  */
 int
 vips__jpeg_read_file( const char *filename, VipsImage *out, 
-	gboolean header_only, int shrink, gboolean fail )
+	gboolean header_only, int shrink, gboolean fail, gboolean readbehind )
 {
 	ReadJpeg *jpeg;
 	int result;
 
-	if( !(jpeg = readjpeg_new( out, shrink, fail )) )
+	if( !(jpeg = readjpeg_new( out, shrink, fail, readbehind )) )
 		return( -1 );
 
 	/* Here for longjmp() from vips__new_error_exit() during startup.
@@ -1184,12 +1195,12 @@ readjpeg_buffer (ReadJpeg *jpeg, void *buf, size_t len)
 
 int
 vips__jpeg_read_buffer( void *buf, size_t len, VipsImage *out, 
-	gboolean header_only, int shrink, int fail )
+	gboolean header_only, int shrink, int fail, gboolean readbehind )
 {
 	ReadJpeg *jpeg;
 	int result;
 
-	if( !(jpeg = readjpeg_new( out, shrink, fail )) )
+	if( !(jpeg = readjpeg_new( out, shrink, fail, readbehind )) )
 		return( -1 );
 
 	if( setjmp( jpeg->eman.jmp ) ) {

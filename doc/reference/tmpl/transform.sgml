@@ -42,13 +42,28 @@ transform
 @ic: 
 @id: 
 
-<!-- ##### FUNCTION vips__affine ##### -->
+<!-- ##### FUNCTION vips__transform_init ##### -->
 <para>
 
 </para>
 
-@in: 
-@out: 
+@trn: 
+
+
+<!-- ##### FUNCTION vips__transform_calc_inverse ##### -->
+<para>
+
+</para>
+
+@trn: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__transform_isidentity ##### -->
+<para>
+
+</para>
+
 @trn: 
 @Returns: 
 
@@ -64,16 +79,27 @@ transform
 @Returns: 
 
 
-<!-- ##### FUNCTION vips__transform_calc_inverse ##### -->
+<!-- ##### FUNCTION vips__transform_print ##### -->
 <para>
 
 </para>
 
 @trn: 
-@Returns: 
 
 
 <!-- ##### FUNCTION vips__transform_forward_point ##### -->
+<para>
+
+</para>
+
+@trn: 
+@x: 
+@y: 
+@ox: 
+@oy: 
+
+
+<!-- ##### FUNCTION vips__transform_invert_point ##### -->
 <para>
 
 </para>
@@ -95,26 +121,6 @@ transform
 @out: 
 
 
-<!-- ##### FUNCTION vips__transform_init ##### -->
-<para>
-
-</para>
-
-@trn: 
-
-
-<!-- ##### FUNCTION vips__transform_invert_point ##### -->
-<para>
-
-</para>
-
-@trn: 
-@x: 
-@y: 
-@ox: 
-@oy: 
-
-
 <!-- ##### FUNCTION vips__transform_invert_rect ##### -->
 <para>
 
@@ -125,28 +131,22 @@ transform
 @out: 
 
 
-<!-- ##### FUNCTION vips__transform_isidentity ##### -->
-<para>
-
-</para>
-
-@trn: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips__transform_print ##### -->
-<para>
-
-</para>
-
-@trn: 
-
-
 <!-- ##### FUNCTION vips__transform_set_area ##### -->
 <para>
 
 </para>
 
 @Param1: 
+
+
+<!-- ##### FUNCTION vips__affine ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@trn: 
+@Returns: 
 
 

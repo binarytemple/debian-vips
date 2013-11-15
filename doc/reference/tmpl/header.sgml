@@ -29,7 +29,7 @@ header
 
 
 
-<!-- ##### MACRO VIPS_META_ICC_NAME ##### -->
+<!-- ##### MACRO VIPS_META_XMP_NAME ##### -->
 <para>
 
 </para>
@@ -43,14 +43,7 @@ header
 
 
 
-<!-- ##### MACRO VIPS_META_LOADER ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO VIPS_META_RESOLUTION_UNIT ##### -->
+<!-- ##### MACRO VIPS_META_ICC_NAME ##### -->
 <para>
 
 </para>
@@ -64,23 +57,18 @@ header
 
 
 
-<!-- ##### MACRO VIPS_META_XMP_NAME ##### -->
+<!-- ##### MACRO VIPS_META_RESOLUTION_UNIT ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### USER_FUNCTION VipsImageMapFn ##### -->
+<!-- ##### MACRO VIPS_META_LOADER ##### -->
 <para>
 
 </para>
 
-@image: 
-@field: 
-@value: 
-@a: 
-@Returns: 
 
 
 <!-- ##### FUNCTION vips_format_sizeof ##### -->
@@ -92,14 +80,164 @@ header
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_copy_fields ##### -->
+<!-- ##### FUNCTION vips_image_get_width ##### -->
 <para>
 
 </para>
 
-@out: 
-@in: 
+@image: 
 @Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_height ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_bands ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_format ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_coding ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_interpretation ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_guess_interpretation ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_xres ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_yres ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_xoffset ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_yoffset ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_filename ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_mode ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_scale ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_offset ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_get_data ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_init_fields ##### -->
+<para>
+
+</para>
+
+@image: 
+@xsize: 
+@ysize: 
+@bands: 
+@format: 
+@coding: 
+@interpretation: 
+@xres: 
+@yres: 
 
 
 <!-- ##### FUNCTION vips_image_copy_fields_array ##### -->
@@ -123,6 +261,26 @@ header
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_image_copy_fields ##### -->
+<para>
+
+</para>
+
+@out: 
+@in: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_set ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@value: 
+
+
 <!-- ##### FUNCTION vips_image_get ##### -->
 <para>
 
@@ -134,144 +292,7 @@ header
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_get_area ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@data: 
-@Returns: 
-
-
 <!-- ##### FUNCTION vips_image_get_as_string ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@out: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_bands ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_blob ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@data: 
-@length: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_coding ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_data ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_double ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@out: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_filename ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_format ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_height ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_history ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_int ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@out: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_interpretation ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_mode ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_get_string ##### -->
 <para>
 
 </para>
@@ -292,57 +313,156 @@ header
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_get_width ##### -->
+<!-- ##### FUNCTION vips_image_remove ##### -->
 <para>
 
 </para>
 
 @image: 
+@field: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_get_xoffset ##### -->
+<!-- ##### USER_FUNCTION VipsImageMapFn ##### -->
 <para>
 
 </para>
 
 @image: 
+@field: 
+@value: 
+@a: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_get_xres ##### -->
+<!-- ##### FUNCTION vips_image_map ##### -->
 <para>
 
 </para>
 
 @image: 
+@fn: 
+@a: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_get_yoffset ##### -->
+<!-- ##### FUNCTION vips_image_set_area ##### -->
 <para>
 
 </para>
 
 @image: 
+@field: 
+@free_fn: 
+@data: 
+
+
+<!-- ##### FUNCTION vips_image_get_area ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@data: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_get_yres ##### -->
+<!-- ##### FUNCTION vips_image_set_blob ##### -->
 <para>
 
 </para>
 
 @image: 
+@field: 
+@free_fn: 
+@data: 
+@length: 
+
+
+<!-- ##### FUNCTION vips_image_get_blob ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@data: 
+@length: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_guess_interpretation ##### -->
+<!-- ##### FUNCTION vips_image_get_int ##### -->
 <para>
 
 </para>
 
 @image: 
+@field: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_set_int ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@i: 
+
+
+<!-- ##### FUNCTION vips_image_get_double ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_set_double ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@d: 
+
+
+<!-- ##### FUNCTION vips_image_get_string ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_set_string ##### -->
+<para>
+
+</para>
+
+@image: 
+@field: 
+@str: 
+
+
+<!-- ##### FUNCTION vips_image_history_printf ##### -->
+<para>
+
+</para>
+
+@image: 
+@format: 
+@...: 
 @Returns: 
 
 
@@ -358,114 +478,12 @@ header
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_history_printf ##### -->
+<!-- ##### FUNCTION vips_image_get_history ##### -->
 <para>
 
 </para>
 
 @image: 
-@format: 
-@...: 
 @Returns: 
-
-
-<!-- ##### FUNCTION vips_image_init_fields ##### -->
-<para>
-
-</para>
-
-@image: 
-@xsize: 
-@ysize: 
-@bands: 
-@format: 
-@coding: 
-@interpretation: 
-@xres: 
-@yres: 
-
-
-<!-- ##### FUNCTION vips_image_map ##### -->
-<para>
-
-</para>
-
-@image: 
-@fn: 
-@a: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_remove ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_set ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@value: 
-
-
-<!-- ##### FUNCTION vips_image_set_area ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@free_fn: 
-@data: 
-
-
-<!-- ##### FUNCTION vips_image_set_blob ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@free_fn: 
-@data: 
-@length: 
-
-
-<!-- ##### FUNCTION vips_image_set_double ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@d: 
-
-
-<!-- ##### FUNCTION vips_image_set_int ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@i: 
-
-
-<!-- ##### FUNCTION vips_image_set_string ##### -->
-<para>
-
-</para>
-
-@image: 
-@field: 
-@str: 
 
 

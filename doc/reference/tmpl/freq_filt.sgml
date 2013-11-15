@@ -47,63 +47,6 @@ freq_filt
 @VIPS_MASK_GAUSS_BANDREJECT: 
 @VIPS_MASK_FRACTAL_FLT: 
 
-<!-- ##### FUNCTION im_create_fmask ##### -->
-<para>
-
-</para>
-
-@out: 
-@xsize: 
-@ysize: 
-@flag: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_disp_ps ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_flt_image_freq ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@flag: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_fractsurf ##### -->
-<para>
-
-</para>
-
-@out: 
-@size: 
-@frd: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_freqflt ##### -->
-<para>
-
-</para>
-
-@in: 
-@mask: 
-@out: 
-@Returns: 
-
-
 <!-- ##### FUNCTION im_fwfft ##### -->
 <para>
 
@@ -134,6 +77,27 @@ freq_filt
 @Returns: 
 
 
+<!-- ##### FUNCTION im_freqflt ##### -->
+<para>
+
+</para>
+
+@in: 
+@mask: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_disp_ps ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
 <!-- ##### FUNCTION im_phasecor_fft ##### -->
 <para>
 
@@ -142,6 +106,42 @@ freq_filt
 @in1: 
 @in2: 
 @out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_flt_image_freq ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@flag: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_create_fmask ##### -->
+<para>
+
+</para>
+
+@out: 
+@xsize: 
+@ysize: 
+@flag: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_fractsurf ##### -->
+<para>
+
+</para>
+
+@out: 
+@size: 
+@frd: 
 @Returns: 
 
 

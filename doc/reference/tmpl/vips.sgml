@@ -22,6 +22,24 @@ vips
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### FUNCTION vips_get_argv0 ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_init ##### -->
+<para>
+
+</para>
+
+@argv0: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_check_init ##### -->
 <para>
 
@@ -30,13 +48,12 @@ vips
 @void: 
 
 
-<!-- ##### FUNCTION vips_get_argv0 ##### -->
+<!-- ##### FUNCTION vips_shutdown ##### -->
 <para>
 
 </para>
 
 @void: 
-@Returns: 
 
 
 <!-- ##### FUNCTION vips_get_option_group ##### -->
@@ -48,13 +65,21 @@ vips
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_guess_libdir ##### -->
+<!-- ##### FUNCTION vips_version_string ##### -->
 <para>
 
 </para>
 
-@argv0: 
-@env_name: 
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_version ##### -->
+<para>
+
+</para>
+
+@flag: 
 @Returns: 
 
 
@@ -68,38 +93,13 @@ vips
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_init ##### -->
+<!-- ##### FUNCTION vips_guess_libdir ##### -->
 <para>
 
 </para>
 
 @argv0: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_shutdown ##### -->
-<para>
-
-</para>
-
-@void: 
-
-
-<!-- ##### FUNCTION vips_version ##### -->
-<para>
-
-</para>
-
-@flag: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_version_string ##### -->
-<para>
-
-</para>
-
-@void: 
+@env_name: 
 @Returns: 
 
 

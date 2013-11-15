@@ -49,9 +49,7 @@
 #include <vips/vips.h>
 
 #ifdef HAVE_JPEG
-#include <jpeglib.h>
-#include <jerror.h>
-#include "../foreign/jpeg.h"
+#include "../foreign/vipsjpeg.h"
 #endif /*HAVE_JPEG*/
 
 static int
@@ -115,7 +113,7 @@ jpeg2vips( const char *name, IMAGE *out, gboolean header_only )
 
 #ifdef HAVE_JPEG
 	if( vips__jpeg_read_file( filename, out, 
-		header_only, shrink, fail_on_warn ) )
+		header_only, shrink, fail_on_warn, TRUE ) )
 		return( -1 );
 #else
 	vips_error( "im_jpeg2vips", 

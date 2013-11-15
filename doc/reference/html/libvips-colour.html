@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>colour</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="ch02.html" title="VIPS operation API by section">
 <link rel="prev" href="libvips-arithmetic.html" title="arithmetic">
 <link rel="next" href="libvips-conversion.html" title="conversion">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,6 +44,21 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
+#define             <a class="link" href="libvips-colour.html#VIPS-D93-X0:CAPS" title="VIPS_D93_X0">VIPS_D93_X0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D93-Y0:CAPS" title="VIPS_D93_Y0">VIPS_D93_Y0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D93-Z0:CAPS" title="VIPS_D93_Z0">VIPS_D93_Z0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D75-X0:CAPS" title="VIPS_D75_X0">VIPS_D75_X0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D75-Y0:CAPS" title="VIPS_D75_Y0">VIPS_D75_Y0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D75-Z0:CAPS" title="VIPS_D75_Z0">VIPS_D75_Z0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D65-X0:CAPS" title="VIPS_D65_X0">VIPS_D65_X0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D65-Y0:CAPS" title="VIPS_D65_Y0">VIPS_D65_Y0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D65-Z0:CAPS" title="VIPS_D65_Z0">VIPS_D65_Z0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D55-X0:CAPS" title="VIPS_D55_X0">VIPS_D55_X0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D55-Y0:CAPS" title="VIPS_D55_Y0">VIPS_D55_Y0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D55-Z0:CAPS" title="VIPS_D55_Z0">VIPS_D55_Z0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D50-X0:CAPS" title="VIPS_D50_X0">VIPS_D50_X0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D50-Y0:CAPS" title="VIPS_D50_Y0">VIPS_D50_Y0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D50-Z0:CAPS" title="VIPS_D50_Z0">VIPS_D50_Z0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-A-X0:CAPS" title="VIPS_A_X0">VIPS_A_X0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-A-Y0:CAPS" title="VIPS_A_Y0">VIPS_A_Y0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-A-Z0:CAPS" title="VIPS_A_Z0">VIPS_A_Z0</a>
@@ -53,35 +68,37 @@ Stable, unless otherwise indicated
 #define             <a class="link" href="libvips-colour.html#VIPS-C-X0:CAPS" title="VIPS_C_X0">VIPS_C_X0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-C-Y0:CAPS" title="VIPS_C_Y0">VIPS_C_Y0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-C-Z0:CAPS" title="VIPS_C_Z0">VIPS_C_Z0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D3250-X0:CAPS" title="VIPS_D3250_X0">VIPS_D3250_X0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D3250-Y0:CAPS" title="VIPS_D3250_Y0">VIPS_D3250_Y0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D3250-Z0:CAPS" title="VIPS_D3250_Z0">VIPS_D3250_Z0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D50-X0:CAPS" title="VIPS_D50_X0">VIPS_D50_X0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D50-Y0:CAPS" title="VIPS_D50_Y0">VIPS_D50_Y0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D50-Z0:CAPS" title="VIPS_D50_Z0">VIPS_D50_Z0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D55-X0:CAPS" title="VIPS_D55_X0">VIPS_D55_X0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D55-Y0:CAPS" title="VIPS_D55_Y0">VIPS_D55_Y0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D55-Z0:CAPS" title="VIPS_D55_Z0">VIPS_D55_Z0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D65-X0:CAPS" title="VIPS_D65_X0">VIPS_D65_X0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D65-Y0:CAPS" title="VIPS_D65_Y0">VIPS_D65_Y0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D65-Z0:CAPS" title="VIPS_D65_Z0">VIPS_D65_Z0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D75-X0:CAPS" title="VIPS_D75_X0">VIPS_D75_X0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D75-Y0:CAPS" title="VIPS_D75_Y0">VIPS_D75_Y0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D75-Z0:CAPS" title="VIPS_D75_Z0">VIPS_D75_Z0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D93-X0:CAPS" title="VIPS_D93_X0">VIPS_D93_X0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D93-Y0:CAPS" title="VIPS_D93_Y0">VIPS_D93_Y0</a>
-#define             <a class="link" href="libvips-colour.html#VIPS-D93-Z0:CAPS" title="VIPS_D93_Z0">VIPS_D93_Z0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-E-X0:CAPS" title="VIPS_E_X0">VIPS_E_X0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-E-Y0:CAPS" title="VIPS_E_Y0">VIPS_E_Y0</a>
 #define             <a class="link" href="libvips-colour.html#VIPS-E-Z0:CAPS" title="VIPS_E_Z0">VIPS_E_Z0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D3250-X0:CAPS" title="VIPS_D3250_X0">VIPS_D3250_X0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D3250-Y0:CAPS" title="VIPS_D3250_Y0">VIPS_D3250_Y0</a>
+#define             <a class="link" href="libvips-colour.html#VIPS-D3250-Z0:CAPS" title="VIPS_D3250_Z0">VIPS_D3250_Z0</a>
 enum                <a class="link" href="libvips-colour.html#VipsIntent" title="enum VipsIntent">VipsIntent</a>;
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-CMC2LCh" title="vips_CMC2LCh ()">vips_CMC2LCh</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<span class="returnvalue">gboolean</span>            <a class="link" href="libvips-colour.html#vips-colourspace-issupported" title="vips_colourspace_issupported ()">vips_colourspace_issupported</a>        (<em class="parameter"><code>const <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-colourspace" title="vips_colourspace ()">vips_colourspace</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsInterpretation" title="enum VipsInterpretation"><span class="type">VipsInterpretation</span></a> space</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabQ2sRGB" title="vips_LabQ2sRGB ()">vips_LabQ2sRGB</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-CMC2XYZ" title="vips_CMC2XYZ ()">vips_CMC2XYZ</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()">vips_rad2float</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LCh2CMC" title="vips_LCh2CMC ()">vips_LCh2CMC</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-float2rad" title="vips_float2rad ()">vips_float2rad</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabS2LabQ" title="vips_LabS2LabQ ()">vips_LabS2LabQ</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabQ2LabS" title="vips_LabQ2LabS ()">vips_LabQ2LabS</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabQ2Lab" title="vips_LabQ2Lab ()">vips_LabQ2Lab</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Lab2LabQ" title="vips_Lab2LabQ ()">vips_Lab2LabQ</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LCh2Lab" title="vips_LCh2Lab ()">vips_LCh2Lab</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
@@ -90,95 +107,112 @@ enum                <a class="link" href="libvips-colour.html#VipsIntent" title=
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Lab2LCh" title="vips_Lab2LCh ()">vips_Lab2LCh</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Lab2LabQ" title="vips_Lab2LabQ ()">vips_Lab2LabQ</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Yxy2Lab" title="vips_Yxy2Lab ()">vips_Yxy2Lab</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Lab2LabS" title="vips_Lab2LabS ()">vips_Lab2LabS</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-CMC2XYZ" title="vips_CMC2XYZ ()">vips_CMC2XYZ</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Lab2XYZ" title="vips_Lab2XYZ ()">vips_Lab2XYZ</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabQ2Lab" title="vips_LabQ2Lab ()">vips_LabQ2Lab</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabQ2LabS" title="vips_LabQ2LabS ()">vips_LabQ2LabS</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabQ2sRGB" title="vips_LabQ2sRGB ()">vips_LabQ2sRGB</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabS2Lab" title="vips_LabS2Lab ()">vips_LabS2Lab</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabS2LabQ" title="vips_LabS2LabQ ()">vips_LabS2LabQ</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-XYZ2Lab" title="vips_XYZ2Lab ()">vips_XYZ2Lab</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-XYZ2Yxy" title="vips_XYZ2Yxy ()">vips_XYZ2Yxy</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-XYZ2scRGB" title="vips_XYZ2scRGB ()">vips_XYZ2scRGB</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Yxy2Lab" title="vips_Yxy2Lab ()">vips_Yxy2Lab</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-scRGB2sRGB" title="vips_scRGB2sRGB ()">vips_scRGB2sRGB</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-sRGB2scRGB" title="vips_sRGB2scRGB ()">vips_sRGB2scRGB</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-scRGB2XYZ" title="vips_scRGB2XYZ ()">vips_scRGB2XYZ</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LCh2CMC" title="vips_LCh2CMC ()">vips_LCh2CMC</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-CMC2LCh" title="vips_CMC2LCh ()">vips_CMC2LCh</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-XYZ2Yxy" title="vips_XYZ2Yxy ()">vips_XYZ2Yxy</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Yxy2XYZ" title="vips_Yxy2XYZ ()">vips_Yxy2XYZ</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-C2Ccmc" title="vips_col_C2Ccmc ()">vips_col_C2Ccmc</a>                     (<em class="parameter"><code><span class="type">float</span> C</code></em>);
-<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Ccmc2C" title="vips_col_Ccmc2C ()">vips_col_Ccmc2C</a>                     (<em class="parameter"><code><span class="type">float</span> Ccmc</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libvips-colour.html#vips-col-Ch2ab" title="vips_col_Ch2ab ()">vips_col_Ch2ab</a>                      (<em class="parameter"><code><span class="type">float</span> C</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *b</code></em>);
-<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Ch2hcmc" title="vips_col_Ch2hcmc ()">vips_col_Ch2hcmc</a>                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>);
-<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Chcmc2h" title="vips_col_Chcmc2h ()">vips_col_Chcmc2h</a>                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> hcmc</code></em>);
-<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-L2Lcmc" title="vips_col_L2Lcmc ()">vips_col_L2Lcmc</a>                     (<em class="parameter"><code><span class="type">float</span> L</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-LabS2Lab" title="vips_LabS2Lab ()">vips_LabS2Lab</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-Lab2LabS" title="vips_Lab2LabS ()">vips_Lab2LabS</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-present" title="vips_icc_present ()">vips_icc_present</a>                    (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-transform" title="vips_icc_transform ()">vips_icc_transform</a>                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *output_profile</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-import" title="vips_icc_import ()">vips_icc_import</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-export" title="vips_icc_export ()">vips_icc_export</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-ac2rc" title="vips_icc_ac2rc ()">vips_icc_ac2rc</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *profile_filename</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-dE76" title="vips_dE76 ()">vips_dE76</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-dE00" title="vips_dE00 ()">vips_dE00</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-dECMC" title="vips_dECMC ()">vips_dECMC</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libvips-colour.html#vips-col-Lab2XYZ" title="vips_col_Lab2XYZ ()">vips_col_Lab2XYZ</a>                    (<em class="parameter"><code><span class="type">float</span> L</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> a</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> b</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *X</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *Y</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *Z</code></em>);
-<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Lcmc2L" title="vips_col_Lcmc2L ()">vips_col_Lcmc2L</a>                     (<em class="parameter"><code><span class="type">float</span> Lcmc</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libvips-colour.html#vips-col-XYZ2Lab" title="vips_col_XYZ2Lab ()">vips_col_XYZ2Lab</a>                    (<em class="parameter"><code><span class="type">float</span> X</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> Y</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> Z</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *L</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *b</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-XYZ2scRGB" title="vips_col_XYZ2scRGB ()">vips_col_XYZ2scRGB</a>                  (<em class="parameter"><code><span class="type">float</span> X</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> Y</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> Z</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);
+<span class="returnvalue">double</span>              <a class="link" href="libvips-colour.html#vips-col-ab2h" title="vips_col_ab2h ()">vips_col_ab2h</a>                       (<em class="parameter"><code><span class="type">double</span> a</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> b</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libvips-colour.html#vips-col-ab2Ch" title="vips_col_ab2Ch ()">vips_col_ab2Ch</a>                      (<em class="parameter"><code><span class="type">float</span> a</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> b</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *C</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *h</code></em>);
-<span class="returnvalue">double</span>              <a class="link" href="libvips-colour.html#vips-col-ab2h" title="vips_col_ab2h ()">vips_col_ab2h</a>                       (<em class="parameter"><code><span class="type">double</span> a</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> b</code></em>);
-<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-dE00" title="vips_col_dE00 ()">vips_col_dE00</a>                       (<em class="parameter"><code><span class="type">float</span> L1</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> a1</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> b1</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> L2</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> a2</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> b2</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libvips-colour.html#vips-col-Ch2ab" title="vips_col_Ch2ab ()">vips_col_Ch2ab</a>                      (<em class="parameter"><code><span class="type">float</span> C</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *b</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-L2Lcmc" title="vips_col_L2Lcmc ()">vips_col_L2Lcmc</a>                     (<em class="parameter"><code><span class="type">float</span> L</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-C2Ccmc" title="vips_col_C2Ccmc ()">vips_col_C2Ccmc</a>                     (<em class="parameter"><code><span class="type">float</span> C</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Ch2hcmc" title="vips_col_Ch2hcmc ()">vips_col_Ch2hcmc</a>                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libvips-colour.html#vips-col-make-tables-CMC" title="vips_col_make_tables_CMC ()">vips_col_make_tables_CMC</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-sRGB2scRGB-16" title="vips_col_sRGB2scRGB_16 ()">vips_col_sRGB2scRGB_16</a>              (<em class="parameter"><code><span class="type">int</span> r</code></em>,
+<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Lcmc2L" title="vips_col_Lcmc2L ()">vips_col_Lcmc2L</a>                     (<em class="parameter"><code><span class="type">float</span> Lcmc</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Ccmc2C" title="vips_col_Ccmc2C ()">vips_col_Ccmc2C</a>                     (<em class="parameter"><code><span class="type">float</span> Ccmc</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-Chcmc2h" title="vips_col_Chcmc2h ()">vips_col_Chcmc2h</a>                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> hcmc</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-sRGB2scRGB-8" title="vips_col_sRGB2scRGB_8 ()">vips_col_sRGB2scRGB_8</a>               (<em class="parameter"><code><span class="type">int</span> r</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> g</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> b</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *R</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *G</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *B</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-sRGB2scRGB-8" title="vips_col_sRGB2scRGB_8 ()">vips_col_sRGB2scRGB_8</a>               (<em class="parameter"><code><span class="type">int</span> r</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-sRGB2scRGB-16" title="vips_col_sRGB2scRGB_16 ()">vips_col_sRGB2scRGB_16</a>              (<em class="parameter"><code><span class="type">int</span> r</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> g</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> b</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *R</code></em>,
@@ -190,13 +224,12 @@ enum                <a class="link" href="libvips-colour.html#VipsIntent" title=
                                                          <em class="parameter"><code><span class="type">float</span> *X</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *Y</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *Z</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-scRGB2sRGB-16" title="vips_col_scRGB2sRGB_16 ()">vips_col_scRGB2sRGB_16</a>              (<em class="parameter"><code><span class="type">float</span> R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *r</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *g</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *or_ret</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-XYZ2scRGB" title="vips_col_XYZ2scRGB ()">vips_col_XYZ2scRGB</a>                  (<em class="parameter"><code><span class="type">float</span> X</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> Z</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-scRGB2sRGB-8" title="vips_col_scRGB2sRGB_8 ()">vips_col_scRGB2sRGB_8</a>               (<em class="parameter"><code><span class="type">float</span> R</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> G</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> B</code></em>,
@@ -204,58 +237,25 @@ enum                <a class="link" href="libvips-colour.html#VipsIntent" title=
                                                          <em class="parameter"><code><span class="type">int</span> *g</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> *b</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> *or_ret</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-colourspace" title="vips_colourspace ()">vips_colourspace</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsInterpretation" title="enum VipsInterpretation"><span class="type">VipsInterpretation</span></a> space</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libvips-colour.html#vips-colourspace-issupported" title="vips_colourspace_issupported ()">vips_colourspace_issupported</a>        (<em class="parameter"><code>const <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-dE00" title="vips_dE00 ()">vips_dE00</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-dE76" title="vips_dE76 ()">vips_dE76</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-dECMC" title="vips_dECMC ()">vips_dECMC</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-float2rad" title="vips_float2rad ()">vips_float2rad</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-ac2rc" title="vips_icc_ac2rc ()">vips_icc_ac2rc</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *profile_filename</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-export" title="vips_icc_export ()">vips_icc_export</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-import" title="vips_icc_import ()">vips_icc_import</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-present" title="vips_icc_present ()">vips_icc_present</a>                    (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-icc-transform" title="vips_icc_transform ()">vips_icc_transform</a>                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *output_profile</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-col-scRGB2sRGB-16" title="vips_col_scRGB2sRGB_16 ()">vips_col_scRGB2sRGB_16</a>              (<em class="parameter"><code><span class="type">float</span> R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *r</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *g</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *or_ret</code></em>);
 <span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-pythagoras" title="vips_pythagoras ()">vips_pythagoras</a>                     (<em class="parameter"><code><span class="type">float</span> L1</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> a1</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> b1</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> L2</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> a2</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> b2</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()">vips_rad2float</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-sRGB2scRGB" title="vips_sRGB2scRGB ()">vips_sRGB2scRGB</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-scRGB2XYZ" title="vips_scRGB2XYZ ()">vips_scRGB2XYZ</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-colour.html#vips-scRGB2sRGB" title="vips_scRGB2sRGB ()">vips_scRGB2sRGB</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="libvips-colour.html#vips-col-dE00" title="vips_col_dE00 ()">vips_col_dE00</a>                       (<em class="parameter"><code><span class="type">float</span> L1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> a1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> b1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> L2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> a2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> b2</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -295,7 +295,7 @@ The colour spaces supported by VIPS are:
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
 <p>
       <span class="emphasis"><em><code class="code">LabQ</code></em></span>
@@ -403,6 +403,131 @@ The colour spaces supported by VIPS are:
 <div class="refsect1">
 <a name="libvips-colour.details"></a><h2>Details</h2>
 <div class="refsect2">
+<a name="VIPS-D93-X0:CAPS"></a><h3>VIPS_D93_X0</h3>
+<pre class="programlisting">#define VIPS_D93_X0 (89.7400)
+</pre>
+<p>
+Areas under curves for D93, 2 degree observer.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D93-Y0:CAPS"></a><h3>VIPS_D93_Y0</h3>
+<pre class="programlisting">#define VIPS_D93_Y0 (100.0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D93-Z0:CAPS"></a><h3>VIPS_D93_Z0</h3>
+<pre class="programlisting">#define VIPS_D93_Z0 (130.7700)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D75-X0:CAPS"></a><h3>VIPS_D75_X0</h3>
+<pre class="programlisting">#define VIPS_D75_X0 (94.9682)
+</pre>
+<p>
+Areas under curves for D75, 2 degree observer.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D75-Y0:CAPS"></a><h3>VIPS_D75_Y0</h3>
+<pre class="programlisting">#define VIPS_D75_Y0 (100.0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D75-Z0:CAPS"></a><h3>VIPS_D75_Z0</h3>
+<pre class="programlisting">#define VIPS_D75_Z0 (122.5710)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D65-X0:CAPS"></a><h3>VIPS_D65_X0</h3>
+<pre class="programlisting">#define VIPS_D65_X0 (95.0470)
+</pre>
+<p>
+Areas under curves for D65, 2 degree observer.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D65-Y0:CAPS"></a><h3>VIPS_D65_Y0</h3>
+<pre class="programlisting">#define VIPS_D65_Y0 (100.0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D65-Z0:CAPS"></a><h3>VIPS_D65_Z0</h3>
+<pre class="programlisting">#define VIPS_D65_Z0 (108.8827)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D55-X0:CAPS"></a><h3>VIPS_D55_X0</h3>
+<pre class="programlisting">#define VIPS_D55_X0 (95.6831)
+</pre>
+<p>
+Areas under curves for D55, 2 degree observer.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D55-Y0:CAPS"></a><h3>VIPS_D55_Y0</h3>
+<pre class="programlisting">#define VIPS_D55_Y0 (100.0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D55-Z0:CAPS"></a><h3>VIPS_D55_Z0</h3>
+<pre class="programlisting">#define VIPS_D55_Z0 (92.0871)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D50-X0:CAPS"></a><h3>VIPS_D50_X0</h3>
+<pre class="programlisting">#define VIPS_D50_X0 (96.4250)
+</pre>
+<p>
+Areas under curves for D50, 2 degree observer.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D50-Y0:CAPS"></a><h3>VIPS_D50_Y0</h3>
+<pre class="programlisting">#define VIPS_D50_Y0 (100.0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D50-Z0:CAPS"></a><h3>VIPS_D50_Z0</h3>
+<pre class="programlisting">#define VIPS_D50_Z0 (82.4680)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="VIPS-A-X0:CAPS"></a><h3>VIPS_A_X0</h3>
 <pre class="programlisting">#define VIPS_A_X0 (109.8503)
 </pre>
@@ -478,156 +603,6 @@ Areas under curves for illuminant C (6774K), 2 degree observer.
 </div>
 <hr>
 <div class="refsect2">
-<a name="VIPS-D3250-X0:CAPS"></a><h3>VIPS_D3250_X0</h3>
-<pre class="programlisting">#define VIPS_D3250_X0 (105.6590)
-</pre>
-<p>
-Areas under curves for black body at 3250K, 2 degree observer.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D3250-Y0:CAPS"></a><h3>VIPS_D3250_Y0</h3>
-<pre class="programlisting">#define VIPS_D3250_Y0 (100.0)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D3250-Z0:CAPS"></a><h3>VIPS_D3250_Z0</h3>
-<pre class="programlisting">#define VIPS_D3250_Z0 (45.8501)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D50-X0:CAPS"></a><h3>VIPS_D50_X0</h3>
-<pre class="programlisting">#define VIPS_D50_X0 (96.4250)
-</pre>
-<p>
-Areas under curves for D50, 2 degree observer.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D50-Y0:CAPS"></a><h3>VIPS_D50_Y0</h3>
-<pre class="programlisting">#define VIPS_D50_Y0 (100.0)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D50-Z0:CAPS"></a><h3>VIPS_D50_Z0</h3>
-<pre class="programlisting">#define VIPS_D50_Z0 (82.4680)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D55-X0:CAPS"></a><h3>VIPS_D55_X0</h3>
-<pre class="programlisting">#define VIPS_D55_X0 (95.6831)
-</pre>
-<p>
-Areas under curves for D55, 2 degree observer.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D55-Y0:CAPS"></a><h3>VIPS_D55_Y0</h3>
-<pre class="programlisting">#define VIPS_D55_Y0 (100.0)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D55-Z0:CAPS"></a><h3>VIPS_D55_Z0</h3>
-<pre class="programlisting">#define VIPS_D55_Z0 (92.0871)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D65-X0:CAPS"></a><h3>VIPS_D65_X0</h3>
-<pre class="programlisting">#define VIPS_D65_X0 (95.0470)
-</pre>
-<p>
-Areas under curves for D65, 2 degree observer.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D65-Y0:CAPS"></a><h3>VIPS_D65_Y0</h3>
-<pre class="programlisting">#define VIPS_D65_Y0 (100.0)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D65-Z0:CAPS"></a><h3>VIPS_D65_Z0</h3>
-<pre class="programlisting">#define VIPS_D65_Z0 (108.8827)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D75-X0:CAPS"></a><h3>VIPS_D75_X0</h3>
-<pre class="programlisting">#define VIPS_D75_X0 (94.9682)
-</pre>
-<p>
-Areas under curves for D75, 2 degree observer.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D75-Y0:CAPS"></a><h3>VIPS_D75_Y0</h3>
-<pre class="programlisting">#define VIPS_D75_Y0 (100.0)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D75-Z0:CAPS"></a><h3>VIPS_D75_Z0</h3>
-<pre class="programlisting">#define VIPS_D75_Z0 (122.5710)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D93-X0:CAPS"></a><h3>VIPS_D93_X0</h3>
-<pre class="programlisting">#define VIPS_D93_X0 (89.7400)
-</pre>
-<p>
-Areas under curves for D93, 2 degree observer.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D93-Y0:CAPS"></a><h3>VIPS_D93_Y0</h3>
-<pre class="programlisting">#define VIPS_D93_Y0 (100.0)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="VIPS-D93-Z0:CAPS"></a><h3>VIPS_D93_Z0</h3>
-<pre class="programlisting">#define VIPS_D93_Z0 (130.7700)
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="VIPS-E-X0:CAPS"></a><h3>VIPS_E_X0</h3>
 <pre class="programlisting">#define VIPS_E_X0 (100.0)
 </pre>
@@ -653,6 +628,31 @@ Areas under curves for equal energy illuminant E.
 </div>
 <hr>
 <div class="refsect2">
+<a name="VIPS-D3250-X0:CAPS"></a><h3>VIPS_D3250_X0</h3>
+<pre class="programlisting">#define VIPS_D3250_X0 (105.6590)
+</pre>
+<p>
+Areas under curves for black body at 3250K, 2 degree observer.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D3250-Y0:CAPS"></a><h3>VIPS_D3250_Y0</h3>
+<pre class="programlisting">#define VIPS_D3250_Y0 (100.0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VIPS-D3250-Z0:CAPS"></a><h3>VIPS_D3250_Z0</h3>
+<pre class="programlisting">#define VIPS_D3250_Z0 (45.8501)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="VipsIntent"></a><h3>enum VipsIntent</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_INTENT_PERCEPTUAL = 0,
@@ -666,8 +666,11 @@ The rendering intent. <a class="link" href="libvips-colour.html#VIPS-INTENT-ABSO
 scientific work, <a class="link" href="libvips-colour.html#VIPS-INTENT-RELATIVE:CAPS"><span class="type">VIPS_INTENT_RELATIVE</span></a> is usually best for 
 accurate communication with other imaging libraries.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="VIPS-INTENT-PERCEPTUAL:CAPS"></a><span class="term"><code class="literal">VIPS_INTENT_PERCEPTUAL</code></span></p></td>
@@ -694,51 +697,50 @@ accurate communication with other imaging libraries.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-CMC2LCh"></a><h3>vips_CMC2LCh ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_CMC2LCh                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
+<a name="vips-colourspace-issupported"></a><h3>vips_colourspace_issupported ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_colourspace_issupported        (<em class="parameter"><code>const <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);</pre>
 <p>
-Turn LCh to CMC.
+Test if <em class="parameter"><code>image</code></em> is in a colourspace that <a class="link" href="libvips-colour.html#vips-colourspace" title="vips_colourspace ()"><code class="function">vips_colourspace()</code></a> can process. For
+example, <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-RGB:CAPS"><span class="type">VIPS_INTERPRETATION_RGB</span></a> images are not in a well-defined 
+colourspace, but <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-sRGB"><span class="type">VIPS_INTERPRETATION_sRGB</span></a> ones are.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
+<col>
+</colgroup>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
+<td>
+<code class="literal">TRUE</code> if <em class="parameter"><code>image</code></em> is in a supported colourspace.</td>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-CMC2XYZ"></a><h3>vips_CMC2XYZ ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_CMC2XYZ                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<a name="vips-colourspace"></a><h3>vips_colourspace ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_colourspace                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsInterpretation" title="enum VipsInterpretation"><span class="type">VipsInterpretation</span></a> space</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
+This operation looks at the interpretation field of <em class="parameter"><code>in</code></em> and runs
+a set of colourspace conversion functions to move it to <em class="parameter"><code>space</code></em>. 
 </p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-LCh2CMC"></a><h3>vips_LCh2CMC ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LCh2CMC                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Turn LCh to CMC.
+For example, given an image tagged as <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-YXY:CAPS"><span class="type">VIPS_INTERPRETATION_YXY</span></a>, running
+<a class="link" href="libvips-colour.html#vips-colourspace" title="vips_colourspace ()"><code class="function">vips_colourspace()</code></a> with <em class="parameter"><code>space</code></em> set to <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-LAB:CAPS"><span class="type">VIPS_INTERPRETATION_LAB</span></a> will
+convert with <a class="link" href="libvips-colour.html#vips-Yxy2XYZ" title="vips_Yxy2XYZ ()"><code class="function">vips_Yxy2XYZ()</code></a> and <a class="link" href="libvips-colour.html#vips-XYZ2Lab" title="vips_XYZ2Lab ()"><code class="function">vips_XYZ2Lab()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-colourspace-issupported" title="vips_colourspace_issupported ()"><code class="function">vips_colourspace_issupported()</code></a>,
+<a class="link" href="libvips-header.html#vips-image-guess-interpretation" title="vips_image_guess_interpretation ()"><code class="function">vips_image_guess_interpretation()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -749,212 +751,8 @@ Turn LCh to CMC.
 <td>output image</td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-LCh2Lab"></a><h3>vips_LCh2Lab ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LCh2Lab                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Turn LCh to Lab.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-Lab2LCh"></a><h3>vips_Lab2LCh ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2LCh                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Turn Lab to LCh.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-Lab2LabQ"></a><h3>vips_Lab2LabQ ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2LabQ                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Convert a Lab three-band float image to LabQ (<span class="type">IM_CODING_LABQ</span>).
-</p>
-<p>
-See also: <code class="function">im_LabQ2Lab()</code>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-Lab2LabS"></a><h3>vips_Lab2LabS ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2LabS                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Turn Lab to LabS, signed 16-bit int fixed point.
-</p>
-<p>
-See also: <code class="function">im_LabQ2Lab()</code>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-Lab2XYZ"></a><h3>vips_Lab2XYZ ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2XYZ                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-optional arguments:
-</p>
-<p>
-<em class="parameter"><code>temp</code></em>: colour temperature
-</p>
-<p>
-Turn Lab to XYZ. The colour temperature defaults to D65, but can be 
-specified with <em class="parameter"><code>temp</code></em>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-LabQ2Lab"></a><h3>vips_LabQ2Lab ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LabQ2Lab                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Unpack a LabQ (<span class="type">IM_CODING_LABQ</span>) image to a three-band float image.
-</p>
-<p>
-See also: <code class="function">im_LabQ2Lab()</code>, <code class="function">im_LabQ2LabS()</code>, <code class="function">im_rad2float()</code>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-LabQ2LabS"></a><h3>vips_LabQ2LabS ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LabQ2LabS                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Unpack a LabQ (<span class="type">IM_CODING_LABQ</span>) image to a three-band short image.
-</p>
-<p>
-See also: <code class="function">im_LabS2LabQ()</code>, <code class="function">im_LabQ2LabS()</code>, <code class="function">im_rad2float()</code>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
+<td><p><span class="term"><em class="parameter"><code>space</code></em> :</span></p></td>
+<td>convert to this colour space</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -975,8 +773,11 @@ Unpack a LabQ (<a class="link" href="VipsImage.html#VIPS-CODING-LABQ:CAPS"><span
 <p>
 See also: <a class="link" href="libvips-colour.html#vips-LabS2LabQ" title="vips_LabS2LabQ ()"><code class="function">vips_LabS2LabQ()</code></a>, <a class="link" href="libvips-colour.html#vips-LabQ2sRGB" title="vips_LabQ2sRGB ()"><code class="function">vips_LabQ2sRGB()</code></a>, <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()"><code class="function">vips_rad2float()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -995,18 +796,54 @@ See also: <a class="link" href="libvips-colour.html#vips-LabS2LabQ" title="vips_
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-LabS2Lab"></a><h3>vips_LabS2Lab ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LabS2Lab                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<a name="vips-rad2float"></a><h3>vips_rad2float ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_rad2float                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Convert a LabS three-band signed short image to a three-band float image.
+Unpack a RAD (<span class="type">IM_CODING_RAD</span>) image to a three-band float image.
 </p>
 <p>
-See also: <a class="link" href="libvips-colour.html#vips-LabS2Lab" title="vips_LabS2Lab ()"><code class="function">vips_LabS2Lab()</code></a>.
+See also: <a class="link" href="libvips-colour.html#vips-float2rad" title="vips_float2rad ()"><code class="function">vips_float2rad()</code></a>, <a class="link" href="libvips-colour.html#vips-LabQ2LabS" title="vips_LabQ2LabS ()"><code class="function">vips_LabQ2LabS()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-float2rad"></a><h3>vips_float2rad ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_float2rad                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Convert a three-band float image to Radiance 32-bit packed format.
+</p>
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()"><code class="function">vips_rad2float()</code></a>, <span class="type">VipsFormatRad</span>, <a class="link" href="libvips-colour.html#vips-LabQ2Lab" title="vips_LabQ2Lab ()"><code class="function">vips_LabQ2Lab()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -1035,8 +872,11 @@ Convert a LabS three-band signed short image to LabQ
 <p>
 See also: <a class="link" href="libvips-colour.html#vips-LabQ2LabS" title="vips_LabQ2LabS ()"><code class="function">vips_LabQ2LabS()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -1055,22 +895,21 @@ See also: <a class="link" href="libvips-colour.html#vips-LabQ2LabS" title="vips_
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-XYZ2Lab"></a><h3>vips_XYZ2Lab ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_XYZ2Lab                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<a name="vips-LabQ2LabS"></a><h3>vips_LabQ2LabS ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LabQ2LabS                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-optional arguments:
+Unpack a LabQ (<span class="type">IM_CODING_LABQ</span>) image to a three-band short image.
 </p>
 <p>
-<em class="parameter"><code>temp</code></em>: colour temperature
+See also: <a class="link" href="libvips-colour.html#vips-LabS2LabQ" title="vips_LabS2LabQ ()"><code class="function">vips_LabS2LabQ()</code></a>, <a class="link" href="libvips-colour.html#vips-LabQ2LabS" title="vips_LabQ2LabS ()"><code class="function">vips_LabQ2LabS()</code></a>, <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()"><code class="function">vips_rad2float()</code></a>.
 </p>
-<p>
-Turn XYZ to Lab, optionally specifying the colour temperature. <em class="parameter"><code>temp</code></em>
-defaults to D65.
-</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -1089,15 +928,84 @@ defaults to D65.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-XYZ2Yxy"></a><h3>vips_XYZ2Yxy ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_XYZ2Yxy                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<a name="vips-LabQ2Lab"></a><h3>vips_LabQ2Lab ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LabQ2Lab                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Turn XYZ to Yxy.
+Unpack a LabQ (<span class="type">IM_CODING_LABQ</span>) image to a three-band float image.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-LabQ2Lab" title="vips_LabQ2Lab ()"><code class="function">vips_LabQ2Lab()</code></a>, <a class="link" href="libvips-colour.html#vips-LabQ2LabS" title="vips_LabQ2LabS ()"><code class="function">vips_LabQ2LabS()</code></a>, <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()"><code class="function">vips_rad2float()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-Lab2LabQ"></a><h3>vips_Lab2LabQ ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2LabQ                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Convert a Lab three-band float image to LabQ (<span class="type">IM_CODING_LABQ</span>).
+</p>
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-LabQ2Lab" title="vips_LabQ2Lab ()"><code class="function">vips_LabQ2Lab()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-LCh2Lab"></a><h3>vips_LCh2Lab ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LCh2Lab                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn LCh to Lab.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -1116,15 +1024,18 @@ Turn XYZ to Yxy.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-XYZ2scRGB"></a><h3>vips_XYZ2scRGB ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_XYZ2scRGB                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<a name="vips-Lab2LCh"></a><h3>vips_Lab2LCh ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2LCh                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Turn XYZ to Yxy.
+Turn Lab to LCh.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -1152,15 +1063,34 @@ Turn XYZ to Yxy.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-Yxy2XYZ"></a><h3>vips_Yxy2XYZ ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Yxy2XYZ                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<a name="vips-CMC2XYZ"></a><h3>vips_CMC2XYZ ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_CMC2XYZ                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Turn XYZ to Yxy.
 </p>
-<div class="variablelist"><table border="0">
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-Lab2XYZ"></a><h3>vips_Lab2XYZ ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2XYZ                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+optional arguments:
+</p>
+<p>
+<em class="parameter"><code>temp</code></em>: colour temperature
+</p>
+<p>
+Turn Lab to XYZ. The colour temperature defaults to D65, but can be 
+specified with <em class="parameter"><code>temp</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -1179,454 +1109,25 @@ Turn XYZ to Yxy.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-col-C2Ccmc"></a><h3>vips_col_C2Ccmc ()</h3>
-<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_C2Ccmc                     (<em class="parameter"><code><span class="type">float</span> C</code></em>);</pre>
-<p>
-Calculate Ccmc from C.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
-<td>Chroma</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>Ccmc.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-Ccmc2C"></a><h3>vips_col_Ccmc2C ()</h3>
-<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Ccmc2C                     (<em class="parameter"><code><span class="type">float</span> Ccmc</code></em>);</pre>
-<p>
-Calculate C from Ccmc using a table. 
-Call <a class="link" href="libvips-colour.html#vips-col-make-tables-CMC" title="vips_col_make_tables_CMC ()"><code class="function">vips_col_make_tables_CMC()</code></a> at
-least once before using this function.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Ccmc</code></em> :</span></p></td>
-<td>Ccmc</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>C.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-Ch2ab"></a><h3>vips_col_Ch2ab ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_Ch2ab                      (<em class="parameter"><code><span class="type">float</span> C</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *b</code></em>);</pre>
-<p>
-Calculate ab from Ch, h in degrees.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
-<td>Chroma</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
-<td>Hue angle (degrees)</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>return CIE a* value</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>return CIE b* value</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-Ch2hcmc"></a><h3>vips_col_Ch2hcmc ()</h3>
-<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Ch2hcmc                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>);</pre>
-<p>
-Calculate hcmc from C and h.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
-<td>Chroma</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
-<td>Hue (degrees)</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>hcmc.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-Chcmc2h"></a><h3>vips_col_Chcmc2h ()</h3>
-<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Chcmc2h                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> hcmc</code></em>);</pre>
-<p>
-Calculate h from C and hcmc, using a table.
-Call <a class="link" href="libvips-colour.html#vips-col-make-tables-CMC" title="vips_col_make_tables_CMC ()"><code class="function">vips_col_make_tables_CMC()</code></a> at
-least once before using this function.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
-<td>Chroma</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>hcmc</code></em> :</span></p></td>
-<td>Hue cmc (degrees)</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>h.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-L2Lcmc"></a><h3>vips_col_L2Lcmc ()</h3>
-<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_L2Lcmc                     (<em class="parameter"><code><span class="type">float</span> L</code></em>);</pre>
-<p>
-Calculate Lcmc from L.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>L</code></em> :</span></p></td>
-<td>CIE L*</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>Lcmc</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-Lab2XYZ"></a><h3>vips_col_Lab2XYZ ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_Lab2XYZ                    (<em class="parameter"><code><span class="type">float</span> L</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> a</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> b</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *X</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *Y</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *Z</code></em>);</pre>
-<p>
-Calculate XYZ from Lab, D65.
-</p>
-<p>
-See also: <a class="link" href="libvips-colour.html#vips-Lab2XYZ" title="vips_Lab2XYZ ()"><code class="function">vips_Lab2XYZ()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>L</code></em> :</span></p></td>
-<td>Input CIE Lab value</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>Input CIE Lab value</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>Input CIE Lab value</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>X</code></em> :</span></p></td>
-<td>Return CIE XYZ colour</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Y</code></em> :</span></p></td>
-<td>Return CIE XYZ colour</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Z</code></em> :</span></p></td>
-<td>Return CIE XYZ colour</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-Lcmc2L"></a><h3>vips_col_Lcmc2L ()</h3>
-<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Lcmc2L                     (<em class="parameter"><code><span class="type">float</span> Lcmc</code></em>);</pre>
-<p>
-Calculate L from Lcmc using a table. Call <a class="link" href="libvips-colour.html#vips-col-make-tables-CMC" title="vips_col_make_tables_CMC ()"><code class="function">vips_col_make_tables_CMC()</code></a> at
-least once before using this function.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Lcmc</code></em> :</span></p></td>
-<td>L cmc</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>L*</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-XYZ2Lab"></a><h3>vips_col_XYZ2Lab ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_XYZ2Lab                    (<em class="parameter"><code><span class="type">float</span> X</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> Y</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> Z</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *L</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *b</code></em>);</pre>
-<p>
-Calculate XYZ from Lab, D65.
-</p>
-<p>
-See also: <a class="link" href="libvips-colour.html#vips-XYZ2Lab" title="vips_XYZ2Lab ()"><code class="function">vips_XYZ2Lab()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>X</code></em> :</span></p></td>
-<td>Input CIE XYZ colour</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Y</code></em> :</span></p></td>
-<td>Input CIE XYZ colour</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Z</code></em> :</span></p></td>
-<td>Input CIE XYZ colour</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>L</code></em> :</span></p></td>
-<td>Return CIE Lab value</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>Return CIE Lab value</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>Return CIE Lab value</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-XYZ2scRGB"></a><h3>vips_col_XYZ2scRGB ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_XYZ2scRGB                  (<em class="parameter"><code><span class="type">float</span> X</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> Y</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> Z</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-ab2Ch"></a><h3>vips_col_ab2Ch ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_ab2Ch                      (<em class="parameter"><code><span class="type">float</span> a</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> b</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *C</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *h</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-ab2h"></a><h3>vips_col_ab2h ()</h3>
-<pre class="programlisting"><span class="returnvalue">double</span>              vips_col_ab2h                       (<em class="parameter"><code><span class="type">double</span> a</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> b</code></em>);</pre>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>CIE a</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>CIE b</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>Hue (degrees)</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-dE00"></a><h3>vips_col_dE00 ()</h3>
-<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_dE00                       (<em class="parameter"><code><span class="type">float</span> L1</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> a1</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> b1</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> L2</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> a2</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> b2</code></em>);</pre>
-<p>
-CIEDE2000, from: 
-</p>
-<p>
-Luo, Cui, Rigg, "The Development of the CIE 2000 Colour-Difference 
-Formula: CIEDE2000", COLOR research and application, pp 340
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>L1</code></em> :</span></p></td>
-<td>Input coordinate 1</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a1</code></em> :</span></p></td>
-<td>Input coordinate 1</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b1</code></em> :</span></p></td>
-<td>Input coordinate 1</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>L2</code></em> :</span></p></td>
-<td>Input coordinate 2</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a2</code></em> :</span></p></td>
-<td>Input coordinate 2</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b2</code></em> :</span></p></td>
-<td>Input coordinate 2</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>CIE dE2000 colour difference.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-make-tables-CMC"></a><h3>vips_col_make_tables_CMC ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_make_tables_CMC            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>
-Make the lookup tables for cmc.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-sRGB2scRGB-16"></a><h3>vips_col_sRGB2scRGB_16 ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_sRGB2scRGB_16              (<em class="parameter"><code><span class="type">int</span> r</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> g</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> b</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-sRGB2scRGB-8"></a><h3>vips_col_sRGB2scRGB_8 ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_sRGB2scRGB_8               (<em class="parameter"><code><span class="type">int</span> r</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> g</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> b</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-scRGB2XYZ"></a><h3>vips_col_scRGB2XYZ ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_scRGB2XYZ                  (<em class="parameter"><code><span class="type">float</span> R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *X</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *Y</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> *Z</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-scRGB2sRGB-16"></a><h3>vips_col_scRGB2sRGB_16 ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_scRGB2sRGB_16              (<em class="parameter"><code><span class="type">float</span> R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *r</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *g</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *or_ret</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-col-scRGB2sRGB-8"></a><h3>vips_col_scRGB2sRGB_8 ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_scRGB2sRGB_8               (<em class="parameter"><code><span class="type">float</span> R</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *r</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *g</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *or_ret</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-colourspace"></a><h3>vips_colourspace ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_colourspace                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+<a name="vips-XYZ2Lab"></a><h3>vips_XYZ2Lab ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_XYZ2Lab                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsInterpretation" title="enum VipsInterpretation"><span class="type">VipsInterpretation</span></a> space</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-This operation looks at the interpretation field of <em class="parameter"><code>in</code></em> and runs
-a set of colourspace conversion functions to move it to <em class="parameter"><code>space</code></em>. 
+optional arguments:
 </p>
 <p>
-For example, given an image tagged as <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-YXY:CAPS"><span class="type">VIPS_INTERPRETATION_YXY</span></a>, running
-<a class="link" href="libvips-colour.html#vips-colourspace" title="vips_colourspace ()"><code class="function">vips_colourspace()</code></a> with <em class="parameter"><code>space</code></em> set to <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-LAB:CAPS"><span class="type">VIPS_INTERPRETATION_LAB</span></a> will
-convert with <a class="link" href="libvips-colour.html#vips-Yxy2XYZ" title="vips_Yxy2XYZ ()"><code class="function">vips_Yxy2XYZ()</code></a> and <a class="link" href="libvips-colour.html#vips-XYZ2Lab" title="vips_XYZ2Lab ()"><code class="function">vips_XYZ2Lab()</code></a>.
+<em class="parameter"><code>temp</code></em>: colour temperature
 </p>
 <p>
-See also: <a class="link" href="libvips-colour.html#vips-colourspace-issupported" title="vips_colourspace_issupported ()"><code class="function">vips_colourspace_issupported()</code></a>,
-<a class="link" href="libvips-header.html#vips-image-guess-interpretation" title="vips_image_guess_interpretation ()"><code class="function">vips_image_guess_interpretation()</code></a>.
+Turn XYZ to Lab, optionally specifying the colour temperature. <em class="parameter"><code>temp</code></em>
+defaults to D65.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -1637,8 +1138,73 @@ See also: <a class="link" href="libvips-colour.html#vips-colourspace-issupported
 <td>output image</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>space</code></em> :</span></p></td>
-<td>convert to this colour space</td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-XYZ2scRGB"></a><h3>vips_XYZ2scRGB ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_XYZ2scRGB                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn XYZ to Yxy.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-scRGB2sRGB"></a><h3>vips_scRGB2sRGB ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_scRGB2sRGB                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>depth</code></em>: depth of output image in bits
+</p>
+<p>
+Convert an scRGB image to sRGB. Set <em class="parameter"><code>depth</code></em> to 16 to get 16-bit output.
+</p>
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-LabS2LabQ" title="vips_LabS2LabQ ()"><code class="function">vips_LabS2LabQ()</code></a>, <a class="link" href="libvips-colour.html#vips-scRGB2sRGB" title="vips_scRGB2sRGB ()"><code class="function">vips_scRGB2sRGB()</code></a>, <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()"><code class="function">vips_rad2float()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -1649,34 +1215,474 @@ See also: <a class="link" href="libvips-colour.html#vips-colourspace-issupported
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-colourspace-issupported"></a><h3>vips_colourspace_issupported ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            vips_colourspace_issupported        (<em class="parameter"><code>const <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);</pre>
+<a name="vips-sRGB2scRGB"></a><h3>vips_sRGB2scRGB ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sRGB2scRGB                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Test if <em class="parameter"><code>image</code></em> is in a colourspace that <a class="link" href="libvips-colour.html#vips-colourspace" title="vips_colourspace ()"><code class="function">vips_colourspace()</code></a> can process. For
-example, <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-RGB:CAPS"><span class="type">VIPS_INTERPRETATION_RGB</span></a> images are not in a well-defined 
-colourspace, but <a class="link" href="VipsImage.html#VIPS-INTERPRETATION-sRGB"><span class="type">VIPS_INTERPRETATION_sRGB</span></a> ones are.
+Convert an sRGB image to scRGB.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+See also: <code class="function">vips_sRGB2XYZ()</code>, <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()"><code class="function">vips_rad2float()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-scRGB2XYZ"></a><h3>vips_scRGB2XYZ ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_scRGB2XYZ                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn XYZ to scRGB.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-LCh2CMC"></a><h3>vips_LCh2CMC ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LCh2CMC                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn LCh to CMC.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-CMC2LCh"></a><h3>vips_CMC2LCh ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_CMC2LCh                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn LCh to CMC.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-XYZ2Yxy"></a><h3>vips_XYZ2Yxy ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_XYZ2Yxy                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn XYZ to Yxy.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-Yxy2XYZ"></a><h3>vips_Yxy2XYZ ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Yxy2XYZ                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn XYZ to Yxy.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-LabS2Lab"></a><h3>vips_LabS2Lab ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_LabS2Lab                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Convert a LabS three-band signed short image to a three-band float image.
+</p>
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-LabS2Lab" title="vips_LabS2Lab ()"><code class="function">vips_LabS2Lab()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-Lab2LabS"></a><h3>vips_Lab2LabS ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_Lab2LabS                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Turn Lab to LabS, signed 16-bit int fixed point.
+</p>
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-LabQ2Lab" title="vips_LabQ2Lab ()"><code class="function">vips_LabQ2Lab()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-icc-present"></a><h3>vips_icc_present ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_present                    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+VIPS can optionally be built without the ICC library. Use this function to
+test for its availability.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<code class="literal">TRUE</code> if <em class="parameter"><code>image</code></em> is in a supported colourspace.</td>
+<td>non-zero if the ICC library is present.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-dE00"></a><h3>vips_dE00 ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_dE00                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+<a name="vips-icc-transform"></a><h3>vips_icc_transform ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_transform                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *output_profile</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>input_profile</code></em>: get the input profile from here
+<em class="parameter"><code>intent</code></em>: transform with this intent
+<em class="parameter"><code>depth</code></em>: depth of output image in bits
+<em class="parameter"><code>embedded</code></em>: use profile embedded in input image
+</p>
+<p>
+Transform an image with a pair of ICC profiles. The input image is moved to
+profile-connection space with the input profile and then to the output
+space with the output profile.
+</p>
+<p>
+If <em class="parameter"><code>embedded</code></em> is set, the input profile is taken from the input image
+metadata, if present. If there is no embedded profile,
+<em class="parameter"><code>input_profile</code></em> is used as a fall-back.
+</p>
+<p>
+If <em class="parameter"><code>embedded</code></em> is not set, the input profile is taken from
+<em class="parameter"><code>input_profile</code></em>. If <em class="parameter"><code>input_profile</code></em> is not supplied, the
+metadata profile, if any, is used as a fall-back. 
+</p>
+<p>
+Use <a class="link" href="libvips-colour.html#vips-icc-import" title="vips_icc_import ()"><code class="function">vips_icc_import()</code></a> and <a class="link" href="libvips-colour.html#vips-icc-export" title="vips_icc_export ()"><code class="function">vips_icc_export()</code></a> to do either the first or 
+second half of this operation in isolation.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>output_profile</code></em> :</span></p></td>
+<td>get the output profile from here</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-icc-import"></a><h3>vips_icc_import ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_import                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>input_profile</code></em>: get the input profile from here
+<em class="parameter"><code>intent</code></em>: transform with this intent
+<em class="parameter"><code>embedded</code></em>: use profile embedded in input image
+</p>
+<p>
+Import an image from device space to D65 LAB with an ICC profile. 
+</p>
+<p>
+If <em class="parameter"><code>embedded</code></em> is set, the input profile is taken from the input image
+metadata. If there is no embedded profile,
+<em class="parameter"><code>input_profile_filename</code></em> is used as a fall-back.
+</p>
+<p>
+If <em class="parameter"><code>embedded</code></em> is not set, the input profile is taken from
+<em class="parameter"><code>input_profile</code></em>. If <em class="parameter"><code>input_profile</code></em> is not supplied, the
+metadata profile, if any, is used as a fall-back.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-icc-export"></a><h3>vips_icc_export ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_export                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>intent</code></em>: transform with this intent
+<em class="parameter"><code>depth</code></em>: depth of output image in bits
+<em class="parameter"><code>output_profile</code></em>: get the output profile from here
+</p>
+<p>
+Export an image from D65 LAB to device space with an ICC profile. 
+If <em class="parameter"><code>output_profile</code></em> is not set, use the embedded profile, if any. 
+If <em class="parameter"><code>output_profile</code></em> is set, export with that and attach it to the output 
+image.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-icc-ac2rc"></a><h3>vips_icc_ac2rc ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_ac2rc                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *profile_filename</code></em>);</pre>
+<p>
+Transform an image from absolute to relative colorimetry using the
+MediaWhitePoint stored in the ICC profile.
+</p>
+<p>
+See also: <a class="link" href="libvips-colour.html#vips-icc-transform" title="vips_icc_transform ()"><code class="function">vips_icc_transform()</code></a>, <a class="link" href="libvips-colour.html#vips-icc-import" title="vips_icc_import ()"><code class="function">vips_icc_import()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>profile_filename</code></em> :</span></p></td>
+<td>use this profile</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-dE76"></a><h3>vips_dE76 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_dE76                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Calculate dE 00.
+Calculate dE 76.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
@@ -1699,16 +1705,19 @@ Calculate dE 00.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-dE76"></a><h3>vips_dE76 ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_dE76                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
+<a name="vips-dE00"></a><h3>vips_dE00 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_dE00                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *left</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *right</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Calculate dE 76.
+Calculate dE 00.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
@@ -1748,8 +1757,11 @@ appropriately, and call this function.
 <p>
 See also: <a class="link" href="libvips-colour.html#vips-colourspace" title="vips_colourspace ()"><code class="function">vips_colourspace()</code></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
@@ -1772,224 +1784,411 @@ See also: <a class="link" href="libvips-colour.html#vips-colourspace" title="vip
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-float2rad"></a><h3>vips_float2rad ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_float2rad                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
+<a name="vips-col-Lab2XYZ"></a><h3>vips_col_Lab2XYZ ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_Lab2XYZ                    (<em class="parameter"><code><span class="type">float</span> L</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> a</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> b</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *X</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *Z</code></em>);</pre>
 <p>
-Convert a three-band float image to Radiance 32-bit packed format.
+Calculate XYZ from Lab, D65.
 </p>
 <p>
-See also: <code class="function">im_rad2float()</code>, <span class="type">VipsFormatRad</span>, <code class="function">im_LabQ2Lab()</code>.
+See also: <a class="link" href="libvips-colour.html#vips-Lab2XYZ" title="vips_Lab2XYZ ()"><code class="function">vips_Lab2XYZ()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
+<td><p><span class="term"><em class="parameter"><code>L</code></em> :</span></p></td>
+<td>Input CIE Lab value</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>Input CIE Lab value</td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>Input CIE Lab value</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>X</code></em> :</span></p></td>
+<td>Return CIE XYZ colour</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Y</code></em> :</span></p></td>
+<td>Return CIE XYZ colour</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Z</code></em> :</span></p></td>
+<td>Return CIE XYZ colour</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-icc-ac2rc"></a><h3>vips_icc_ac2rc ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_ac2rc                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *profile_filename</code></em>);</pre>
+<a name="vips-col-XYZ2Lab"></a><h3>vips_col_XYZ2Lab ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_XYZ2Lab                    (<em class="parameter"><code><span class="type">float</span> X</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> Z</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *L</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *b</code></em>);</pre>
 <p>
-Transform an image from absolute to relative colorimetry using the
-MediaWhitePoint stored in the ICC profile.
+Calculate XYZ from Lab, D65.
 </p>
 <p>
-See also: <code class="function">im_icc_transform()</code>, <code class="function">im_icc_import()</code>.
+See also: <a class="link" href="libvips-colour.html#vips-XYZ2Lab" title="vips_XYZ2Lab ()"><code class="function">vips_XYZ2Lab()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
+<td><p><span class="term"><em class="parameter"><code>X</code></em> :</span></p></td>
+<td>Input CIE XYZ colour</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
+<td><p><span class="term"><em class="parameter"><code>Y</code></em> :</span></p></td>
+<td>Input CIE XYZ colour</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>profile_filename</code></em> :</span></p></td>
-<td>use this profile</td>
+<td><p><span class="term"><em class="parameter"><code>Z</code></em> :</span></p></td>
+<td>Input CIE XYZ colour</td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
+<td><p><span class="term"><em class="parameter"><code>L</code></em> :</span></p></td>
+<td>Return CIE Lab value</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>Return CIE Lab value</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>Return CIE Lab value</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-icc-export"></a><h3>vips_icc_export ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_export                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Optional arguments:
-</p>
-<p>
-<em class="parameter"><code>intent</code></em>: transform with this intent
-<em class="parameter"><code>depth</code></em>: depth of output image in bits
-<em class="parameter"><code>output_profile</code></em>: get the output profile from here
-</p>
-<p>
-Export an image from D65 LAB to device space with an ICC profile. 
-If <em class="parameter"><code>output_profile</code></em> is not set, use the embedded profile, if any. 
-If <em class="parameter"><code>output_profile</code></em> is set, export with that and attach it to the output 
-image.
-</p>
-<div class="variablelist"><table border="0">
+<a name="vips-col-ab2h"></a><h3>vips_col_ab2h ()</h3>
+<pre class="programlisting"><span class="returnvalue">double</span>              vips_col_ab2h                       (<em class="parameter"><code><span class="type">double</span> a</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> b</code></em>);</pre>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>CIE a</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>CIE b</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
+<td>Hue (degrees)</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-icc-import"></a><h3>vips_icc_import ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_import                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
+<a name="vips-col-ab2Ch"></a><h3>vips_col_ab2Ch ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_ab2Ch                      (<em class="parameter"><code><span class="type">float</span> a</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> b</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *C</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *h</code></em>);</pre>
 <p>
-Optional arguments:
 </p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-Ch2ab"></a><h3>vips_col_Ch2ab ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_Ch2ab                      (<em class="parameter"><code><span class="type">float</span> C</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *b</code></em>);</pre>
 <p>
-<em class="parameter"><code>input_profile</code></em>: get the input profile from here
-<em class="parameter"><code>intent</code></em>: transform with this intent
-<em class="parameter"><code>embedded</code></em>: use profile embedded in input image
+Calculate ab from Ch, h in degrees.
 </p>
-<p>
-Import an image from device space to D65 LAB with an ICC profile. 
-</p>
-<p>
-If <em class="parameter"><code>embedded</code></em> is set, the input profile is taken from the input image
-metadata. If there is no embedded profile,
-<em class="parameter"><code>input_profile_filename</code></em> is used as a fall-back.
-</p>
-<p>
-If <em class="parameter"><code>embedded</code></em> is not set, the input profile is taken from
-<em class="parameter"><code>input_profile</code></em>. If <em class="parameter"><code>input_profile</code></em> is not supplied, the
-metadata profile, if any, is used as a fall-back.
-</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
+<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
+<td>Chroma</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
+<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
+<td>Hue angle (degrees)</td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>return CIE a* value</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>return CIE b* value</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-icc-present"></a><h3>vips_icc_present ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_present                    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<a name="vips-col-L2Lcmc"></a><h3>vips_col_L2Lcmc ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_L2Lcmc                     (<em class="parameter"><code><span class="type">float</span> L</code></em>);</pre>
 <p>
-VIPS can optionally be built without the ICC library. Use this function to
-test for its availability.
+Calculate Lcmc from L.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
-<tbody><tr>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>L</code></em> :</span></p></td>
+<td>CIE L*</td>
+</tr>
+<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>non-zero if the ICC library is present.</td>
-</tr></tbody>
+<td>Lcmc</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-icc-transform"></a><h3>vips_icc_transform ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_icc_transform                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *output_profile</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
+<a name="vips-col-C2Ccmc"></a><h3>vips_col_C2Ccmc ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_C2Ccmc                     (<em class="parameter"><code><span class="type">float</span> C</code></em>);</pre>
 <p>
-Optional arguments:
+Calculate Ccmc from C.
 </p>
-<p>
-<em class="parameter"><code>input_profile</code></em>: get the input profile from here
-<em class="parameter"><code>intent</code></em>: transform with this intent
-<em class="parameter"><code>depth</code></em>: depth of output image in bits
-<em class="parameter"><code>embedded</code></em>: use profile embedded in input image
-</p>
-<p>
-Transform an image with a pair of ICC profiles. The input image is moved to
-profile-connection space with the input profile and then to the output
-space with the output profile.
-</p>
-<p>
-If <em class="parameter"><code>embedded</code></em> is set, the input profile is taken from the input image
-metadata, if present. If there is no embedded profile,
-<em class="parameter"><code>input_profile_filename</code></em> is used as a fall-back.
-</p>
-<p>
-If <em class="parameter"><code>embedded</code></em> is not set, the input profile is taken from
-<em class="parameter"><code>input_profile_filename</code></em>. If <em class="parameter"><code>input_profile_filename</code></em> is not supplied, the
-metadata profile, if any, is used as a fall-back. 
-</p>
-<p>
-Use <a class="link" href="libvips-colour.html#vips-icc-import" title="vips_icc_import ()"><code class="function">vips_icc_import()</code></a> and <a class="link" href="libvips-colour.html#vips-icc-export" title="vips_icc_export ()"><code class="function">vips_icc_export()</code></a> to do either the first or 
-second half of this operation in isolation.
-</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>output_profile</code></em> :</span></p></td>
-<td>get the output profile from here</td>
+<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
+<td>Chroma</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
+<td>Ccmc.</td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-Ch2hcmc"></a><h3>vips_col_Ch2hcmc ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Ch2hcmc                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> h</code></em>);</pre>
+<p>
+Calculate hcmc from C and h.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
+<td>Chroma</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
+<td>Hue (degrees)</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>hcmc.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-make-tables-CMC"></a><h3>vips_col_make_tables_CMC ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_col_make_tables_CMC            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Make the lookup tables for cmc.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-Lcmc2L"></a><h3>vips_col_Lcmc2L ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Lcmc2L                     (<em class="parameter"><code><span class="type">float</span> Lcmc</code></em>);</pre>
+<p>
+Calculate L from Lcmc using a table. Call <a class="link" href="libvips-colour.html#vips-col-make-tables-CMC" title="vips_col_make_tables_CMC ()"><code class="function">vips_col_make_tables_CMC()</code></a> at
+least once before using this function.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Lcmc</code></em> :</span></p></td>
+<td>L cmc</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>L*</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-Ccmc2C"></a><h3>vips_col_Ccmc2C ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Ccmc2C                     (<em class="parameter"><code><span class="type">float</span> Ccmc</code></em>);</pre>
+<p>
+Calculate C from Ccmc using a table. 
+Call <a class="link" href="libvips-colour.html#vips-col-make-tables-CMC" title="vips_col_make_tables_CMC ()"><code class="function">vips_col_make_tables_CMC()</code></a> at
+least once before using this function.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Ccmc</code></em> :</span></p></td>
+<td>Ccmc</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>C.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-Chcmc2h"></a><h3>vips_col_Chcmc2h ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_Chcmc2h                    (<em class="parameter"><code><span class="type">float</span> C</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> hcmc</code></em>);</pre>
+<p>
+Calculate h from C and hcmc, using a table.
+Call <a class="link" href="libvips-colour.html#vips-col-make-tables-CMC" title="vips_col_make_tables_CMC ()"><code class="function">vips_col_make_tables_CMC()</code></a> at
+least once before using this function.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>C</code></em> :</span></p></td>
+<td>Chroma</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>hcmc</code></em> :</span></p></td>
+<td>Hue cmc (degrees)</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>h.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-sRGB2scRGB-8"></a><h3>vips_col_sRGB2scRGB_8 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_sRGB2scRGB_8               (<em class="parameter"><code><span class="type">int</span> r</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> g</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> b</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-sRGB2scRGB-16"></a><h3>vips_col_sRGB2scRGB_16 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_sRGB2scRGB_16              (<em class="parameter"><code><span class="type">int</span> r</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> g</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> b</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-scRGB2XYZ"></a><h3>vips_col_scRGB2XYZ ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_scRGB2XYZ                  (<em class="parameter"><code><span class="type">float</span> R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *X</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *Z</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-XYZ2scRGB"></a><h3>vips_col_XYZ2scRGB ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_XYZ2scRGB                  (<em class="parameter"><code><span class="type">float</span> X</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> Z</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> *B</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-scRGB2sRGB-8"></a><h3>vips_col_scRGB2sRGB_8 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_scRGB2sRGB_8               (<em class="parameter"><code><span class="type">float</span> R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *r</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *g</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *or_ret</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-col-scRGB2sRGB-16"></a><h3>vips_col_scRGB2sRGB_16 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_col_scRGB2sRGB_16              (<em class="parameter"><code><span class="type">float</span> R</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> G</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> B</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *r</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *g</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *or_ret</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2003,8 +2202,11 @@ second half of this operation in isolation.
 <p>
 Pythagorean distance between two points in colour space. Lab/XYZ/CMC etc.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>L1</code></em> :</span></p></td>
@@ -2035,123 +2237,53 @@ Pythagorean distance between two points in colour space. Lab/XYZ/CMC etc.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-rad2float"></a><h3>vips_rad2float ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_rad2float                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
+<a name="vips-col-dE00"></a><h3>vips_col_dE00 ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               vips_col_dE00                       (<em class="parameter"><code><span class="type">float</span> L1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> a1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> b1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> L2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> a2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> b2</code></em>);</pre>
 <p>
-Unpack a RAD (<span class="type">IM_CODING_RAD</span>) image to a three-band float image.
+CIEDE2000, from: 
 </p>
 <p>
-See also: <code class="function">im_rad2float()</code>, <code class="function">im_LabQ2LabS()</code>.
+Luo, Cui, Rigg, "The Development of the CIE 2000 Colour-Difference 
+Formula: CIEDE2000", COLOR research and application, pp 340
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
+<td><p><span class="term"><em class="parameter"><code>L1</code></em> :</span></p></td>
+<td>Input coordinate 1</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
+<td><p><span class="term"><em class="parameter"><code>a1</code></em> :</span></p></td>
+<td>Input coordinate 1</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b1</code></em> :</span></p></td>
+<td>Input coordinate 1</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>L2</code></em> :</span></p></td>
+<td>Input coordinate 2</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a2</code></em> :</span></p></td>
+<td>Input coordinate 2</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b2</code></em> :</span></p></td>
+<td>Input coordinate 2</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-sRGB2scRGB"></a><h3>vips_sRGB2scRGB ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sRGB2scRGB                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Convert an sRGB image to scRGB.
-</p>
-<p>
-See also: <code class="function">vips_sRGB2XYZ()</code>, <a class="link" href="libvips-colour.html#vips-rad2float" title="vips_rad2float ()"><code class="function">vips_rad2float()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-scRGB2XYZ"></a><h3>vips_scRGB2XYZ ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_scRGB2XYZ                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Turn XYZ to scRGB.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-scRGB2sRGB"></a><h3>vips_scRGB2sRGB ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_scRGB2sRGB                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Optional arguments:
-</p>
-<p>
-<em class="parameter"><code>depth</code></em>: depth of output image in bits
-</p>
-<p>
-Convert an scRGB image to sRGB. Set <em class="parameter"><code>depth</code></em> to 16 to get 16-bit output.
-</p>
-<p>
-See also: <code class="function">im_LabS2LabQ()</code>, <code class="function">im_scRGB2sRGB()</code>, <code class="function">im_rad2float()</code>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
+<td>CIE dE2000 colour difference.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2164,6 +2296,6 @@ See also: <code class="function">im_LabS2LabQ()</code>, <code class="function">i
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

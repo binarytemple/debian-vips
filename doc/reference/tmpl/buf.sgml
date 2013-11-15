@@ -22,6 +22,12 @@ buf
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### STRUCT VipsBuf ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO VIPS_BUF_STATIC ##### -->
 <para>
 
@@ -30,80 +36,66 @@ buf
 @TEXT: 
 
 
-<!-- ##### STRUCT VipsBuf ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION vips_buf_all ##### -->
+<!-- ##### FUNCTION vips_buf_rewind ##### -->
 <para>
 
 </para>
 
 @buf: 
-@Returns: 
 
 
-<!-- ##### FUNCTION vips_buf_append_size ##### -->
+<!-- ##### FUNCTION vips_buf_destroy ##### -->
 <para>
 
 </para>
 
 @buf: 
-@n: 
-@Returns: 
 
 
-<!-- ##### FUNCTION vips_buf_appendc ##### -->
+<!-- ##### FUNCTION vips_buf_init ##### -->
 <para>
 
 </para>
 
 @buf: 
-@ch: 
-@Returns: 
 
 
-<!-- ##### FUNCTION vips_buf_appendd ##### -->
+<!-- ##### FUNCTION vips_buf_set_static ##### -->
 <para>
 
 </para>
 
 @buf: 
-@d: 
-@Returns: 
+@base: 
+@mx: 
 
 
-<!-- ##### FUNCTION vips_buf_appendf ##### -->
+<!-- ##### FUNCTION vips_buf_set_dynamic ##### -->
 <para>
 
 </para>
 
 @buf: 
-@fmt: 
-@...: 
-@Returns: 
+@mx: 
 
 
-<!-- ##### FUNCTION vips_buf_appendg ##### -->
+<!-- ##### FUNCTION vips_buf_init_static ##### -->
 <para>
 
 </para>
 
 @buf: 
-@g: 
-@Returns: 
+@base: 
+@mx: 
 
 
-<!-- ##### FUNCTION vips_buf_appendgv ##### -->
+<!-- ##### FUNCTION vips_buf_init_dynamic ##### -->
 <para>
 
 </para>
 
 @buf: 
-@value: 
-@Returns: 
+@mx: 
 
 
 <!-- ##### FUNCTION vips_buf_appendns ##### -->
@@ -127,6 +119,38 @@ buf
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_buf_appendf ##### -->
+<para>
+
+</para>
+
+@buf: 
+@fmt: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_vappendf ##### -->
+<para>
+
+</para>
+
+@buf: 
+@fmt: 
+@ap: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendc ##### -->
+<para>
+
+</para>
+
+@buf: 
+@ch: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_buf_appendsc ##### -->
 <para>
 
@@ -135,6 +159,36 @@ buf
 @buf: 
 @quote: 
 @str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendgv ##### -->
+<para>
+
+</para>
+
+@buf: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_append_size ##### -->
+<para>
+
+</para>
+
+@buf: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_removec ##### -->
+<para>
+
+</para>
+
+@buf: 
+@ch: 
 @Returns: 
 
 
@@ -147,50 +201,6 @@ buf
 @o: 
 @n: 
 @Returns: 
-
-
-<!-- ##### FUNCTION vips_buf_destroy ##### -->
-<para>
-
-</para>
-
-@buf: 
-
-
-<!-- ##### FUNCTION vips_buf_firstline ##### -->
-<para>
-
-</para>
-
-@buf: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_buf_init ##### -->
-<para>
-
-</para>
-
-@buf: 
-
-
-<!-- ##### FUNCTION vips_buf_init_dynamic ##### -->
-<para>
-
-</para>
-
-@buf: 
-@mx: 
-
-
-<!-- ##### FUNCTION vips_buf_init_static ##### -->
-<para>
-
-</para>
-
-@buf: 
-@base: 
-@mx: 
 
 
 <!-- ##### FUNCTION vips_buf_is_empty ##### -->
@@ -211,60 +221,50 @@ buf
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_buf_all ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_firstline ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendg ##### -->
+<para>
+
+</para>
+
+@buf: 
+@g: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendd ##### -->
+<para>
+
+</para>
+
+@buf: 
+@d: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_buf_len ##### -->
 <para>
 
 </para>
 
 @buf: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_buf_removec ##### -->
-<para>
-
-</para>
-
-@buf: 
-@ch: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_buf_rewind ##### -->
-<para>
-
-</para>
-
-@buf: 
-
-
-<!-- ##### FUNCTION vips_buf_set_dynamic ##### -->
-<para>
-
-</para>
-
-@buf: 
-@mx: 
-
-
-<!-- ##### FUNCTION vips_buf_set_static ##### -->
-<para>
-
-</para>
-
-@buf: 
-@base: 
-@mx: 
-
-
-<!-- ##### FUNCTION vips_buf_vappendf ##### -->
-<para>
-
-</para>
-
-@buf: 
-@fmt: 
-@ap: 
 @Returns: 
 
 

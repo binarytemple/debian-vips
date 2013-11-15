@@ -1,0 +1,89 @@
+<!-- ##### SECTION Title ##### -->
+vipsjpeg
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION vips__jpeg_write_file ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
+@Q: 
+@profile: 
+@optimize_coding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__jpeg_write_buffer ##### -->
+<para>
+
+</para>
+
+@in: 
+@obuf: 
+@olen: 
+@Q: 
+@profile: 
+@optimize_coding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__isjpeg ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__jpeg_read_file ##### -->
+<para>
+
+</para>
+
+@name: 
+@out: 
+@header_only: 
+@shrink: 
+@fail: 
+@readbehind: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__jpeg_read_buffer ##### -->
+<para>
+
+</para>
+
+@buf: 
+@len: 
+@out: 
+@header_only: 
+@shrink: 
+@fail: 
+@readbehind: 
+@Returns: 
+
+

@@ -196,8 +196,8 @@ extern "C" {
 #define im_error_clear vips_error_clear
 #define im_warn vips_warn
 #define im_vwarn vips_vwarn
-#define im_diag vips_diag
-#define im_vdiag vips_vdiag
+#define im_diag vips_info
+#define im_vdiag vips_vinfo
 #define error_exit vips_error_exit
 
 #define im_get_argv0 vips_get_argv0
@@ -470,7 +470,8 @@ int im_wrapmany( VipsImage **in, VipsImage *out,
 
 #define im_header_int vips_image_get_int
 #define im_header_double vips_image_get_double
-#define im_header_string vips_image_get_string
+#define im_header_string( IMAGE, FIELD, STRING ) \
+	vips_image_get_string( IMAGE, FIELD, (const char **) STRING )
 #define im_header_as_string vips_image_get_as_string
 #define im_header_get_typeof vips_image_get_typeof
 #define im_header_get vips_image_get
@@ -733,6 +734,18 @@ int im_grey( VipsImage *out, const int xsize, const int ysize );
 int im_fgrey( VipsImage *out, const int xsize, const int ysize );
 int im_sines( VipsImage *out,
 	int xsize, int ysize, double horfreq, double verfreq );
+int im_buildlut( DOUBLEMASK *input, VipsImage *output );
+int im_invertlut( DOUBLEMASK *input, VipsImage *output, int lut_size );
+int im_identity( VipsImage *lut, int bands );
+int im_identity_ushort( VipsImage *lut, int bands, int sz );
+
+int im_tone_build_range( VipsImage *out,
+	int in_max, int out_max,
+	double Lb, double Lw, double Ps, double Pm, double Ph,
+	double S, double M, double H );
+int im_tone_build( VipsImage *out,
+	double Lb, double Lw, double Ps, double Pm, double Ph,
+	double S, double M, double H );
 
 int im_system( VipsImage *im, const char *cmd, char **out );
 VipsImage *im_system_image( VipsImage *im, 
@@ -753,12 +766,16 @@ int im_ifthenelse( VipsImage *c, VipsImage *a, VipsImage *b, VipsImage *out );
 int im_blend( VipsImage *c, VipsImage *a, VipsImage *b, VipsImage *out );
 
 DOUBLEMASK *im_vips2mask( VipsImage *in, const char *filename );
+INTMASK *im_vips2imask( IMAGE *in, const char *filename );
 int im_mask2vips( DOUBLEMASK *in, VipsImage *out );
 
 int im_bandmean( VipsImage *in, VipsImage *out );
 int im_recomb( VipsImage *in, VipsImage *out, DOUBLEMASK *recomb );
 
 int im_argb2rgba( VipsImage *in, VipsImage *out );
+
+int im_falsecolour( VipsImage *in, VipsImage *out );
+int im_gammacorrect( VipsImage *in, VipsImage *out, double exponent );
 
 int im_shrink( VipsImage *in, VipsImage *out, double xshrink, double yshrink );
 int im_affinei( VipsImage *in, VipsImage *out, 
@@ -842,6 +859,36 @@ int im_lab_morph( VipsImage *in, VipsImage *out,
 #define im_col_dE00 vips_col_dE00
 
 int im_quadratic( IMAGE *in, IMAGE *out, IMAGE *coeff );
+
+int im_maplut( VipsImage *in, VipsImage *out, VipsImage *lut );
+int im_hist( VipsImage *in, VipsImage *out, int bandno );
+int im_histgr( VipsImage *in, VipsImage *out, int bandno );
+int im_histcum( VipsImage *in, VipsImage *out );
+int im_histnorm( VipsImage *in, VipsImage *out );
+int im_histeq( VipsImage *in, VipsImage *out );
+int im_heq( VipsImage *in, VipsImage *out, int bandno );
+int im_histnD( VipsImage *in, VipsImage *out, int bins );
+int im_hist_indexed( VipsImage *index, VipsImage *value, VipsImage *out );
+int im_histplot( VipsImage *in, VipsImage *out );
+int im_project( VipsImage *in, VipsImage *hout, VipsImage *vout );
+int im_profile( IMAGE *in, IMAGE *out, int dir );
+int im_hsp( VipsImage *in, VipsImage *ref, VipsImage *out );
+int im_histspec( VipsImage *in, VipsImage *ref, VipsImage *out );
+int im_lhisteq( VipsImage *in, VipsImage *out, int xwin, int ywin );
+int im_stdif( VipsImage *in, VipsImage *out,
+	double a, double m0, double b, double s0, int xwin, int ywin );
+int im_mpercent( VipsImage *in, double percent, int *out );
+int im_mpercent_hist( VipsImage *hist, double percent, int *out );
+int im_ismonotonic( VipsImage *lut, int *out );
+
+int im_tone_analyse( VipsImage *in, VipsImage *out,
+	double Ps, double Pm, double Ph, double S, double M, double H );
+int im_tone_map( VipsImage *in, VipsImage *out, VipsImage *lut );
+
+/* Not really correct, but who uses these.
+ */
+#define im_lhisteq_raw im_lhisteq
+#define im_stdif_raw im_stdif
 
 /* ruby-vips uses this
  */

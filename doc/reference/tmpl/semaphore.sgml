@@ -32,44 +32,16 @@ semaphore
 @mutex: 
 @cond: 
 
-<!-- ##### FUNCTION vips_semaphore_destroy ##### -->
+<!-- ##### FUNCTION vips_semaphore_up ##### -->
 <para>
 
 </para>
 
 @s: 
+@Returns: 
 
 
 <!-- ##### FUNCTION vips_semaphore_down ##### -->
-<para>
-
-</para>
-
-@s: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_semaphore_downn ##### -->
-<para>
-
-</para>
-
-@s: 
-@n: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_semaphore_init ##### -->
-<para>
-
-</para>
-
-@s: 
-@v: 
-@name: 
-
-
-<!-- ##### FUNCTION vips_semaphore_up ##### -->
 <para>
 
 </para>
@@ -86,5 +58,33 @@ semaphore
 @s: 
 @n: 
 @Returns: 
+
+
+<!-- ##### FUNCTION vips_semaphore_downn ##### -->
+<para>
+
+</para>
+
+@s: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_semaphore_destroy ##### -->
+<para>
+
+</para>
+
+@s: 
+
+
+<!-- ##### FUNCTION vips_semaphore_init ##### -->
+<para>
+
+</para>
+
+@s: 
+@v: 
+@name: 
 
 

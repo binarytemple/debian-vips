@@ -545,13 +545,15 @@ vips_arithmetic_build( VipsObject *object )
 	 */
 	arithmetic->ready = size;
 
-	if( vips_image_copy_fields_array( arithmetic->out, size ) ) 
+	if( vips_image_copy_fields_array( arithmetic->out, 
+		arithmetic->ready ) ) 
 		return( -1 );
         vips_demand_hint_array( arithmetic->out, 
-		VIPS_DEMAND_STYLE_THINSTRIP, size );
+		VIPS_DEMAND_STYLE_THINSTRIP, arithmetic->ready );
 
-	arithmetic->out->Bands = size[0]->Bands;
-	arithmetic->out->BandFmt = aclass->format_table[size[0]->BandFmt];
+	arithmetic->out->Bands = arithmetic->ready[0]->Bands;
+	arithmetic->out->BandFmt = 
+		aclass->format_table[arithmetic->ready[0]->BandFmt];
 
 	if( vips_image_generate( arithmetic->out,
 		vips_start_many, vips_arithmetic_gen, vips_stop_many, 
@@ -575,7 +577,7 @@ vips_arithmetic_class_init( VipsArithmeticClass *class )
 	vobject_class->description = _( "arithmetic operations" );
 	vobject_class->build = vips_arithmetic_build;
 
-	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL_UNBUFFERED;
 
 	VIPS_ARG_IMAGE( class, "out", 100, 
 		_( "Output" ), 
@@ -690,6 +692,11 @@ vips_arithmetic_operation_init( void )
 	extern GType vips_abs_get_type( void ); 
 	extern GType vips_sign_get_type( void ); 
 	extern GType vips_stats_get_type( void ); 
+	extern GType vips_hist_find_get_type( void ); 
+	extern GType vips_hist_find_ndim_get_type( void ); 
+	extern GType vips_hist_find_indexed_get_type( void ); 
+	extern GType vips_project_get_type( void ); 
+	extern GType vips_profile_get_type( void ); 
 	extern GType vips_measure_get_type( void ); 
 	extern GType vips_round_get_type( void ); 
 	extern GType vips_relational_get_type( void ); 
@@ -719,6 +726,11 @@ vips_arithmetic_operation_init( void )
 	vips_abs_get_type();
 	vips_sign_get_type();
 	vips_stats_get_type();
+	vips_hist_find_get_type(); 
+	vips_hist_find_ndim_get_type(); 
+	vips_hist_find_indexed_get_type(); 
+	vips_project_get_type(); 
+	vips_profile_get_type(); 
 	vips_measure_get_type();
 	vips_round_get_type();
 	vips_relational_get_type();

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>generate</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="ch01.html" title="Core VIPS API">
 <link rel="prev" href="VipsRegion.html" title="VipsRegion">
 <link rel="next" href="libvips-header.html" title="header">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,35 +44,21 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
+<span class="returnvalue">int</span>                 (<a class="link" href="libvips-generate.html#VipsRegionWrite" title="VipsRegionWrite ()">*VipsRegionWrite</a>)                  (<em class="parameter"><code><a class="link" href="VipsRegion.html" title="VipsRegion"><span class="type">VipsRegion</span></a> *region</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *area</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()">vips_sink_disc</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsRegionWrite" title="VipsRegionWrite ()"><span class="type">VipsRegionWrite</span></a> write_fn</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>);
+<span class="returnvalue">void</span> *              (<a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()">*VipsStartFn</a>)                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
 <span class="returnvalue">int</span>                 (<a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()">*VipsGenerateFn</a>)                   (<em class="parameter"><code><a class="link" href="VipsRegion.html" title="VipsRegion"><span class="type">VipsRegion</span></a> *out</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *seq</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> *stop</code></em>);
-<span class="returnvalue">int</span>                 (<a class="link" href="libvips-generate.html#VipsRegionWrite" title="VipsRegionWrite ()">*VipsRegionWrite</a>)                  (<em class="parameter"><code><a class="link" href="VipsRegion.html" title="VipsRegion"><span class="type">VipsRegion</span></a> *region</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>);
-<span class="returnvalue">void</span>                (<a class="link" href="libvips-generate.html#VipsSinkNotify" title="VipsSinkNotify ()">*VipsSinkNotify</a>)                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *rect</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>);
-<span class="returnvalue">void</span> *              (<a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()">*VipsStartFn</a>)                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
 <span class="returnvalue">int</span>                 (<a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()">*VipsStopFn</a>)                       (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
-<a class="link" href="VipsImage.html" title="VipsImage"><span class="returnvalue">VipsImage</span></a> **        <a class="link" href="libvips-generate.html#vips-allocate-input-array" title="vips_allocate_input_array ()">vips_allocate_input_array</a>           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()">vips_demand_hint</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libvips-generate.html#vips-demand-hint-array" title="vips_demand_hint_array ()">vips_demand_hint_array</a>              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **in</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()">vips_image_generate</a>                 (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()">vips_sink</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
@@ -81,11 +67,17 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()">vips_sink_disc</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsRegionWrite" title="VipsRegionWrite ()"><span class="type">VipsRegionWrite</span></a> write_fn</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-tile" title="vips_sink_tile ()">vips_sink_tile</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> tile_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> tile_height</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libvips-generate.html#VipsSinkNotify" title="VipsSinkNotify ()">*VipsSinkNotify</a>)                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *rect</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-memory" title="vips_sink_memory ()">vips_sink_memory</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-memory2" title="vips_sink_memory2 ()">vips_sink_memory2</a>                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-screen" title="vips_sink_screen ()">vips_sink_screen</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask</code></em>,
@@ -95,26 +87,34 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code><span class="type">int</span> priority</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsSinkNotify" title="VipsSinkNotify ()"><span class="type">VipsSinkNotify</span></a> notify</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-tile" title="vips_sink_tile ()">vips_sink_tile</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> tile_width</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> tile_height</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
-<span class="returnvalue">void</span> *              <a class="link" href="libvips-generate.html#vips-start-many" title="vips_start_many ()">vips_start_many</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-memory" title="vips_sink_memory ()">vips_sink_memory</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-sink-memory2" title="vips_sink_memory2 ()">vips_sink_memory2</a>                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);
 <span class="returnvalue">void</span> *              <a class="link" href="libvips-generate.html#vips-start-one" title="vips_start_one ()">vips_start_one</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-stop-many" title="vips_stop_many ()">vips_stop_many</a>                      (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-stop-one" title="vips_stop_one ()">vips_stop_one</a>                       (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);
+<span class="returnvalue">void</span> *              <a class="link" href="libvips-generate.html#vips-start-many" title="vips_start_many ()">vips_start_many</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-stop-many" title="vips_stop_many ()">vips_stop_many</a>                      (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
+<a class="link" href="VipsImage.html" title="VipsImage"><span class="returnvalue">VipsImage</span></a> **        <a class="link" href="libvips-generate.html#vips-allocate-input-array" title="vips_allocate_input_array ()">vips_allocate_input_array</a>           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()">vips_image_generate</a>                 (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libvips-generate.html#vips-demand-hint-array" title="vips_demand_hint_array ()">vips_demand_hint_array</a>              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **in</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()">vips_demand_hint</a>                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -127,43 +127,6 @@ processing operation, and ask for regions of image to be calculated.
 <div class="refsect1">
 <a name="libvips-generate.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="VipsGenerateFn"></a><h3>VipsGenerateFn ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 (*VipsGenerateFn)                   (<em class="parameter"><code><a class="link" href="VipsRegion.html" title="VipsRegion"><span class="type">VipsRegion</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *seq</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">gboolean</span> *stop</code></em>);</pre>
-<p>
-Fill <em class="parameter"><code>image-&gt;valid</code></em> with pixels. <em class="parameter"><code>seq</code></em> contains per-thread state, such as the
-input regions.
-</p>
-<p>
-See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>, <a class="link" href="libvips-generate.html#vips-stop-many" title="vips_stop_many ()"><code class="function">vips_stop_many()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>seq</code></em> :</span></p></td>
-<td>sequence value</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>user data</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>user data</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="VipsRegionWrite"></a><h3>VipsRegionWrite ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 (*VipsRegionWrite)                  (<em class="parameter"><code><a class="link" href="VipsRegion.html" title="VipsRegion"><span class="type">VipsRegion</span></a> *region</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *area</code></em>,
@@ -175,8 +138,11 @@ value passed into <code class="function">vips_discsink()</code>.
 <p>
 See also: <a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()"><code class="function">vips_sink_disc()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>region</code></em> :</span></p></td>
@@ -199,12 +165,50 @@ See also: <a class="link" href="libvips-generate.html#vips-sink-disc" title="vip
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsSinkNotify"></a><h3>VipsSinkNotify ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*VipsSinkNotify)                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *rect</code></em>,
+<a name="vips-sink-disc"></a><h3>vips_sink_disc ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_disc                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsRegionWrite" title="VipsRegionWrite ()"><span class="type">VipsRegionWrite</span></a> write_fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>);</pre>
 <p>
+<a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()"><code class="function">vips_sink_disc()</code></a> loops over <em class="parameter"><code>im</code></em>, top-to-bottom, generating it in sections.
+As each section is produced, <em class="parameter"><code>write_fn</code></em> is called.
 </p>
+<p>
+<em class="parameter"><code>write_fn</code></em> is always called single-threaded (though not always from the same
+thread), it's always given image
+sections in top-to-bottom order, and there are never any gaps.
+</p>
+<p>
+This operation is handy for making image sinks which output to things like 
+disc files.
+</p>
+<p>
+See also: <a class="link" href="VipsThreadState.html#vips-concurrency-set" title="vips_concurrency_set ()"><code class="function">vips_concurrency_set()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td>image to process</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>write_fn</code></em> :</span></p></td>
+<td>called for every batch of pixels</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>client data</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -219,8 +223,11 @@ per-thread state, such as an input region.
 <p>
 See also: <a class="link" href="libvips-generate.html#vips-start-one" title="vips_start_one ()"><code class="function">vips_start_one()</code></a>, <a class="link" href="libvips-generate.html#vips-start-many" title="vips_start_many ()"><code class="function">vips_start_many()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
@@ -239,19 +246,24 @@ See also: <a class="link" href="libvips-generate.html#vips-start-one" title="vip
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsStopFn"></a><h3>VipsStopFn ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 (*VipsStopFn)                       (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
+<a name="VipsGenerateFn"></a><h3>VipsGenerateFn ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 (*VipsGenerateFn)                   (<em class="parameter"><code><a class="link" href="VipsRegion.html" title="VipsRegion"><span class="type">VipsRegion</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *seq</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> *stop</code></em>);</pre>
 <p>
-Stop a processing sequence. This frees
-per-thread state, such as an input region.
+Fill <em class="parameter"><code>image-&gt;valid</code></em> with pixels. <em class="parameter"><code>seq</code></em> contains per-thread state, such as the
+input regions.
 </p>
 <p>
-See also: <a class="link" href="libvips-generate.html#vips-stop-one" title="vips_stop_one ()"><code class="function">vips_stop_one()</code></a>, <a class="link" href="libvips-generate.html#vips-stop-many" title="vips_stop_many ()"><code class="function">vips_stop_many()</code></a>.
+See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>, <a class="link" href="libvips-generate.html#vips-stop-many" title="vips_stop_many ()"><code class="function">vips_stop_many()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>seq</code></em> :</span></p></td>
@@ -274,132 +286,26 @@ See also: <a class="link" href="libvips-generate.html#vips-stop-one" title="vips
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-allocate-input-array"></a><h3>vips_allocate_input_array ()</h3>
-<pre class="programlisting"><a class="link" href="VipsImage.html" title="VipsImage"><span class="returnvalue">VipsImage</span></a> **        vips_allocate_input_array           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Convenience function --- make a <code class="literal">NULL</code>-terminated array of input images.
-Use with <a class="link" href="libvips-generate.html#vips-start-many" title="vips_start_many ()"><code class="function">vips_start_many()</code></a>.
-</p>
-<p>
-See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>, <a class="link" href="libvips-generate.html#vips-start-many" title="vips_start_many ()"><code class="function">vips_start_many()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<code class="literal">NULL</code>-terminated array of images. Do not free the result.</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-demand-hint"></a><h3>vips_demand_hint ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_demand_hint                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Build an array and call <a class="link" href="libvips-generate.html#vips-demand-hint-array" title="vips_demand_hint_array ()"><code class="function">vips_demand_hint_array()</code></a>.
-</p>
-<p>
-See also: <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()"><code class="function">vips_demand_hint()</code></a>, <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
-<td>image to set hint for</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>hint</code></em> :</span></p></td>
-<td>hint for this image</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-demand-hint-array"></a><h3>vips_demand_hint_array ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_demand_hint_array              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **in</code></em>);</pre>
-<p>
-Operations can set demand hints, that is, hints to the VIPS IO system about
-the type of region geometry this operation works best with. For example,
-operations which transform coordinates will usually work best with
-<a class="link" href="VipsImage.html#VIPS-DEMAND-STYLE-SMALLTILE:CAPS"><code class="literal">VIPS_DEMAND_STYLE_SMALLTILE</code></a>, operations which work on local windows of 
-pixels will like <a class="link" href="VipsImage.html#VIPS-DEMAND-STYLE-FATSTRIP:CAPS"><code class="literal">VIPS_DEMAND_STYLE_FATSTRIP</code></a>.
-</p>
-<p>
-VIPS uses the list of input images to build the tree of operations it needs
-for the cache invalidation system. You have to call this function, or its
-varargs friend <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()"><code class="function">vips_demand_hint()</code></a>.
-</p>
-<p>
-See also: <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()"><code class="function">vips_demand_hint()</code></a>, <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
-<td>image to set hint for</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>hint</code></em> :</span></p></td>
-<td>hint for this image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>array of input images to this operation</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-image-generate"></a><h3>vips_image_generate ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_image_generate                 (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
+<a name="VipsStopFn"></a><h3>VipsStopFn ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 (*VipsStopFn)                       (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
 <p>
-Generates an image. The action depends on the image type.
+Stop a processing sequence. This frees
+per-thread state, such as an input region.
 </p>
 <p>
-For images opened with "p", <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a> just attaches the
-start/generate/stop callbacks and returns.
+See also: <a class="link" href="libvips-generate.html#vips-stop-one" title="vips_stop_one ()"><code class="function">vips_stop_one()</code></a>, <a class="link" href="libvips-generate.html#vips-stop-many" title="vips_stop_many ()"><code class="function">vips_stop_many()</code></a>.
 </p>
-<p>
-For "t" images, memory is allocated for the whole image and it is entirely
-generated using <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()"><code class="function">vips_sink()</code></a>.
-</p>
-<p>
-For "w" images, memory for a few scanlines is allocated and
-<a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()"><code class="function">vips_sink_disc()</code></a> used to generate the image in small chunks. As each
-chunk is generated, it is written to disc.
-</p>
-<p>
-See also: <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()"><code class="function">vips_sink()</code></a>, <a class="link" href="VipsImage.html#vips-image-new" title="vips_image_new ()"><code class="function">vips_image_new()</code></a>, <a class="link" href="VipsRegion.html#vips-region-prepare" title="vips_region_prepare ()"><code class="function">vips_region_prepare()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>start_fn</code></em> :</span></p></td>
-<td>start sequences with this function</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>generate_fn</code></em> :</span></p></td>
-<td>generate pixels with this function</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stop_fn</code></em> :</span></p></td>
-<td>stop sequences with this function</td>
+<td><p><span class="term"><em class="parameter"><code>seq</code></em> :</span></p></td>
+<td>sequence value</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
@@ -411,7 +317,7 @@ See also: <a class="link" href="libvips-generate.html#vips-sink" title="vips_sin
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, or -1 on error.</td>
+<td>0 on success, -1 on error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -437,8 +343,11 @@ pipeline that generated <em class="parameter"><code>im</code></em>.
 <p>
 See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>, <a class="link" href="VipsImage.html#vips-image-new" title="vips_image_new ()"><code class="function">vips_image_new()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
@@ -473,65 +382,64 @@ See also: <a class="link" href="libvips-generate.html#vips-image-generate" title
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-sink-disc"></a><h3>vips_sink_disc ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_disc                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsRegionWrite" title="VipsRegionWrite ()"><span class="type">VipsRegionWrite</span></a> write_fn</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>);</pre>
+<a name="vips-sink-tile"></a><h3>vips_sink_tile ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_tile                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> tile_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> tile_height</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
 <p>
-<a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()"><code class="function">vips_sink_disc()</code></a> loops over <em class="parameter"><code>im</code></em>, top-to-bottom, generating it in sections.
-As each section is produced, <em class="parameter"><code>write_fn</code></em> is called.
+Loops over an image. <em class="parameter"><code>generate</code></em> is called for every pixel in the image, with
+the <em class="parameter"><code>reg</code></em> argument being a region of pixels for processing. 
 </p>
 <p>
-<em class="parameter"><code>write_fn</code></em> is always called single-threaded (though not always from the same
-thread), it's always given image
-sections in top-to-bottom order, and there are never any gaps.
-</p>
-<p>
-This operation is handy for making image sinks which output to things like 
-disc files.
-</p>
-<p>
-See also: <a class="link" href="VipsThreadState.html#vips-concurrency-set" title="vips_concurrency_set ()"><code class="function">vips_concurrency_set()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>image to process</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>write_fn</code></em> :</span></p></td>
-<td>called for every batch of pixels</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>client data</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="vips-sink-memory"></a><h3>vips_sink_memory ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_memory                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>);</pre>
-<p>
-Loops over an image, generating it to a memory buffer attached to the
-image. 
+Each set of pixels is <em class="parameter"><code>tile_width</code></em> by <em class="parameter"><code>tile_height</code></em> pixels (less at the 
+image edges). This is handy for things like writing a tiled TIFF image, 
+where tiles have to be generated with a certain size.
 </p>
 <p>
 See also: <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()"><code class="function">vips_sink()</code></a>, <a class="link" href="VipsThreadState.html#vips-get-tile-size" title="vips_get_tile_size ()"><code class="function">vips_get_tile_size()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>generate this image to memory</td>
+<td>scan over this image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>tile_width</code></em> :</span></p></td>
+<td>tile width</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>tile_height</code></em> :</span></p></td>
+<td>tile height</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>start_fn</code></em> :</span></p></td>
+<td>start sequences with this function</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>generate_fn</code></em> :</span></p></td>
+<td>generate pixels with this function</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>stop_fn</code></em> :</span></p></td>
+<td>stop sequences with this function</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>user data</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>user data</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -542,8 +450,10 @@ See also: <a class="link" href="libvips-generate.html#vips-sink" title="vips_sin
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-sink-memory2"></a><h3>vips_sink_memory2 ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_memory2                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);</pre>
+<a name="VipsSinkNotify"></a><h3>VipsSinkNotify ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*VipsSinkNotify)                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *rect</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>);</pre>
 <p>
 </p>
 </div>
@@ -601,8 +511,11 @@ calculated.
 See also: <a class="link" href="libvips-conversion.html#vips-tilecache" title="vips_tilecache ()"><code class="function">vips_tilecache()</code></a>, <a class="link" href="VipsRegion.html#vips-region-prepare" title="vips_region_prepare ()"><code class="function">vips_region_prepare()</code></a>, 
 <a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()"><code class="function">vips_sink_disc()</code></a>, <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()"><code class="function">vips_sink()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -649,63 +562,24 @@ See also: <a class="link" href="libvips-conversion.html#vips-tilecache" title="v
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-sink-tile"></a><h3>vips_sink_tile ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_tile                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> tile_width</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> tile_height</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
+<a name="vips-sink-memory"></a><h3>vips_sink_memory ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_memory                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>);</pre>
 <p>
-Loops over an image. <em class="parameter"><code>generate</code></em> is called for every pixel in the image, with
-the <em class="parameter"><code>reg</code></em> argument being a region of pixels for processing. 
-</p>
-<p>
-Each set of
-pixels is <em class="parameter"><code>tile_width</code></em> by <em class="parameter"><code>tile_height</code></em> pixels (less at the image edges). 
-This is handy for things like
-writing a tiled TIFF image, where tiles have to be generated with a certain
-size.
+Loops over an image, generating it to a memory buffer attached to the
+image. 
 </p>
 <p>
 See also: <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()"><code class="function">vips_sink()</code></a>, <a class="link" href="VipsThreadState.html#vips-get-tile-size" title="vips_get_tile_size ()"><code class="function">vips_get_tile_size()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
-<td>scan over this image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>tile_width</code></em> :</span></p></td>
-<td>tile width</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>tile_height</code></em> :</span></p></td>
-<td>tile height</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>start_fn</code></em> :</span></p></td>
-<td>start sequences with this function</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>generate_fn</code></em> :</span></p></td>
-<td>generate pixels with this function</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stop_fn</code></em> :</span></p></td>
-<td>stop sequences with this function</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>user data</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>user data</td>
+<td>generate this image to memory</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -716,19 +590,28 @@ See also: <a class="link" href="libvips-generate.html#vips-sink" title="vips_sin
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-start-many"></a><h3>vips_start_many ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span> *              vips_start_many                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+<a name="vips-sink-memory2"></a><h3>vips_sink_memory2 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sink_memory2                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-start-one"></a><h3>vips_start_one ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span> *              vips_start_one                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
 <p>
-Start function for many images in. <em class="parameter"><code>a</code></em> is a pointer to 
-a <code class="literal">NULL</code>-terminated array of input images.
+Start function for one image in. Input image is <em class="parameter"><code>a</code></em>.
 </p>
 <p>
-See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>, <a class="link" href="libvips-generate.html#vips-allocate-input-array" title="vips_allocate_input_array ()"><code class="function">vips_allocate_input_array()</code></a>
+See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
@@ -747,18 +630,55 @@ See also: <a class="link" href="libvips-generate.html#vips-image-generate" title
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-start-one"></a><h3>vips_start_one ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span> *              vips_start_one                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+<a name="vips-stop-one"></a><h3>vips_stop_one ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_stop_one                       (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
 <p>
-Start function for one image in. Input image is <em class="parameter"><code>a</code></em>.
+Stop function for one image in. Input image is <em class="parameter"><code>a</code></em>.
 </p>
 <p>
 See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>seq</code></em> :</span></p></td>
+<td>sequence value</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>user data</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>user data</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-start-many"></a><h3>vips_start_many ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span> *              vips_start_many                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
+<p>
+Start function for many images in. <em class="parameter"><code>a</code></em> is a pointer to 
+a <code class="literal">NULL</code>-terminated array of input images.
+</p>
+<p>
+See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>, <a class="link" href="libvips-generate.html#vips-allocate-input-array" title="vips_allocate_input_array ()"><code class="function">vips_allocate_input_array()</code></a>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
@@ -788,8 +708,11 @@ a <code class="literal">NULL</code>-terminated array of input images.
 <p>
 See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>seq</code></em> :</span></p></td>
@@ -808,22 +731,73 @@ See also: <a class="link" href="libvips-generate.html#vips-image-generate" title
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-stop-one"></a><h3>vips_stop_one ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_stop_one                       (<em class="parameter"><code><span class="type">void</span> *seq</code></em>,
+<a name="vips-allocate-input-array"></a><h3>vips_allocate_input_array ()</h3>
+<pre class="programlisting"><a class="link" href="VipsImage.html" title="VipsImage"><span class="returnvalue">VipsImage</span></a> **        vips_allocate_input_array           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Convenience function --- make a <code class="literal">NULL</code>-terminated array of input images.
+Use with <a class="link" href="libvips-generate.html#vips-start-many" title="vips_start_many ()"><code class="function">vips_start_many()</code></a>.
+</p>
+<p>
+See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>, <a class="link" href="libvips-generate.html#vips-start-many" title="vips_start_many ()"><code class="function">vips_start_many()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated array of images. Do not free the result.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-image-generate"></a><h3>vips_image_generate ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_image_generate                 (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStartFn" title="VipsStartFn ()"><span class="type">VipsStartFn</span></a> start_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsGenerateFn" title="VipsGenerateFn ()"><span class="type">VipsGenerateFn</span></a> generate_fn</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-generate.html#VipsStopFn" title="VipsStopFn ()"><span class="type">VipsStopFn</span></a> stop_fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
 <p>
-Stop function for one image in. Input image is <em class="parameter"><code>a</code></em>.
+Generates an image. The action depends on the image type.
 </p>
 <p>
-See also: <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
+For images opened with "p", <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a> just attaches the
+start/generate/stop callbacks and returns.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+For "t" images, memory is allocated for the whole image and it is entirely
+generated using <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()"><code class="function">vips_sink()</code></a>.
+</p>
+<p>
+For "w" images, memory for a few scanlines is allocated and
+<a class="link" href="libvips-generate.html#vips-sink-disc" title="vips_sink_disc ()"><code class="function">vips_sink_disc()</code></a> used to generate the image in small chunks. As each
+chunk is generated, it is written to disc.
+</p>
+<p>
+See also: <a class="link" href="libvips-generate.html#vips-sink" title="vips_sink ()"><code class="function">vips_sink()</code></a>, <a class="link" href="VipsImage.html#vips-image-new" title="vips_image_new ()"><code class="function">vips_image_new()</code></a>, <a class="link" href="VipsRegion.html#vips-region-prepare" title="vips_region_prepare ()"><code class="function">vips_region_prepare()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>seq</code></em> :</span></p></td>
-<td>sequence value</td>
+<td><p><span class="term"><em class="parameter"><code>start_fn</code></em> :</span></p></td>
+<td>start sequences with this function</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>generate_fn</code></em> :</span></p></td>
+<td>generate pixels with this function</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>stop_fn</code></em> :</span></p></td>
+<td>stop sequences with this function</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
@@ -832,6 +806,81 @@ See also: <a class="link" href="libvips-generate.html#vips-image-generate" title
 <tr>
 <td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
 <td>user data</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, or -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-demand-hint-array"></a><h3>vips_demand_hint_array ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_demand_hint_array              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **in</code></em>);</pre>
+<p>
+Operations can set demand hints, that is, hints to the VIPS IO system about
+the type of region geometry this operation works best with. For example,
+operations which transform coordinates will usually work best with
+<a class="link" href="VipsImage.html#VIPS-DEMAND-STYLE-SMALLTILE:CAPS"><code class="literal">VIPS_DEMAND_STYLE_SMALLTILE</code></a>, operations which work on local windows of 
+pixels will like <a class="link" href="VipsImage.html#VIPS-DEMAND-STYLE-FATSTRIP:CAPS"><code class="literal">VIPS_DEMAND_STYLE_FATSTRIP</code></a>.
+</p>
+<p>
+VIPS uses the list of input images to build the tree of operations it needs
+for the cache invalidation system. You have to call this function, or its
+varargs friend <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()"><code class="function">vips_demand_hint()</code></a>.
+</p>
+<p>
+See also: <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()"><code class="function">vips_demand_hint()</code></a>, <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
+<td>image to set hint for</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>hint</code></em> :</span></p></td>
+<td>hint for this image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>array of input images to this operation</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-demand-hint"></a><h3>vips_demand_hint ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_demand_hint                    (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html#VipsDemandStyle" title="enum VipsDemandStyle"><span class="type">VipsDemandStyle</span></a> hint</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Build an array and call <a class="link" href="libvips-generate.html#vips-demand-hint-array" title="vips_demand_hint_array ()"><code class="function">vips_demand_hint_array()</code></a>.
+</p>
+<p>
+See also: <a class="link" href="libvips-generate.html#vips-demand-hint" title="vips_demand_hint ()"><code class="function">vips_demand_hint()</code></a>, <a class="link" href="libvips-generate.html#vips-image-generate" title="vips_image_generate ()"><code class="function">vips_image_generate()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
+<td>image to set hint for</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>hint</code></em> :</span></p></td>
+<td>hint for this image</td>
 </tr>
 </tbody>
 </table></div>
@@ -845,6 +894,6 @@ region
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

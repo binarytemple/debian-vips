@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>resample</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="ch02.html" title="VIPS operation API by section">
 <link rel="prev" href="libvips-create.html" title="create">
 <link rel="next" href="ch03.html" title="Other API (no gtkdoc comments yet)">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,6 +44,14 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-shrink" title="vips_shrink ()">vips_shrink</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> xshrink</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-similarity" title="vips_similarity ()">vips_similarity</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()">vips_affine</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> a</code></em>,
@@ -54,11 +62,6 @@ Stable, unless otherwise indicated
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-quadratic" title="vips_quadratic ()">vips_quadratic</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *coeff</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-shrink" title="vips_shrink ()">vips_shrink</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> xshrink</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 </pre>
 </div>
@@ -71,6 +74,102 @@ intermediate values.
 </div>
 <div class="refsect1">
 <a name="libvips-resample.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="vips-shrink"></a><h3>vips_shrink ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_shrink                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> xshrink</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Shrink <em class="parameter"><code>in</code></em> by a pair of factors with a simple box filter. 
+</p>
+<p>
+You will get aliasing for non-integer shrinks. In this case, shrink with
+this function to the nearest integer size above the target shrink, then
+downsample to the exact size with <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a> and your choice of
+interpolator.
+</p>
+<p>
+See also: <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>xshrink</code></em> :</span></p></td>
+<td>horizontal shrink</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>yshrink</code></em> :</span></p></td>
+<td>vertical shrink</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-similarity"></a><h3>vips_similarity ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_similarity                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>scale</code></em>: scale by this factor
+<em class="parameter"><code>angle</code></em>: rotate by this many degrees anticlockwise
+<em class="parameter"><code>interpolate</code></em>: interpolate pixels with this
+<em class="parameter"><code>idx</code></em>: input horizontal offset
+<em class="parameter"><code>idy</code></em>: input vertical offset
+<em class="parameter"><code>odx</code></em>: output horizontal offset
+<em class="parameter"><code>ody</code></em>: output vertical offset
+</p>
+<p>
+This operator calls <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a> for you, calculating the matrix for the
+affine transform from <em class="parameter"><code>scale</code></em> and <em class="parameter"><code>angle</code></em>. Other parameters are passed on to
+<a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a> unaltered. 
+</p>
+<p>
+See also: <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a>, <a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
 <div class="refsect2">
 <a name="vips-affine"></a><h3>vips_affine ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_affine                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
@@ -121,8 +220,11 @@ transformed input image.
 <p>
 See also: <a class="link" href="libvips-resample.html#vips-shrink" title="vips_shrink ()"><code class="function">vips_shrink()</code></a>, <a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -169,10 +271,13 @@ Optional arguments:
 <em class="parameter"><code>interpolate</code></em>: use this interpolator (default bilinear)
 </p>
 <p>
-See also: <code class="function">im_affinei()</code>.
+See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-resample.html#im-affinei"><code class="function">im_affinei()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
@@ -193,56 +298,10 @@ See also: <code class="function">im_affinei()</code>.
 </tbody>
 </table></div>
 </div>
-<hr>
-<div class="refsect2">
-<a name="vips-shrink"></a><h3>vips_shrink ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 vips_shrink                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> xshrink</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>,
-                                                         <em class="parameter"><code>...</code></em>);</pre>
-<p>
-Shrink <em class="parameter"><code>in</code></em> by a pair of factors with a simple box filter. 
-</p>
-<p>
-You will get aliasing for non-integer shrinks. In this case, shrink with
-this function to the nearest integer size above the target shrink, then
-downsample to the exact size with <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a> and your choice of
-interpolator.
-</p>
-<p>
-See also: <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xshrink</code></em> :</span></p></td>
-<td>horizontal shrink</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>yshrink</code></em> :</span></p></td>
-<td>vertical shrink</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>
