@@ -143,7 +143,7 @@ void VImage::refblock::removeref() throw( VError )
 		delete this;
 }
 
-// Init with name ... mode defaults to "r"
+// Init with name ... mode defaults to "rd"
 VImage::VImage( const char *name, const char *mode ) throw( VError )
 {
 	_ref = new refblock;
@@ -325,13 +325,18 @@ void VImage::meta_set( const char *field, GValue *value ) throw( VError )
 		verror();
 }
 
+gboolean VImage::meta_remove( const char *field ) 
+{
+	return( im_meta_remove( _ref->im, field ) );
+}
+
 void VImage::meta_get( const char *field, GValue *value_copy ) throw( VError )
 {
 	if( im_meta_get( _ref->im, field, value_copy ) )
 		verror();
 }
 
-GType VImage::meta_get_typeof( const char *field ) throw( VError )
+GType VImage::meta_get_typeof( const char *field ) 
 {
 	return( im_meta_get_typeof( _ref->im, field ) );
 }

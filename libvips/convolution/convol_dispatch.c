@@ -38,10 +38,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /** 
  * SECTION: convolution
  * @short_description: convolve and correlate images
@@ -66,6 +62,35 @@ static im_arg_desc two_in_one_out[] = {
 	IM_INPUT_IMAGE( "in1" ),
 	IM_INPUT_IMAGE( "in2" ),
 	IM_OUTPUT_IMAGE( "out" )
+};
+
+/* Args to im_addgnoise.
+ */
+static im_arg_desc addgnoise_args[] = {
+	IM_INPUT_IMAGE( "in" ),
+	IM_OUTPUT_IMAGE( "out" ),
+	IM_INPUT_DOUBLE( "sigma" )
+};
+
+/* Call im_addgnoise via arg vector.
+ */
+static int
+addgnoise_vec( im_object *argv )
+{
+	double sigma = *((double *) argv[2]);
+
+	return( im_addgnoise( argv[0], argv[1], sigma ) );
+}
+
+/* Description of im_addgnoise.
+ */ 
+static im_function addgnoise_desc = {
+	"im_addgnoise", 		/* Name */
+	"add gaussian noise with mean 0 and std. dev. sigma",
+	IM_FN_PIO,			/* Flags */
+	addgnoise_vec, 			/* Dispatch function */
+	IM_NUMBER( addgnoise_args ), 	/* Size of arg list */
+	addgnoise_args 			/* Arg list */
 };
 
 /* Args to im_contrast_surface.
@@ -397,9 +422,76 @@ static im_function spcor_desc = {
 	two_in_one_out 			/* Arg list */
 };
 
+/* Args for im_aconv().
+ */
+static im_arg_desc aconv_args[] = {
+	IM_INPUT_IMAGE( "in" ),
+	IM_OUTPUT_IMAGE( "out" ),
+	IM_INPUT_DMASK( "matrix" ),
+	IM_INPUT_INT( "n_layers" ),
+	IM_INPUT_INT( "cluster" )
+};
+
+/* Call im_aconv via arg vector.
+ */
+static int
+aconv_vec( im_object *argv )
+{
+	im_mask_object *mo = argv[2];
+	int n_layers = *((int *) argv[3]);
+	int cluster = *((int *) argv[4]);
+
+	return( im_aconv( argv[0], argv[1], mo->mask, n_layers, cluster ) );
+}
+
+/* Description of im_aconv.
+ */ 
+static im_function aconv_desc = {
+	"im_aconv", 			/* Name */
+	"approximate convolution",
+	IM_FN_TRANSFORM | IM_FN_PIO,	/* Flags */
+	aconv_vec, 			/* Dispatch function */
+	IM_NUMBER( aconv_args ), 	/* Size of arg list */
+	aconv_args 			/* Arg list */
+};
+
+/* Args for im_aconvsep().
+ */
+static im_arg_desc aconvsep_args[] = {
+	IM_INPUT_IMAGE( "in" ),
+	IM_OUTPUT_IMAGE( "out" ),
+	IM_INPUT_DMASK( "matrix" ),
+	IM_INPUT_INT( "n_layers" )
+};
+
+/* Call im_aconvsep via arg vector.
+ */
+static int
+aconvsep_vec( im_object *argv )
+{
+	im_mask_object *mo = argv[2];
+	int n_layers = *((int *) argv[3]);
+
+	return( im_aconvsep( argv[0], argv[1], mo->mask, n_layers ) );
+}
+
+/* Description of im_aconvsep.
+ */ 
+static im_function aconvsep_desc = {
+	"im_aconvsep", 			/* Name */
+	"approximate separable convolution",
+	IM_FN_TRANSFORM | IM_FN_PIO,	/* Flags */
+	aconvsep_vec, 			/* Dispatch function */
+	IM_NUMBER( aconvsep_args ), 	/* Size of arg list */
+	aconvsep_args 			/* Arg list */
+};
+
 /* Package up all these functions.
  */
 static im_function *convol_list[] = {
+	&aconvsep_desc,
+	&aconv_desc,
+	&addgnoise_desc,
 	&compass_desc,
 	&contrast_surface_desc,
 	&conv_desc,

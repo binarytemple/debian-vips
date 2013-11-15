@@ -29,18 +29,54 @@
 
  */
 
-#ifndef IM_MEMORY_H
-#define IM_MEMORY_H
+#ifndef VIPS_MEMORY_H
+#define VIPS_MEMORY_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif /*__cplusplus*/
 
-#define IM_NEW( IM, T ) ((T *) im_malloc( (IM), sizeof( T )))
-#define IM_ARRAY( IM, N, T ) ((T *) im_malloc( (IM), (N) * sizeof( T )))
+#define VIPS_FREEF( F, S ) \
+G_STMT_START { \
+        if( S ) { \
+                (void) F( (S) ); \
+                (S) = 0; \
+        } \
+} G_STMT_END
 
-void *im_malloc( VipsImage *im, size_t sz );
-int im_free( void * );
+#define VIPS_FREE( S ) VIPS_FREEF( g_free, (S) );
+
+#define VIPS_SETSTR( S, V ) \
+G_STMT_START { \
+        const char *sst = (V); \
+	\
+        if( (S) != sst ) { \
+                if( !(S) || !sst || strcmp( (S), sst ) != 0 ) { \
+                        VIPS_FREE( S ); \
+                        if( sst ) \
+                                (S) = g_strdup( sst ); \
+                } \
+        } \
+} G_STMT_END
+
+#define VIPS_NEW( OBJ, T ) \
+	((T *) vips_malloc( VIPS_OBJECT( OBJ ), sizeof( T )))
+#define VIPS_ARRAY( OBJ, N, T ) \
+	((T *) vips_malloc( VIPS_OBJECT( OBJ ), (N) * sizeof( T )))
+
+void *vips_malloc( VipsObject *object, size_t size );
+char *vips_strdup( VipsObject *object, const char *str );
+int vips_free( void *buf );
+
+void vips_tracked_free( void *s );
+void *vips_tracked_malloc( size_t size );
+size_t vips_tracked_get_mem( void );
+size_t vips_tracked_get_mem_highwater( void );
+int vips_tracked_get_allocs( void );
+
+int vips_tracked_open( const char *pathname, int flags, ... );
+int vips_tracked_close( int fd );
+int vips_tracked_get_files( void );
 
 #ifdef __cplusplus
 }

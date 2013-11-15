@@ -1,21 +1,4 @@
-/* @(#) Functions which calculates the correlation coefficient between two 
- * @(#) images. 
- * @(#) 
- * @(#) int im_spcor( IMAGE *in, IMAGE *ref, IMAGE *out )
- * @(#) 
- * @(#) We calculate:
- * @(#) 
- * @(#) 	 sumij (ref(i,j)-mean(ref))(inkl(i,j)-mean(inkl))
- * @(#) c(k,l) = ------------------------------------------------
- * @(#) 	 sqrt(sumij (ref(i,j)-mean(ref))^2) *
- * @(#) 		       sqrt(sumij (inkl(i,j)-mean(inkl))^2)
- * @(#) 
- * @(#) where inkl is the area of in centred at position (k,l).
- * @(#) 
- * @(#) Writes float to out. in and ref must be 1 band uchar, or 1 band
- * @(#) ushort.
- * @(#)
- * @(#) Returns 0 on sucess  and -1 on error.
+/* im_spcor
  *
  * Copyright: 1990, N. Dessipris; 2006, 2007 Nottingham Trent University.
  *
@@ -48,6 +31,9 @@
  *      - make im_spcor a wrapper selecting either im__spcor or im__spcor2
  * 2008-09-09 JC
  * 	- roll back the windowed version for now, it has some tile edge effects
+ * 3/2/10
+ * 	- gtkdoc
+ * 	- cleanups
  */
 
 /*
@@ -88,10 +74,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Hold per-call state here.
  */
 typedef struct {
@@ -100,26 +82,34 @@ typedef struct {
 	double c1;		/* sqrt(sumij (ref(i,j)-mean(ref))^2) */
 } Spcor;
 
-#define LOOP(IN) { \
+#define LOOP( IN ) { \
 	IN *a = (IN *) p; \
 	IN *b = (IN *) ref->data; \
 	int in_lsk = lsk / sizeof( IN ); \
-	IN *a1, *b1; \
+	IN *a1; \
+	IN *b1; \
  	\
 	/* For each pel in or, loop over ref. First, \
 	 * calculate mean of area in ir corresponding to ref. \
 	 */ \
-	for( a1 = a, sum1 = 0, j = 0; j < ref->Ysize; j++, a1 += in_lsk )  \
+	a1 = a; \
+	sum1 = 0; \
+	for( j = 0; j < ref->Ysize; j++ ) { \
 		for( i = 0; i < ref->Xsize; i++ ) \
 			sum1 += a1[i]; \
-	imean = (double) sum1 / (ref->Xsize * ref->Ysize); \
+		a1 += in_lsk;  \
+	} \
+	imean = sum1 / VIPS_IMAGE_N_PELS( ref ); \
  	\
 	/* Loop over ir again, this time calculating  \
 	 * sum-of-squares-of-differences for this window on \
 	 * ir, and also sum-of-products-of-differences from mean. \
 	 */ \
-	for( a1 = a, b1 = b, sum2 = 0.0, sum3 = 0.0, j = 0; \
-		j < ref->Ysize; j++, a1 += in_lsk, b1 += ref->Xsize ) { \
+	a1 = a; \
+	b1 = b; \
+	sum2 = 0.0; \
+	sum3 = 0.0; \
+	for( j = 0; j < ref->Ysize; j++ ) { \
 		for( i = 0; i < ref->Xsize; i++ ) { \
 			/* Reference pel, and input pel. \
 			 */ \
@@ -136,6 +126,8 @@ typedef struct {
 			 */ \
 			sum3 += (rp - spcor->rmean) * (ip - imean); \
 		} \
+		a1 += in_lsk; \
+		b1 += ref->Xsize; \
 	} \
 }
 
@@ -151,8 +143,8 @@ spcor_gen( REGION *or, void *vseq, void *a, void *b )
 	Rect *r = &or->valid;
 	int le = r->left;
 	int to = r->top;
-	int bo = IM_RECT_BOTTOM(r);
-	int ri = IM_RECT_RIGHT(r);
+	int bo = IM_RECT_BOTTOM( r );
+	int ri = IM_RECT_RIGHT( r );
 
 	int x, y, i, j;
 	int lsk;
@@ -179,20 +171,17 @@ spcor_gen( REGION *or, void *vseq, void *a, void *b )
 		float *q = (float *) IM_REGION_ADDR( or, le, y );
 
 		for( x = le; x < ri; x++ ) {
-			PEL *p = (PEL *) IM_REGION_ADDR( ir, x, y );
+			VipsPel *p = IM_REGION_ADDR( ir, x, y );
 
 			/* Find sums for this position.
 			 */
 			switch( ref->BandFmt ) {
 			case IM_BANDFMT_UCHAR:	LOOP(unsigned char); break;
+			case IM_BANDFMT_CHAR:	LOOP(signed char); break;
 			case IM_BANDFMT_USHORT: LOOP(unsigned short); break;
 			case IM_BANDFMT_SHORT:	LOOP(signed short); break;
 			default:
-				error_exit( "im_spcor: internal error #7934" );
-
-				/* Keep gcc -Wall happy.
-				 */
-				return( -1 );
+				g_assert( 0 );
 			}
 
 			/* Now: calculate correlation coefficient!
@@ -213,10 +202,10 @@ static Spcor *
 spcor_new( IMAGE *out, IMAGE *ref )
 {
 	Spcor *spcor;
-	int sz = ref->Xsize * ref->Ysize;
-	PEL *p = (PEL *) ref->data;
+	guint64 sz = VIPS_IMAGE_N_PELS( ref );
+	VipsPel *p = ref->data;
 	double s;
-	int i;
+	size_t i;
 
 	if( !(spcor = IM_NEW( out, Spcor )) )
 		return( NULL );
@@ -229,7 +218,8 @@ spcor_new( IMAGE *out, IMAGE *ref )
 
 	/* Find sqrt-of-sum-of-squares-of-differences.
 	 */
-	for( s = 0.0, i = 0; i < sz; i++ ) {
+	s = 0.0;
+	for( i = 0; i < sz; i++ ) {
 		double t = (int) p[i] - spcor->rmean;
 		s += t * t;
 	}
@@ -254,29 +244,19 @@ im_spcor_raw( IMAGE *in, IMAGE *ref, IMAGE *out )
 	if( in->Xsize < ref->Xsize || 
 		in->Ysize < ref->Ysize ) {
 		im_error( "im_spcor_raw", 
-			"%s", _( "ref not smaller than in" ) );
+			"%s", _( "ref not smaller than or equal to in" ) );
 		return( -1 );
 	}
 
 	/* Check types.
 	 */
-	if( in->Coding != IM_CODING_NONE || 
-		in->Bands != 1 ||
-		ref->Coding != IM_CODING_NONE || 
-		ref->Bands != 1 ||
-		in->BandFmt != ref->BandFmt ) {
-		im_error( "im_spcor_raw", 
-			"%s", _( "input not uncoded 1 band" ) );
+	if( im_check_uncoded( "im_spcor", in ) ||
+		im_check_mono( "im_spcor", in ) || 
+		im_check_8or16( "im_spcor", in ) ||
+		im_check_coding_same( "im_spcor", in, ref ) ||
+		im_check_bands_same( "im_spcor", in, ref ) || 
+		im_check_format_same( "im_spcor", in, ref ) )
 		return( -1 );
-	}
-	if( in->BandFmt != IM_BANDFMT_UCHAR && 
-		in->BandFmt != IM_BANDFMT_CHAR &&
-		in->BandFmt != IM_BANDFMT_SHORT &&
-		in->BandFmt != IM_BANDFMT_USHORT ) {
-		im_error( "im_spcor_raw", 
-			"%s", _( "input not char/uchar/short/ushort" ) );
-		return( -1 );
-	}
 
 	/* Prepare the output image. 
 	 */
@@ -309,7 +289,38 @@ im_spcor_raw( IMAGE *in, IMAGE *ref, IMAGE *out )
 	return( 0 );
 }
 
-/* The above, with the input expanded to make out the same size as in.
+/**
+ * im_spcor:
+ * @in: input image
+ * @ref: reference image
+ * @out: output image
+ *
+ * Calculate a correlation surface.
+ *
+ * @ref is placed at every position in @in and the correlation coefficient
+ * calculated. One-band, 8 or 16-bit images only. @in and @ref must have the
+ * same #VipsBandFmt. The output
+ * image is always %IM_BANDFMT_FLOAT. @ref must be smaller than or equal to 
+ * @in. The output
+ * image is the same size as the input. 
+ *
+ * The correlation coefficient is calculated as:
+ *
+ * |[
+ *          sumij (ref(i,j)-mean(ref))(inkl(i,j)-mean(inkl))
+ * c(k,l) = ------------------------------------------------
+ *          sqrt(sumij (ref(i,j)-mean(ref))^2) *
+ *                      sqrt(sumij (inkl(i,j)-mean(inkl))^2)
+ * ]|
+ *
+ * where inkl is the area of @in centred at position (k,l).
+ *
+ * from Niblack "An Introduction to Digital Image Processing", 
+ * Prentice/Hall, pp 138.
+ *
+ * See also: im_gradcor(), im_fastcor().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_spcor( IMAGE *in, IMAGE *ref, IMAGE *out )

@@ -1,12 +1,4 @@
-/* @(#) Scale an image so that min(im) maps to 0 and max(im) maps to 255. If
- * @(#) min(im)==max(im), then we return black. Any non-complex type.
- * @(#)
- * @(#) int 
- * @(#) im_scale( in, out )
- * @(#) IMAGE *in, *out;
- * @(#)
- * @(#) Returns 0 on success and -1 on error
- * @(#)
+/* im_scale
  *
  * Author: John Cupitt
  * Written on: 22/4/93
@@ -21,6 +13,8 @@
  * 16/10/06
  * 	- what? no, don't set Type, useful to be able to scale histograms, for
  * 	  example
+ * 1/2/10
+ * 	- gtkdoc
  */
 
 /*
@@ -59,11 +53,18 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
-/* Scale, as noted above.
+/**
+ * im_scale:
+ * @in: input image
+ * @out: output image
+ *
+ * Search the image for the maximum and minimum value, then return the image
+ * as unsigned 8-bit, scaled so that the maximum value is 255 and the
+ * minimum is zero.
+ *
+ * See also: im_clip2fmt(), im_scaleps().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int 
 im_scale( IMAGE *in, IMAGE *out )
@@ -77,8 +78,8 @@ im_scale( IMAGE *in, IMAGE *out )
 	 */
 	if( !t || !(stats = im_stats( in )) )
 		return( -1 );
-	mn = stats->coeff[0];
-	mx = stats->coeff[1];
+	mn = VIPS_MASK( stats, 0, 0 );
+	mx = VIPS_MASK( stats, 1, 0 );
 	im_free_dmask( stats );
 
 	if( mn == mx ) 
@@ -91,7 +92,7 @@ im_scale( IMAGE *in, IMAGE *out )
 	/* Transform!
 	 */
 	if( im_lintra( scale, in, offset, t ) ||
-		im_clip( t, out ) )
+		im_clip2fmt( t, out, IM_BANDFMT_UCHAR ) )
 		return( -1 );
 
 	return( 0 );

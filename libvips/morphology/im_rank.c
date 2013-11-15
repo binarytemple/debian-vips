@@ -1,15 +1,4 @@
-/* @(#) Rank filter.
- * @(#)
- * @(#) int 
- * @(#) im_rank( in, out, xsize, ysize, order )
- * @(#) IMAGE *in, *out;
- * @(#) int xsize, ysize;
- * @(#) int order;
- * @(#)
- * @(#) Also: im_rank_raw(). As above, but does not add a black border.
- * @(#)
- * @(#) Returns either 0 (success) or -1 (fail)
- * @(#) 
+/* Rank filter.
  *
  * Author: JC
  * Written on: 19/8/96
@@ -30,6 +19,9 @@
  *	- sets Xoffset / Yoffset
  * 7/10/04
  *	- oops, im_embed() size was wrong
+ * 10/11/10
+ * 	- cleanups
+ * 	- gtk-doc
  */
 
 /*
@@ -69,16 +61,12 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Global state: save our parameters here.
  */
 typedef struct {
 	IMAGE *in, *out;	/* Images we run */
 	int xsize, ysize;	/* Window size */
-	int order;		/* Element select */
+	int index;		/* Element select */
 	int n;			/* xsize * ysize */
 } RankInfo;
 
@@ -86,7 +74,7 @@ typedef struct {
  */
 typedef struct {
 	REGION *ir;
-	PEL *sort;
+	VipsPel *sort;
 } SeqInfo;
 
 /* Free a sequence value.
@@ -122,19 +110,13 @@ rank_start( IMAGE *out, void *a, void *b )
 	 */
 	seq->ir = im_region_create( in );
 	seq->sort = IM_ARRAY( out, 
-		IM_IMAGE_SIZEOF_ELEMENT( in ) * rnk->n, PEL );
+		IM_IMAGE_SIZEOF_ELEMENT( in ) * rnk->n, VipsPel );
 	if( !seq->ir || !seq->sort ) {
 		rank_stop( seq, in, rnk );
 		return( NULL );
 	}
 
 	return( (void *) seq );
-}
-
-#define SWAP( TYPE, A, B ) { \
-	TYPE t = (A); \
-	(A) = (B); \
-	(B) = t; \
 }
 
 /* Inner loop for select-sorting TYPE.
@@ -156,7 +138,7 @@ rank_start( IMAGE *out, void *a, void *b )
 			d += ls; \
 		} \
 		\
-		/* Rearrange sort[] to make the order-th element the order-th 
+		/* Rearrange sort[] to make the index-th element the index-th 
 		 * smallest, adapted from Numerical Recipes in C.
 		 */ \
 		lower = 0;	/* Range we know the result lies in */ \
@@ -167,7 +149,7 @@ rank_start( IMAGE *out, void *a, void *b )
 				 */ \
 				if( upper - lower == 1 &&  \
 					sort[lower] > sort[upper] ) \
-					SWAP( TYPE, \
+					IM_SWAP( TYPE, \
 						sort[lower], sort[upper] ); \
 				break; \
 			} \
@@ -180,16 +162,16 @@ rank_start( IMAGE *out, void *a, void *b )
 				 * midpoint in sort[lower + 1] for 
 				 * partitioning. 
 				 */  \
-				SWAP( TYPE, sort[lower + 1], sort[mid] ); \
+				IM_SWAP( TYPE, sort[lower + 1], sort[mid] ); \
 				if( sort[lower] > sort[upper] ) \
-					SWAP( TYPE, \
+					IM_SWAP( TYPE, \
 						sort[lower], sort[upper] ); \
 				if( sort[lower + 1] > sort[upper] ) \
-					SWAP( TYPE, \
+					IM_SWAP( TYPE, \
 						sort[lower + 1], sort[upper] );\
 				if( sort[lower] > sort[lower + 1] ) \
-					SWAP( TYPE, \
-						sort[lower], sort[lower + 1] ) \
+					IM_SWAP( TYPE, \
+						sort[lower], sort[lower + 1] );\
 				\
 				i = lower + 1; \
 				j = upper; \
@@ -206,7 +188,7 @@ rank_start( IMAGE *out, void *a, void *b )
 					while( sort[j] > a ); \
 					if( j < i ) \
 						break; \
-					SWAP( TYPE, sort[i], sort[j] ); \
+					IM_SWAP( TYPE, sort[i], sort[j] ); \
 				} \
 				\
 				/* Replace mid element. 
@@ -216,14 +198,14 @@ rank_start( IMAGE *out, void *a, void *b )
 				\
 				/* Move to partition with the kth element. 
 				 */ \
-				if( j >= rnk->order ) \
+				if( j >= rnk->index ) \
 					upper = j - 1; \
-				if( j <= rnk->order ) \
+				if( j <= rnk->index ) \
 					lower = i; \
 			} \
 		} \
 		\
-		q[x] = sort[rnk->order]; \
+		q[x] = sort[rnk->index]; \
 	} \
 }
 
@@ -334,9 +316,9 @@ rank_gen( REGION *or, void *vseq, void *a, void *b )
 	ls = IM_REGION_LSKIP( ir ) / IM_IMAGE_SIZEOF_ELEMENT( in );
 
 	for( y = to; y < bo; y++ ) { 
-		if( rnk->order == 0 )
+		if( rnk->index == 0 )
 			SWITCH( LOOP_MIN )
-		else if( rnk->order == rnk->n - 1 ) 
+		else if( rnk->index == rnk->n - 1 ) 
 			SWITCH( LOOP_MAX )
 		else 
 			SWITCH( LOOP_SELECT ) }
@@ -347,24 +329,19 @@ rank_gen( REGION *or, void *vseq, void *a, void *b )
 /* Rank filter.
  */
 int
-im_rank_raw( IMAGE *in, IMAGE *out, int xsize, int ysize, int order )
+im_rank_raw( IMAGE *in, IMAGE *out, int xsize, int ysize, int index )
 {
 	RankInfo *rnk;
 
-	/* Check parameters.
-	 */
-	if( !in || in->Coding != IM_CODING_NONE || im_iscomplex( in ) ) {
-		im_error( "im_rank", "%s", 
-			_( "input non-complex uncoded only" ) );
+	if( im_piocheck( in, out ) ||
+		im_check_uncoded( "im_rank", in ) ||
+		im_check_noncomplex( "im_rank", in ) )
 		return( -1 );
-	}
 	if( xsize > 1000 || ysize > 1000 || xsize <= 0 || ysize <= 0 || 
-		order < 0 || order > xsize * ysize - 1 ) {
+		index < 0 || index > xsize * ysize - 1 ) {
 		im_error( "im_rank", "%s", _( "bad parameters" ) );
 		return( -1 );
 	}
-	if( im_piocheck( in, out ) )
-		return( -1 );
 
 	/* Save parameters.
 	 */
@@ -374,7 +351,7 @@ im_rank_raw( IMAGE *in, IMAGE *out, int xsize, int ysize, int order )
 	rnk->out = out;
 	rnk->xsize = xsize;
 	rnk->ysize = ysize;
-	rnk->order = order;
+	rnk->index = index;
 	rnk->n = xsize * ysize;
 
 	/* Prepare output. Consider a 7x7 window and a 7x7 image --- the output
@@ -406,18 +383,46 @@ im_rank_raw( IMAGE *in, IMAGE *out, int xsize, int ysize, int order )
 	return( 0 );
 }
 
-/* The above, with a border to make out the same size as in.
+
+/**
+ * im_rank:
+ * @in: input image
+ * @out: output image
+ * @width: window width
+ * @height: window height
+ * @index: select pixel
+ *
+ * im_rank() does rank filtering on an image. A window of size @width by
+ * @height is passed over the image. At each position, the pixels inside the 
+ * window are sorted into ascending order and the pixel at position @index is 
+ * output. @index numbers from 0.
+ *
+ * It works for any non-complex image type, with any number of bands. 
+ * The input is expanded by copying edge pixels before performing the 
+ * operation so that the output image has the same size as the input. 
+ * Edge pixels in the output image are therefore only approximate.
+ *
+ * For a median filter with mask size m (3 for 3x3, 5 for 5x5, etc.) use
+ *
+ *  im_rank( in, out, m, m, m * m / 2 );
+ *
+ * The special cases n == 0 and n == m * m - 1 are useful dilate and 
+ * expand operators.
+ *
+ * See also: im_conv(), im_fastcor().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int 
-im_rank( IMAGE *in, IMAGE *out, int xsize, int ysize, int order )
+im_rank( IMAGE *in, IMAGE *out, int width, int height, int index )
 {
-	IMAGE *t1 = im_open_local( out, "im_rank:1", "p" );
+	IMAGE *t1;
 
-	if( !t1 || 
+	if( !(t1 = im_open_local( out, "im_rank", "p" )) ||
 		im_embed( in, t1, 1, 
-			xsize/2, ysize/2, 
-			in->Xsize + xsize - 1, in->Ysize + ysize - 1 ) ||
-		im_rank_raw( t1, out, xsize, ysize, order ) )
+			width / 2, height / 2, 
+			in->Xsize + width - 1, in->Ysize + height - 1 ) ||
+		im_rank_raw( t1, out, width, height, index ) )
 		return( -1 );
 
 	out->Xoffset = 0;

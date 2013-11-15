@@ -1,21 +1,430 @@
-13/1/09 started 7.20.7
-- oops, generate C++/Python wrappers for deprecated operations by default
-  (thanks Ole)
-- argh, the YCbCr fix from 7.15 had been lost, it's back now
-- read TIFF images in strips rather than scanlines, helps load subsampled YCbCr
+19/4/12 started 7.28.5
+- ifthenelse blend mode was broken
+- small blend speedup
+- default to libtiff-4
 
-9/12/09 started 7.20.6
-- im_disp2Lab() was broken
+17/4/12 started 7.28.4
+- up max buffer size for vipsbuf
 
-9/12/09 started 7.20.5
-- reduce VM usage for small images by always using windows
+6/4/12 started 7.28.3
+- vips_divide() failed for int arguments
+- fix warning for unused vips7 gvalue argument
+- fix openslide read: always return png-style rgba, im_argb2rgba() becomes a
+  NOP
+- cast to unsigned int now removes <0 values
+- vips7 interface to openslide now supports :,level,associated options (thanks
+  Benjamin)
+- make vips8 cache smaller
+- more accurate progress reporting
 
-30/11/09 started 7.20.4
+13/3/12 started 7.28.2
+- xres/yres tiffsave args were broken
+
+13/3/12 started 7.28.1
+- add ICC profile read/write for png files
+
+30/1/12 started 7.28.0
+- version bump
+- added vips_foreign_find_save_options()/vips_foreign_find_load_options()
+- delayed write to foreign via a "w" image was not working
+- support operations with many returns in Python
+- sequential read mode 
+- better im_shrink()
+- added vips_sequential()
+- new vips_sink_memory() keeps read ordering
+- tiff, jpeg, png readers support sequential read
+- max/min avoid NaN
+- oop, histnorm was broken by the new vipsstats
+- never use IM ping to get a header, fixes BMP load
+- set @filename for non-vips formats in vips7 compat layer
+- make Xres/Yres double
+- completely disable debug by default in production builds
+
+20/8/11 started 7.27.0
+- version bump for new dev cycle
+- im_subtract(), im_avg(), im_min(), im_minpos(), im_copy(), im_embed(),
+  im_flophor(), im_flipver(), im_insert(), im_insert_noexpand(), im_lrjoin(),
+  im_tbjoin(), im_extract_area(), im_extract_bands(), im_extract_areabands(),
+  im_replicate(), im_clip2fmt(), im_gbandjoin(), im_bandjoin(), im_invert(),
+  im_lintra(), im_lintra_vec(), im_black(), im_rot90, im_rot180(), im_rot270()
+  im_sintra(), im_costra(), im_tantra(), im_asintra(), im_acostra(), 
+  im_atantra(), im_exptra(), im_exp10tra(), im_logtra(), im_log10tra(),
+  im_abs(), im_sign(), im_max(), im_maxpos(), im_deviate(), im_divide(),
+  im_multiply(), im_stats(), im_measure(), im_recomb(), im_floor(), im_ceil(),
+  im_rint(), im_equal*(), im_notequal*(), im_less*(), im_lesseq*(), im_more*(),
+  im_moreeq*(), im_remainder*(), im_and*(), im_or*(), im_eor*(), im_shift*(),
+  im_pow*(), im_exp*(), im_ifthenelse(), im_blend(), im_c2amph(), im_c2rect(),
+  im_bandmean(), im_c2real(), im_c2imag(), im_ri2c(), im_jpeg*2vips(), 
+  im_vips2jpeg*(), im_tiff2vips(), im_vips2tiff(), im_exr2vips(),
+  im_fits2vips(), im_vips2fits(), im_analyze2vips(), im_raw2vips(),
+  im_vips2raw(), im_magick2vips(), im_png2vips(), im_png2*(), im_ppm2vips(),
+  im_vips2ppm(), im_mat2vips(), im_rad2vips(), im_vips2rad()
+  redone as classes
+- added argument priorites to help control arg ordering
+- generate has a 'stop' param to signal successful early termination
+- added optional output args, eg. x/y for min
+- CLI supports optional output args
+- in im_vips2tiff, enable YCbCr compression for jpeg write
+- VipsMin stops search early if it can
+- C API supports optional output args
+- switch back to int-valued operations
+- add the operation cache, various --vips-cache-* flags
+- fallback vips_init()
+- vips_tracked_malloc() tracks allocation size and can report total mem usage
+- cache limits, drop, init, flush plus command-line controls
+- remove dmalloc support, was never used and valgrind is better
+- im_csv2vips() allows quoted strings, including escaped quotes
+- added vips_shutdown()
+- added --vips-leak flag
+- more VipsImage props
+- added vips_image_write(), old one becomes vips_image_write_to_file()
+- added vips_region_paint_pel()
+- added VipsArea as a public struct
+- added array members and arguments
+- added nary
+- remove VipsPool, vips_object_local_array() is much better
+- cache.c now drops if you have too many open files
+- CLI args to change max files
+- new format for handling exif tags 
+- switch SMALLTILE to 128, 512 was just too big
+- oop mode "rd" was not always being used for images
+- added ARRAY interpretation for images
+- VipsStats tracks minpos/maxpos as well
+- moved mask/ to deprecated
+- use atexit() to call vips_shutdown()
+- set _O_TEMPORARY on delete-on-close temp images if possible
+- unlink temps on rewind on *nix, less likely to leave temps on a crash
+- added complex conj as a basic operation
+- rect/polar/conj work on any format, not just complex
+- new VipsFile system for load/save in image formats
+- options now introspectable, try "vips jpegsave"
+- copy swap uses glib byteswap macros, about 2x faster
+- edvips can change vips header byte ordering
+- "header" is terse by default
+- "header" outputs filenames if working on many files
+- added openslide support (Benjamin Gilbert)
+- allow new-style load/save options in filenames to 
+  vips_image_new_from_file() etc.
+- VipsFormat is deprecated
+- remove outchecks from documented API
+- support gobject-introspection 
+- new Python binding based on gobject-introspection
+- only spot options at the end of arg strings
+- add vips_cache() as a vips8 operator
+- remove the old fft fallback
+- remove fftw2 support
+- much faster im_draw_smudge()
+
+14/1/12 started 7.26.8
+- interpolate CLI args were broken (thanks speckins)
+
+5/12/11 started 7.26.7
+- lazy read from tiled tiff from layers other than 0 was broken
+- optional args to vips_call*() do not work, disabled (fixed correctly in
+  master)
+- address calculations in files over 4gb were broken on 32-bit platforms
+  (broken since March 2011, oops)
+
+12/10/11 started 7.26.6
+- NOCACHE was not being set correctly on OS X causing performance 
+  problems with large files
+- update Orientation exif tag on jpeg write
+
+12/10/11 started 7.26.5
+- jpeg read/write copies over XMP data
+- handle offset correctly in separable convolutions (thanks Nicolas)
+- macros for class arg boilerplate
+- class arg order set by new 'priority' param
+- VipsExtend, VipsDirection enums added
+
+12/9/11 started 7.26.4
+- fallback vips_init() 
+- im_openout() compat stub was wrong, breaking ruby-vips
+- vips_class_map_concrete_all() needed a compat macro too
+- vips_class_map_all() was broken
+
+10/8/11 started 7.26.3
+- don't use G_VALUE_COLLECT_INIT(), many platforms do not have a glib this
+  recent
+- don't leave image->kill set when we detect termination
+- test for a working C++ compiler, disable C++ parts of none found
+
+10/8/11 started 7.26.2
+- oops, im_benchmark.c had some stuff turned off
+- configure option --without-cfitsio was broken (thanks Mike)
+
+26/7/11 started 7.26.1
+- doc fixups
+- oops, ==0 missing from a strcmp() in vips7compat
+- fixed a race in im_XYZ2Lab() table build
+- added im_concurrency_get() to operation db
+- better benchmarkn.sh runs for the correct number of CPUs automatically, runs
+  three times for each one, and just reports the fastest
+
+26/7/11 started 7.26.0
+- version bunp for 7.26
+- various fixes to get win32 and OS X building
+
+6/12/10 started 7.25.0
+- attach the jpeg thumbnail and multiscan fields (thanks Mike)
+- faster tiff read for some common cases
+- faster im_tile_cache()
+- if we use C++ in libvips, add -lstdc++ to vips-7.xx.pc 
+- im_vips2png() / im_png2vips() set / get png resolution (thanks Zhiyu Wu)
+- updated README
+- don't use tables for bilinear on float data for a small speedup (thanks
+  Nicolas Robidoux)
+- no tables for uchar either, about a 15% speedup (thanks Nicolas)
+- dmask write was broken
+- lr/tbmerge() cast images to match, like im_insert()
+- lr/tbmosaic() work for any mix of image formats / bands
+- removed ancient balance stuff from im_lr/tbmosaic()
+- gtk-doc for mosaicing
+- add im_fits2vips() to the operation database
+- im_fits2vips() is lazy and much faster
+- im__file_open_write() / _read() has a flag for text_mode, get rid of all the 
+  remaining fopen()s
+- move cooc_* and glds_* to deprecated
+- move im_dif_std() to almostdeprecated
+- move im_simcontr() to almostdeprecated
+- add im_sines() to operation db
+- move im_spatres() to almostdeprecated
+- done gtk-doc for other
+- --vips-progress tells you about nthreads, tile size, nlines
+- gtk-doc for interpolate
+- move im_stretch3() to deprecated
+- move im_clamp() to deprecated
+- gtk-doc for video ... all operators done! amazing argh
+- set MAP_NOCACHE on OS X, otherwise performance dives off a cliff with 
+  files larger than memory
+- removed man pages, we are all gtk-doc now
+- im_jpeg2vips() ignores weird APP1 chunks
+- im_add() for int/uint was broken
+- im_ri2c() was broken
+- added VIPS_FORMAT_BIGENDIAN format flag
+- moved IMAGE and REGION to VipsImage and VipsRegion, classes over VipsObject
+- Rect -> VipsRect
+- libpng-1.5 supported
+- better png read for 1-bit and palette images
+- fits write
+- better fits metadata support
+- renamed all header fields, old names still supported, hopefully
+- all of iofuncs moved to vips_ namespace
+- lots of old iofuncs API moved to deprecated
+- added VipsOperation, an abstract base class for all vips operations
+- added VipsAdd, the first operation object
+- im_tiff2vips() int/uint mixup for rows_per_strip, thanks Bubba
+- removed the links feature, won't work with vips8
+- got rid of the tools/ subdirs
+- added im_bufjpeg2vips()
+- tiff reader can do 1, 2, 4, 8 bit palette images
+- tiff palette read can do mono images
+- im_bufjpeg2vips() has a "header_only" parameter
+- added vips_image_get_data()
+- updated German translation (thanks Chris)
+- fixed typo in im_conv() overflow estimation which could cause errors
+- vips.c has new action syntax, knows about vips8 operations
+- add now has sizealike
+- vips7 binops all do sizealike too, also gbandjoin and ifthenelse
+- new API is now functional
+- vips.c generates GOption flags for vips8 operations
+- added im_gauss_dmask_sep()
+- laplacian generator lost -ve lobes for large sigma
+- added im_aconv(), approximate convolution
+- bumped smalltile to 512x512 for testing
+- added VipsPool, got rid of floating refs again, argh
+- VIPS_EXEEXT is now part of the exported API
+- im_blend() also does sizealike, oops
+- jpeg write was not inverting CMYK, thanks Ole
+- im_falsecolour() converts to mono 8-bit for you
+- im_icc_import*/export*() cast inputs for you
+- im_vips2tiff() uses im__temp_name() for intermediates
+- added vips_wrap7 ... wrap up vips7 operations as vips8 classes
+- man pages are back for commands
+
+30/11/10 started 7.24.0
+- bump for new stable
+- added im_dmask2imask(), im_imask2dmask()
+- im_rotate_*mask90() can do masks of any size (thanks Adam Turcotte)
+
+18/7/10 started 7.23.0
+- im_vips2bufjpeg() writes to a linked list, so it will work for any size
+  image and header
+- added im_vips2bufpng()
+- use GetTempPath() to pick a temp dir on Windows
+- added "rd" mode to im_open()
+- vipsthumbnail and vips use "rd"
+- im_divide spots /0
+- remove liboil dependency, we will use Orc instead
+- various small cleanups (thanks Tim)
+- add lcms2 support
+- VImage(filename) defaults to "rd" mode
+- revise window_offset / window_size, again
+- fix a mixup with ANY hints that caused performance problems on the main
+  benchmark
+- rewritten im_circle as im_draw_circle, im_circle moved to almostdeprecated
+- added IM_TYPE_RW args for inplace ops --- nip2 uses this to wrap inplace ops
+  automatically
+- special-case 3x3 masks in im_conv() for a 20% speedup
+- add IM_TYPE_RW flag for im__rw_image, helps nip2 auto-wrap inplace ops
+- im_insertplace() casts and bandalikes
+- copy iconv.m4 and friends in bootstrap, thanks Mike
+- moved the stupid _copy() versions of the inplace ops to deprecated, since
+  nip2 can call inplace ops directly now
+- added im_draw_rect(), moved im_paintrect() to deprecated
+- added im_draw_image(), moved im_insertplace() to deprecated
+- added im_draw_line(), now clips, moved im_fastline() to deprecated
+- added im_draw_line_user(), now clips, moved im_fastlineuser() to deprecated
+- added im_draw_mask(), now wrappable, moved im_plotmask() to deprecated
+- added im_draw_point(), moved im_plotpoint() to deprecated
+- added im_read_point(), now partial, moved im_readpoint() to deprecated
+- added im_draw_smudge(), moved im_smudge() / im_smear() to deprecated
+- convolution functions support complex images
+- im_blend() can have any format condition image and it's converted to uchar
+- security fix for vips-7.23 wrapper script (thanks Jay)
+- im_affine() has a larger safety margin
+- fix gtk-doc warnings
+- small mask load/save improvements
+- mask gtk-doc done
+- add cfitsio dependancy
+- add FITS reader
+- land the vector branch and the orc dependancy ... we have SSE
+  erode/dilate/add/conv
+- add IM_SWAP
+- dilate/erode do (!=0) on non-uchar images
+- add multipass Orc to im_conv(), 3.5x faster for 5x5 mask
+- im_profile() works for any image format, any number of bands
+- im_rank_image() works for mix of formats, bands
+- morph gtk-doc done
+- oops, missing braces in debug.h and util.h, thanks Laurence
+- update C++/Python binding
+- oop, bool constants are always (int) now, so (^-1) works for unsigned types,
+  thanks Nicolas Robidoux
+- much lower memuse for im_cache() in complex pipelines
+- im_scale_dmask() normalises to 20, not 100 ... we hit the fast
+  conv path more often
+
+12/5/10 started 7.22.2
+- the conditional image of ifthenelse can be any format, a (!=0) is added if
+  necessary
+- oops vipsthumbnail sharpening was turning off for integer shrinks,
+  thanks Nicolas Robidoux
+- im_vips2jpeg() could fail for very small images (thanks Tim)
+- threadpool wasn't stopping on allocate errors (thanks Tim)
+- vips_sink_disc() could block if allocate failed (thanks Tim)
+
+12/5/10 started 7.22.1
+- fix a problem with tiff pyramid write and >1cpu, thanks Ruven
+- constant ops clip to target range
+- oops, moreconst and moreeqconst were the same
+- better buffer handling in sinkdisc for single-line images
+- less chatty errors from "vips"
+- oops, don't rename "copy_set" as "copy_", thanks Ole
+
+12/5/10 started 7.22.0
+- bump and rename
+- vipsthumbnail has a manualpage and sharpens correctly
+- more interpolator work
+- fixes to --disable-cxx mode (thanks Mike)
+- added German translation, thanks Chris Leick
+- fixed typos in some messages, thanks Chris Leick
+- fix gettext startup
+- all "colour" in messages changed to "color", have a proper en_GB
+  translation file
+- vipsthumbnail delete profile failed if there was a profile
+- interpolate cli unref was broken
+- more accurate, slightly faster bilinear and bicubic (thanks Nicolas Robidoux)
+
+21/3/10 started 7.21.3
+- added progress feedback to threadpool
+- --vips-wbuffer2 switch does all wbuffer use now
+- im_wbuffer2() renamed as vips_discsink(), some cleanups
+- im_gammacorrect() can do 16-bit images too
+- im_histplot() could fail for signed int histograms
+- im_fwfft() and im_invfft() could free their output image too early
+- added im_local_imask(), im_local_dmask()
+- added im_mpercent_hist()
+- im_maplut() casts the index image to one of the uint types
+- fixed a couple of /0 problems with scale == 0 masks
+- set G_LOG_DOMAIN to VIPS so we can use g_warning etc.
+- added VIPS_DEBUG_MSG() macro
+- --vips-wbuffer2 turns on threadpool for im_iterate as well
+- im_vips2tiff() uses vips_sink() instead of threadgroup
+- strip out threadgroup
+- add --enable-debug=xxx flag
+- im_iterate() -> vips_sink()
+- better number-of-bands detection for im_magick2vips()
+- added im_get_argv0()
+- added PFM read / write
+
+16/1/10 started 7.21.2
+- "invalidate" is careful to keep images alive, so invalidate callbacks can do
+  im_close()
+- flood_blob could loop if start point == ink
+- added im_meta_remove()
+- added remove profile option to vipsthumbnail
+- added vips_bandfmt_iscomplex() and friends, im_iscomplex() and friends
+  deprecated
+- im_bandjoin()/im_gbandjoin() work with images of varying formats
+- added im_copy_native(), deprecated im_copy_from() and friends
+- im_check*() name rationalisation
+- finally removed old flood stuff
+- im_insert*() bandalike and formatalike
+- im_*join() bandalike and formatalike
+- im_ri2c() bandalike
+- im_vips2png() saves 16-bit PNGs, if necessary
+- vipsthumbnail has selectable interpolators, optional sharpen
+- moved a lot of stuff (eg. im_iscomplex()) from deprecated to
+  almostdeprecated to avoid breakage
+- im_csv2vips(): allow lines that end with EOF rather than \n
+- im_vips2tiff has a bigtiff option
+- oops, im_lineset() needs to ask for WIO of mask and ink
+- move cache invalidation to REGION, fixes a race
+- don't im_invalidate() after paint, it can cause horrible performance
+  problems ... for example, im_plotmask() used as the action operator for
+  im_fastlineuser() is terrible
+- instead, users of the inplace operations need to call im_invalidate() at the
+  end of a set of paint actions to trigger an update
+- parent/child renamed as upstream/downstream in DAG
+- set VIPS_ICC_DIR in configure
+- ICC profiles are looked for in VIPS_ICC_DIR as a fallback
+- im_render() mask image generation no longer triggers image calc
+- threadgroups scale output buffers with number of threads for smalltile ...
+  improves SMP scaling for narrow images on many-way machines
+- default to max number of processors (--vips-concurrency and IM_CONCURRENCY
+  set >0 can override) on linux and win32
+- better nprocs guesser
+- im_render() fixes to help the paintbox, some speedups too
+- added im_wbuffer2(), a new distributed threading system, and --vips-wbuffer2
+  to enable it, thank you Christian
+
+15/1/10 started 7.21.1
+- added "written" callbacks, used to implement write to non-vips formats
+
+26/11/09 started 7.21.0
+- branch for new dev cycle
 - argh, missing init from colour.c (thanks Peter)
 - argh, im_measure() was not looping over bands correctly (thanks Peter)
+- removed mmap_limit, we now always use windows ... reduces VM use hugely,
+  because mmap windows are freed when their regions are freed, while images
+  are only unmapped when they are closed
+- have a min bytes for mmap windows as well, so we don't make too many tiny
+  windows
+- im_disp2Lab() was broken
+- deprecated.h is now defined in terms of current functionality, rather than
+  repeating stuff
+- im_flood() and friends rewritten, typically 4x faster
+- removed --with-cimg option, added --disable-cxx
+- added im_system_image() (thanks Roland)
+- added postclose callbacks
+- added vipsthumbnail
+- oops, generate C++/Python wrappers for deprecated operations by default
+- read TIFF images strip-wise, not scanline-wise
+- better TIFF YCbCr reading (thanks Ole)
+- isanalyze generates fewer silly error messages
 
 26/11/09 started 7.20.3
-- updated en_GB.po translation 
+- updated en_GB.po translation
 - file_length is gint64 to avoid win32 breakage
 
 23/11/09 started 7.20.2
@@ -47,7 +456,7 @@
 - added "fail" option to im_jpeg2vips: fail with an error on any warning
   (thank you Ole)
 - started gtk-doc changes
-- renamed im_meta_get_type() and im_header_get_type() as 
+- renamed im_meta_get_type() and im_header_get_type() as
   im_meta_get_typeof() and im_header_get_typeof() to prevent confusion with
   GObject type definers (was breaking gtkdoc object scan)
 - revised more names, limited documented API
@@ -82,11 +491,11 @@
 - renamed im_eorconst() as im_eorimage_const() for consistency, also and, or
 - relational revised: smaller, more general, faster
 - im_blend()/im_ifthenelse() allows many-band conditional, 1-band then/else
-- im_blend()/im_ifthenelse() allows band and format to differ between then 
+- im_blend()/im_ifthenelse() allows band and format to differ between then
   and else parts
 - better im_check() functions
 - added im_flood_other() as start of simple segmentation operator
-- added im_label_regions() 
+- added im_label_regions()
 - im_printlines(), im_debugim() deprecated (use im_vips2csv() instead)
 - meta, header, callback, error, region, check, generate, memory gtkdocs
 - removed printlines tool, vips2csv is much better
@@ -97,7 +506,7 @@
 - im_jpeg2vips.c, set scale_num on shrink (thanks Guido)
 - heh argh reading history always stopped after the first line (thanks Haida)
 - added im_histindexed
-- new im_iterate() calls start and stop functions from workers so resources 
+- new im_iterate() calls start and stop functions from workers so resources
   they make are owned by the worker thread ... this makes it possible to have
   start functions which create mutiple regions and therefore allows
   im_iterate() to scan more than one image at once
@@ -113,7 +522,7 @@
 - deprecate all the "_raw" variants, not really necessary now
 - removed "contrib", not very useful anymore
 - added im_header_as_string()
-- im_malloc()/im_free() now call g_try_malloc()/g_free() ... removes confusion 
+- im_malloc()/im_free() now call g_try_malloc()/g_free() ... removes confusion
   over whether to use im_free() or g_free() for things like im_header_string()
 - added im_history_get(), im_getexp(), im_printdesc() as wrapped functions ...
   so you no longer need the "header" program
@@ -241,7 +650,7 @@
 - add "vips --list formats"
 - rename VBuf as im_buf_t for consistency
 - add type.[hc], start of new type system
-- removed man pages for IM_MIN, MAX and RINT to avoid case confusion on 
+- removed man pages for IM_MIN, MAX and RINT to avoid case confusion on
   OS X / win
 
 7/3/08 started 7.15.0
@@ -249,7 +658,7 @@
 - write MAGIC correctly on sparc/powerpc machines (thanks Joe)
 - oop, we were still making fade threads even when not fading
 - tiny cond jump fixes for valgrind in colour.c
-- remove -lstdc++ from libs, except on windows 
+- remove -lstdc++ from libs, except on windows
 - push Magick cflags earlier in the include order to make it easier to pick
   GraphicsMagick over ImageMagick (thanks Mikhail)
 - fix the en_GB translation
@@ -264,7 +673,7 @@
 - better rounding for im_conv(), im_convsep()
 - tiny speedup for im_conv()
 - better /0 test for remainderconst
-- revise i18n configure, get rid of intltool 
+- revise i18n configure, get rid of intltool
 - command-line IMAGVEC input could segv with non-vips image output
 - added .tobuffer()/.frombuffer(), .tostring()/.fromstring() to Python binding
 - add PIL_mode_from_vips () and vips_from_PIL_mode () utility functions
@@ -275,7 +684,7 @@
 - configure prints a summary of optional packages found at the end
 - im_lhisteq() checks for window too small
 - added invalidate callbacks
-- now tests for MagickWand before ImageMagick (thanks Adam) 
+- now tests for MagickWand before ImageMagick (thanks Adam Turcotte)
 - added "-rotate" option to vips2dj
 - added man page for im_resize_linear
 - better jpeg-in-tiff YCbCr read (thanks Ole)
@@ -284,7 +693,7 @@
 - added IM_LIBDIR, im_guess_libdir()
 - load plugins from libdir/vips-x.x on startup
 - added meta get/set int/double/string/area/blob/GValue to C++ API
-- include time_t in vips.h, thanks nicola
+- include time_t in vips.h, thanks Nicolas Robidoux
 - lock global image list (thanks lee)
 
 25/1/08 started 7.14.0
@@ -300,10 +709,10 @@
 - look for MAGICKCORE_HDRI_SUPPORT (thanks Marcel)
 - set icc profiles in tiff pyramids explicitly (thanks Joe)
 - add --without-cimg configure option
-- add im_maxpos_subpel 
-- make im_abs compile without liboil 
-- add im_align_bands 
-- fix type overflow in complex division 
+- add im_maxpos_subpel
+- make im_abs compile without liboil
+- add im_align_bands
+- fix type overflow in complex division
 - fix im_cross_phase and im_addgnoise (Tom)
 - updated docs, C++ and python
 - header no longer stops on error
@@ -376,7 +785,7 @@
 - oops, im_bits_of_fmt() manpage was not being installed
 - im_histcum() can do all image types
 - updated NEWS
-- added im_csv2vips_header() 
+- added im_csv2vips_header()
 - command-line csv read was broken (thanks Tom)
 - removed length limit on argument vectors (Tom)
 - added IM_PREFIX, configure-time install prefix
@@ -385,7 +794,7 @@
 - better vips usage message
 - oops, IM_ANY missing from im_demand_hint() manpage (thanks Shahid)
 - just warn if plugins fail to load in im_init_world()
-- expose Vargv and make refblock public rather than private so that 
+- expose Vargv and make refblock public rather than private so that
   subclasses of VImage can add vips-style member operations (thanks Pablo)
 - oops, im_initdesc() needed to have bbits set correctly (thanks Shahid)
 - make VError derive from std::exception more officially
@@ -419,8 +828,8 @@
 - liboil back to "test"
 - add buffer_cache_list to avoid GHashTable _insert()s
 - oop, --vips-concurrency was broken
-- renamed (in dispatch layer) im_and/or/eor_const -> im_and/or/eorimageconst 
-  for consistency 
+- renamed (in dispatch layer) im_and/or/eor_const -> im_and/or/eorimageconst
+  for consistency
 - C++ API wraps IMAGEVEC, DOUBLEVEC, INTVEC arguments
 - oop, IMAGE % vector<double> was broken
 
@@ -430,8 +839,8 @@
 - vips.spec split to devel and python too (Dennis Lubert)
 - be more explicit about sizeof(magic)
 - init magic to native order by default (thanks Dennis)
-- Hist becomes im_history_get() 
-- new history mechanism is faster, uses much less memory, and removes 
+- Hist becomes im_history_get()
+- new history mechanism is faster, uses much less memory, and removes
   duplicate lines
 - added im_get_option_group()
 - added official im_concurrency_set()/_get()()
@@ -447,7 +856,7 @@
 - set RGB16 on 16-bit RGB ICC export
 
 29/11/06 started 7.11.18
-- added im_buffer_t so regions can share calculated pixels: 2-3x speedup on 
+- added im_buffer_t so regions can share calculated pixels: 2-3x speedup on
   the benchmark
 - im_region_local() -> im_region_buffer()
 - im_sharpen() order change to help sharing
@@ -458,7 +867,7 @@
 - fix nothread eval
 - raise threads limit to 1024 (thanks Christian)
 - manual redone
-- vipsCC python init() hooks 
+- vipsCC python init() hooks
 - add liboil dependency
 - use liboil for im_abs(), im_add(), im_divide(), im_floor(), im_multiply(),
   im_subtract(), im_lintra(), im_avg(),im_deviate()
@@ -531,7 +940,7 @@
 - added im_buildlut(3)
 - removed extra im_free() in im_copy() fallback in im_msb()
 - added GValue input/output args
-- various C++ binding improvements (thanks Dennis): namespace support, 
+- various C++ binding improvements (thanks Dennis): namespace support,
   VError inherits from std::exception, small fixups
 - remove im_msb() warning on fallback to copy for uchar ... not very serious,
   happens a lot in nip2
@@ -570,7 +979,7 @@
 
 23/6/06 started 7.11.9
 - back on sourceforge CVS again
-- require openexr 1.2.2 or greater 
+- require openexr 1.2.2 or greater
 - range check xy on im_insert*() for sanity
 - VMask::invertlut decl removed (thanks Jean)
 - added \"all\" option to vips.c
@@ -612,7 +1021,7 @@
 - oops, lcms .pc finder was not working
 - clipping problem in im_affine() fixed (thanks Clare)
 - test for attr support in libmagick
-- im_text() returns an error for empty string 
+- im_text() returns an error for empty string
 - im_falsecolour() scale reversed
 - im_remosaic() could crash on bad mosaics
 - configure changes to fix --without-magick, lcms and fftw (but sadly we now
@@ -626,7 +1035,7 @@
 - commas in filename options can be escaped with a '\'
 - raise tile buffer limit (thanks Ruven)
 - im_spcor() and im_fastcor() have prettier borders
-- im_fastcor() returns sum of squares of differences, not sum of abs of 
+- im_fastcor() returns sum of squares of differences, not sum of abs of
   differences
 
 18/11/05 started 7.11.4
@@ -651,7 +1060,7 @@
 - im_magick2vips() writes many-frame images as tall thin VIPS images
 - im_histcum() was broken for vertical histograms
 - im_histnorm() is neater
-- simpler and faster inner loop for im_conv() and im_convf() avoids gcc4 bug 
+- simpler and faster inner loop for im_conv() and im_convf() avoids gcc4 bug
 - appendc() was reading past the end of the buffer on MSB machines
 
 13/6/05 started 7.11.2
@@ -665,7 +1074,7 @@
 - 16 bit LAB TIFF read/write was wrong
 - new GType for refstring makes it visible from im_header_map()
 - jpeg loader attaches exif data (and human-readable meta fields)
-- jpeg saver writes any exif data 
+- jpeg saver writes any exif data
 - meta not wiped by im_*incheck() in a "w" image
 - meta keeps traverse order
 - now require glib >= 2.4
@@ -704,7 +1113,7 @@
 - im_region_region() allows Bands and BandFmt to differ, provided
   sizeof( pel ) is the same ... makes im_copy_morph() work
 - added im_meta*() functions (MW)
-- im_header_*() rewritten for meta 
+- im_header_*() rewritten for meta
 - added im_header_exists(), im_header_map()
 - use pkg-config to find libpng and ImageMagick
 - added im_lineset()
@@ -741,14 +1150,14 @@
 - local memory on regions can shrink as well as grow
 - shut down threadgroups on render if no dirty tiles
 - limit number of simultaneous renders
-- higher mmap window threshold 
+- higher mmap window threshold
 - allow max == -1 for unlimited render cache
 - 'priority' marks non-suspendable renders
 - im_embed() mode == 4 paints white pels
 - im_tiff2vips() was broken with --disable-threads
 - oops, im_errormsg() compat macros were GCC only
 - larger default tile size and strip height
-- tiff write sets PHOTOMETRIC_CIELAB for vips TYPE_LAB images ... so we can 
+- tiff write sets PHOTOMETRIC_CIELAB for vips TYPE_LAB images ... so we can
   write float LAB as well as float RGB (thanks Ruven)
 - also 16 bit LAB TIFF write
 - im_render() rewritten
@@ -760,7 +1169,7 @@
 - --disable-threads removes gthread dependency completely (thanks Simon)
 - intercept TIFF warnings as well as errors ... stops occasional libMagick
   exceptions
-- add im_init_world() to im_init() as well to help backwards compat (thanks 
+- add im_init_world() to im_init() as well to help backwards compat (thanks
   Simon)
 - im_icc_present() function description was broken, thanks Jay
 - oops, libtool library versioning was wrong, thanks Jay
@@ -787,7 +1196,7 @@
 1/11/04 styarted 7.10.6
 - tiny doc fixes
 - scripts now only depend on 'vips' program
-- im_open( "r" ) is now lazier ... for non-VIPS formats, we delay read until 
+- im_open( "r" ) is now lazier ... for non-VIPS formats, we delay read until
   the first ->generate()
 - so im_open_header() now deprecated since im_open("r") is identical
 - now looks for fftw3 as well as fftw2 ... slightly faster ffts
@@ -840,7 +1249,7 @@
 - generalised im_tone_build() to any image type to make im_tone_build_range()
 
 20/5/04 started 7.9.5
-- tiff output res can be a single number too 
+- tiff output res can be a single number too
 - added im_text() to make a bitmap from a string with pango
 - im_tiff2vips() does 16 bit RGBA
 - im_binfile() was broken since 7.9.2 due to im_mapfile() change
@@ -861,10 +1270,10 @@
   minimum point
 - no change to im_spcor(), since you will usually be searching for the maximum
 - better im_render() cache behaviour under heavy loads
-- im_affine() revised 
-	* clip, resample and transform is now pixel-perfect for all 
-	  inputs (I hope) 
-	* uses the new embed to make sure there are no black borders 
+- im_affine() revised
+	* clip, resample and transform is now pixel-perfect for all
+	  inputs (I hope)
+	* uses the new embed to make sure there are no black borders
 	  from edge interpolation
 	* about 20 - 30% faster
 - policy change: Xoffset and Yoffset are now set by all operations to record
@@ -884,7 +1293,7 @@
 - im_profile() now makes vertical images for a vertical profile
 - added im_vips2tiff() option to set the resolution in inches not cm (thanks
   Andrey)
-- im_binfile() is now exported 
+- im_binfile() is now exported
 
 6/2/04 started 7.9.3
 - added an im_init_world() to im_open(), to help old progs
@@ -904,7 +1313,7 @@
 - im_thread stuff removed, now uses g_thread
 - im_lock stuff removed, now uses g_mutex
 - im_semaphore_t renamed to VSemaphore, not sure this is a good idea
-- build with --disable-threads to turn off threaded render 
+- build with --disable-threads to turn off threaded render
 - #include <vips/vips.h> now pulls in most of the public API, you shouldn't
   need other vips includes very often
 - im_close() is better at cleaning up if there's an error
@@ -935,10 +1344,10 @@
 - added im_rank_image() ... im_maxvalue() a special case of this
 - im_subtract() goes up to int earlier for better value preserving, thanks
   Haida
-- im_rank() much faster for large windows, correct result on all platforms 
+- im_rank() much faster for large windows, correct result on all platforms
   (dratted memcpy() was causing problems before)
 - fixed problem with libMagick config if installed somewhere strange
-- fixed problem with include order in library compile 
+- fixed problem with include order in library compile
 - added --without-magick configure option
 - added im_render(), threaded background image paint
 - added im_replicate(), replicate an image horizontally and vertically
@@ -952,13 +1361,13 @@
 - stupid light_correct script no longer uses /pics/tmp
 - added batch_crop script
 
-22/5/03 
+22/5/03
 - started 7.8.10
 - the JPEG writer can embed ICC profiles in output images ... although I've
   yet to see it make any difference :-( test this carefully at some point
 - fixed a possible coredumper in jpeg write
 - jpeg read now spots truncated files
-- im_invertlut() now makes an image, not a mask ... sorry :-( 
+- im_invertlut() now makes an image, not a mask ... sorry :-(
 - im_histnD() makes an n-dimensional histogram from an n-band image
 - im_col_pythagoras() patch
 - IM_NUMBER() now returns int not size_t
@@ -968,7 +1377,7 @@
 - spec/ subdir now has the spec files for building RPMs
 - dist now includes formatted documentation
 - license change: VIPS is now LGPL, nip stays GPL ... this means proprietary
-  programs can link against the vips library 
+  programs can link against the vips library
 - had a report of a working VIPS build on a 64 bit system (!)
 - im_log_dmask() now includes all of the negative lobe, thanks matt
 - vips-7.8 start script now auto-relocates
@@ -976,7 +1385,7 @@
 
 29/4/03
 - started 7.8.9
-- changes to build to help MSVC 
+- changes to build to help MSVC
 - oops, makedef.pl missed out function names with an initial cap, and
   error_exit()
 - im_min() and im_max() gave random wrong results for >1 thread on >1 CPU
@@ -990,7 +1399,7 @@
 - ... so now "header" will print useful stuff even on truncated files
 - tiff writer knows about alpha (thanks Jenny)
 
-7/2/03 
+7/2/03
 - started 7.8.8
 - build failed with lcms turned off
 - im_spcor() could segv for 16bit images (thanks Joe)
@@ -1014,7 +1423,7 @@
 3/1/03
 - started 7.8.7
 - worked in patch from Hans Breuer (thanks!)
-	- png read/write with im_png2vips(), im_png2vips_header(), 
+	- png read/write with im_png2vips(), im_png2vips_header(),
 	  im_vips2png(), im_ispng()
 	- im_errorstring() and im_col_displays() are now functions not externs
 	  (helps DLLs)
@@ -1028,11 +1437,11 @@
 - removed externs im_Type, im_BandFmt, im_Coding, im_Compression to simplify
   DLL build
 - im_mmap() -> im__mmap(), since it's supposed to be an internal function
-- new vips-7.8.x/proj directory holds unsupported sample makefiles and 
-  config.h for building with the MSC toolchain 
+- new vips-7.8.x/proj directory holds unsupported sample makefiles and
+  config.h for building with the MSC toolchain
 - new scripts batch_image_convert and batch_rubber_sheet (thanks Joe)
 - added the RPM .spec files to the main distribution
-- InitializeMagic() now passed "" rather than NULL to avoid assert() problems 
+- InitializeMagic() now passed "" rather than NULL to avoid assert() problems
   on some libMagic versions
 
 2/12/02
@@ -1049,7 +1458,7 @@
 5/11/02
 - started 7.8.5
 - fix for mmap window of local region ... caused im_iterate() to break
-  sometimes for large images, in turn occasionally breaking 
+  sometimes for large images, in turn occasionally breaking
   im_max()/im_min()/etc. (thanks Joe)
 - tiny speed up for im_rot90()/270()
 - on install on win32, add .exe suffix for links
@@ -1121,7 +1530,7 @@
 - better float Xres/Yres
 
 14/8/02 JC
-- new header fields Xoffset and Yoffset ... used by functions to hint 
+- new header fields Xoffset and Yoffset ... used by functions to hint
   the position of the origin in output images
 - support added to c++ api and to header
 - im__lrmerge(), im__tbmerge(), im__affine(), im_insert(),
@@ -1130,7 +1539,7 @@
 - better configure for fftw (uses libdfftw name if libfftw not found)
 
 8/8/02 JC
-- large file support with mmap() windows ... had to change 
+- large file support with mmap() windows ... had to change
   im_prepare_inplace() to im_prepare_to()
 
   benchmark:
@@ -1150,14 +1559,14 @@
 
 	cpu-bound: im_sharpen fred.v fred3.v 11 1.5 20 50 1 2
 	io-bound: im_insert fred.v fred2.v fred3.v 4000 0
-	worst-case: im_rot90 fred.v fred3.v 
+	worst-case: im_rot90 fred.v fred3.v
 
   - results
 
 	desktop:
 
 			no mmap windows		mmap windows
-	
+
 	cpu-bound	real    0m3.712s	real    0m3.970s
 			user    0m6.010s	user    0m6.390s
 			sys     0m0.900s 	sys     0m1.110s
@@ -1174,7 +1583,7 @@
   the same though ... worst-case is having to constantly move windows about
   (500,000 page faults, vs 10,000 for no windows)
 
-  again, with an image larger than RAM 
+  again, with an image larger than RAM
 
   			no mmap windows		mmap windows
 
@@ -1193,7 +1602,7 @@
 - added -lm for better lcms detect
 - README notes for fftw on suse8
 - im_profile() sets HISTOGRAM for output image
-- im_copy()/im_copy_set() function descriptor no longer sets PTOP ... helps 
+- im_copy()/im_copy_set() function descriptor no longer sets PTOP ... helps
   avoid LUT problems
 - im_subsample()/im_zoom() fall back to im_copy() for shrink/grow == 1
 - im_lintra() falls back to im_copy() for scale == 1, offset == 0
@@ -1207,7 +1616,7 @@
 - im_header_string() had wrong return type in function database
 
 13/7/02 JC
-- added im_flood_blob() 
+- added im_flood_blob()
 - added im_open_local_array() ... C API convenience function
 - oop, im_flood() was missing a man page
 - Type == FOURIER added to help visualisation
@@ -1218,14 +1627,14 @@
 - im_header_int(), im_header_double() and im_header_string() added to aid
   UIs
 - now uses gettimeofday(), not time()
-- for consistency with other trig functions, im_c2amph() now returns degrees 
+- for consistency with other trig functions, im_c2amph() now returns degrees
   not radians (ouch)
 - added im_c2rect() ... turn (amp, phase) to rectangular
 - added im_sign() ... unit vector in direction of value
 - better im_scaleps() ... old code was terrible
 - rewritten im_rotquad() ... now partial
 - im_icc_export()/_import() now do ABSOLUTE correctly
-- added im_icc_ac2rc() ... converts absolute to relative colorimetry 
+- added im_icc_ac2rc() ... converts absolute to relative colorimetry
 
 25/6/02 JC
 - added im_copy_set(3) ... like im_copy(), but set informational header fields
@@ -1241,7 +1650,7 @@
 - added Yxy colourspace
 
 16/05/02 JC
-- auug, libtool was all messed up ... redone all the autotools stuff 
+- auug, libtool was all messed up ... redone all the autotools stuff
 - uses libtool convenience libraries to build vips in sections
 - uses config subdir for temp files and .m4 things
 - patched stupid suse config.guess
@@ -1258,14 +1667,14 @@
 
   this is so things can work on systems which do not have case sensitive
   file systems
- 
-- changes for Mac OS X 
+
+- changes for Mac OS X
   * im_system() TRUE/FALSE removed
   * searches /*/[lib|include] to get fink libs for tiff and jpeg
 
 30/4/02 JC
 - several functions were missing IM_FN_PIO in their descriptor ... this was
-  harmless for nip/ip/C, but broke the ref counting in the C++ layer 
+  harmless for nip/ip/C, but broke the ref counting in the C++ layer
 - im_system() now defaults "/tmp" for temp files
 - STRING input and output args were broken for C++ :-(
 - threads exit more quickly on error
@@ -1318,7 +1727,7 @@
 - vips.m4 and libsrc/Makefile.am fixes for IRIX
 
 11/02/02 JC
-- vips/thread.h and vips/threadgroup.h were missing extern "C" for C++ 
+- vips/thread.h and vips/threadgroup.h were missing extern "C" for C++
 - VImage::write() now tracks dependencies, so you can write() to a partial
   safely ... although it's not a very useful thing to do (thanks Mike)
 - new VImage::print() function for debugging
@@ -1378,7 +1787,7 @@
 - fmask4th.c was including varargs.h ... d'oh
 - include area reorganised: everything inside <vips/..> now ... hopefully the
   only user-visible change is that all plain C progs need to change:
-  	
+
 	#include <vips.h>
 
   to:
@@ -1397,7 +1806,7 @@
 - added libxml dependency for ip2
 
 27/7/01 JC
-- im_conv(), im_convf(), im_convsep(), im_convsepf() now reject masks with 
+- im_conv(), im_convf(), im_convsep(), im_convsepf() now reject masks with
   scale == 0
 
 26/7/01 JC
@@ -1420,7 +1829,7 @@
 - updated im_open() man page
 - im_tiff2vips() now embeds index in filename ... and it's page number (from
   0), not subsample factor
-- finally bit the bullet ... im_extract()/im_extract_band() now number from 
+- finally bit the bullet ... im_extract()/im_extract_band() now number from
   zero (sorry!)
 - and im_lrmosaic()/im_tbmosaic() bandno param too
 
@@ -1441,7 +1850,7 @@
 - started 7.7.8
 
 6/6/01 JC
-- im_invertlut() added 
+- im_invertlut() added
 
 31/5/01 JC
 - im_colour_temperature, im_XYZ2Lab_temp, im_Lab2XYZ_temp added
@@ -1487,7 +1896,7 @@
 - started 7.7.6
 
 21/3/01 JC
-- new iblend code in im_tbmerge() was typo-d 
+- new iblend code in im_tbmerge() was typo-d
 - mosaic1 was broken by affine too
 
 20/3/01 JC
@@ -1504,7 +1913,7 @@
 - added IM_INPUT_IMAGEVEC
 - gbandjoin now has function description
 - new function im_maxvalue()
-- im_compass()/im_lindetect() reimplemented with im_conv()/im_maxvalue(), 
+- im_compass()/im_lindetect() reimplemented with im_conv()/im_maxvalue(),
   about 15% faster, works for any type, partial
 - im_gradient() reimplemented with im_conv()/im_abs()/im_add(), about 30%
   slower, works for any type, partial
@@ -1528,8 +1937,8 @@
 - speed up to im_*merge() (uses integer arithmetic for integer blends)
 
 4/3/01 JC
-- tiny speed ups to im_histgr() 
-- speed ups to im_maplut() 
+- tiny speed ups to im_histgr()
+- speed ups to im_maplut()
 
 3/3/01 JC
 - new functions: im_histnorm(), im_histcum()
@@ -1678,7 +2087,7 @@
 
 15/12/99
 - im_version() added, new iofuncs package for it
-- ip did not call zero-input-arg vips functions 
+- ip did not call zero-input-arg vips functions
 - vips.c did not like zero-input-arg functions
 
 6/12/99 JC
@@ -1741,7 +2150,7 @@
 - im_insert_noexpand() added, no docs tho'
 
 11/11/99 JC
-- new ip menu item: Image=>Adjust white/black/saturation of LabQ 
+- new ip menu item: Image=>Adjust white/black/saturation of LabQ
 - fixed bug in decompose complex number
 - browse-icons now ignores errors
 - better error msg for "12 12" etc cases
@@ -1761,7 +2170,7 @@
 
 8/11/99 JC
 - ooops, im_remainder() got lost somehow
-- refguide converted to latex and updated 
+- refguide converted to latex and updated
 - cppguide updated
 
 5/11/99 JC
@@ -1792,7 +2201,7 @@
 - enabled static libs
 
 8/10/99
-- broke action_proc_bop() into smaller functions, stops bad code gen on 
+- broke action_proc_bop() into smaller functions, stops bad code gen on
   gcc2.95.1 (and others, prolly)
 - restored old Makefiles in doc/src/ipguide
 - vips7.6 script renamed as vips-7.6

@@ -4,6 +4,9 @@
  *
  * Author: Tom Vajzovic
  * Written on: 2008-01-16
+ * 7/2/10
+ * 	- cleanups
+ * 	- gtkdoc
  */
 
 /*
@@ -39,25 +42,30 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
+/**
+ * im_phasecor_fft:
+ * @in1: first input image
+ * @in2: second input image
+ * @out: output image
+ *
+ * Convert the two input images to Fourier space, calculate phase-correlation,
+ * back to real space.
+ *
+ * See also: im_fwfft(), im_cross_phase(), 
+ *
+ * Returns: 0 on success, -1 on error
+ */
+int 
+im_phasecor_fft( IMAGE *in1, IMAGE *in2, IMAGE *out )
+{
+	IMAGE *t[3];
 
-int im_phasecor_fft( IMAGE *in1, IMAGE *in2, IMAGE *out ){
-#define FUNCTION_NAME "im_fft_phasecor"
-  IMAGE *temp1= im_open_local( out, FUNCTION_NAME ": temp1", "t" );
-  IMAGE *temp2= im_open_local( out, FUNCTION_NAME ": temp2", "t" );
-  IMAGE *temp3= im_open_local( out, FUNCTION_NAME ": temp3", "t" );
+	if( im_open_local_array( out, t, 3, "im_phasecor_fft", "p" ) ||
+		im_fwfft( in1, t[0] ) ||
+		im_fwfft( in2, t[1] ) ||
+		im_cross_phase( t[0], t[1], t[2] ) ||
+		im_invfftr( t[2], out ) )
+		return( -1 );
 
-  if( ! temp1 || ! temp2 || ! temp3 )
-    return -1;
-
-  return im_incheck( in1 )
-    || im_incheck( in2 )
-    || im_outcheck( out )
-    || im_fwfft( in1, temp1 )
-    || im_fwfft( in2, temp2 )
-    || im_cross_phase( temp1, temp2, temp3 )
-    || im_invfftr( temp3, out );
-#undef FUNCTION_NAME
+	return( 0 );
 }

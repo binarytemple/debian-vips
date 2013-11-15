@@ -6,6 +6,8 @@
  *	- return(0) missing from tidy_thread_info()
  * 4/8/99 RP JC
  *	- reorganised for POSIX
+ * 28/3/11
+ * 	- moved to vips_ namespace
  */
 
 /*
@@ -51,12 +53,8 @@
 #include <vips/vips.h>
 #include <vips/thread.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 void
-im_semaphore_init( im_semaphore_t *s, int v, char *name )
+vips_semaphore_init( VipsSemaphore *s, int v, char *name )
 {
 	s->v = v;
 	s->name = name;
@@ -67,11 +65,11 @@ im_semaphore_init( im_semaphore_t *s, int v, char *name )
 }
 
 void
-im_semaphore_destroy( im_semaphore_t *s )
+vips_semaphore_destroy( VipsSemaphore *s )
 {
 #ifdef HAVE_THREADS
-	IM_FREEF( g_mutex_free, s->mutex );
-	IM_FREEF( g_cond_free, s->cond );
+	VIPS_FREEF( g_mutex_free, s->mutex );
+	VIPS_FREEF( g_cond_free, s->cond );
 #endif /*HAVE_THREADS*/
 }
 
@@ -79,7 +77,7 @@ im_semaphore_destroy( im_semaphore_t *s )
  * a change.
  */
 int
-im_semaphore_upn( im_semaphore_t *s, int n )
+vips_semaphore_upn( VipsSemaphore *s, int n )
 {
 	int value_after_op;
 
@@ -94,10 +92,10 @@ im_semaphore_upn( im_semaphore_t *s, int n )
 #endif /*HAVE_THREADS*/
 
 #ifdef DEBUG_IO
-	printf( "im_semaphore_upn(\"%s\",%d) = %d\n", 
+	printf( "vips_semaphore_upn(\"%s\",%d) = %d\n", 
 		s->name, n, value_after_op );
 	if( value_after_op > 1 )
-		im_errormsg( "up over 1!" );
+		vips_error( "vips_semaphore_upn", "up over 1!" );
 #endif /*DEBUG_IO*/
 
 	return( value_after_op );
@@ -106,15 +104,15 @@ im_semaphore_upn( im_semaphore_t *s, int n )
 /* Increment the semaphore.
  */
 int
-im_semaphore_up( im_semaphore_t *s )
+vips_semaphore_up( VipsSemaphore *s )
 {
-	return( im_semaphore_upn( s, 1 ) );
+	return( vips_semaphore_upn( s, 1 ) );
 }
 
 /* Wait for sem>n, then subtract n.
  */
 int
-im_semaphore_downn( im_semaphore_t *s, int n )
+vips_semaphore_downn( VipsSemaphore *s, int n )
 {
 	int value_after_op;
 
@@ -130,17 +128,17 @@ im_semaphore_downn( im_semaphore_t *s, int n )
 #endif /*HAVE_THREADS*/
 
 #ifdef DEBUG_IO
-	printf( "im_semaphore_downn(\"%s\",%d): %d\n", 
+	printf( "vips_semaphore_downn(\"%s\",%d): %d\n", 
 		s->name, n, value_after_op );
 #endif /*DEBUG_IO*/
 
 	return( value_after_op );
 }
 
-/* Wait for sem>0, then decrement.
+/* Wait for sem > 0, then decrement.
  */
 int
-im_semaphore_down( im_semaphore_t *s )
+vips_semaphore_down( VipsSemaphore *s )
 {
-	return( im_semaphore_downn( s, 1 ) );
+	return( vips_semaphore_downn( s, 1 ) );
 }

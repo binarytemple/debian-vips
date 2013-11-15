@@ -1,14 +1,4 @@
-/* @(#) Takes as input a histogram and creates a lut which when applied
- * @(#) on the original image, histogram equilises it.
- * @(#) 
- * @(#) Histogram equalisation is carried out for each band of hist 
- * @(#) individually.
- * @(#) 
- * @(#) int im_histeq( IMAGE *hist, IMAGE *lut )
- * @(#)
- * @(#) Returns 0 on sucess and -1 on error
- *
- * Copyright: 1991, N. Dessipris
+/* histogram normalisation and cumulativisation
  *
  * Author: N. Dessipris
  * Written on: 02/08/1990
@@ -27,6 +17,9 @@
  * 	- eek, off by 1 for more than 1 band hists
  * 12/5/08
  * 	- histcum works for signed hists now as well
+ * 24/3/10
+ * 	- gtkdoc
+ * 	- small cleanups
  */
 
 /*
@@ -61,13 +54,8 @@
 #include <vips/intl.h>
 
 #include <stdio.h>
-#include <assert.h>
 
 #include <vips/vips.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 #define ACCUMULATE( ITYPE, OTYPE ) { \
 	for( b = 0; b < nb; b++ ) { \
@@ -83,37 +71,43 @@
 	} \
 }
 
-/* Form cumulative histogram.
+/**
+ * im_histcum:
+ * @in: input image
+ * @out: output image
+ *
+ * Form cumulative histogram. 
+ *
+ * See also: im_histnorm().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int 
 im_histcum( IMAGE *in, IMAGE *out )
 {
-	const int px = in->Xsize * in->Ysize;
-	const int nb = im_iscomplex( in ) ? in->Bands * 2 : in->Bands;
-	const int mx = px * nb;
+	const guint64 px = VIPS_IMAGE_N_PELS( in );
+	const int nb = vips_bandfmt_iscomplex( in->BandFmt ) ? 
+		in->Bands * 2 : in->Bands;
+	const guint64 mx = px * nb;
 
-	PEL *outbuf;		
-	int b, x;
+	VipsPel *outbuf;		
+	guint64 b, x;
 
-	if( in->Coding != IM_CODING_NONE ) {
-		im_error( "im_histcum", "%s", _( "input coded" ) );
-		return( -1 );
-	}
-	if( px > 65536 ) {
-		im_error( "im_histcum", "%s", _( "input too large" ) );
-		return( -1 );
-	}
-	if( im_incheck( in ) )
+	if( im_check_uncoded( "im_histcum", in ) ||
+		im_check_hist( "im_histcum", in ) ||
+		im_iocheck( in, out ) )
 		return( -1 );
 
 	if( im_cp_desc( out, in ) )
 		return( -1 );
 	out->Xsize = px;
 	out->Ysize = 1;
-	if( im_isuint( in ) )
+	if( vips_bandfmt_isuint( in->BandFmt ) )
 		out->BandFmt = IM_BANDFMT_UINT;
-	else if( im_isint( in ) )
+	else if( vips_bandfmt_isint( in->BandFmt ) )
 		out->BandFmt = IM_BANDFMT_INT;
+	if( im_setupout( out ) )
+		return( -1 );
 
 	if( !(outbuf = im_malloc( out, IM_IMAGE_SIZEOF_LINE( out ))) )
                 return( -1 );
@@ -140,25 +134,35 @@ im_histcum( IMAGE *in, IMAGE *out )
 		ACCUMULATE( double, double ); break;
 
         default:
-		assert( 0 );
+		g_assert( 0 );
         }
 
-	if( im_setupout( out ) || im_writeline( 0, out, outbuf ) )
+	if( im_writeline( 0, out, outbuf ) )
 		return( -1 );
 
 	return( 0 );
 }
 
-/* Normalise histogram ... normalise range to make it square (ie. max ==
+
+/**
+ * im_histnorm:
+ * @in: input image
+ * @out: output image
+ *
+ * Normalise histogram ... normalise range to make it square (ie. max ==
  * number of elements). Normalise each band separately.
+ *
+ * See also: im_histcum().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int 
 im_histnorm( IMAGE *in, IMAGE *out )
 {
-	const int px = in->Xsize * in->Ysize;
+	const guint64 px = VIPS_IMAGE_N_PELS( in );
 	DOUBLEMASK *stats;
 	double *a, *b;
-	int i;
+	int y;
 	IMAGE *t1;
 	int fmt;
 
@@ -171,9 +175,9 @@ im_histnorm( IMAGE *in, IMAGE *out )
 
 	/* Scale each channel by px / channel max
 	 */
-	for( i = 0; i < in->Bands; i++ ) {
-		a[i] = px / stats->coeff[6 + 1 + 6*i];
-		b[i] = 0;
+	for( y = 0; y < in->Bands; y++ ) {
+		a[y] = px / VIPS_MASK( stats, 1, y + 1 );
+		b[y] = 0;
 	}
 
 	im_free_dmask( stats );
@@ -197,16 +201,27 @@ im_histnorm( IMAGE *in, IMAGE *out )
 	return( 0 );
 }
 
-/* Histogram equalisation. 
+/**
+ * im_histeq:
+ * @in: input image
+ * @out: output image
+ *
+ * Histogram equalisation: normalised cumulative histogram. 
+ *
+ * See also: im_heq().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int 
 im_histeq( IMAGE *in, IMAGE *out )
 {
-	IMAGE *t1 = im_open_local( out, "im_histeq:1", "p" );
+	IMAGE *t1;
 
 	/* Normalised cumulative.
 	 */
-	if( !t1 || im_histcum( in, t1 ) || im_histnorm( t1, out ) )
+	if( !(t1 = im_open_local( out, "im_histeq", "p" )) ||
+		im_histcum( in, t1 ) || 
+		im_histnorm( t1, out ) )
 		return( -1 );
 
 	return( 0 );

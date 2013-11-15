@@ -53,6 +53,8 @@
  *	- weed out overlaps which contain only transparent pixels
  * 4/1/07
  * 	- switch to new history thing, switch im_errormsg() too
+ * 24/1/11
+ * 	- gtk-doc
  */
 
 /*
@@ -107,10 +109,6 @@
 
 #include "merge.h"
 #include "global_balance.h"
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 #define MAX_ITEMS (50)
 
@@ -167,9 +165,8 @@ im__global_open_image( SymbolTable *st, char *name )
 {
 	IMAGE *im;
 
-	if( (im = im_open_local( st->im, name, "r" )) ) 
-		return( im );
-	if( (im = im_open_local( st->im, im_skip_dir( name ), "r" )) ) 
+	if( (im = im_open_local( st->im, name, "r" )) || 
+		(im = im_open_local( st->im, im_skip_dir( name ), "r" )) ) 
 		return( im );
 
 	return( NULL );
@@ -296,9 +293,8 @@ im__build_symtab( IMAGE *out, int sz )
 	SymbolTable *st = IM_NEW( out, SymbolTable );
 	int i;
 
-	if( !st )
-		return( NULL );
-	if( !(st->table = IM_ARRAY( out, sz, GSList * )) )
+	if( !st ||
+		!(st->table = IM_ARRAY( out, sz, GSList * )) )
 		return( NULL );
 	st->sz = sz;
 	st->im = out;
@@ -969,23 +965,6 @@ print_overlap_errors( JoinNode *node, double *fac, double *total )
 }
 #endif /*DEBUG*/
 
-/* Make a DOUBLEMASK local to an image descriptor.
- */
-static DOUBLEMASK *
-local_mask( IMAGE *out, DOUBLEMASK *mask )
-{
-	if( !mask )
-		return( NULL );
-
-	if( im_add_close_callback( out, 
-		(im_callback_fn) im_free_dmask, mask, NULL ) ) {
-		im_free_dmask( mask );
-		return( NULL );
-	}
-
-	return( mask );
-}
-
 /* Extract a rect.
  */
 static int
@@ -1026,7 +1005,7 @@ count_nonzero( IMAGE *in, gint64 *count )
 
 	if( im_avg( in, &avg ) )
 		return( -1 );
-	*count = (avg * in->Xsize * in->Ysize ) / 255.0;
+	*count = (avg * VIPS_IMAGE_N_PELS( in )) / 255.0;
 	
 	return( 0 );
 }
@@ -1052,7 +1031,7 @@ find_image_stats( IMAGE *in, IMAGE *mask, Rect *area )
 
 	/* Get stats from masked image.
 	 */
-	if( !(stats = local_mask( in, im_stats( t[3] ) )) ) 
+	if( !(stats = im_local_dmask( in, im_stats( t[3] ) )) ) 
 		return( NULL );
 
 	/* Number of non-zero pixels in mask.
@@ -1062,8 +1041,7 @@ find_image_stats( IMAGE *in, IMAGE *mask, Rect *area )
 
 	/* And scale masked average to match.
 	 */
-	stats->coeff[4] *= (double) count / 
-		((double) mask->Xsize * mask->Ysize);
+	stats->coeff[4] *= (double) count / VIPS_IMAGE_N_PELS( mask );
 
 	/* Yuk! Zap the deviation column with the pixel count. Used later to
 	 * determine if this is likely to be a significant overlap.
@@ -1464,8 +1442,9 @@ find_factors( SymbolTable *st, double gamma )
 
 	/* Make output matricies.
 	 */
-	if( !(K = local_mask( st->im, im_create_dmask( "K", 1, st->novl ) )) ||
-		!(M = local_mask( st->im, 
+	if( !(K = im_local_dmask( st->im, 
+			im_create_dmask( "K", 1, st->novl ) )) ||
+		!(M = im_local_dmask( st->im, 
 			im_create_dmask( "M", st->nim-1, st->novl ) )) ) 
 		return( -1 );
 	fill_matricies( st, gamma, K, M );
@@ -1476,15 +1455,15 @@ find_factors( SymbolTable *st, double gamma )
 
 	/* Calculate LMS.
 	 */
-	if( !(m1 = local_mask( st->im, im_mattrn( M, "lms:1" ) )) )
+	if( !(m1 = im_local_dmask( st->im, im_mattrn( M, "lms:1" ) )) )
 		return( -1 );
-	if( !(m2 = local_mask( st->im, im_matmul( m1, M, "lms:2" ) )) )
+	if( !(m2 = im_local_dmask( st->im, im_matmul( m1, M, "lms:2" ) )) )
 		return( -1 );
-	if( !(m3 = local_mask( st->im, im_matinv( m2, "lms:3" ) )) )
+	if( !(m3 = im_local_dmask( st->im, im_matinv( m2, "lms:3" ) )) )
 		return( -1 );
-	if( !(m4 = local_mask( st->im, im_matmul( m3, m1, "lms:4" ) )) )
+	if( !(m4 = im_local_dmask( st->im, im_matmul( m3, m1, "lms:4" ) )) )
 		return( -1 );
-	if( !(m5 = local_mask( st->im, im_matmul( m4, K, "lms:5" ) )) )
+	if( !(m5 = im_local_dmask( st->im, im_matmul( m4, K, "lms:5" ) )) )
 		return( -1 );
 
 	/* Make array of correction factors.
@@ -1642,7 +1621,7 @@ transform( JoinNode *node, double *gamma )
 			im_powtra( t1, t2, 1.0 / (*gamma) ) ||
 			im_lintra( fac, t2, 0.0, t3 ) ||
 			im_powtra( t3, t4, *gamma ) ||
-			im_clip( t4, t5 ) ||
+			im_clip2fmt( t4, t5, IM_BANDFMT_UCHAR ) ||
 			im_maplut( in, out, t5 ) )
 			return( NULL );
 	}
@@ -1715,7 +1694,38 @@ transformf( JoinNode *node, double *gamma )
 	return( out );
 }
 
-/* Balance mosaic, outputting in the original format.
+/**
+ * im_global_balance:
+ * @in: mosaic to rebuild
+ * @out: output image
+ * @gamma: gamma of source images
+ *
+ * im_global_balance() can be used to remove contrast differences in 
+ * an assembled mosaic.
+ *
+ * It reads the History field attached to @in and builds a list of the source
+ * images that were used to make the mosaic and the position that each ended
+ * up at in the final image.
+ *
+ * It opens each of the source images in turn and extracts all parts which
+ * overlap with any of the other images. It finds the average values in the
+ * overlap areas and uses least-mean-square to find a set of correction
+ * factors which will minimise overlap differences. It uses @gamma to
+ * gamma-correct the source images before calculating the factors. A value of
+ * 1.0 will stop this.
+ *
+ * Each of the source images is transformed with the appropriate correction 
+ * factor, then the mosaic is reassembled. @out always has the same #BandFmt
+ * as @in. Use im_global_balancef() to get float output and avoid clipping.
+ *
+ * There are some conditions that must be met before this operation can work:
+ * the source images must all be present under the filenames recorded in the
+ * history on @in, and the mosaic must have been built using only operations in
+ * this package.
+ *
+ * See also: im_global_balancef(), im_remosaic().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_global_balance( IMAGE *in, IMAGE *out, double gamma )
@@ -1731,9 +1741,19 @@ im_global_balance( IMAGE *in, IMAGE *out, double gamma )
 	return( 0 );
 }
 
-/* Balance mosaic, outputting as float. This is useful if the automatic
- * selection of balance range fails - our caller can search the output for the
- * min and max, and rescale to prevent burn-out.
+/**
+ * im_global_balancef:
+ * @in: mosaic to rebuild
+ * @out: output image
+ * @gamma: gamma of source images
+ *
+ * Just as im_global_balance(), but the output image is always float. This
+ * stops overflow or underflow in the case of an extremely unbalanced image
+ * mosaic. 
+ *
+ * See also: im_global_balance(), im_remosaic().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_global_balancef( IMAGE *in, IMAGE *out, double gamma )

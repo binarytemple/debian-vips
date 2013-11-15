@@ -1,10 +1,6 @@
-/* @(#) Turn Lab 32bit packed format into displayable rgb. Fast, but very
- * @(#) inaccurate: for display only!
- * @(#) 
- * @(#) Usage:  
- * @(#)   int im_LabQ2disp( IMAGE *in, IMAGE *out, struct im_col_display *d )
- * @(#) 
- * @(#) Returns: -1 on error, else 0
+/* Turn Lab 32bit packed format into displayable rgb. Fast, but very
+ * inaccurate: for display only! Note especially that this dithers and will
+ * give different results on different runs.
  *
  * 5/11/97 Steve Perry
  *	- adapted from old ip code
@@ -50,18 +46,14 @@
  
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
- 
 /* Hold a display characterisation, and a set of tables
  * computed from that. 
  */
 typedef struct {
         struct im_col_display *disp;
-        PEL red[ 64 * 64 * 64 ];
-        PEL green[ 64 * 64 * 64 ];
-        PEL blue[ 64 * 64 * 64 ];
+        VipsPel red[ 64 * 64 * 64 ];
+        VipsPel green[ 64 * 64 * 64 ];
+        VipsPel blue[ 64 * 64 * 64 ];
 } CalibrateInfo;
 
 /* Do our own indexing of the arrays, to make sure we get efficient mults.
@@ -71,7 +63,7 @@ typedef struct {
 /* Process a buffer of data.
  */
 static void
-imb_LabQ2disp( PEL *p, PEL *q, int n, CalibrateInfo *cal )
+imb_LabQ2disp( VipsPel *p, VipsPel *q, int n, CalibrateInfo *cal )
 { 
         int x, t;
 
@@ -171,11 +163,8 @@ im_LabQ2disp_table( IMAGE *in, IMAGE *out, void *table )
 {
         CalibrateInfo *cal = (CalibrateInfo *) table;
 
-        if ( in->Coding != IM_CODING_LABQ ) {
-                im_error( "im_LabQ2Lab", "%s", 
-			_( "not a packed Lab image" ) );
-                return( -1 );
-        }
+	if( im_check_coding_labq( "im_LabQ2disp", in ) )
+		return( -1 );
  
         if( im_cp_desc( out, in ) )
                 return( -1 );

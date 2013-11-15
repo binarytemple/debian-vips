@@ -60,15 +60,12 @@
 #include <math.h>
 
 #include <vips/vips.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
+#include <vips/internal.h>
 
 /* Process a buffer of data.
  */
 void
-imb_XYZ2disp( float *p, PEL *q, int n, struct im_col_display *d )
+imb_XYZ2disp( float *p, VipsPel *q, int n, struct im_col_display *d )
 {
 	struct im_col_tab_disp *table = im_col_display_get_table( d );
 	float rstep = (d->d_YCR - d->d_Y0R) / 1500.0;

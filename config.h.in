@@ -3,17 +3,29 @@
 /* define to open non-text files in binary mode */
 #undef BINARY_OPEN
 
+/* build C++ components */
+#undef ENABLE_CXX
+
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 
 /* The prefix for our gettext translation domains. */
 #undef GETTEXT_PACKAGE
 
+/* Domain for glib logging messages. */
+#undef G_LOG_DOMAIN
+
+/* Define to 1 if you have the `atexit' function. */
+#undef HAVE_ATEXIT
+
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #undef HAVE_BIND_TEXTDOMAIN_CODESET
 
 /* have cbrt() in libm. */
 #undef HAVE_CBRT
+
+/* define if you have cfitsio installed. */
+#undef HAVE_CFITSIO
 
 /* Define to 1 if you have the `dcgettext' function. */
 #undef HAVE_DCGETTEXT
@@ -41,16 +53,10 @@
 #undef HAVE_FCNTL_H
 
 /* define if you have fftw3 installed. */
-#undef HAVE_FFTW3
+#undef HAVE_FFTW
 
 /* Define to 1 if you have the `getcwd' function. */
 #undef HAVE_GETCWD
-
-/* Define to 1 if you have the `GetImageAttribute' function. */
-#undef HAVE_GETIMAGEATTRIBUTE
-
-/* Define to 1 if you have the `GetNextImageAttribute' function. */
-#undef HAVE_GETNEXTIMAGEATTRIBUTE
 
 /* Define to 1 if you have the `getpagesize' function. */
 #undef HAVE_GETPAGESIZE
@@ -60,6 +66,9 @@
 
 /* Define to 1 if you have the `gettimeofday' function. */
 #undef HAVE_GETTIMEOFDAY
+
+/* Define to 1 if you have the `GetVirtualPixels' function. */
+#undef HAVE_GETVIRTUALPIXELS
 
 /* Define to 1 if you have the `getwd' function. */
 #undef HAVE_GETWD
@@ -79,11 +88,11 @@
 /* define if you have lcms installed. */
 #undef HAVE_LCMS
 
+/* define if you have lcms2 installed. */
+#undef HAVE_LCMS2
+
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 #undef HAVE_LC_MESSAGES
-
-/* define if you have liboil-0.3 installed. */
-#undef HAVE_LIBOIL
 
 /* Define to 1 if you have the <limits.h> header file. */
 #undef HAVE_LIMITS_H
@@ -94,8 +103,8 @@
 /* define if you have libMagick installed. */
 #undef HAVE_MAGICK
 
-/* define if your magick has attribute support. */
-#undef HAVE_MAGICK_ATTR
+/* Define to 1 if you have the `MagickCoreGenesis' function. */
+#undef HAVE_MAGICKCOREGENESIS
 
 /* Define to 1 if you have the <math.h> header file. */
 #undef HAVE_MATH_H
@@ -127,6 +136,12 @@
 /* define if you have OpenEXR >=1.2.2 installed. */
 #undef HAVE_OPENEXR
 
+/* define if you have OpenSlide >= 3.2.5 installed. */
+#undef HAVE_OPENSLIDE
+
+/* define if you have orc-0.4.11 or later installed. */
+#undef HAVE_ORC
+
 /* define if you have pangoft2 installed. */
 #undef HAVE_PANGOFT2
 
@@ -144,6 +159,12 @@
 
 /* Define to 1 if you have the `realpath' function. */
 #undef HAVE_REALPATH
+
+/* Define to 1 if you have the `ResetImageAttributeIterator' function. */
+#undef HAVE_RESETIMAGEATTRIBUTEITERATOR
+
+/* Define to 1 if you have the `ResetImagePropertyIterator' function. */
+#undef HAVE_RESETIMAGEPROPERTYITERATOR
 
 /* Define to 1 if you have the `SetImageOption' function. */
 #undef HAVE_SETIMAGEOPTION
@@ -181,6 +202,9 @@
 /* Define to 1 if you have the `strspn' function. */
 #undef HAVE_STRSPN
 
+/* Define to 1 if you have the `sysconf' function. */
+#undef HAVE_SYSCONF
+
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */
 #undef HAVE_SYS_DIR_H
@@ -213,7 +237,7 @@
 /* threaded evaluation */
 #undef HAVE_THREADS
 
-/* Define if you have tiff libraries and header files. */
+/* define if you have libtiff installed. */
 #undef HAVE_TIFF
 
 /* Define to 1 if you have the <unistd.h> header file. */
@@ -233,15 +257,6 @@
 
 /* Define if you have libz libraries and header files. */
 #undef HAVE_ZIP
-
-/* extension for executable files */
-#undef IM_EXEEXT
-
-/* configure-time library directory */
-#undef IM_LIBDIR
-
-/* configure-time install prefix */
-#undef IM_PREFIX
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
@@ -280,8 +295,17 @@
 /* Version number of package */
 #undef VERSION
 
-/* include cimg package */
-#undef WITH_CIMG
+/* default directory for ICC profiles */
+#undef VIPS_ICC_DIR
+
+/* configure-time library directory */
+#undef VIPS_LIBDIR
+
+/* native Mac OS X */
+#undef VIPS_OS_DARWIN
+
+/* configure-time install prefix */
+#undef VIPS_PREFIX
 
 /* Define if using the dmalloc debugging malloc package */
 #undef WITH_DMALLOC

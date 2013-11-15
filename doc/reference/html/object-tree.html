@@ -3,46 +3,78 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Object Hierarchy</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="index.html" title="VIPS Reference Manual">
-<link rel="prev" href="libvips-fmask.html" title="fmask">
+<link rel="prev" href="libvips-semaphore.html" title="semaphore">
 <link rel="next" href="api-index-full.html" title="API Index">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="chapter" href="ch01.html" title="Core VIPS API">
-<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
-<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
-<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
-<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
-<link rel="index" href="api-index-full.html" title="API Index">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="libvips-fmask.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libvips-semaphore.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td> </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">VIPS Reference Manual</th>
 <td><a accesskey="n" href="api-index-full.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="chapter" title="Object Hierarchy">
+<div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="object-tree"></a>Object Hierarchy</h2></div></div></div>
 <pre class="screen">
     GObject
-        <a
-href="../libvips/VipsObject.html"
->VipsObject</a>
-            <a
-href="../libvips/VipsFormat.html"
->VipsFormat</a>
-            <a
-href="../libvips/VipsInterpolate.html"
->VipsInterpolate</a>
+        <a class="link" href="VipsObject.html" title="VipsObject">VipsObject</a>
+            <a class="link" href="VipsOperation.html" title="VipsOperation">VipsOperation</a>
+                VipsArithmetic
+                    VipsBinary
+                    VipsUnary
+                        VipsUnaryConst
+                VipsConversion
+                    VipsBandary
+                <a class="link" href="VipsForeignSave.html#VipsForeign">VipsForeign</a>
+                    <a class="link" href="VipsForeignSave.html#VipsForeignLoad">VipsForeignLoad</a>
+                    <a class="link" href="VipsForeignSave.html" title="VipsForeignSave">VipsForeignSave</a>
+                VipsStatistic
+            <a href="http://http://www.vips.ecs.soton.ac.uk/VipsFormat.html">VipsFormat</a>
+            <a class="link" href="VipsImage.html" title="VipsImage">VipsImage</a>
+            <a class="link" href="VipsInterpolate.html" title="VipsInterpolate">VipsInterpolate</a>
+            <a class="link" href="VipsRegion.html" title="VipsRegion">VipsRegion</a>
+            <a class="link" href="VipsThreadState.html" title="VipsThreadState">VipsThreadState</a>
+    GEnum
+        <a class="link" href="libvips-conversion.html#VipsAlign">VipsAlign</a>
+        <a class="link" href="libvips-conversion.html#VipsAngle">VipsAngle</a>
+        <a class="link" href="VipsImage.html#VipsBandFormat">VipsBandFormat</a>
+        <a class="link" href="libvips-conversion.html#VipsCacheStrategy">VipsCacheStrategy</a>
+        <a class="link" href="VipsImage.html#VipsCoding">VipsCoding</a>
+        <a class="link" href="VipsImage.html#VipsDemandStyle">VipsDemandStyle</a>
+        <a class="link" href="libvips-conversion.html#VipsDirection">VipsDirection</a>
+        <a class="link" href="libvips-conversion.html#VipsExtend">VipsExtend</a>
+        <a class="link" href="VipsForeignSave.html#VipsForeignTiffCompression">VipsForeignTiffCompression</a>
+        <a class="link" href="VipsForeignSave.html#VipsForeignTiffPredictor">VipsForeignTiffPredictor</a>
+        <a class="link" href="VipsForeignSave.html#VipsForeignTiffResunit">VipsForeignTiffResunit</a>
+        <a class="link" href="VipsImage.html#VipsImageType">VipsImageType</a>
+        <a class="link" href="VipsImage.html#VipsInterpretation">VipsInterpretation</a>
+        <a class="link" href="libvips-arithmetic.html#VipsOperationBoolean">VipsOperationBoolean</a>
+        <a class="link" href="libvips-arithmetic.html#VipsOperationComplex">VipsOperationComplex</a>
+        <a class="link" href="libvips-arithmetic.html#VipsOperationComplexget">VipsOperationComplexget</a>
+        <a class="link" href="libvips-arithmetic.html#VipsOperationMath2">VipsOperationMath2</a>
+        <a class="link" href="libvips-arithmetic.html#VipsOperationMath">VipsOperationMath</a>
+        <a class="link" href="libvips-arithmetic.html#VipsOperationRelational">VipsOperationRelational</a>
+        <a class="link" href="libvips-arithmetic.html#VipsOperationRound">VipsOperationRound</a>
+        <a class="link" href="VipsForeignSave.html#VipsSaveable">VipsSaveable</a>
+        <a class="link" href="libvips-util.html#VipsToken">VipsToken</a>
+    GBoxed
+        VipsArea
+        VipsArrayDouble
+        VipsThing
+    GFlags
+        <a class="link" href="VipsObject.html#VipsArgumentFlags">VipsArgumentFlags</a>
+        <a class="link" href="VipsForeignSave.html#VipsForeignFlags">VipsForeignFlags</a>
 </pre>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

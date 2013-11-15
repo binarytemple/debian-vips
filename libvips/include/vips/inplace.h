@@ -37,26 +37,37 @@
 extern "C" {
 #endif /*__cplusplus*/
 
-int im_plotmask( IMAGE *im, int ix, int iy, PEL *ink, PEL *mask, Rect *r );
-int im_smear( IMAGE *im, int ix, int iy, Rect *r );
-int im_smudge( IMAGE *im, int ix, int iy, Rect *r );
-int im_paintrect( IMAGE *im, Rect *r, PEL *ink );
-int im_circle( IMAGE *im, int cx, int cy, int radius, int intensity );
-int im_insertplace( IMAGE *main, IMAGE *sub, int x, int y );
-int im_fastline( IMAGE *im, int x1, int y1, int x2, int y2, PEL *pel );
-int im_fastlineuser( IMAGE *im, 
-	int x1, int y1, int x2, int y2, 
-	int (*fn)(), void *client1, void *client2, void *client3 );
-int im_readpoint( IMAGE *im, int x, int y, PEL *pel );
-int im_flood( IMAGE *im, int x, int y, PEL *ink, Rect *dout );
-int im_flood_blob( IMAGE *im, int x, int y, PEL *ink, Rect *dout );
-int im_flood_blob_copy( IMAGE *in, IMAGE *out, int x, int y, PEL *ink );
-int im_flood_other( IMAGE *mask, IMAGE *test, int x, int y, int serial );
-int im_flood_other_copy( IMAGE *mask, IMAGE *test, IMAGE *out, 
-	int x, int y, int serial );
+int im_draw_rect( VipsImage *image, 
+	int left, int top, int width, int height, int fill, VipsPel *ink );
+int im_draw_circle( VipsImage *image, 
+	int x, int y, int radius, gboolean fill, VipsPel *ink );
 
-int im_lineset( IMAGE *in, IMAGE *out, IMAGE *mask, IMAGE *ink,
+int im_draw_image( VipsImage *image, VipsImage *sub, int x, int y );
+
+typedef int (*VipsPlotFn)( VipsImage *image, int x, int y, 
+	void *a, void *b, void *c );
+int im_draw_line_user( VipsImage *image, 
+	int x1, int y1, int x2, int y2, 
+	VipsPlotFn plot, void *a, void *b, void *c );
+int im_draw_line( VipsImage *image, 
+	int x1, int y1, int x2, int y2, VipsPel *ink );
+int im_lineset( VipsImage *in, VipsImage *out, VipsImage *mask, VipsImage *ink,
 	int n, int *x1v, int *y1v, int *x2v, int *y2v );
+
+int im_draw_flood( VipsImage *image, int x, int y, VipsPel *ink, VipsRect *dout );
+int im_draw_flood_blob( VipsImage *image, 
+	int x, int y, VipsPel *ink, VipsRect *dout );
+int im_draw_flood_other( VipsImage *image, VipsImage *test, 
+	int x, int y, int serial, VipsRect *dout );
+
+int im_draw_mask( VipsImage *image, 
+	VipsImage *mask_im, int x, int y, VipsPel *ink );
+
+int im_draw_point( VipsImage *image, int x, int y, VipsPel *ink );
+int im_read_point( VipsImage *image, int x, int y, VipsPel *ink );
+
+int im_draw_smudge( VipsImage *image, 
+	int left, int top, int width, int height );
 
 #ifdef __cplusplus
 }

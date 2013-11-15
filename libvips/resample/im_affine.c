@@ -1,19 +1,5 @@
-/* @(#) im_affine() ... affine transform with a supplied interpolator.
- * @(#)
- * @(#) int im_affinei(in, out, interpolate, a, b, c, d, dx, dy, w, h, x, y)
- * @(#)
- * @(#) IMAGE *in, *out;
- * @(#) VipsInterpolate *interpolate;
- * @(#) double a, b, c, d, dx, dy;
- * @(#) int w, h, x, y;
- * @(#)
- * @(#) Forward transform
- * @(#) X = a * x + b * y + dx
- * @(#) Y = c * x + d * y + dy
- * @(#)
- * @(#) x and y are the coordinates in input image.  
- * @(#) X and Y are the coordinates in output image.
- * @(#) (0,0) is the upper left corner.
+/* im_affine() ... affine transform with a supplied interpolator.
+ *
  * 
  * Copyright N. Dessipris
  * Written on: 01/11/1991
@@ -85,6 +71,11 @@
  * 	- revise clipping / transform stuff, again
  * 	- now do corner rather than centre: this way the identity transform
  * 	  returns the input exactly
+ * 12/8/10
+ * 	- revise window_size / window_offset stuff again, see also
+ * 	  interpolate.c
+ * 2/2/11
+ * 	- gtk-doc
  */
 
 /*
@@ -133,13 +124,28 @@
 #include <vips/internal.h>
 #include <vips/transform.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
-/* "fast" floor() ... on my laptop, anyway.
+/*
+ * FAST_PSEUDO_FLOOR is a floor and floorf replacement which has been
+ * found to be faster on several linux boxes than the library
+ * version. It returns the floor of its argument unless the argument
+ * is a negative integer, in which case it returns one less than the
+ * floor. For example:
+ *
+ * FAST_PSEUDO_FLOOR(0.5) = 0
+ *
+ * FAST_PSEUDO_FLOOR(0.) = 0
+ *
+ * FAST_PSEUDO_FLOOR(-.5) = -1
+ *
+ * as expected, but
+ *
+ * FAST_PSEUDO_FLOOR(-1.) = -2
+ *
+ * The locations of the discontinuities of FAST_PSEUDO_FLOOR are the
+ * same as floor and floorf; it is just that at negative integers the
+ * function is discontinuous on the right instead of the left.
  */
-#define FLOOR( V ) ((V) >= 0 ? (int)(V) : (int)((V) - 1))
+#define FAST_PSEUDO_FLOOR(x) ( (int)(x) - ( (x) < 0. ) )
 
 /* Per-call state.
  */
@@ -158,14 +164,22 @@ affine_free( Affine *affine )
 	return( 0 );
 }
 
-/* We have five (!!) coordinate systems. Working forward through them, there
+/* We have five (!!) coordinate systems. Working forward through them, these
  * are:
  *
  * 1. The original input image
  *
  * 2. This is embedded in a larger image to provide borders for the
  * interpolator. iarea->left/top give the offset. These are the coordinates we
- * pass to IM_REGION_ADDR()/im_prepare() for the input image.
+ * pass to IM_REGION_ADDR()/im_prepare() for the input image. 
+ *
+ * The borders are sized by the interpolator's window_size property and offset 
+ * by the interpolator's window_offset property. For example,
+ * for bilinear (window_size 2, window_offset 0) we add a single line 
+ * of extra pixels along the bottom and right (window_size - 1). For 
+ * bicubic (window_size 4, window_offset 1) we add a single line top and left 
+ * (window_offset), and two lines bottom and right (window_size - 1 -
+ * window_offset).
  *
  * 3. We need point (0, 0) in (1) to be at (0, 0) for the transformation. So
  * shift everything up and left to make the displaced input image. This is the
@@ -186,6 +200,8 @@ affinei_gen( REGION *or, void *seq, void *a, void *b )
 	REGION *ir = (REGION *) seq;
 	const IMAGE *in = (IMAGE *) a;
 	const Affine *affine = (Affine *) b;
+	const int window_size = 
+		vips_interpolate_get_window_size( affine->interpolate );
 	const int window_offset = 
 		vips_interpolate_get_window_offset( affine->interpolate );
 	const VipsInterpolateMethod interpolate = 
@@ -225,14 +241,26 @@ affinei_gen( REGION *or, void *seq, void *a, void *b )
 	 */
 	im__transform_invert_rect( &affine->trn, &want, &need );
 
+	/* That does round-to-nearest, because it has to stop rounding errors
+	 * growing images unexpectedly. We need round-down, so we must
+	 * add half a pixel along the left and top. But we are int :( so add 1
+	 * pixel. 
+	 *
+	 * Add an extra line along the right and bottom as well, for rounding.
+	 */
+	im_rect_marginadjust( &need, 1 );
+
 	/* Now go to space (2) above.
 	 */
 	need.left += iarea->left;
 	need.top += iarea->top;
 
-	/* Add a border for interpolation. Plus one for rounding errors.
+	/* Add a border for interpolation. 
 	 */
-	im_rect_marginadjust( &need, window_offset + 1 );
+	need.width += window_size - 1;
+	need.height += window_size - 1;
+	need.left -= window_offset; 
+	need.top -= window_offset;
 
 	/* Clip against the size of (2).
 	 */
@@ -245,7 +273,7 @@ affinei_gen( REGION *or, void *seq, void *a, void *b )
 	/* Outside input image? All black.
 	 */
 	if( im_rect_isempty( &clipped ) ) {
-		im__black_region( or );
+		im_region_black( or );
 		return( 0 );
 	}
 
@@ -287,7 +315,7 @@ affinei_gen( REGION *or, void *seq, void *a, void *b )
 		 */
 		double ix, iy;
 
-		PEL *q;
+		VipsPel *q;
 
 		/* To (3).
 		 */
@@ -299,13 +327,13 @@ affinei_gen( REGION *or, void *seq, void *a, void *b )
 		ix += iarea->left;
 		iy += iarea->top;
 
-		q = (PEL *) IM_REGION_ADDR( or, le, y );
+		q = IM_REGION_ADDR( or, le, y );
 
 		for( x = le; x < ri; x++ ) {
 			int fx, fy; 	
 
-			fx = FLOOR( ix );
-			fy = FLOOR( iy );
+			fx = FAST_PSEUDO_FLOOR( ix );
+			fy = FAST_PSEUDO_FLOOR( iy );
 
 			/* Clipping! 
 			 */
@@ -336,9 +364,8 @@ affinei( IMAGE *in, IMAGE *out,
 
 	/* Make output image.
 	 */
-	if( im_piocheck( in, out ) ) 
-		return( -1 );
-	if( im_cp_desc( out, in ) ) 
+	if( im_piocheck( in, out ) || 
+		im_cp_desc( out, in ) ) 
 		return( -1 );
 
 	/* Need a copy of the params for the lifetime of out.
@@ -451,6 +478,41 @@ im__affinei( IMAGE *in, IMAGE *out,
 	return( 0 );
 }
 
+/**
+ * im_affinei:
+ * @in: input image
+ * @out: output image
+ * @interpolate: interpolation method
+ * @a: transformation matrix
+ * @b: transformation matrix
+ * @c: transformation matrix
+ * @d: transformation matrix
+ * @dx: output offset
+ * @dy: output offset
+ * @ox: output region
+ * @oy: output region
+ * @ow: output region
+ * @oh: output region
+ *
+ * This operator performs an affine transform on an image using @interpolate.
+ *
+ * The transform is:
+ *
+ *   X = @a * x + @b * y + @dx
+ *   Y = @c * x + @d * y + @dy
+ * 
+ *   x and y are the coordinates in input image.  
+ *   X and Y are the coordinates in output image.
+ *   (0,0) is the upper left corner.
+ *
+ * The section of the output space defined by @ox, @oy, @ow, @oh is written to
+ * @out. See im_affinei_all() for a function which outputs all the transformed 
+ * pixels.
+ *
+ * See also: im_affinei_all(), #VipsInterpolate.
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_affinei( IMAGE *in, IMAGE *out, VipsInterpolate *interpolate,
 	double a, double b, double c, double d, double dx, double dy, 
@@ -478,6 +540,25 @@ im_affinei( IMAGE *in, IMAGE *out, VipsInterpolate *interpolate,
 	return( im__affinei( in, out, interpolate, &trn ) );
 }
 
+
+/**
+ * im_affinei_all:
+ * @in: input image
+ * @out: output image
+ * @interpolate: interpolation method
+ * @a: transformation matrix
+ * @b: transformation matrix
+ * @c: transformation matrix
+ * @d: transformation matrix
+ * @dx: output offset
+ * @dy: output offset
+ *
+ * As im_affinei(), but the entire image is output.
+ *
+ * See also: im_affinei(), #VipsInterpolate.
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_affinei_all( IMAGE *in, IMAGE *out, VipsInterpolate *interpolate,
 	double a, double b, double c, double d, double dx, double dy ) 

@@ -1,20 +1,21 @@
 pkginclude_HEADERS = \
+	basic.h \
+	type.h \
 	almostdeprecated.h \
 	deprecated.h \
 	arithmetic.h \
-	boolean.h \
 	buf.h \
-	callback.h \
-	check.h \
 	colour.h \
 	conversion.h \
 	convolution.h \
 	debug.h \
 	dispatch.h \
 	disp.h \
+	enumtypes.h \
 	error.h \
-	fmask.h \
+	operation.h \
 	format.h \
+	foreign.h \
 	inplace.h \
 	generate.h \
 	header.h \
@@ -25,7 +26,6 @@ pkginclude_HEADERS = \
 	intl.h \
 	mask.h \
 	memory.h \
-	meta.h \
 	morphology.h \
 	mosaicing.h \
 	other.h \
@@ -38,15 +38,35 @@ pkginclude_HEADERS = \
 	relational.h \
 	resample.h \
 	semaphore.h \
-	struct.h \
-	threadgroup.h \
+	threadpool.h \
 	thread.h \
 	transform.h \
 	util.h \
 	version.h \
+	vector.h \
+	vips7compat.h \
 	vips.h 
 
 vipsc++.h:
 	vips --cpph all > vipsc++.h
 
-EXTRA_DIST = version.h.in internal.h
+EXTRA_DIST = version.h.in internal.h enumtemplate
+
+# the headers we scan for enums etc.
+# keep in sync with ${top_srcdir}/libvips/iofuncs/Makefile.am
+# we need absolute filenames here since this list appears in the src dir as
+# well
+vips_scan_headers = \
+	${top_srcdir}/libvips/include/vips/memory.h \
+	${top_srcdir}/libvips/include/vips/foreign.h \
+	${top_srcdir}/libvips/include/vips/arithmetic.h \
+	${top_srcdir}/libvips/include/vips/conversion.h \
+	${top_srcdir}/libvips/include/vips/util.h \
+	${top_srcdir}/libvips/include/vips/image.h \
+	${top_srcdir}/libvips/include/vips/object.h
+
+enumtypes.h: $(vips_scan_headers) Makefile
+	glib-mkenums --template enumtemplate \
+		$(vips_scan_headers) > xgen-geth && \
+	( cmp -s xgen-geth enumtypes.h || cp xgen-geth enumtypes.h ) && \
+	rm -f xgen-geth 

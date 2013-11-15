@@ -64,7 +64,9 @@ typedef void *im_object;
 
 /* These bits are ored together to make the flags in a type descriptor.
  *
- * IM_TYPE_OUTPUT: set to indicate output, otherwise input.
+ * IM_TYPE_OUTPUT: set to indicate output, otherwise input. If the IM_TYPE_RW 
+ * bit is set and IM_TYPE_OUTPUT is not set, both input and output (ie. the 
+ * operation side-effects this argument).
  *
  * IM_TYPE_ARG: Two ways of making an im_object --- with and without a 
  * command-line string to help you along. Arguments with a string are thing 
@@ -75,7 +77,8 @@ typedef void *im_object;
 typedef enum {
 	IM_TYPE_NONE = 0,		/* No flags */
 	IM_TYPE_OUTPUT = 0x1,		/* Output/input object */
-	IM_TYPE_ARG = 0x2		/* Uses a str arg in construction */
+	IM_TYPE_ARG = 0x2,		/* Uses a str arg in construction */
+	IM_TYPE_RW = 0x4		/* Read-write */
 } im_type_flags;
 
 /* Initialise, destroy and write objects. The "str" argument to the
@@ -271,7 +274,7 @@ int im_close_plugins( void );
 
 /* Loop over all loaded packages.
  */
-void *im_map_packages( VSListMap2Fn fn, void *a );
+void *im_map_packages( VipsSListMap2Fn fn, void *a );
 
 /* Convenience functions for finding packages, functions, etc.
  */

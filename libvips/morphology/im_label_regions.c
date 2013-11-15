@@ -39,18 +39,14 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /**
- * im_label_regions():
+ * im_label_regions:
  * @test: image to test
  * @mask: write labelled regions here
  * @segments: return number of regions here
  *
- * The @test image is repeatedly scanned and regions of 4-connected pixels
- * with the same pixel value found. Every time a region is discovered, those
+ * im_label_regions() repeatedly scans @test for regions of 4-connected pixels
+ * with the same pixel value. Every time a region is discovered, those
  * pixels are marked in @mask with a unique serial number. Once all pixels
  * have been labelled, the operation returns, setting @segments to the number
  * of discrete regions which were detected.
@@ -92,7 +88,14 @@ im_label_regions( IMAGE *test, IMAGE *mask, int *segments )
 	for( y = 0; y < test->Ysize; y++ ) {
 		for( x = 0; x < test->Xsize; x++ ) {
 			if( !m[x] ) {
-				if( im_flood_other( t[1], test, x, y, serial ) )
+				/*
+				if( im_flood_other_old( t[1], test, 
+					x, y, serial ) )
+				 */
+				if( im_flood_other( test, t[1], 
+					x, y, serial, NULL ) )
+//				if( im_flood_other_old( t[1], test,
+//					x, y, serial ) )
 					return( -1 );
 
 				serial += 1;

@@ -40,11 +40,6 @@
 #include <stdarg.h>
 
 #include <vips/vips.h>
-#include <vips/fmask.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 /**
  * SECTION: freq_filt

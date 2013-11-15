@@ -1,23 +1,4 @@
-/* @(#) Creates a image file with Xsize=256, Ysize=1, Bands=bands,
- * @(#) BandFmt=IM_BANDFMT_UCHAR, Type=IM_TYPE_HISTOGRAM;
- * @(#) 
- * @(#) The created image consist a n bands linear lut and is the basis 
- * @(#) for building up look-up tables.
- * @(#) 
- * @(#) int im_identity(lut, bands)
- * @(#) IMAGE *lut;
- * @(#) int bands;
- * @(#)
- * @(#) As above, but make a ushort LUT. ushort LUTs can be less than 65536
- * @(#) elements - sz is the number of elements required.
- * @(#)
- * @(#) int im_identity_ushort(lut, bands, sz)
- * @(#) IMAGE *lut;
- * @(#) int bands;
- * @(#) int sz;
- * @(#)
- * @(#) Returns -1 on error and 0 on success
- * @(#) 
+/* identity LUTs
  *
  * Copyright 1991, N. Dessipris.
  *
@@ -29,6 +10,8 @@
  *	- ANSIfied
  * 24/8/94 JC
  *	- im_identity_ushort() added
+ * 24/3/10
+ * 	- gtkdoc
  */
 
 /*
@@ -68,10 +51,21 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
+/**
+ * im_identity:
+ * @lut: output image
+ * @bands: number of bands to create
+ *
+ * Creates a image file with Xsize=256, Ysize=1, Bands=@bands,
+ * BandFmt=IM_BANDFMT_UCHAR, Type=IM_TYPE_HISTOGRAM.
+ *
+ * The created image consist a @bands-bands linear lut and is the basis 
+ * for building up look-up tables.
+ *
+ * See also: im_identity_ushort(), im_make_xy().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_identity( IMAGE *lut, int bands )
 {
@@ -115,6 +109,22 @@ im_identity( IMAGE *lut, int bands )
         return( 0 );
 }
 
+/**
+ * im_identity_ushort:
+ * @lut: output image
+ * @bands: number of bands to create
+ * @sz: size of LUT to create
+ *
+ * As im_identity(), but make a ushort LUT. ushort LUTs can be up to 65536
+ * elements - @sz is the number of elements required.
+ *
+ * The created image consist a @bands-bands linear lut and is the basis 
+ * for building up look-up tables.
+ *
+ * See also: im_identity(), im_make_xy().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int 
 im_identity_ushort( IMAGE *lut, int bands, int sz )
 {
@@ -156,7 +166,7 @@ im_identity_ushort( IMAGE *lut, int bands, int sz )
 	for( p = buf, x = 0; x < sz; x++ )
 		for( z = 0; z < bands; z++ )
 			*p++ = x;
-	if( im_writeline( 0, lut, (PEL *) buf ) ) 
+	if( im_writeline( 0, lut, (VipsPel *) buf ) ) 
 		return( -1 );
 
         return( 0 );

@@ -3,36 +3,30 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>version</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
-<link rel="up" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="up" href="ch03.html" title="Other API (no gtkdoc comments yet)">
 <link rel="prev" href="libvips-util.html" title="util">
-<link rel="next" href="libvips-type.html" title="type">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="next" href="libvips-semaphore.html" title="semaphore">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="chapter" href="ch01.html" title="Core VIPS API">
-<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
-<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
-<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
-<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
-<link rel="index" href="api-index-full.html" title="API Index">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
 <td><a accesskey="p" href="libvips-util.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">VIPS Reference Manual</th>
-<td><a accesskey="n" href="libvips-type.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libvips-semaphore.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libvips-version.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libvips-version.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libvips-version.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="version">
+<div class="refentry">
 <a name="libvips-version"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,82 +35,60 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libvips-version.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-#define             <a
-href="../libvips/libvips-version.html#IM-VERSION--CAPS"
->IM_VERSION</a>
-#define             <a
-href="../libvips/libvips-version.html#IM-VERSION-STRING--CAPS"
->IM_VERSION_STRING</a>
-#define             <a
-href="../libvips/libvips-version.html#IM-MAJOR-VERSION--CAPS"
->IM_MAJOR_VERSION</a>
-#define             <a
-href="../libvips/libvips-version.html#IM-MINOR-VERSION--CAPS"
->IM_MINOR_VERSION</a>
-#define             <a
-href="../libvips/libvips-version.html#IM-MICRO-VERSION--CAPS"
->IM_MICRO_VERSION</a>
-#define             <a
-href="../libvips/libvips-version.html#IM-INTERFACE-AGE--CAPS"
->IM_INTERFACE_AGE</a>
-#define             <a
-href="../libvips/libvips-version.html#IM-BINARY-AGE--CAPS"
->IM_BINARY_AGE</a>
+<pre class="synopsis">#define             <a class="link" href="libvips-version.html#VIPS-EXEEXT:CAPS" title="VIPS_EXEEXT">VIPS_EXEEXT</a>
+#define             <a class="link" href="libvips-version.html#VIPS-MAJOR-VERSION:CAPS" title="VIPS_MAJOR_VERSION">VIPS_MAJOR_VERSION</a>
+#define             <a class="link" href="libvips-version.html#VIPS-MICRO-VERSION:CAPS" title="VIPS_MICRO_VERSION">VIPS_MICRO_VERSION</a>
+#define             <a class="link" href="libvips-version.html#VIPS-MINOR-VERSION:CAPS" title="VIPS_MINOR_VERSION">VIPS_MINOR_VERSION</a>
+#define             <a class="link" href="libvips-version.html#VIPS-VERSION:CAPS" title="VIPS_VERSION">VIPS_VERSION</a>
+#define             <a class="link" href="libvips-version.html#VIPS-VERSION-STRING:CAPS" title="VIPS_VERSION_STRING">VIPS_VERSION_STRING</a>
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libvips-version.description"></a><h2>Description</h2>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libvips-version.details"></a><h2>Details</h2>
-<div class="refsect2" title="IM_VERSION">
-<a name="IM-VERSION--CAPS"></a><h3>IM_VERSION</h3>
-<pre class="programlisting">#define IM_VERSION		"7.20.7"
+<div class="refsect2">
+<a name="VIPS-EXEEXT:CAPS"></a><h3>VIPS_EXEEXT</h3>
+<pre class="programlisting">#define VIPS_EXEEXT ""
 </pre>
 </div>
 <hr>
-<div class="refsect2" title="IM_VERSION_STRING">
-<a name="IM-VERSION-STRING--CAPS"></a><h3>IM_VERSION_STRING</h3>
-<pre class="programlisting">#define IM_VERSION_STRING	"7.20.7-Thu Jan 21 12:17:24 GMT 2010"
+<div class="refsect2">
+<a name="VIPS-MAJOR-VERSION:CAPS"></a><h3>VIPS_MAJOR_VERSION</h3>
+<pre class="programlisting">#define VIPS_MAJOR_VERSION (7)
 </pre>
 </div>
 <hr>
-<div class="refsect2" title="IM_MAJOR_VERSION">
-<a name="IM-MAJOR-VERSION--CAPS"></a><h3>IM_MAJOR_VERSION</h3>
-<pre class="programlisting">#define IM_MAJOR_VERSION	(7)
+<div class="refsect2">
+<a name="VIPS-MICRO-VERSION:CAPS"></a><h3>VIPS_MICRO_VERSION</h3>
+<pre class="programlisting">#define VIPS_MICRO_VERSION (5)
 </pre>
 </div>
 <hr>
-<div class="refsect2" title="IM_MINOR_VERSION">
-<a name="IM-MINOR-VERSION--CAPS"></a><h3>IM_MINOR_VERSION</h3>
-<pre class="programlisting">#define IM_MINOR_VERSION	(20)
+<div class="refsect2">
+<a name="VIPS-MINOR-VERSION:CAPS"></a><h3>VIPS_MINOR_VERSION</h3>
+<pre class="programlisting">#define VIPS_MINOR_VERSION (28)
 </pre>
 </div>
 <hr>
-<div class="refsect2" title="IM_MICRO_VERSION">
-<a name="IM-MICRO-VERSION--CAPS"></a><h3>IM_MICRO_VERSION</h3>
-<pre class="programlisting">#define IM_MICRO_VERSION	(7)
+<div class="refsect2">
+<a name="VIPS-VERSION:CAPS"></a><h3>VIPS_VERSION</h3>
+<pre class="programlisting">#define VIPS_VERSION		"7.28.5"
 </pre>
 </div>
 <hr>
-<div class="refsect2" title="IM_INTERFACE_AGE">
-<a name="IM-INTERFACE-AGE--CAPS"></a><h3>IM_INTERFACE_AGE</h3>
-<pre class="programlisting">#define IM_INTERFACE_AGE	(@IM_INTERFACE_AGE@)
-</pre>
-</div>
-<hr>
-<div class="refsect2" title="IM_BINARY_AGE">
-<a name="IM-BINARY-AGE--CAPS"></a><h3>IM_BINARY_AGE</h3>
-<pre class="programlisting">#define IM_BINARY_AGE		(@IM_BINARY_AGE@)
+<div class="refsect2">
+<a name="VIPS-VERSION-STRING:CAPS"></a><h3>VIPS_VERSION_STRING</h3>
+<pre class="programlisting">#define VIPS_VERSION_STRING "7.28.5-Mon May  7 10:09:57 BST 2012"
 </pre>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

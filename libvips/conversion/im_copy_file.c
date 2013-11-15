@@ -47,12 +47,20 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
-/* Copy an image to a disc file, then copy again to output. If the image is
+/**
+ * im_copy_file:
+ * @in: input image
+ * @out: output image
+ *
+ * Copy an image to a disc file, then copy again to output. If the image is
  * already a disc file, just copy straight through.
+ *
+ * The disc file is allocated in the same way as im_system_image(). 
+ * The file is automatically deleted when @out is closed.
+ *
+ * See also: im_copy(), im_system_image().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_copy_file( IMAGE *in, IMAGE *out )
@@ -60,7 +68,7 @@ im_copy_file( IMAGE *in, IMAGE *out )
 	if( !im_isfile( in ) ) {
 		IMAGE *disc;
 
-		if( !(disc = im__open_temp()) )
+		if( !(disc = im__open_temp( "%s.v" )) )
 			return( -1 );
 		if( im_add_close_callback( out, 
 			(im_callback_fn) im_close, disc, NULL ) ) {

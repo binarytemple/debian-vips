@@ -67,10 +67,22 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
+/**
+ * im_freqflt:
+ * @in: input image
+ * @mask: mask image
+ * @out: output image
+ *
+ * Filter an image in Fourier space.
+ *
+ * @in is transformed to Fourier space, multipled with the mask image, then
+ * transformed back to real space. If @in is already a complex image, just
+ * multiply then inverse transform.
+ *
+ * See also: im_invfftr(), im_create_fmask().
+ *
+ * Returns: 0 on success, -1 on error.
+ */
 int 
 im_freqflt( IMAGE *in, IMAGE *mask, IMAGE *out )
 {
@@ -81,7 +93,7 @@ im_freqflt( IMAGE *in, IMAGE *mask, IMAGE *out )
 	if( !(dummy = im_open( "memory-1", "p" )) )
 		return( -1 );
 
-	if( im_iscomplex( in ) ) {
+	if( vips_bandfmt_iscomplex( in->BandFmt ) ) {
 		/* Easy case! Assume it has already been transformed.
 		 */
 		IMAGE *t1 = im_open_local( dummy, "im_freqflt-1", "p" );

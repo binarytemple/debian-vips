@@ -48,15 +48,11 @@
 #include <vips/vips.h>
 #include <vips/internal.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Process a buffer of data.
  */
 void
 imb_UCS2LCh( float *p, float *q, int n )
-{		
+{
 	int x;
 
 	for( x = 0; x < n; x++ ) {
@@ -93,6 +89,6 @@ im_UCS2LCh( IMAGE *in, IMAGE *out )
 {
 	im_col_make_tables_UCS();
 
-	return( im__colour_unary( "im_UCS2LCh", in, out, IM_TYPE_UCS,
+	return( im__colour_unary( "im_UCS2LCh", in, out, IM_TYPE_LCH,
 		(im_wrapone_fn) imb_UCS2LCh, NULL, NULL ) );
 }

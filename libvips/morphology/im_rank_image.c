@@ -1,14 +1,11 @@
-/* @(#) Sort a set of images, pixelwise, and pick out the index at each point.
- * @(#)
- * @(#) int im_rank_image( imarray, imout, no, index )
- * @(#) IMAGE *imarray[], *imout;
- * @(#) int no, index;
- * @(#)
- * @(#) All functions return 0 on success and -1 on error
- * @(#)
+/* Sort a set of images, pixelwise, and pick out the index at each point.
  *
  * 19/8/03
  *	- from im_maxvalue(), via im_gbandjoin()
+ * 10/11/10
+ * 	- gtkdoc
+ * 	- cleanups
+ * 	- any mix of formats and bands
  */
 
 /*
@@ -47,10 +44,7 @@
 #include <assert.h>
 
 #include <vips/vips.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
+#include <vips/internal.h>
 
 /* Parameters.
  */
@@ -66,8 +60,8 @@ typedef struct Rank {
 static Rank *
 rank_new( IMAGE **in, IMAGE *out, int n, int index )
 {
-	int i;
 	Rank *rank;
+	IMAGE **t;
 
 	if( !(rank = IM_NEW( out, Rank )) )
 		return( NULL );
@@ -75,10 +69,17 @@ rank_new( IMAGE **in, IMAGE *out, int n, int index )
 	rank->n = n;
 	rank->index = index;
 	rank->out = out;
-	if( !(rank->in = IM_ARRAY( out, n + 1, IMAGE * )) ) 
+	if( !(t = IM_ARRAY( out, n, IMAGE * )) || 
+		!(rank->in = IM_ARRAY( out, n + 1, IMAGE * )) ) 
 		return( NULL );
-	for( i = 0; i < n; i++ ) 
-		rank->in[i] = in[i];
+
+	/* Cast inputs up to a common format, common bands.
+	 */
+	if( im_open_local_array( out, t, n, "im_rank_image", "p" ) ||
+		im_open_local_array( out, rank->in, n, "im_rank_image", "p" ) ||
+		im__bandalike_vec( "im_rank_image", in, t, n ) ||
+		im__formatalike_vec( t, rank->in, n ) )
+		return( NULL );
 	rank->in[n] = NULL;
 
 	return( rank );
@@ -90,8 +91,8 @@ typedef struct {
 	Rank *rank;
 
 	REGION **ir;		/* Input regions */
-	PEL **pts;		/* Per-input region data pointer */
-	PEL *sort;		/* Sort pixels here */
+	VipsPel **pts;		/* Per-input region data pointer */
+	VipsPel *sort;		/* Sort pixels here */
 } RankSequence;
 
 /* Free a sequence value.
@@ -101,10 +102,12 @@ rank_stop( void *vseq, void *a, void *b )
 {
 	RankSequence *seq = (RankSequence *) vseq;
 	Rank *rank = (Rank *) b;
+
 	int i;
 
-	for( i = 0; i < rank->n; i++ ) 
-		IM_FREEF( im_region_free, seq->ir[i] );
+	if( seq->ir )
+		for( i = 0; i < rank->n; i++ ) 
+			IM_FREEF( im_region_free, seq->ir[i] );
 
 	return( 0 );
 }
@@ -116,6 +119,7 @@ rank_start( IMAGE *out, void *a, void *b )
 {
 	IMAGE **in = (IMAGE **) a;
 	Rank *rank = (Rank *) b;
+
 	RankSequence *seq;
 	int i;
 
@@ -131,9 +135,9 @@ rank_start( IMAGE *out, void *a, void *b )
 	/* Attach regions and arrays.
 	 */
 	seq->ir = IM_ARRAY( out, rank->n + 1, REGION * );
-	seq->pts = IM_ARRAY( out, rank->n + 1, PEL * );
+	seq->pts = IM_ARRAY( out, rank->n + 1, VipsPel * );
 	seq->sort = IM_ARRAY( out, 
-		rank->n * IM_IMAGE_SIZEOF_ELEMENT( in[0] ), PEL );
+		rank->n * IM_IMAGE_SIZEOF_ELEMENT( in[0] ), VipsPel );
 	if( !seq->ir || !seq->pts || !seq->sort ) {
 		rank_stop( seq, in, rank );
 		return( NULL );
@@ -247,11 +251,10 @@ rank_gen( REGION *or, void *vseq, void *a, void *b )
 	/* Loop over output!
 	 */
 	for( y = to; y < bo; y++ ) {
-		PEL *q = (PEL *) IM_REGION_ADDR( or, le, y );
+		VipsPel *q = IM_REGION_ADDR( or, le, y );
 
 		for( i = 0; i < rank->n; i++ )
-			seq->pts[i] = (PEL *) 
-				IM_REGION_ADDR( seq->ir[i], le, y );
+			seq->pts[i] = IM_REGION_ADDR( seq->ir[i], le, y );
 
 		/* Special-case max and min.
 		 */
@@ -266,7 +269,29 @@ rank_gen( REGION *or, void *vseq, void *a, void *b )
 	return( 0 );
 }
 
-/* pair-wise rank of a vector of image descriptors.
+/**
+ * im_rank_image:
+ * @in: input image array
+ * @out: output image
+ * @n: number of input images
+ * @index: select pixel
+ *
+ * im_rank_image() sorts the images @in pixel-wise, then outputs an 
+ * image in which each pixel is selected from the sorted list by the 
+ * @index parameter. For example, if @index
+ * is zero, then each output pixel will be the minimum of all the 
+ * corresponding input pixels. 
+ *
+ * It works for any uncoded, non-complex image type. Images are cast up to the
+ * smallest common-format.
+ *
+ * Any image can have either 1 band or n bands, where n is the same for all
+ * the non-1-band images. Single band images are then effectively copied to 
+ * make n-band images.
+ *
+ * See also: im_rank(), im_maxvalue().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_rank_image( IMAGE **in, IMAGE *out, int n, int index )
@@ -285,33 +310,12 @@ im_rank_image( IMAGE **in, IMAGE *out, int n, int index )
 	}
 	if( im_poutcheck( out ) )
 		return( -1 );
-	for( i = 0; i < n; i++ ) {
-		if( im_pincheck( in[i] ) )
+	for( i = 0; i < n; i++ ) 
+		if( im_pincheck( in[i] ) ||
+			im_check_uncoded( "im_rank_image", in[i] ) ||
+			im_check_noncomplex( "im_rank_image", in[i] ) ||
+			im_check_size_same( "im_rank_image", in[i], in[0] ) )
 			return( -1 );
-
-		if( in[i]->Coding != IM_CODING_NONE || im_iscomplex( in[i] ) ) {
-			im_error( "im_rank_image", "%s", 
-				_( "uncoded non-complex only" ) );
-			return( -1 );
-		}
-
-		if( in[0]->BandFmt != in[i]->BandFmt ) {
-			im_error( "im_rank_image", "%s", 
-				_( "input images differ in format" ) );
-			return( -1 );
-		}
-		if( in[0]->Xsize != in[i]->Xsize ||
-			in[0]->Ysize != in[i]->Ysize ) {
-			im_error( "im_rank_image", "%s", 
-				_( "input images differ in size" ) );
-			return( -1 );
-		}
-		if( in[0]->Bands != in[i]->Bands ) {
-			im_error( "im_rank_image", "%s", 
-				_( "input images differ in number of bands" ) );
-			return( -1 );
-		}
-	}
 
 	if( !(rank = rank_new( in, out, n, index )) ||
 		im_cp_desc_array( out, rank->in ) ||
@@ -323,6 +327,26 @@ im_rank_image( IMAGE **in, IMAGE *out, int n, int index )
 	return( 0 );
 }
 
+/**
+ * im_maxvalue:
+ * @in: input image array
+ * @out: output image
+ * @n: number of input images
+ *
+ * im_maxvalue() is a convenience function over im_rank_image(). It sorts the 
+ * input images pixel-wise, then outputs an image 
+ * in which each pixel is the maximum  of all the corresponding input images. 
+ * It works for any uncoded, non-complex image type. Images are cast up to the
+ * smallest common-format.
+ *
+ * Any image can have either 1 band or n bands, where n is the same for all
+ * the non-1-band images. Single band images are then effectively copied to 
+ * make n-band images.
+ *
+ * See also: im_rank_image().
+ *
+ * Returns: 0 on success, -1 on error
+ */
 int
 im_maxvalue( IMAGE **in, IMAGE *out, int n )
 {

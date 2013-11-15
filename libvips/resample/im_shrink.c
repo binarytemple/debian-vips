@@ -1,13 +1,4 @@
-/* @(#) Shrink any non-complex image by some x, y, factor. No interpolation!
- * @(#) Just average an area. Suitable for making quicklooks only!
- * @(#)
- * @(#) int 
- * @(#) im_shrink( in, out, xshrink, yshrink )
- * @(#) IMAGE *in, *out;
- * @(#) double xshrink, yshrink;
- * @(#)
- * @(#) Returns either 0 (success) or -1 (fail)
- * @(#)
+/* shrink with a box filter
  *
  * Copyright: 1990, N. Dessipris.
  *
@@ -34,6 +25,11 @@
  *	- IM_CODING_LABQ handling added here
  * 20/12/08
  * 	- fall back to im_copy() for 1/1 shrink
+ * 2/2/11
+ * 	- gtk-doc
+ * 10/2/12
+ * 	- shrink in chunks to reduce peak memuse for large shrinks
+ * 	- simpler
  */
 
 /*
@@ -73,26 +69,25 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Our main parameter struct.
  */
 typedef struct {
+	IMAGE *in;
+	IMAGE *out;
 	double xshrink;		/* Shrink factors */
 	double yshrink;
+
 	int mw;			/* Size of area we average */
 	int mh;
 	int np;			/* Number of pels we average */
 } ShrinkInfo;
 
-/* Our per-sequence parameter struct. We hold an offset for each pel we
- * average.
+/* Our per-sequence parameter struct. Somewhere to sum band elements.
  */
 typedef struct {
 	REGION *ir;
-	int *off;
+
+	VipsPel *sum;
 } SeqInfo;
 
 /* Free a sequence value.
@@ -122,10 +117,10 @@ shrink_start( IMAGE *out, void *a, void *b )
 	/* Init!
 	 */
 	seq->ir = NULL;
-	seq->off = NULL;
+	seq->sum = NULL;
 	seq->ir = im_region_create( in );
-	seq->off = IM_ARRAY( out, st->np, int );
-	if( !seq->off || !seq->ir ) {
+	seq->sum = (void *) IM_ARRAY( out, in->Bands, double );
+	if( !seq->sum || !seq->ir ) {
 		shrink_stop( seq, in, st );
 		return( NULL );
 	}
@@ -135,51 +130,97 @@ shrink_start( IMAGE *out, void *a, void *b )
 
 /* Integer shrink. 
  */
-#define ishrink(TYPE) \
-	for( y = to; y < bo; y++ ) { \
-		TYPE *q = (TYPE *) IM_REGION_ADDR( or, le, y ); \
- 		\
-		for( x = le; x < ri; x++ ) { \
-			int ix = x * st->xshrink; \
-			int iy = y * st->yshrink; \
-			TYPE *p = (TYPE *) IM_REGION_ADDR( ir, ix, iy ); \
- 			\
-			for( k = 0; k < ir->im->Bands; k++ ) { \
-				int sum = 0; \
-				int *t = seq->off; \
- 				\
-				for( z = 0; z < st->np; z++ ) \
-					sum += p[*t++]; \
-				 \
-				*q++ = sum / st->np; \
-				p++; \
-			} \
-		} \
-	}
+#define ISHRINK( TYPE ) { \
+	int *sum = (int *) seq->sum; \
+	TYPE *p = (TYPE *) in; \
+	TYPE *q = (TYPE *) out; \
+	\
+	for( b = 0; b < bands; b++ ) \
+		sum[b] = 0; \
+	\
+	for( y1 = 0; y1 < st->mh; y1++ ) { \
+		for( i = 0, x1 = 0; x1 < st->mw; x1++ ) \
+			for( b = 0; b < bands; b++, i++ ) \
+				sum[b] += p[i]; \
+		\
+		p += ls; \
+	} \
+	\
+	for( b = 0; b < bands; b++ ) \
+		q[b] = (sum[b] + st->np / 2) / st->np; \
+} 
 
-/* FP shrink.
+/* Float shrink. 
  */
-#define fshrink(TYPE) \
-	for( y = to; y < bo; y++ ) { \
-		TYPE *q = (TYPE *) IM_REGION_ADDR( or, le, y ); \
- 		\
-		for( x = le; x < ri; x++ ) { \
-			int ix = x * st->xshrink; \
-			int iy = y * st->yshrink; \
-			TYPE *p = (TYPE *) IM_REGION_ADDR( ir, ix, iy ); \
- 			\
-			for( k = 0; k < ir->im->Bands; k++ ) { \
-				double sum = 0; \
-				int *t = seq->off; \
- 				\
-				for( z = 0; z < st->np; z++ ) \
-					sum += p[*t++]; \
-				 \
-				*q++ = sum / st->np; \
-				p++; \
-			} \
-		} \
+#define FSHRINK( TYPE ) { \
+	double *sum = (double *) seq->sum; \
+	TYPE *p = (TYPE *) in; \
+	TYPE *q = (TYPE *) out; \
+	\
+	for( b = 0; b < bands; b++ ) \
+		sum[b] = 0.0; \
+	\
+	for( y1 = 0; y1 < st->mh; y1++ ) { \
+		for( i = 0, x1 = 0; x1 < st->mw; x1++ ) \
+			for( b = 0; b < bands; b++, i++ ) \
+				sum[b] += p[i]; \
+		\
+		p += ls; \
+	} \
+	\
+	for( b = 0; b < bands; b++ ) \
+		q[b] = sum[b] / st->np; \
+} 
+
+/* Generate an area of @or. @ir is large enough.
+ */
+static void
+shrink_gen2( ShrinkInfo *st, SeqInfo *seq,
+	REGION *or, REGION *ir,
+	int left, int top, int width, int height )
+{
+	const int bands = st->in->Bands;
+	const int sizeof_pixel = VIPS_IMAGE_SIZEOF_PEL( st->in );
+	const int ls = VIPS_REGION_LSKIP( ir ) / 
+		VIPS_IMAGE_SIZEOF_ELEMENT( st->in );
+
+	int x, y, i;
+	int x1, y1, b;
+
+	for( y = 0; y < height; y++ ) { 
+		VipsPel *out = IM_REGION_ADDR( or, left, top + y ); 
+
+		for( x = 0; x < width; x++ ) { 
+			int ix = (left + x) * st->xshrink; 
+			int iy = (top + y) * st->yshrink; 
+			VipsPel *in = IM_REGION_ADDR( ir, ix, iy ); 
+
+			switch( st->in->BandFmt ) {
+			case IM_BANDFMT_UCHAR: 	
+				ISHRINK( unsigned char ); break;
+			case IM_BANDFMT_CHAR: 	
+				ISHRINK( char ); break; 
+			case IM_BANDFMT_USHORT: 
+				ISHRINK( unsigned short ); break;
+			case IM_BANDFMT_SHORT: 	
+				ISHRINK( short ); break; 
+			case IM_BANDFMT_UINT: 	
+				ISHRINK( unsigned int ); break; 
+			case IM_BANDFMT_INT: 	
+				ISHRINK( int );  break; 
+			case IM_BANDFMT_FLOAT: 	
+				FSHRINK( float ); break; 
+			case IM_BANDFMT_DOUBLE:	
+				FSHRINK( double ); break;
+
+			default:
+				g_assert( 0 ); 
+			}
+
+			out += sizeof_pixel;
+		}
 	}
+}
 
 /* Shrink a REGION.
  */
@@ -190,48 +231,40 @@ shrink_gen( REGION *or, void *vseq, void *a, void *b )
 	ShrinkInfo *st = (ShrinkInfo *) b;
 	REGION *ir = seq->ir;
 	Rect *r = &or->valid;
-	Rect s;
-	int le = r->left;
-	int ri = IM_RECT_RIGHT( r );
-	int to = r->top;
-	int bo = IM_RECT_BOTTOM(r);
 
-	int x, y, z, k;
-
-	/* What part of the input image do we need? Very careful: round left
-	 * down, round right up.
+	/* How do we chunk up the image? We don't want to prepare the whole of
+	 * the input region corresponding to *r since it could be huge. 
+	 *
+	 * Each pixel of *r will depend on roughly mw x mh
+	 * pixels, so we walk *r in chunks which map to the tile size.
+	 *
 	 */
-	s.left = r->left * st->xshrink;
-	s.top = r->top * st->yshrink;
-	s.width = ceil( IM_RECT_RIGHT( r ) * st->xshrink ) - s.left;
-	s.height = ceil( IM_RECT_BOTTOM( r ) * st->yshrink ) - s.top;
-	if( im_prepare( ir, &s ) )
-		return( -1 );
+	int xstep = 1 + VIPS__TILE_WIDTH / st->mw;
+	int ystep = 1 + VIPS__TILE_HEIGHT / st->mh;
 
-	/* Init offsets for pel addressing. Note that offsets must be for the
-	 * type we will address the memory array with.
-	 */
-	for( z = 0, y = 0; y < st->mh; y++ )
-		for( x = 0; x < st->mw; x++ )
-			seq->off[z++] = (IM_REGION_ADDR( ir, x, y ) - 
-				IM_REGION_ADDR( ir, 0, 0 )) /
-				IM_IMAGE_SIZEOF_ELEMENT( ir->im );
+	int x, y;
 
-	switch( ir->im->BandFmt ) {
-        case IM_BANDFMT_UCHAR: 		ishrink(unsigned char); break;
-        case IM_BANDFMT_CHAR: 		ishrink(char); break; 
-        case IM_BANDFMT_USHORT: 	ishrink(unsigned short); break;
-        case IM_BANDFMT_SHORT: 		ishrink(short); break; 
-        case IM_BANDFMT_UINT: 		ishrink(unsigned int); break; 
-        case IM_BANDFMT_INT: 		ishrink(int);  break; 
-        case IM_BANDFMT_FLOAT: 		fshrink(float); break; 
-        case IM_BANDFMT_DOUBLE:		fshrink(double); break;
+	for( y = 0; y < r->height; y += ystep )  
+		for( x = 0; x < r->width; x += xstep ) { 
+			/* Clip the this rect against the demand size.
+			 */
+			int width = VIPS_MIN( xstep, r->width - x );
+			int height = VIPS_MIN( ystep, r->height - y );
 
-        default:
-		im_error( "im_shrink", "%s", _( "unsupported input format" ) );
-                return( -1 );
-        }
- 
+			Rect s;
+
+			s.left = (r->left + x) * st->xshrink;
+			s.top = (r->top + y) * st->yshrink;
+			s.width = 1 + ceil( width * st->xshrink );
+			s.height = 1 + ceil( height * st->yshrink );
+			if( im_prepare( ir, &s ) )
+				return( -1 );
+
+			shrink_gen2( st, seq, 
+				or, ir, 
+				r->left + x, r->top + y, width, height );
+		}
+
 	return( 0 );
 }
 
@@ -239,20 +272,6 @@ static int
 shrink( IMAGE *in, IMAGE *out, double xshrink, double yshrink )
 {
 	ShrinkInfo *st;
-
-	/* Check parameters.
-	 */
-	if( !in || im_iscomplex( in ) ) {
-		im_error( "im_shrink", "%s", _( "non-complex input only" ) );
-		return( -1 );
-	}
-	if( xshrink < 1.0 || yshrink < 1.0 ) {
-		im_error( "im_shrink", 
-			"%s", _( "shrink factors should both be >1" ) );
-		return( -1 );
-	}
-	if( im_piocheck( in, out ) )
-		return( -1 );
 
 	/* Prepare output. Note: we round the output width down!
 	 */
@@ -272,6 +291,8 @@ shrink( IMAGE *in, IMAGE *out, double xshrink, double yshrink )
 	 */
 	if( !(st = IM_NEW( out, ShrinkInfo )) )
 		return( -1 );
+	st->in = in;
+	st->out = out;
 	st->xshrink = xshrink;
 	st->yshrink = yshrink;
 	st->mw = ceil( xshrink );
@@ -293,11 +314,39 @@ shrink( IMAGE *in, IMAGE *out, double xshrink, double yshrink )
 	return( 0 );
 }
 
-/* Wrap up the above: do IM_CODING_LABQ as well.
+/**
+ * im_shrink:
+ * @in: input image
+ * @out: output image
+ * @xshrink: horizontal shrink
+ * @yshrink: vertical shrink
+ *
+ * Shrink @in by a pair of factors with a simple box filter. 
+ *
+ * You will get aliasing for non-integer shrinks. In this case, shrink with
+ * this function to the nearest integer size above the target shrink, then
+ * downsample to the exact size with im_affinei() and your choice of
+ * interpolator.
+ *
+ * im_rightshift_size() is faster for factors which are integer powers of two.
+ *
+ * See also: im_rightshift_size(), im_affinei().
+ *
+ * Returns: 0 on success, -1 on error
  */
 int
 im_shrink( IMAGE *in, IMAGE *out, double xshrink, double yshrink )
 {
+	if( im_check_noncomplex( "im_shrink", in ) ||
+		im_check_coding_known( "im_shrink", in ) ||
+		im_piocheck( in, out ) )
+		return( -1 );
+	if( xshrink < 1.0 || yshrink < 1.0 ) {
+		im_error( "im_shrink", 
+			"%s", _( "shrink factors should be >= 1" ) );
+		return( -1 );
+	}
+
 	if( xshrink == 1 && yshrink == 1 ) {
 		return( im_copy( in, out ) );
 	}
@@ -310,14 +359,9 @@ im_shrink( IMAGE *in, IMAGE *out, double xshrink, double yshrink )
 			im_LabS2LabQ( t[1], out ) )
 			return( -1 );
 	}
-	else if( in->Coding == IM_CODING_NONE ) {
+	else 
 		if( shrink( in, out, xshrink, yshrink ) )
 			return( -1 );
-	}
-	else {
-		im_error( "im_shrink", "%s", _( "unknown coding type" ) );
-		return( -1 );
-	}
 
 	return( 0 );
 }

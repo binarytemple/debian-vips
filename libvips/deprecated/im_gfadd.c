@@ -60,11 +60,6 @@
 #include <math.h>
 
 #include <vips/vips.h>
-#include <vips/deprecated.h>
-
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
 
 /*               uchar char ushort short uint   int float double */
 static int array[8][8] = {

@@ -52,14 +52,10 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC*/
-
 /* Convert a buffer.
  */
 void
-imb_disp2XYZ( PEL *p, float *q, int n, struct im_col_display *d )
+imb_disp2XYZ( VipsPel *p, float *q, int n, struct im_col_display *d )
 {
 	int x;
 

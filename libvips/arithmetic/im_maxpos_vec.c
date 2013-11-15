@@ -49,10 +49,6 @@
 
 #include <vips/vips.h>
 
-#ifdef WITH_DMALLOC
-#include <dmalloc.h>
-#endif /*WITH_DMALLOC */
-
 
 /** TYPE DEFINITIONS **/
 
@@ -74,13 +70,13 @@ static void           maxpos_list_free( maxpos_list *list );
 
 static void           maxpos_list_init( maxpos_list *list, int n );
 static void          *maxpos_vec_start( IMAGE *unrequired, void *, void * );
-static int            maxpos_vec_scan( REGION *reg, void *seq, void *, void * );
+static int            maxpos_vec_scan( REGION *reg, void *seq, void *, void *, gboolean * );
 static void           add_to_maxpos_list( maxpos_list *list, int x, int y, double val );
 static int            maxpos_vec_stop( void *seq, void *, void * );
 
 static void           minpos_list_init( maxpos_list *list, int n );
 static void          *minpos_vec_start( IMAGE *unrequired, void *, void * );
-static int            minpos_vec_scan( REGION *reg, void *seq, void *, void * );
+static int            minpos_vec_scan( REGION *reg, void *seq, void *, void *, gboolean * );
 static void           add_to_minpos_list( maxpos_list *list, int x, int y, double val );
 static int            minpos_vec_stop( void *seq, void *, void * );
 
@@ -95,7 +91,7 @@ static int            minpos_vec_stop( void *seq, void *, void * );
  * @maxima: array to return values
  * @n: number of maxima to search for
  *
- * Find the coordinates and values of the n maxima of an image.
+ * Find the coordinates and values of the @n @maxima of an image.
  *
  * For 8 and 16-bit images, it's much faster to find the histogram and then
  * calculate a threshold from that. See im_mpercent().
@@ -120,7 +116,8 @@ int im_maxpos_vec( IMAGE *im, int *xpos, int *ypos, double *maxima, int n ){
   if( !pointers )
     return -1;
 
-  if( ! ( im_isint( im ) || im_isfloat( im ) ) ){
+  if( ! ( vips_bandfmt_isint( im->BandFmt ) || 
+	vips_bandfmt_isfloat( im->BandFmt ) ) ){
     im_error( FUNCTION_NAME, "%s", _( "scalar images only" ) );
     return -1;
   }
@@ -142,7 +139,7 @@ int im_maxpos_vec( IMAGE *im, int *xpos, int *ypos, double *maxima, int n ){
 
   maxpos_list_init( &master_list, n );
 
-  result= im_iterate( im, maxpos_vec_start, maxpos_vec_scan, maxpos_vec_stop, &n, &master_list );
+  result= vips_sink( im, maxpos_vec_start, maxpos_vec_scan, maxpos_vec_stop, &n, &master_list );
 
   im_free( pointers );
 
@@ -156,10 +153,10 @@ int im_maxpos_vec( IMAGE *im, int *xpos, int *ypos, double *maxima, int n ){
  * @im: image to scan
  * @xpos: array to return x positions
  * @ypos: array to return y positions
- * @maxima: array to return values
+ * @minima: array to return values
  * @n: number of minima to search for
  *
- * Find the coordinates and values of the n minima of an image.
+ * Find the coordinates and values of the @n @minima of an image.
  *
  * For 8 and 16-bit images, it's much faster to find the histogram and then
  * calculate a threshold from that. See im_mpercent().
@@ -184,7 +181,8 @@ int im_minpos_vec( IMAGE *im, int *xpos, int *ypos, double *minima, int n ){
   if( !pointers )
     return -1;
 
-  if( ! ( im_isint( im ) || im_isfloat( im ) ) ){
+  if( ! ( vips_bandfmt_isint( im->BandFmt ) || 
+	vips_bandfmt_isfloat( im->BandFmt ) ) ){
     im_error( FUNCTION_NAME, "%s", _( "scalar images only" ) );
     return -1;
   }
@@ -206,7 +204,7 @@ int im_minpos_vec( IMAGE *im, int *xpos, int *ypos, double *minima, int n ){
 
   minpos_list_init( &master_list, n );
 
-  result= im_iterate( im, minpos_vec_start, minpos_vec_scan, minpos_vec_stop, &n, &master_list );
+  result= vips_sink( im, minpos_vec_start, minpos_vec_scan, minpos_vec_stop, &n, &master_list );
 
   im_free( pointers );
 
@@ -273,7 +271,7 @@ static void *maxpos_vec_start( IMAGE *unrequired, void *a, void *b ){
   return list;
 }
 
-static int maxpos_vec_scan( REGION *reg, void *seq, void *a, void *b ){
+static int maxpos_vec_scan( REGION *reg, void *seq, void *a, void *b, gboolean *stop ){
   
   maxpos_list *list = (maxpos_list *) seq;
 
@@ -302,6 +300,8 @@ static int maxpos_vec_scan( REGION *reg, void *seq, void *a, void *b ){
     case IM_BANDFMT_INT:     MAXPOS_VEC_SCAN( gint32 )   break;
     case IM_BANDFMT_FLOAT:   MAXPOS_VEC_SCAN( float )    break;
     case IM_BANDFMT_DOUBLE:  MAXPOS_VEC_SCAN( double )   break;
+    default:
+			     g_assert( 0 );
   }
 
 #undef MAXPOS_VEC_SCAN
@@ -395,7 +395,7 @@ static void *minpos_vec_start( IMAGE *unrequired, void *a, void *b ){
   return list;
 }
 
-static int minpos_vec_scan( REGION *reg, void *seq, void *a, void *b ){
+static int minpos_vec_scan( REGION *reg, void *seq, void *a, void *b, gboolean *stop ){
   
   maxpos_list *list = (maxpos_list *) seq;
 
@@ -424,6 +424,8 @@ static int minpos_vec_scan( REGION *reg, void *seq, void *a, void *b ){
     case IM_BANDFMT_INT:     MINPOS_VEC_SCAN( gint32 )   break;
     case IM_BANDFMT_FLOAT:   MINPOS_VEC_SCAN( float )    break;
     case IM_BANDFMT_DOUBLE:  MINPOS_VEC_SCAN( double )   break;
+    default:
+			     g_assert( 0 );
   }
 
 #undef MINPOS_VEC_SCAN
