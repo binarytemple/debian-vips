@@ -1,3 +1,9 @@
+vips (7.36.3-2) unstable; urgency=low
+
+  * Fix build dependencies for libvips-dev
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 15 Nov 2013 08:46:09 -0500
+
 vips (7.36.3-1) unstable; urgency=low
 
   * New upstream release
