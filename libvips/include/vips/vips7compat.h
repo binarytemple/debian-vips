@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -39,6 +40,62 @@ extern "C" {
 
 /* Renamed types.
  */
+
+#define IM_D93_X0 VIPS_D93_X0 
+#define IM_D93_Y0 VIPS_D93_Y0 
+#define IM_D93_Z0 VIPS_D93_Z0 
+
+#define IM_D75_X0 VIPS_D75_X0 
+#define IM_D75_Y0 VIPS_D75_Y0 
+#define IM_D75_Z0 VIPS_D75_Z0 
+
+#define IM_D65_X0 VIPS_D65_X0 
+#define IM_D65_Y0 VIPS_D65_Y0 
+#define IM_D65_Z0 VIPS_D65_Z0 
+
+#define IM_D55_X0 VIPS_D55_X0 
+#define IM_D55_Y0 VIPS_D55_Y0 
+#define IM_D55_Z0 VIPS_D55_Z0 
+
+#define IM_D50_X0 VIPS_D50_X0 
+#define IM_D50_Y0 VIPS_D50_Y0 
+#define IM_D50_Z0 VIPS_D50_Z0 
+
+#define IM_A_X0 VIPS_A_X0 
+#define IM_A_Y0 VIPS_A_Y0 
+#define IM_A_Z0 VIPS_A_Z0 
+
+#define IM_B_X0 VIPS_B_X0 
+#define IM_B_Y0 VIPS_B_Y0 
+#define IM_B_Z0 VIPS_B_Z0 
+
+#define IM_C_X0 VIPS_C_X0 
+#define IM_C_Y0 VIPS_C_Y0 
+#define IM_C_Z0 VIPS_C_Z0 
+
+#define IM_E_X0 VIPS_E_X0 
+#define IM_E_Y0 VIPS_E_Y0 
+#define IM_E_Z0 VIPS_E_Z0 
+
+#define IM_D3250_X0 VIPS_D3250_X0 
+#define IM_D3250_Y0 VIPS_D3250_Y0 
+#define IM_D3250_Z0 VIPS_D3250_Z0 
+
+#define im_col_Lab2XYZ vips_col_Lab2XYZ
+#define im_col_XYZ2Lab vips_col_XYZ2Lab
+#define im_col_ab2h vips_col_ab2h
+#define im_col_ab2Ch vips_col_ab2Ch
+#define im_col_Ch2ab vips_col_Ch2ab
+
+#define im_col_L2Lucs vips_col_L2Lcmc
+#define im_col_C2Cucs vips_col_C2Ccmc
+#define im_col_Ch2hucs vips_col_Ch2hcmc
+#define im_col_pythagoras vips_pythagoras
+
+#define im_col_make_tables_UCS vips_col_make_tables_CMC
+#define im_col_Lucs2L vips_col_Lcmc2L
+#define im_col_Cucs2C vips_col_Ccmc2C
+#define im_col_Chucs2h vips_col_Chcmc2h
 
 #define PEL VipsPel
 
@@ -74,7 +131,7 @@ extern "C" {
 #define IM_TYPE_CMYK VIPS_INTERPRETATION_CMYK
 #define IM_TYPE_LABQ VIPS_INTERPRETATION_LABQ
 #define IM_TYPE_RGB VIPS_INTERPRETATION_RGB
-#define IM_TYPE_UCS VIPS_INTERPRETATION_UCS
+#define IM_TYPE_UCS VIPS_INTERPRETATION_CMC
 #define IM_TYPE_LCH VIPS_INTERPRETATION_LCH
 #define IM_TYPE_LABS VIPS_INTERPRETATION_LABS
 #define IM_TYPE_sRGB VIPS_INTERPRETATION_sRGB
@@ -85,6 +142,11 @@ extern "C" {
 
 #define IMAGE VipsImage
 #define REGION VipsRegion
+
+#define IM_INTENT_PERCEPTUAL VIPS_INTENT_PERCEPTUAL
+#define IM_INTENT_RELATIVE_COLORIMETRIC VIPS_INTENT_RELATIVE
+#define IM_INTENT_SATURATION VIPS_INTENT_SATURATION
+#define IM_INTENT_ABSOLUTE_COLORIMETRIC VIPS_INTENT_ABSOLUTE
 
 /* Renamed macros.
  */
@@ -152,7 +214,7 @@ extern "C" {
 #define im_cp_desc_array vips_image_copy_fields_array
 #define im_image vips_image_new_from_memory
 #define im_binfile vips_image_new_from_file_raw
-#define im__open_temp vips_image_new_disc_temp
+#define im__open_temp vips_image_new_temp_file
 #define im__test_kill( I ) (vips_image_get_kill( I ))
 #define im__start_eval( I ) (vips_image_preeval( I ), vips_image_get_kill( I ))
 #define im__handle_eval( I, W, H ) \
@@ -372,6 +434,10 @@ G_STMT_START { \
 #define vips_bandfmt_iscomplex vips_band_format_iscomplex 
 
 #define im__change_suffix vips__change_suffix
+
+int vips_check_coding_labq( const char *domain, VipsImage *im );
+int vips_check_coding_rad( const char *domain, VipsImage *im );
+int vips_check_bands_3ormore( const char *domain, VipsImage *im );
 
 /* Buffer processing.
  */
@@ -599,6 +665,20 @@ int im_lesseqconst( VipsImage *in, VipsImage *out, double c );
 int im_moreconst( VipsImage *in, VipsImage *out, double c );
 int im_moreeqconst( VipsImage *in, VipsImage *out, double c );
 
+int im_maxpos_vec( VipsImage *im, int *xpos, int *ypos, double *maxima, int n );
+int im_minpos_vec( VipsImage *im, int *xpos, int *ypos, double *minima, int n );
+
+int im_maxpos_avg( VipsImage *im, double *xpos, double *ypos, double *out );
+
+int im_linreg( VipsImage **ins, VipsImage *out, double *xs );
+
+int im_cross_phase( VipsImage *a, VipsImage *b, VipsImage *out );
+
+int im_point( VipsImage *im, VipsInterpolate *interpolate, 
+	double x, double y, int band, double *out );
+int im_point_bilinear( VipsImage *im, 
+	double x, double y, int band, double *out );
+
 int im_copy( VipsImage *in, VipsImage *out );
 int im_copy_set( VipsImage *in, VipsImage *out, 
 	VipsInterpretation interpretation, 
@@ -608,6 +688,7 @@ int im_copy_set_meta( VipsImage *in, VipsImage *out,
 int im_copy_morph( VipsImage *in, VipsImage *out, 
 	int bands, VipsBandFormat format, VipsCoding coding );
 int im_copy_swap( VipsImage *in, VipsImage *out );
+int im_copy_file( VipsImage *in, VipsImage *out );
 int im_copy_native( VipsImage *in, VipsImage *out, gboolean is_msb_first );
 int im_embed( VipsImage *in, VipsImage *out, 
 	int type, int x, int y, int width, int height );
@@ -624,10 +705,39 @@ int im_extract_bands( VipsImage *in, VipsImage *out, int band, int nbands );
 int im_extract_areabands( VipsImage *in, VipsImage *out,
 	int left, int top, int width, int height, int band, int nbands );
 int im_replicate( VipsImage *in, VipsImage *out, int across, int down );
+int im_wrap( VipsImage *in, VipsImage *out, int x, int y );
+int im_rotquad( VipsImage *in, VipsImage *out );
 int im_clip2fmt( VipsImage *in, VipsImage *out, VipsBandFormat fmt );
 int im_bandjoin( VipsImage *in1, VipsImage *in2, VipsImage *out );
 int im_gbandjoin( VipsImage **in, VipsImage *out, int n );
+int im_grid( VipsImage *in, VipsImage *out, int tile_height, int across, int down );
+int im_scale( VipsImage *in, VipsImage *out );
+int im_scaleps( VipsImage *in, VipsImage *out );
+int im_msb( VipsImage *in, VipsImage *out );
+int im_msb_band( VipsImage *in, VipsImage *out, int band );
+int im_zoom( VipsImage *in, VipsImage *out, int xfac, int yfac );
+int im_subsample( VipsImage *in, VipsImage *out, int xshrink, int yshrink );
+
+int im_gaussnoise( VipsImage *out, int x, int y, double mean, double sigma );
+int im_text( VipsImage *out, const char *text, const char *font,
+	int width, int alignment, int dpi );
 int im_black( VipsImage *out, int x, int y, int bands );
+int im_make_xy( VipsImage *out, const int xsize, const int ysize );
+int im_zone( VipsImage *out, int size );
+int im_fzone( VipsImage *out, int size );
+int im_feye( VipsImage *out,
+	const int xsize, const int ysize, const double factor );
+int im_eye( VipsImage *out,
+	const int xsize, const int ysize, const double factor );
+int im_grey( VipsImage *out, const int xsize, const int ysize );
+int im_fgrey( VipsImage *out, const int xsize, const int ysize );
+int im_sines( VipsImage *out,
+	int xsize, int ysize, double horfreq, double verfreq );
+
+int im_system( VipsImage *im, const char *cmd, char **out );
+VipsImage *im_system_image( VipsImage *im, 
+	const char *in_format, const char *out_format, const char *cmd_format, 
+	char **log );
 
 int im_c2amph( VipsImage *in, VipsImage *out );
 int im_c2rect( VipsImage *in, VipsImage *out );
@@ -649,6 +759,89 @@ int im_bandmean( VipsImage *in, VipsImage *out );
 int im_recomb( VipsImage *in, VipsImage *out, DOUBLEMASK *recomb );
 
 int im_argb2rgba( VipsImage *in, VipsImage *out );
+
+int im_shrink( VipsImage *in, VipsImage *out, double xshrink, double yshrink );
+int im_affinei( VipsImage *in, VipsImage *out, 
+	VipsInterpolate *interpolate,
+	double a, double b, double c, double d, double dx, double dy, 
+	int ox, int oy, int ow, int oh );
+int im_affinei_all( VipsImage *in, VipsImage *out, VipsInterpolate *interpolate,
+	double a, double b, double c, double d, double dx, double dy ) ;
+int im_rightshift_size( VipsImage *in, VipsImage *out, 
+	int xshift, int yshift, int band_fmt );
+
+int im_Lab2XYZ_temp( IMAGE *in, IMAGE *out, double X0, double Y0, double Z0 );
+int im_Lab2XYZ( IMAGE *in, IMAGE *out );
+int im_XYZ2Lab( VipsImage *in, VipsImage *out );
+int im_XYZ2Lab_temp( VipsImage *in, VipsImage *out, 
+	double X0, double Y0, double Z0 );
+int im_Lab2LCh( VipsImage *in, VipsImage *out );
+int im_LCh2Lab( VipsImage *in, VipsImage *out );
+int im_LCh2UCS( VipsImage *in, VipsImage *out );
+int im_UCS2LCh( VipsImage *in, VipsImage *out );
+int im_XYZ2Yxy( VipsImage *in, VipsImage *out );
+int im_Yxy2XYZ( VipsImage *in, VipsImage *out );
+int im_float2rad( VipsImage *in, VipsImage *out );
+int im_rad2float( VipsImage *in, VipsImage *out );
+int im_Lab2LabQ( VipsImage *in, VipsImage *out );
+int im_LabQ2Lab( VipsImage *in, VipsImage *out );
+int im_Lab2LabS( VipsImage *in, VipsImage *out );
+int im_LabS2Lab( VipsImage *in, VipsImage *out );
+int im_LabQ2LabS( VipsImage *in, VipsImage *out );
+int im_LabS2LabQ( VipsImage *in, VipsImage *out );
+int im_LabQ2sRGB( VipsImage *in, VipsImage *out );
+
+int im_XYZ2sRGB( IMAGE *in, IMAGE *out );
+int im_sRGB2XYZ( IMAGE *in, IMAGE *out );
+
+struct im_col_display;
+#define im_col_displays(S) (NULL)
+#define im_LabQ2disp_build_table(A, B) (NULL)
+#define im_LabQ2disp_table(A, B, C) (im_LabQ2disp(A, B, C))
+
+int im_Lab2disp( IMAGE *in, IMAGE *out, struct im_col_display *disp );
+int im_disp2Lab( IMAGE *in, IMAGE *out, struct im_col_display *disp );
+
+int im_dE_fromdisp( IMAGE *, IMAGE *, IMAGE *, struct im_col_display * );
+int im_dECMC_fromdisp( IMAGE *, IMAGE *, IMAGE *, struct im_col_display * );
+
+#define im_disp2XYZ(A, B, C) (im_sRGB2XYZ(A, B))
+#define im_XYZ2disp(A, B, C) (im_XYZ2sRGB(A, B))
+#define im_LabQ2disp(A, B, C) (im_LabQ2sRGB(A, B))
+
+int im_icc_transform( VipsImage *in, VipsImage *out, 
+	const char *input_profile_filename,
+	const char *output_profile_filename,
+	VipsIntent intent );
+
+#define im_icc_present vips_icc_present
+
+int im_icc_import( VipsImage *in, VipsImage *out, 
+	const char *input_profile_filename, VipsIntent intent );
+int im_icc_import_embedded( VipsImage *in, VipsImage *out, VipsIntent intent );
+int im_icc_export_depth( VipsImage *in, VipsImage *out, int depth,
+	const char *output_profile_filename, VipsIntent intent );
+int im_icc_ac2rc( VipsImage *in, VipsImage *out, const char *profile_filename );
+
+int im_LabQ2XYZ( VipsImage *in, VipsImage *out );
+int im_UCS2XYZ( VipsImage *in, VipsImage *out );
+int im_UCS2Lab( VipsImage *in, VipsImage *out );
+int im_Lab2UCS( VipsImage *in, VipsImage *out );
+int im_XYZ2UCS( VipsImage *in, VipsImage *out );
+
+int im_dE_fromLab( VipsImage *in1, VipsImage *in2, VipsImage *out );
+int im_dECMC_fromLab( VipsImage *in1, VipsImage *in2, VipsImage *out );
+int im_dE_fromXYZ( VipsImage *in1, VipsImage *in2, VipsImage *out );
+int im_dE00_fromLab( VipsImage *in1, VipsImage *in2, VipsImage *out );
+
+int im_lab_morph( VipsImage *in, VipsImage *out,
+	DOUBLEMASK *mask,
+	double L_offset, double L_scale,
+	double a_scale, double b_scale );
+
+#define im_col_dE00 vips_col_dE00
+
+int im_quadratic( IMAGE *in, IMAGE *out, IMAGE *coeff );
 
 /* ruby-vips uses this
  */

@@ -42,7 +42,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -80,6 +81,10 @@
 #include <vips/internal.h>
 #include <vips/vector.h>
 
+/* abort() on the first warning or error.
+ */
+int vips__fatal = 0;
+
 /* Use in various small places where we need a mutex and it's not worth 
  * making a private one.
  */
@@ -91,7 +96,7 @@ static char *vips__argv0 = NULL;
 
 /* Leak check on exit.
  */
-static int vips__leak = 0;
+int vips__leak = 0;
 
 /**
  * vips_get_argv0:
@@ -163,6 +168,8 @@ vips_get_argv0( void )
 int
 vips_init( const char *argv0 )
 {
+	extern GType vips_system_get_type( void );
+
 	static gboolean started = FALSE;
 	static gboolean done = FALSE;
 	char *prgname;
@@ -185,19 +192,21 @@ vips_init( const char *argv0 )
 		return( 0 );
 	started = TRUE;
 
-	/* Need gobject etc.
+#ifdef NEED_TYPE_INIT
+	/* Before glib 2.36 you have to call this on startup.
 	 */
 	g_type_init();
+#endif /*NEED_TYPE_INIT*/
 
 	/* Older glibs need this.
 	 */
-#ifdef G_THREADS_ENABLED
+#ifndef HAVE_THREAD_NEW
 	if( !g_thread_supported() ) 
 		g_thread_init( NULL );
-#endif /*G_THREADS_ENABLED*/
+#endif 
 
 	if( !vips__global_lock )
-		vips__global_lock = g_mutex_new();
+		vips__global_lock = vips_g_mutex_new();
 
 	VIPS_SETSTR( vips__argv0, argv0 );
 
@@ -227,11 +236,19 @@ vips_init( const char *argv0 )
 	vips__interpolate_init();
 	im__format_init();
 
+	/* Start up operator cache.
+	 */
+	vips__cache_init();
+
 	/* Start up packages.
 	 */
+	(void) vips_system_get_type();
 	vips_arithmetic_operation_init();
 	vips_conversion_operation_init();
+	vips_create_operation_init();
 	vips_foreign_operation_init();
+	vips_resample_operation_init();
+	vips_colour_operation_init();
 
 	/* Load up any plugins in the vips libdir. We don't error on failure,
 	 * it's too annoying to have VIPS refuse to start because of a broken
@@ -310,6 +327,8 @@ vips_leak( void )
 	vips_buf_appends( &buf, "\n" );
 
 	fprintf( stderr, "%s", vips_buf_all( &buf ) );
+
+	vips__type_leak();
 }
 
 /**
@@ -360,49 +379,82 @@ vips__ngettext( const char *msgid, const char *plural, unsigned long int n )
 	return( dngettext( GETTEXT_PACKAGE, msgid, plural, n ) );
 }
 
+static gboolean
+vips_lib_version_cb( const gchar *option_name, const gchar *value, 
+	gpointer data, GError **error )
+{
+	printf( "libvips %s\n", VIPS_VERSION_STRING );
+	vips_shutdown();
+	exit( 0 );
+}
+
+static gboolean
+vips_set_fatal_cb( const gchar *option_name, const gchar *value, 
+	gpointer data, GError **error )
+{
+	vips__fatal = 1; 
+
+	/* Set masks for debugging ... stop on any problem. 
+	 */
+	g_log_set_always_fatal(
+		G_LOG_FLAG_RECURSION |
+		G_LOG_FLAG_FATAL |
+		G_LOG_LEVEL_ERROR |
+		G_LOG_LEVEL_CRITICAL |
+		G_LOG_LEVEL_WARNING );
+
+	return( TRUE );
+}
+
 static GOptionEntry option_entries[] = {
+	{ "vips-fatal", 0, G_OPTION_FLAG_HIDDEN | G_OPTION_FLAG_NO_ARG, 
+		G_OPTION_ARG_CALLBACK, (gpointer) &vips_set_fatal_cb, 
+		N_( "abort on first error or warning" ), NULL },
 	{ "vips-concurrency", 'c', 0, 
 		G_OPTION_ARG_INT, &vips__concurrency, 
 		N_( "evaluate with N concurrent threads" ), "N" },
-	{ "vips-tile-width", 'w', 0, 
+	{ "vips-tile-width", 0, G_OPTION_FLAG_HIDDEN, 
 		G_OPTION_ARG_INT, &vips__tile_width, 
 		N_( "set tile width to N (DEBUG)" ), "N" },
-	{ "vips-tile-height", 'h', 0, 
+	{ "vips-tile-height", 0, G_OPTION_FLAG_HIDDEN, 
 		G_OPTION_ARG_INT, &vips__tile_height, 
 		N_( "set tile height to N (DEBUG)" ), "N" },
-	{ "vips-thinstrip-height", 't', 0, 
+	{ "vips-thinstrip-height", 0, G_OPTION_FLAG_HIDDEN, 
 		G_OPTION_ARG_INT, &vips__thinstrip_height, 
 		N_( "set thinstrip height to N (DEBUG)" ), "N" },
-	{ "vips-fatstrip-height", 'f', 0, 
+	{ "vips-fatstrip-height", 0, G_OPTION_FLAG_HIDDEN, 
 		G_OPTION_ARG_INT, &vips__fatstrip_height, 
 		N_( "set fatstrip height to N (DEBUG)" ), "N" },
-	{ "vips-progress", 'p', 0, 
+	{ "vips-progress", 0, 0, 
 		G_OPTION_ARG_NONE, &vips__progress, 
 		N_( "show progress feedback" ), NULL },
-	{ "vips-leak", 'l', 0, 
+	{ "vips-leak", 0, 0, 
 		G_OPTION_ARG_NONE, &vips__leak, 
 		N_( "leak-check on exit" ), NULL },
-	{ "vips-disc-threshold", 'd', 0, 
+	{ "vips-disc-threshold", 0, 0, 
 		G_OPTION_ARG_STRING, &vips__disc_threshold, 
 		N_( "images larger than N are decompressed to disc" ), "N" },
-	{ "vips-novector", 't', G_OPTION_FLAG_REVERSE, 
+	{ "vips-novector", 0, G_OPTION_FLAG_REVERSE, 
 		G_OPTION_ARG_NONE, &vips__vector_enabled, 
 		N_( "disable vectorised versions of operations" ), NULL },
-	{ "vips-cache-max", 'x', 0, 
+	{ "vips-cache-max", 0, 0, 
 		G_OPTION_ARG_STRING, &vips__cache_max, 
 		N_( "cache at most N operations" ), "N" },
-	{ "vips-cache-max-memory", 'm', 0, 
+	{ "vips-cache-max-memory", 0, 0, 
 		G_OPTION_ARG_STRING, &vips__cache_max_mem, 
 		N_( "cache at most N bytes in memory" ), "N" },
-	{ "vips-cache-max-files", 'l', 0, 
+	{ "vips-cache-max-files", 0, 0, 
 		G_OPTION_ARG_STRING, &vips__cache_max_files, 
 		N_( "allow at most N open files" ), "N" },
-	{ "vips-cache-trace", 'c', 0, 
+	{ "vips-cache-trace", 0, 0, 
 		G_OPTION_ARG_NONE, &vips__cache_trace, 
 		N_( "trace operation cache" ), NULL },
-	{ "vips-cache-dump", 'r', 0, 
+	{ "vips-cache-dump", 0, 0, 
 		G_OPTION_ARG_NONE, &vips__cache_dump, 
 		N_( "dump operation cache on exit" ), NULL },
+	{ "vips-version", 0, G_OPTION_FLAG_NO_ARG, 
+		G_OPTION_ARG_CALLBACK, (gpointer) &vips_lib_version_cb, 
+		N_( "print libvips version" ), NULL },
 	{ NULL }
 };
 
@@ -592,7 +644,7 @@ find_file( const char *name )
 static const char *
 guess_prefix( const char *argv0, const char *name )
 {
-        char *prefix;
+	char *prefix;
 
 	/* Try to guess from argv0.
 	 */

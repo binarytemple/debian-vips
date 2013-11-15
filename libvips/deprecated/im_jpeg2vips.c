@@ -2,6 +2,8 @@
  *
  * 30/11/11
  * 	- now just a stub
+ * 10/7/12
+ * 	- use jpeg funcs directly rather than going though vips_jpegload()
  */
 
 /*
@@ -20,7 +22,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -41,18 +44,25 @@
 #include <vips/intl.h>
 
 #include <stdlib.h>
+#include <setjmp.h>
 
 #include <vips/vips.h>
 
-int
-im_jpeg2vips( const char *name, IMAGE *out )
+#ifdef HAVE_JPEG
+#include <jpeglib.h>
+#include <jerror.h>
+#include "../foreign/jpeg.h"
+#endif /*HAVE_JPEG*/
+
+static int
+jpeg2vips( const char *name, IMAGE *out, gboolean header_only )
 {
 	char filename[FILENAME_MAX];
 	char mode[FILENAME_MAX];
 	char *p, *q;
 	int shrink;
+	int seq;
 	gboolean fail_on_warn;
-	VipsImage *t;
 
 	/* By default, we ignore any warnings. We want to get as much of
 	 * the user's data as we can.
@@ -64,6 +74,7 @@ im_jpeg2vips( const char *name, IMAGE *out )
 	im_filename_split( name, filename, mode );
 	p = &mode[0];
 	shrink = 1;
+	seq = 0;
 	if( (q = im_getnextoption( &p )) ) {
 		shrink = atoi( q );
 
@@ -78,20 +89,56 @@ im_jpeg2vips( const char *name, IMAGE *out )
 		if( im_isprefix( "fail", q ) ) 
 			fail_on_warn = TRUE;
 	}
-
-	if( vips_jpegload( filename, &t, 
-		"shrink", shrink,
-		"fail", fail_on_warn,
-		NULL ) )
-		return( -1 );
-
-	if( vips_image_write( t, out ) ) {
-		g_object_unref( t );
-		return( -1 );
+	if( (q = im_getnextoption( &p )) ) {
+		if( im_isprefix( "seq", q ) )
+			seq = 1;
 	}
-	g_object_unref( t );
+
+	/* Don't use vips_jpegload() ... we call the jpeg func directly in
+	 * order to avoid the foreign.c mechanisms for load-via-disc and stuff
+	 * like that.
+	 */
+
+	/* We need to be compatible with the pre-sequential mode 
+	 * im_jpeg2vips(). This returned a "t" if given a "p" image, since it
+	 * used writeline.
+	 *
+	 * If we're writing the image to a "p", switch it to a "t".
+	 */
+
+	if( !header_only &&
+		!seq &&
+		out->dtype == VIPS_IMAGE_PARTIAL ) {
+		if( vips__image_wio_output( out ) ) 
+			return( -1 );
+	}
+
+#ifdef HAVE_JPEG
+	if( vips__jpeg_read_file( filename, out, 
+		header_only, shrink, fail_on_warn ) )
+		return( -1 );
+#else
+	vips_error( "im_jpeg2vips", 
+		"%s", _( "no JPEG support in your libvips" ) ); 
+
+	return( -1 );
+#endif /*HAVE_JPEG*/
 
 	return( 0 );
+}
+
+int
+im_jpeg2vips( const char *name, IMAGE *out )
+{
+	return( jpeg2vips( name, out, FALSE ) ); 
+}
+
+/* By having a separate header func, we get lazy.c to open via disc/mem.
+ */
+static int
+im_jpeg2vips_header( const char *name, IMAGE *out )
+{
+	return( jpeg2vips( name, out, TRUE ) ); 
 }
 
 int
@@ -142,6 +189,7 @@ vips_format_jpeg_class_init( VipsFormatJpegClass *class )
 	object_class->description = _( "JPEG" );
 
 	format_class->is_a = isjpeg;
+	format_class->header = im_jpeg2vips_header;
 	format_class->load = im_jpeg2vips;
 	format_class->save = im_vips2jpeg;
 	format_class->suffs = jpeg_suffs;

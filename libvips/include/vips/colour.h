@@ -25,7 +25,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -35,17 +36,87 @@
 
  */
 
-#ifndef IM_COLOUR_H
-#define IM_COLOUR_H
+#ifndef VIPS_COLOUR_H
+#define VIPS_COLOUR_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif /*__cplusplus*/
 
-struct im_col_display;
+/* Areas under curves for Dxx. 2 degree observer.
+ */
+#define VIPS_D93_X0 (89.7400)
+#define VIPS_D93_Y0 (100.0)
+#define VIPS_D93_Z0 (130.7700)
 
-int vips_LabQ2disp( VipsImage *in, VipsImage **out, 
-	struct im_col_display *disp, ... )
+#define VIPS_D75_X0 (94.9682)
+#define VIPS_D75_Y0 (100.0)
+#define VIPS_D75_Z0 (122.5710)
+
+/* D65 temp 6504.
+ */
+#define VIPS_D65_X0 (95.0470)
+#define VIPS_D65_Y0 (100.0)
+#define VIPS_D65_Z0 (108.8827)
+
+#define VIPS_D55_X0 (95.6831)
+#define VIPS_D55_Y0 (100.0)
+#define VIPS_D55_Z0 (92.0871)
+
+#define VIPS_D50_X0 (96.4250)
+#define VIPS_D50_Y0 (100.0)
+#define VIPS_D50_Z0 (82.4680)
+
+/* A temp 2856k.
+ */
+#define VIPS_A_X0 (109.8503)
+#define VIPS_A_Y0 (100.0)
+#define VIPS_A_Z0 (35.5849)
+
+/* B temp 4874k.
+ */
+#define VIPS_B_X0 (99.0720)
+#define VIPS_B_Y0 (100.0)
+#define VIPS_B_Z0 (85.2230)
+
+/* C temp 6774k.
+ */
+#define VIPS_C_X0 (98.0700)
+#define VIPS_C_Y0 (100.0)
+#define VIPS_C_Z0 (118.2300)
+
+#define VIPS_E_X0 (100.0)
+#define VIPS_E_Y0 (100.0)
+#define VIPS_E_Z0 (100.0)
+
+#define VIPS_D3250_X0 (105.6590)
+#define VIPS_D3250_Y0 (100.0)
+#define VIPS_D3250_Z0 (45.8501)
+
+/**
+ * VipsIntent:
+ * @VIPS_INTENT_PERCEPTUAL: perceptual rendering intent
+ * @VIPS_INTENT_RELATIVE: relative colorimetric rendering intent
+ * @VIPS_INTENT_SATURATION: saturation rendering intent
+ * @VIPS_INTENT_ABSOLUTE: absolute colorimetric rendering intent
+ *
+ * The rendering intent. #VIPS_INTENT_ABSOLUTE is best for
+ * scientific work, #VIPS_INTENT_RELATIVE is usually best for 
+ * accurate communication with other imaging libraries.
+ */
+typedef enum {
+	VIPS_INTENT_PERCEPTUAL = 0,
+	VIPS_INTENT_RELATIVE,
+	VIPS_INTENT_SATURATION,
+	VIPS_INTENT_ABSOLUTE
+} VipsIntent;
+
+gboolean vips_colourspace_issupported( const VipsImage *image );
+int vips_colourspace( VipsImage *in, VipsImage **out, 
+	VipsInterpretation space, ... )
+	__attribute__((sentinel));
+
+int vips_LabQ2sRGB( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_rad2float( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
@@ -53,157 +124,104 @@ int vips_float2rad( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_LabS2LabQ( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
+int vips_LabQ2LabS( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
 int vips_LabQ2Lab( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_Lab2LabQ( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_LCh2Lab( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
+int vips_Lab2LCh( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
 int vips_Yxy2Lab( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
-int vips_UCS2XYZ( VipsImage *in, VipsImage **out, ... )
+int vips_CMC2XYZ( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_Lab2XYZ( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
-int vips_XYZ2disp( VipsImage *in, VipsImage **out, 
-	struct im_col_display *disp, ... )
+int vips_XYZ2Lab( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 
-/* Areas under curves for Dxx. 2 degree observer.
- */
-#define IM_D93_X0 (89.7400)
-#define IM_D93_Y0 (100.0)
-#define IM_D93_Z0 (130.7700)
+int vips_XYZ2scRGB( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_scRGB2sRGB( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_sRGB2scRGB( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_scRGB2XYZ( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
 
-#define IM_D75_X0 (94.9682)
-#define IM_D75_Y0 (100.0)
-#define IM_D75_Z0 (122.5710)
+int vips_LCh2CMC( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_CMC2LCh( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_XYZ2Yxy( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_Yxy2XYZ( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_LabS2Lab( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_Lab2LabS( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
 
-/* D65 temp 6504.
- */
-#define IM_D65_X0 (95.0470)
-#define IM_D65_Y0 (100.0)
-#define IM_D65_Z0 (108.8827)
+int vips_icc_present( void );
+int vips_icc_transform( VipsImage *in, VipsImage **out, 
+	const char *output_profile, ... )
+	__attribute__((sentinel));
+int vips_icc_import( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_icc_export( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_icc_ac2rc( VipsImage *in, VipsImage **out, 
+	const char *profile_filename );
 
-#define IM_D55_X0 (95.6831)
-#define IM_D55_Y0 (100.0)
-#define IM_D55_Z0 (92.0871)
+int vips_dE76( VipsImage *left, VipsImage *right, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_dE00( VipsImage *left, VipsImage *right, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_dECMC( VipsImage *left, VipsImage *right, VipsImage **out, ... )
+	__attribute__((sentinel));
 
-#define IM_D50_X0 (96.4250)
-#define IM_D50_Y0 (100.0)
-#define IM_D50_Z0 (82.4680)
+void vips_col_Lab2XYZ( float L, float a, float b, 
+	float *X, float *Y, float *Z );
+void vips_col_XYZ2Lab( float X, float Y, float Z, 
+	float *L, float *a, float *b );
+double vips_col_ab2h( double a, double b );
+void vips_col_ab2Ch( float a, float b, float *C, float *h );
+void vips_col_Ch2ab( float C, float h, float *a, float *b );
 
-/* A temp 2856k.
- */
-#define IM_A_X0 (109.8503)
-#define IM_A_Y0 (100.0)
-#define IM_A_Z0 (35.5849)
+float vips_col_L2Lcmc( float L );
+float vips_col_C2Ccmc( float C );
+float vips_col_Ch2hcmc( float C, float h );
 
-/* B temp 4874k.
- */
-#define IM_B_X0 (99.0720)
-#define IM_B_Y0 (100.0)
-#define IM_B_Z0 (85.2230)
+void vips_col_make_tables_CMC( void );
+float vips_col_Lcmc2L( float Lcmc );
+float vips_col_Ccmc2C( float Ccmc );
+float vips_col_Chcmc2h( float C, float hcmc );
 
-/* C temp 6774k.
- */
-#define IM_C_X0 (98.0700)
-#define IM_C_Y0 (100.0)
-#define IM_C_Z0 (118.2300)
+int vips_col_sRGB2scRGB_8( int r, int g, int b, float *R, float *G, float *B );
+int vips_col_sRGB2scRGB_16( int r, int g, int b, float *R, float *G, float *B );
 
-#define IM_E_X0 (100.0)
-#define IM_E_Y0 (100.0)
-#define IM_E_Z0 (100.0)
+int vips_col_scRGB2XYZ( float R, float G, float B, 
+	float *X, float *Y, float *Z );
+int vips_col_XYZ2scRGB( float X, float Y, float Z, 
+	float *R, float *G, float *B );
 
-#define IM_D3250_X0 (105.6590)
-#define IM_D3250_Y0 (100.0)
-#define IM_D3250_Z0 (45.8501)
+int vips_col_scRGB2sRGB_8( float R, float G, float B, 
+	int *r, int *g, int *b, 
+	int *or_ret );
+int vips_col_scRGB2sRGB_16( float R, float G, float B, 
+	int *r, int *g, int *b, 
+	int *or_ret );
 
-/* Colour loading and conversion functions.
- */
-void im_col_ab2Ch( float a, float b, float *C, float *h );
-void im_col_Ch2ab( float C, float h, float *a, float *b );
-void im_col_XYZ2Lab( float X, float Y, float Z, float *L, float *a, float *b );
-void im_col_Lab2XYZ( float L, float a, float b, float *X, float *Y, float *Z );
-float im_col_pythagoras( float L1, float a1, float b1, 
+float vips_pythagoras( float L1, float a1, float b1, 
 	float L2, float a2, float b2 );
-
-void im_col_make_tables_UCS( void );
-
-float im_col_L2Lucs( float L );
-float im_col_Lucs2L( float Lucs );
-float im_col_C2Cucs( float C );
-float im_col_Cucs2C( float Cucs );
-float im_col_Ch2hucs( float C, float h );
-float im_col_Chucs2h( float C, float hucs );
-double im_col_ab2h( double a, double b );
-
-float im_col_dECMC( 
+float vips_col_dE00( 
 	float L1, float a1, float b1, float L2, float a2, float b2 );
-float im_col_dE00( 
-	float L1, float a1, float b1, float L2, float a2, float b2 );
-
-int im_LCh2Lab( VipsImage *in, VipsImage *out );
-int im_LabQ2XYZ( VipsImage *in, VipsImage *out );
-int im_rad2float( VipsImage *in, VipsImage *out );
-int im_float2rad( VipsImage *in, VipsImage *out );
-int im_LCh2UCS( VipsImage *in, VipsImage *out );
-int im_Lab2LCh( VipsImage *in, VipsImage *out );
-int im_Lab2LabQ( VipsImage *in, VipsImage *out );
-int im_Lab2LabS( VipsImage *in, VipsImage *out );
-int im_Lab2XYZ( VipsImage *in, VipsImage *out );
-int im_Lab2XYZ_temp( VipsImage *in, VipsImage *out, 
-	double X0, double Y0, double Z0 );
-int im_Lab2UCS( VipsImage *in, VipsImage *out );
-int im_LabQ2Lab( VipsImage *in, VipsImage *out );
-int im_LabQ2LabS( VipsImage *in, VipsImage *out );
-int im_LabS2LabQ( VipsImage *in, VipsImage *out );
-int im_LabS2Lab( VipsImage *in, VipsImage *out );
-int im_UCS2XYZ( VipsImage *in, VipsImage *out );
-int im_UCS2LCh( VipsImage *in, VipsImage *out );
-int im_UCS2Lab( VipsImage *in, VipsImage *out );
-int im_XYZ2Lab( VipsImage *in, VipsImage *out );
-int im_XYZ2Lab_temp( VipsImage *in, VipsImage *out, 
-	double X0, double Y0, double Z0 );
-int im_XYZ2UCS( VipsImage *in, VipsImage *out );
-int im_sRGB2XYZ( VipsImage *in, VipsImage *out );
-int im_XYZ2sRGB( VipsImage *in, VipsImage *out );
-int im_Yxy2XYZ( VipsImage *in, VipsImage *out );
-int im_XYZ2Yxy( VipsImage *in, VipsImage *out );
-
-int im_dECMC_fromLab( VipsImage *in1, VipsImage *in2, VipsImage *out );
-int im_dE00_fromLab( VipsImage *in1, VipsImage *in2, VipsImage *out );
-int im_dE_fromXYZ( VipsImage *in1, VipsImage *in2, VipsImage *out );
-int im_dE_fromLab( VipsImage *in1, VipsImage *in2, VipsImage *out );
-
-int im_lab_morph( VipsImage *in, VipsImage *out,
-	DOUBLEMASK *mask,
-	double L_offset, double L_scale,
-	double a_scale, double b_scale );
-
-/* Render intents for icc wrappers.
- */
-typedef enum {
-	IM_INTENT_PERCEPTUAL = 0,
-	IM_INTENT_RELATIVE_COLORIMETRIC,
-	IM_INTENT_SATURATION,
-	IM_INTENT_ABSOLUTE_COLORIMETRIC
-} VipsIntent;
-
-int im_icc_present( void );
-int im_icc_transform( VipsImage *in, VipsImage *out, 
-	const char *input_profile_filename,
-	const char *output_profile_filename,
-	VipsIntent intent );
-int im_icc_import( VipsImage *in, VipsImage *out, 
-	const char *input_profile_filename, VipsIntent intent );
-int im_icc_import_embedded( VipsImage *in, VipsImage *out, VipsIntent intent );
-int im_icc_export_depth( VipsImage *in, VipsImage *out, int depth,
-	const char *output_profile_filename, VipsIntent intent );
-int im_icc_ac2rc( VipsImage *in, VipsImage *out, const char *profile_filename );
 
 #ifdef __cplusplus
 }
 #endif /*__cplusplus*/
 
-#endif /*IM_COLOUR_H*/
+#endif /*VIPS_COLOUR_H*/

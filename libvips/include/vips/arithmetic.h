@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -148,6 +149,17 @@ typedef enum {
 } VipsOperationComplex;
 
 /** 
+ * VipsOperationComplex2:
+ * @VIPS_OPERATION_COMPLEX2_CROSS_PHASE: convert to polar coordinates
+ *
+ * See also: vips_complex2().
+ */
+typedef enum {
+	VIPS_OPERATION_COMPLEX2_CROSS_PHASE,
+	VIPS_OPERATION_COMPLEX2_LAST
+} VipsOperationComplex2;
+
+/** 
  * VipsOperationComplexget:
  * @VIPS_OPERATION_COMPLEXGET_REAL: get real component
  * @VIPS_OPERATION_COMPLEXGET_IMAG: get imaginary component
@@ -228,6 +240,12 @@ int vips_polar( VipsImage *in, VipsImage **out, ... )
 int vips_rect( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_conj( VipsImage *in, VipsImage **out, ... )
+	__attribute__((sentinel));
+
+int vips_complex2( VipsImage *left, VipsImage *right, VipsImage **out, 
+	VipsOperationComplex2 cmplx, ... )
+	__attribute__((sentinel));
+int vips_cross_phase( VipsImage *left, VipsImage *right, VipsImage **out, ... )
 	__attribute__((sentinel));
 
 int vips_complexget( VipsImage *in, VipsImage **out, 
@@ -359,21 +377,6 @@ int vips_stats( VipsImage *in, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_measure( VipsImage *in, VipsImage **out, int h, int v, ... )
 	__attribute__((sentinel));
-
-
-
-
-int im_maxpos_avg( VipsImage *im, double *xpos, double *ypos, double *out );
-int im_maxpos_vec( VipsImage *im, int *xpos, int *ypos, double *maxima, int n );
-int im_minpos_vec( VipsImage *im, int *xpos, int *ypos, double *minima, int n );
-
-int im_linreg( VipsImage **ins, VipsImage *out, double *xs );
-int im_point( VipsImage *im, VipsInterpolate *interpolate, 
-	double x, double y, int band, double *out );
-int im_point_bilinear( VipsImage *im, 
-	double x, double y, int band, double *out );
-
-int im_cross_phase( VipsImage *a, VipsImage *b, VipsImage *out );
 
 #ifdef __cplusplus
 }

@@ -24,19 +24,20 @@
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -72,13 +73,14 @@ G_DEFINE_TYPE( VipsRemainder, vips_remainder, VIPS_TYPE_BINARY );
 static int
 vips_remainder_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsBinary *binary = (VipsBinary *) object;
 
 	if( binary->left &&
-		vips_check_noncomplex( "VipsRemainder", binary->left ) )
+		vips_check_noncomplex( class->nickname, binary->left ) )
 		return( -1 );
 	if( binary->right &&
-		vips_check_noncomplex( "VipsRemainder", binary->right ) )
+		vips_check_noncomplex( class->nickname, binary->right ) )
 		return( -1 );
 
 	if( VIPS_OBJECT_CLASS( vips_remainder_parent_class )->build( object ) )
@@ -239,11 +241,12 @@ G_DEFINE_TYPE( VipsRemainderConst,
 static int
 vips_remainder_const_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsUnary *unary = (VipsUnary *) object;
 	VipsUnaryConst *uconst = (VipsUnaryConst *) object;
 
 	if( unary->in &&
-		vips_check_noncomplex( "VipsRemainder", unary->in ) )
+		vips_check_noncomplex( class->nickname, unary->in ) )
 		return( -1 );
 
 	if( unary->in )

@@ -17,7 +17,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -49,7 +50,7 @@
 /* Calculate the inverse transformation.
  */
 int
-im__transform_calc_inverse( Transformation *trn )
+vips__transform_calc_inverse( VipsTransformation *trn )
 {
 	DOUBLEMASK *msk, *msk2;
 
@@ -70,10 +71,10 @@ im__transform_calc_inverse( Transformation *trn )
 	return( 0 );
 }
 
-/* Init a Transform.
+/* Init a VipsTransform.
  */
 void
-im__transform_init( Transformation *trn )
+vips__transform_init( VipsTransformation *trn )
 {
 	trn->oarea.left = 0;
 	trn->oarea.top = 0;
@@ -87,19 +88,23 @@ im__transform_init( Transformation *trn )
 	trn->b = 0.0;
 	trn->c = 0.0;
 	trn->d = 1.0;
-	trn->dx = 0.0;
-	trn->dy = 0.0;
+	trn->idx = 0.0;
+	trn->idy = 0.0;
+	trn->odx = 0.0;
+	trn->ody = 0.0;
 
-	(void) im__transform_calc_inverse( trn );
+	(void) vips__transform_calc_inverse( trn );
 }
 
 /* Test for transform is identity function.
  */
 int
-im__transform_isidentity( const Transformation *trn )
+vips__transform_isidentity( const VipsTransformation *trn )
 {
-	if( trn->a == 1.0 && trn->b == 0.0 && trn->c == 0.0 &&
-		trn->d == 1.0 && trn->dx == 0.0 && trn->dy == 0.0 )
+	if( trn->a == 1.0 && trn->b == 0.0 && 
+		trn->c == 0.0 && trn->d == 1.0 && 
+		trn->idx == 0.0 && trn->idy == 0.0 &&
+		trn->odx == 0.0 && trn->ody == 0.0 )
 		return( 1 );
 	else
 		return( 0 );
@@ -108,27 +113,29 @@ im__transform_isidentity( const Transformation *trn )
 /* Combine two transformations. out can be one of the ins.
  */
 int
-im__transform_add( const Transformation *in1, const Transformation *in2, 
-	Transformation *out )
+vips__transform_add( const VipsTransformation *in1, 
+	const VipsTransformation *in2, VipsTransformation *out )
 {
 	out->a = in1->a * in2->a + in1->c * in2->b;
 	out->b = in1->b * in2->a + in1->d * in2->b;
 	out->c = in1->a * in2->c + in1->c * in2->d;
 	out->d = in1->b * in2->c + in1->d * in2->d;
 
-	out->dx = in1->dx * in2->a + in1->dy * in2->b + in2->dx;
-	out->dy = in1->dx * in2->c + in1->dy * in2->d + in2->dy;
+	// fixme: do idx/idy as well
 
-	if( im__transform_calc_inverse( out ) )
+	out->odx = in1->odx * in2->a + in1->ody * in2->b + in2->odx;
+	out->ody = in1->odx * in2->c + in1->ody * in2->d + in2->ody;
+
+	if( vips__transform_calc_inverse( out ) )
 		return( -1 );
 
 	return( 0 );
 }
 
 void 
-im__transform_print( const Transformation *trn )
+vips__transform_print( const VipsTransformation *trn )
 {
-	printf( "im__transform_print:\n" );
+	printf( "vips__transform_print:\n" );
 	printf( " iarea: left=%d, top=%d, width=%d, height=%d\n",
 		trn->iarea.left,
 		trn->iarea.top,
@@ -141,42 +148,45 @@ im__transform_print( const Transformation *trn )
 		trn->oarea.height );
 	printf( " mat: a=%g, b=%g, c=%g, d=%g\n",
 		trn->a, trn->b, trn->c, trn->d );
-	printf( " off: dx=%g, dy=%g\n",
-		trn->dx, trn->dy );
+	printf( " off: odx=%g, ody=%g, idx=%g, idy=%g\n",
+		trn->odx, trn->ody, trn->idx, trn->idy );
 }
 
 /* Map a pixel coordinate through the transform. 
  */
 void
-im__transform_forward_point( const Transformation *trn, 
-	const double x, const double y,		/* In input space */
-	double *ox, double *oy )	/* In output space */
+vips__transform_forward_point( const VipsTransformation *trn, 
+	double x, double y,			/* In input space */
+	double *ox, double *oy )		/* In output space */
 {
-	*ox = trn->a * x + trn->b * y + trn->dx;
-	*oy = trn->c * x + trn->d * y + trn->dy;
+	x += trn->idx;
+	y += trn->idy;
+
+	*ox = trn->a * x + trn->b * y + trn->odx;
+	*oy = trn->c * x + trn->d * y + trn->ody;
 }
 
 /* Map a pixel coordinate through the inverse transform. 
  */
 void
-im__transform_invert_point( const Transformation *trn, 
-	const double x, const double y,		/* In output space */
-	double *ox, double *oy )	/* In input space */
+vips__transform_invert_point( const VipsTransformation *trn, 
+	double x, double y,			/* In output space */
+	double *ox, double *oy )		/* In input space */
 {
-	double mx = x - trn->dx;
-	double my = y - trn->dy;
+	x -=  trn->odx;
+	y -=  trn->ody;
 
-	*ox = trn->ia * mx + trn->ib * my;
-	*oy = trn->ic * mx + trn->id * my;
+	*ox = trn->ia * x + trn->ib * y - trn->idx;
+	*oy = trn->ic * x + trn->id * y - trn->idy;
 }
 
-typedef void (*transform_fn)( const Transformation *, 
+typedef void (*transform_fn)( const VipsTransformation *, 
 	const double, const double, double*, double* );
 
 /* Transform a rect using a point transformer.
  */
 static void
-transform_rect( const Transformation *trn, transform_fn transform,
+transform_rect( const VipsTransformation *trn, transform_fn transform,
 	const Rect *in,		/* In input space */
 	Rect *out )		/* In output space */
 {
@@ -211,28 +221,28 @@ transform_rect( const Transformation *trn, transform_fn transform,
  * pixels in the output image.
  */
 void
-im__transform_forward_rect( const Transformation *trn,
+vips__transform_forward_rect( const VipsTransformation *trn,
 	const Rect *in, 	/* In input space */
 	Rect *out )		/* In output space */
 {
-	transform_rect( trn, im__transform_forward_point, in, out );
+	transform_rect( trn, vips__transform_forward_point, in, out );
 }
 
 /* Given an area in the output image, calculate the bounding box for the 
  * corresponding pixels in the input image.
  */
 void
-im__transform_invert_rect( const Transformation *trn, 
+vips__transform_invert_rect( const VipsTransformation *trn, 
 	const Rect *in,		/* In output space */
 	Rect *out )		/* In input space */
 {
-	transform_rect( trn, im__transform_invert_point, in, out );
+	transform_rect( trn, vips__transform_invert_point, in, out );
 }
 
 /* Set output area of trn so that it just holds all of our input pels.
  */
 void
-im__transform_set_area( Transformation *trn )
+vips__transform_set_area( VipsTransformation *trn )
 {
-	im__transform_forward_rect( trn, &trn->iarea, &trn->oarea );
+	vips__transform_forward_rect( trn, &trn->iarea, &trn->oarea );
 }

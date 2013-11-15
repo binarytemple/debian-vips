@@ -19,7 +19,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -87,9 +88,6 @@ vips_foreign_save_vips_build( VipsObject *object )
 #define D VIPS_FORMAT_DOUBLE
 #define DX VIPS_FORMAT_DPCOMPLEX
 
-/* Type promotion for division. Sign and value preserving. Make sure 
- * these match the case statement in complexform_buffer() above.
- */
 static int vips_bandfmt_vips[10] = {
 /* UC  C   US  S   UI  I  F  X  D  DX */
    UC, C,  US, S,  UI, I, F, X, D, DX

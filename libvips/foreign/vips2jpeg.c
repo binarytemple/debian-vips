@@ -48,6 +48,14 @@
  * 	- rebuild exif tags from coded metadata values 
  * 24/11/11
  * 	- turn into a set of write fns ready to be called from a class
+ * 7/8/12
+ * 	- use VIPS_META_RESOLUTION_UNIT to select resoltuion unit
+ * 16/11/12
+ * 	- read ifds from exif fields 
+ * 	- optionally parse rationals as a/b
+ * 	- update exif image dimensions
+ * 21/11/12
+ * 	- attach IPCT data (app13), thanks Gary
  */
 
 /*
@@ -66,7 +74,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -78,6 +87,7 @@
 
 /*
 #define DEBUG
+#define VIPS_DEBUG
  */
 
 #ifdef HAVE_CONFIG_H
@@ -200,6 +210,7 @@ write_new( VipsImage *in )
         write->cinfo.err = jpeg_std_error( &write->eman.pub );
 	write->eman.pub.error_exit = vips__new_error_exit;
 	write->eman.pub.output_message = vips__new_output_message;
+	write->eman.pub.output_message = vips__new_output_message;
 	write->eman.fp = NULL;
 	write->profile_bytes = NULL;
 	write->profile_length = 0;
@@ -244,17 +255,69 @@ vips_exif_set_int( ExifData *ed,
 }
 
 static void
-vips_exif_set_double( ExifData *ed, 
+vips_exif_double_to_rational( double value, ExifRational *rv )
+{
+	unsigned int scale;
+
+	/* We scale up to fill uint32, then set that as the
+	 * denominator. Try to avoid generating 0.
+	 */
+	scale = (unsigned int) ((UINT_MAX - 1000) / value);
+	scale = scale == 0 ? 1 : scale;
+	rv->numerator = value * scale;
+	rv->denominator = scale;
+}
+
+static void
+vips_exif_double_to_srational( double value, ExifSRational *srv )
+{
+	int scale;
+
+	/* We scale up to fill int32, then set that as the
+	 * denominator. Try to avoid generating 0.
+	 */
+	scale = (int) ((INT_MAX - 1000) / value);
+	scale = scale == 0 ? 1 : scale;
+	srv->numerator = value * scale;
+	srv->denominator = scale;
+}
+
+/* Parse a char* into an ExifRational. We allow floats as well.
+ */
+static void
+vips_exif_parse_rational( const char *str, ExifRational *rv )
+{
+	if( sscanf( str, " %u / %u ", &rv->numerator, &rv->denominator ) == 2 )
+		return;
+	vips_exif_double_to_rational( g_ascii_strtod( str, NULL ), rv );
+}
+
+/* Parse a char* into an ExifSRational. We allow floats as well.
+ */
+static void
+vips_exif_parse_srational( const char *str, ExifSRational *srv )
+{
+	if( sscanf( str, " %d / %d ", 
+		&srv->numerator, &srv->denominator ) == 2 )
+		return;
+	vips_exif_double_to_srational( g_ascii_strtod( str, NULL ), srv );
+}
+
+/* Does both signed and unsigned rationals from a char*.
+ */
+static void
+vips_exif_set_rational( ExifData *ed, 
 	ExifEntry *entry, unsigned long component, void *data )
 {
-	double value = *((double *) data);
+	char *value = (char *) data;
 
 	ExifByteOrder bo;
 	size_t sizeof_component;
 	size_t offset;
 
 	if( entry->components <= component ) {
-		VIPS_DEBUG_MSG( "vips_exif_set_int: too few components\n" );
+		VIPS_DEBUG_MSG( "vips_exif_set_rational: "
+			"too few components\n" );
 		return;
 	}
 
@@ -264,71 +327,115 @@ vips_exif_set_double( ExifData *ed,
 	sizeof_component = entry->size / entry->components;
 	offset = component * sizeof_component;
 
-	VIPS_DEBUG_MSG( "vips_exif_set_double: %s = %g\n",
+	VIPS_DEBUG_MSG( "vips_exif_set_rational: %s = \"%s\"\n",
 		exif_tag_get_title( entry->tag ), value );
 
 	if( entry->format == EXIF_FORMAT_RATIONAL ) {
-		ExifRational rational;
-		unsigned int scale;
+		ExifRational rv;
 
-		/* We scale up to fill uint32, then set that as the
-		 * denominator. Try to avoid generating 0.
-		 */
-		scale = (int) ((UINT_MAX - 1000) / value);
-		scale = scale == 0 ? 1 : scale;
-		rational.numerator = value * scale;
-		rational.denominator = scale;
+		vips_exif_parse_rational( value, &rv ); 
 
-		exif_set_rational( entry->data + offset, bo, rational );
+		VIPS_DEBUG_MSG( "vips_exif_set_rational: %u / %u\n", 
+			rv.numerator, 
+			rv.denominator ); 
+
+		exif_set_rational( entry->data + offset, bo, rv );
 	}
 	else if( entry->format == EXIF_FORMAT_SRATIONAL ) {
-		ExifSRational rational;
-		int scale;
+		ExifSRational srv;
 
-		scale = (int) ((INT_MAX - 1000) / value);
-		scale = scale == 0 ? 1 : scale;
-		rational.numerator = value * scale;
-		rational.denominator = scale;
+		vips_exif_parse_srational( value, &srv ); 
 
-		exif_set_srational( entry->data + offset, bo, rational );
+		VIPS_DEBUG_MSG( "vips_exif_set_rational: %d / %d\n", 
+			srv.numerator, srv.denominator ); 
+
+		exif_set_srational( entry->data + offset, bo, srv );
+	}
+}
+
+/* Does both signed and unsigned rationals from a double*.
+ *
+ * Don't change the exit entry if the value currently there is a good
+ * approximation of the double we are trying to set.
+ */
+static void
+vips_exif_set_double( ExifData *ed, 
+	ExifEntry *entry, unsigned long component, void *data )
+{
+	double value = *((double *) data);
+
+	ExifByteOrder bo;
+	size_t sizeof_component;
+	size_t offset;
+	double old_value;
+
+	if( entry->components <= component ) {
+		VIPS_DEBUG_MSG( "vips_exif_set_double: "
+			"too few components\n" );
+		return;
+	}
+
+	/* Wait until after the component check to make sure we cant get /0.
+	 */
+	bo = exif_data_get_byte_order( ed );
+	sizeof_component = entry->size / entry->components;
+	offset = component * sizeof_component;
+
+	VIPS_DEBUG_MSG( "vips_exif_set_double: %s = \"%s\"\n",
+		exif_tag_get_title( entry->tag ), value );
+
+	if( entry->format == EXIF_FORMAT_RATIONAL ) {
+		ExifRational rv;
+
+		rv = exif_get_rational( entry->data + offset, bo );
+		old_value = (double) rv.numerator / rv.denominator;
+		if( abs( old_value - value ) > 0.0001 ) {
+			vips_exif_double_to_rational( value, &rv ); 
+
+			VIPS_DEBUG_MSG( "vips_exif_set_double: %u / %u\n", 
+				rv.numerator, 
+				rv.denominator ); 
+
+			exif_set_rational( entry->data + offset, bo, rv );
+		}
+	}
+	else if( entry->format == EXIF_FORMAT_SRATIONAL ) {
+		ExifSRational srv;
+
+		srv = exif_get_srational( entry->data + offset, bo );
+		old_value = (double) srv.numerator / srv.denominator;
+		if( abs( old_value - value ) > 0.0001 ) {
+			vips_exif_double_to_srational( value, &srv ); 
+
+			VIPS_DEBUG_MSG( "vips_exif_set_double: %d / %d\n", 
+				srv.numerator, srv.denominator ); 
+
+			exif_set_srational( entry->data + offset, bo, srv );
+		}
 	}
 }
 
 typedef void (*write_fn)( ExifData *ed, 
 	ExifEntry *entry, unsigned long component, void *data );
 
-/* Write a component in a tag everywhere it appears.
+/* Write a tag. Update what's there, or make a new one.
  */
 static int
-write_tag( ExifData *ed, 
-	ExifTag tag, ExifFormat format, write_fn fn, void *data )
+write_tag( ExifData *ed, int ifd, ExifTag tag, write_fn fn, void *data )
 {
-	int found;
-	int i;
+	ExifEntry *entry;
 
-	found = 0;
-	for( i = 0; i < EXIF_IFD_COUNT; i++ ) {
-		ExifEntry *entry;
-
-		if( (entry = exif_content_get_entry( ed->ifd[i], tag )) &&
-			entry->format == format ) {
-			fn( ed, entry, 0, data );
-			found = 1;
-		}
+	if( (entry = exif_content_get_entry( ed->ifd[ifd], tag )) ) {
+		fn( ed, entry, 0, data );
 	}
-
-	if( !found ) {
-		/* There was no tag we could update ... make one in ifd[0].
-		 */
-		ExifEntry *entry;
-
+	else {
 		entry = exif_entry_new();
 
 		/* tag must be set before calling exif_content_add_entry.
 		 */
 		entry->tag = tag; 
 
-		exif_content_add_entry( ed->ifd[0], entry );
+		exif_content_add_entry( ed->ifd[ifd], entry );
 		exif_entry_initialize( entry, tag );
 		exif_entry_unref( entry );
 
@@ -345,22 +452,68 @@ static int
 set_exif_resolution( ExifData *ed, VipsImage *im )
 {
 	double xres, yres;
+	char *p;
 	int unit;
 
-	/* Always save as inches - more progs support it for read.
-	 */
-	xres = im->Xres * 25.4;
-	yres = im->Yres * 25.4;
-	unit = 2;
+	VIPS_DEBUG_MSG( "set_exif_resolution: vips res of %g, %g\n",
+		im->Xres, im->Yres );
 
-	if( write_tag( ed, EXIF_TAG_X_RESOLUTION, EXIF_FORMAT_RATIONAL, 
+	/* Default to inches, more progs support it.
+	 */
+	unit = 2;
+	if( vips_image_get_typeof( im, VIPS_META_RESOLUTION_UNIT ) &&
+		!vips_image_get_string( im, VIPS_META_RESOLUTION_UNIT, &p ) &&
+		vips_isprefix( "cm", p ) ) 
+		unit = 3;
+
+	switch( unit ) {
+	case 2:
+		xres = im->Xres * 25.4;
+		yres = im->Yres * 25.4;
+		break;
+
+	case 3:
+		xres = im->Xres * 10.0;
+		yres = im->Yres * 10.0;
+		break;
+
+	default:
+		vips_warn( "VipsJpeg", 
+			"%s", _( "unknown EXIF resolution unit" ) );
+		return( 0 );
+	}
+
+	/* Main image xres/yres/unit are in ifd0. ifd1 has the thumbnail
+	 * xres/yres/unit.
+	 */
+	if( write_tag( ed, 0, EXIF_TAG_X_RESOLUTION, 
 		vips_exif_set_double, (void *) &xres ) ||
-		write_tag( ed, EXIF_TAG_Y_RESOLUTION, EXIF_FORMAT_RATIONAL, 
+		write_tag( ed, 0, EXIF_TAG_Y_RESOLUTION, 
 			vips_exif_set_double, (void *) &yres ) ||
-		write_tag( ed, EXIF_TAG_RESOLUTION_UNIT, EXIF_FORMAT_SHORT, 
+		write_tag( ed, 0, EXIF_TAG_RESOLUTION_UNIT, 
 			vips_exif_set_int, (void *) &unit ) ) {
 		vips_error( "VipsJpeg", 
 			"%s", _( "error setting JPEG resolution" ) );
+		return( -1 );
+	}
+
+	return( 0 );
+}
+
+/* Exif also tracks image dimensions. 
+ */
+static int
+set_exif_dimensions( ExifData *ed, VipsImage *im )
+{
+	VIPS_DEBUG_MSG( "set_exif_dimensions: vips size of %g, %g\n",
+		im->Xsize, im->Ysize );
+
+	if( write_tag( ed, 2, EXIF_TAG_PIXEL_X_DIMENSION, 
+		vips_exif_set_int, (void *) &im->Xsize ) ||
+		write_tag( ed, 2, EXIF_TAG_PIXEL_Y_DIMENSION, 
+			vips_exif_set_int, (void *) &im->Ysize ) ) { 
+		vips_error( "VipsJpeg", 
+			"%s", _( "error setting JPEG dimensions" ) );
 		return( -1 );
 	}
 
@@ -401,11 +554,8 @@ vips_exif_from_s( ExifData *ed, ExifEntry *entry, const char *value )
 			vips_exif_set_int( ed, entry, i, &value );
 		}
 		else if( entry->format == EXIF_FORMAT_RATIONAL || 
-			entry->format == EXIF_FORMAT_SRATIONAL ) {
-			double value = g_ascii_strtod( p, NULL );
-
-			vips_exif_set_double( ed, entry, i, &value );
-		}
+			entry->format == EXIF_FORMAT_SRATIONAL ) 
+			vips_exif_set_rational( ed, entry, i, (void *) p );
 
 		/* Skip to the next set of spaces, then to the beginning of
 		 * the next item.
@@ -430,9 +580,13 @@ vips_exif_update_entry( ExifEntry *entry, VipsExif *ve )
 	char name[256];
 	char *value;
 
-	vips_snprintf( name, 256, "exif-%s", exif_tag_get_title( entry->tag ) );
-	if( !vips_image_get_string( ve->image, name, &value ) )
+	vips_snprintf( name, 256, "exif-ifd%d-%s", 
+		exif_entry_get_ifd( entry ),
+		exif_tag_get_title( entry->tag ) );
+	if( vips_image_get_typeof( ve->image, name ) ) {
+		(void) vips_image_get_string( ve->image, name, &value );
 		vips_exif_from_s( ve->ed, entry, value ); 
+	}
 }
 
 static void
@@ -454,17 +608,37 @@ vips_exif_update( ExifData *ed, VipsImage *image )
 	exif_data_foreach_content( ed, 
 		(ExifDataForeachContentFunc) vips_exif_update_content, &ve );
 }
-
-
 #endif /*HAVE_EXIF*/
+
+static int
+write_blob( Write *write, const char *field, int app )
+{
+	unsigned char *data;
+	size_t data_length;
+
+	if( vips_image_get_typeof( write->in, field ) ) {
+		if( vips_image_get_blob( write->in, field, 
+			(void *) &data, &data_length ) )
+			return( -1 );
+
+#ifdef DEBUG
+		printf( "write_blob: attaching %zd bytes of %s\n", 
+			data_length, field );
+#endif /*DEBUG*/
+
+		jpeg_write_marker( &write->cinfo, app, data, data_length );
+	}
+
+	return( 0 );
+}
 
 static int
 write_exif( Write *write )
 {
+#ifdef HAVE_EXIF
 	unsigned char *data;
 	size_t data_length;
 	unsigned int idl;
-#ifdef HAVE_EXIF
 	ExifData *ed;
 
 	/* Either parse from the embedded EXIF, or if there's none, make
@@ -495,9 +669,16 @@ write_exif( Write *write )
 	 */
 	vips_exif_update( ed, write->in );
 
-	/* Update EXIF resolution from the vips image header..
+	/* Update EXIF resolution from the vips image header.
 	 */
 	if( set_exif_resolution( ed, write->in ) ) {
+		exif_data_free( ed );
+		return( -1 );
+	}
+
+	/* Update EXIF image dimensions from the vips image header.
+	 */
+	if( set_exif_dimensions( ed, write->in ) ) {
 		exif_data_free( ed );
 		return( -1 );
 	}
@@ -514,7 +695,7 @@ write_exif( Write *write )
 	data_length = idl;
 
 #ifdef DEBUG
-	printf( "VipsJpeg: attaching %zd bytes of EXIF\n", data_length  );
+	printf( "write_exif: attaching %zd bytes of EXIF\n", data_length  );
 #endif /*DEBUG*/
 
 	exif_data_free( ed );
@@ -523,45 +704,9 @@ write_exif( Write *write )
 #else /*!HAVE_EXIF*/
 	/* No libexif ... just copy the embedded EXIF over.
 	 */
-	if( vips_image_get_typeof( write->in, VIPS_META_EXIF_NAME ) ) {
-		if( vips_image_get_blob( write->in, VIPS_META_EXIF_NAME, 
-			(void *) &data, &data_length ) )
-			return( -1 );
-
-#ifdef DEBUG
-		printf( "VipsJpeg: attaching %zd bytes of EXIF\n", 
-			data_length  );
-#endif /*DEBUG*/
-
-		jpeg_write_marker( &write->cinfo, JPEG_APP0 + 1, 
-			data, data_length );
-	}
+	if( write_blob( write, VIPS_META_EXIF_NAME, JPEG_APP0 + 1 ) )
+		return( -1 );
 #endif /*!HAVE_EXIF*/
-
-	return( 0 );
-}
-
-static int
-write_xmp( Write *write )
-{
-	unsigned char *data;
-	size_t data_length;
-
-	/* No libexif ... just copy the embedded EXIF over.
-	 */
-	if( vips_image_get_typeof( write->in, VIPS_META_XMP_NAME ) ) {
-		if( vips_image_get_blob( write->in, VIPS_META_XMP_NAME, 
-			(void *) &data, &data_length ) )
-			return( -1 );
-
-#ifdef DEBUG
-		printf( "VipsJpeg: attaching %zd bytes of XMP\n", 
-			data_length  );
-#endif /*DEBUG*/
-
-		jpeg_write_marker( &write->cinfo, JPEG_APP0 + 1, 
-			data, data_length );
-	}
 
 	return( 0 );
 }
@@ -652,7 +797,7 @@ write_profile_file( Write *write, const char *profile )
 		(JOCTET *) write->profile_bytes, write->profile_length );
 
 #ifdef DEBUG
-	printf( "VipsJpeg: attached profile \"%s\"\n", profile );
+	printf( "write_profile_file: attached profile \"%s\"\n", profile );
 #endif /*DEBUG*/
 
 	return( 0 );
@@ -671,7 +816,7 @@ write_profile_meta( Write *write )
 	write_profile_data( &write->cinfo, data, data_length );
 
 #ifdef DEBUG
-	printf( "VipsJpeg: attached %zd byte profile from VIPS header\n",
+	printf( "write_profile_meta: attached %zd byte profile from header\n",
 		data_length );
 #endif /*DEBUG*/
 
@@ -761,10 +906,9 @@ write_vips( Write *write, int qfac, const char *profile )
 
 	/* Write any APP markers we need.
 	 */
-	if( write_exif( write ) )
-		return( -1 );
-
-	if( write_xmp( write ) )
+	if( write_exif( write ) ||
+		write_blob( write, VIPS_META_XMP_NAME, JPEG_APP0 + 1 ) ||
+		write_blob( write, VIPS_META_IPCT_NAME, JPEG_APP0 + 13 ) )
 		return( -1 );
 
 	/* A profile supplied as an argument overrides an embedded profile.

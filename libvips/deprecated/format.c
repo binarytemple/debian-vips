@@ -17,7 +17,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -283,13 +284,14 @@ static void
 vips_format_summary_class( VipsObjectClass *object_class, VipsBuf *buf )
 {
 	VipsFormatClass *class = VIPS_FORMAT_CLASS( object_class );
-	const char **p;
 
 	VIPS_OBJECT_CLASS( vips_format_parent_class )->
 		summary_class( object_class, buf );
 	vips_buf_appends( buf, ", " );
 
 	if( class->suffs ) {
+		const char **p;
+
 		vips_buf_appends( buf, "(" );
 		for( p = class->suffs; *p; p++ ) {
 			vips_buf_appendf( buf, "%s", *p );
@@ -379,18 +381,6 @@ file2vips( const char *filename, IMAGE *out )
 	return( 0 );
 }
 
-static int
-vips2file( IMAGE *im, const char *filename )
-{
-	IMAGE *out;
-
-	if( !(out = im_open_local( im, filename, "w" )) ||
-		im_copy( im, out ) )
-		return( -1 );
-
-	return( 0 );
-}
-
 static VipsFormatFlags
 vips_flags( const char *filename )
 {
@@ -423,10 +413,11 @@ vips_format_vips_class_init( VipsFormatVipsClass *class )
 	object_class->nickname = "vips";
 	object_class->description = _( "VIPS" );
 
+	format_class->priority = 200;
 	format_class->is_a = im_isvips;
 	format_class->header = file2vips;
 	format_class->load = file2vips;
-	format_class->save = vips2file;
+	format_class->save = vips_image_write_to_file;
 	format_class->get_flags = vips_flags;
 	format_class->suffs = vips_suffs;
 }

@@ -39,7 +39,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -91,6 +92,7 @@ G_DEFINE_TYPE( VipsMeasure, vips_measure, VIPS_TYPE_OPERATION );
 static int
 vips_measure_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsMeasure *measure = (VipsMeasure *) object;
 
 	int bands;
@@ -111,11 +113,11 @@ vips_measure_build( VipsObject *object )
 
 	/* left/top/width/height default to the size of the image.
 	 */
-	if( !vips_object_get_argument_assigned( object, "width" ) )
+	if( !vips_object_argument_isset( object, "width" ) )
 		g_object_set( object, 
 			"width", vips_image_get_width( measure->in ),
 			NULL );
-	if( !vips_object_get_argument_assigned( object, "height" ) )
+	if( !vips_object_argument_isset( object, "height" ) )
 		g_object_set( object, 
 			"height", vips_image_get_height( measure->in ),
 			NULL );
@@ -159,10 +161,10 @@ vips_measure_build( VipsObject *object )
 				 * measure on IM_TYPE_LAB images).
 				 */
 				if( dev * 5 > fabs( avg ) && fabs( avg ) > 3 )
-					vips_warn( "VipsMeasure",
+					vips_warn( class->nickname,
 						_( "patch %d x %d, band %d: " 
 						   "avg = %g, sdev = %g" ), 
-						i, j, avg, dev );
+						i, j, b, avg, dev );
 
 				*ARY( measure->out, b, i + j * measure->h ) = 
 					avg;
@@ -189,7 +191,7 @@ vips_measure_class_init( VipsMeasureClass *class )
 
 	object_class->nickname = "measure";
 	object_class->description = 
-		_( "measure a set of patches on a colour chart" );
+		_( "measure a set of patches on a color chart" );
 	object_class->build = vips_measure_build;
 
 	VIPS_ARG_IMAGE( class, "in", 1,

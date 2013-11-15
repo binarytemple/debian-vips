@@ -64,7 +64,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -132,9 +133,8 @@ extern "C" {
 #include <vips/freq_filt.h>
 #include <vips/resample.h>
 #include <vips/colour.h>
-#include <vips/disp.h>
 #include <vips/inplace.h>
-#include <vips/other.h>
+#include <vips/create.h>
 #include <vips/video.h>
 #include <vips/cimg_funcs.h>
 

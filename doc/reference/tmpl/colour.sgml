@@ -1,0 +1,844 @@
+<!-- ##### SECTION Title ##### -->
+colour
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_A_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_A_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_A_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_B_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_B_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_B_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_C_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_C_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_C_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D3250_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D3250_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D3250_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D50_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D50_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D50_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D55_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D55_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D55_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D65_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D65_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D65_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D75_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D75_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D75_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D93_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D93_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_D93_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_E_X0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_E_Y0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_E_Z0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM VipsIntent ##### -->
+<para>
+
+</para>
+
+@VIPS_INTENT_PERCEPTUAL: 
+@VIPS_INTENT_RELATIVE: 
+@VIPS_INTENT_SATURATION: 
+@VIPS_INTENT_ABSOLUTE: 
+
+<!-- ##### FUNCTION vips_CMC2LCh ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_CMC2XYZ ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_LCh2CMC ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_LCh2Lab ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_Lab2LCh ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_Lab2LabQ ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_Lab2LabS ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_Lab2XYZ ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_LabQ2Lab ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_LabQ2LabS ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_LabQ2sRGB ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_LabS2Lab ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_LabS2LabQ ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_XYZ2Lab ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_XYZ2Yxy ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_XYZ2scRGB ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_Yxy2Lab ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_Yxy2XYZ ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_C2Ccmc ##### -->
+<para>
+
+</para>
+
+@C: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_Ccmc2C ##### -->
+<para>
+
+</para>
+
+@Ccmc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_Ch2ab ##### -->
+<para>
+
+</para>
+
+@C: 
+@h: 
+@a: 
+@b: 
+
+
+<!-- ##### FUNCTION vips_col_Ch2hcmc ##### -->
+<para>
+
+</para>
+
+@C: 
+@h: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_Chcmc2h ##### -->
+<para>
+
+</para>
+
+@C: 
+@hcmc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_L2Lcmc ##### -->
+<para>
+
+</para>
+
+@L: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_Lab2XYZ ##### -->
+<para>
+
+</para>
+
+@L: 
+@a: 
+@b: 
+@X: 
+@Y: 
+@Z: 
+
+
+<!-- ##### FUNCTION vips_col_Lcmc2L ##### -->
+<para>
+
+</para>
+
+@Lcmc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_XYZ2Lab ##### -->
+<para>
+
+</para>
+
+@X: 
+@Y: 
+@Z: 
+@L: 
+@a: 
+@b: 
+
+
+<!-- ##### FUNCTION vips_col_XYZ2scRGB ##### -->
+<para>
+
+</para>
+
+@X: 
+@Y: 
+@Z: 
+@R: 
+@G: 
+@B: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_ab2Ch ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@C: 
+@h: 
+
+
+<!-- ##### FUNCTION vips_col_ab2h ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_dE00 ##### -->
+<para>
+
+</para>
+
+@L1: 
+@a1: 
+@b1: 
+@L2: 
+@a2: 
+@b2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_make_tables_CMC ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_col_sRGB2scRGB_16 ##### -->
+<para>
+
+</para>
+
+@r: 
+@g: 
+@b: 
+@R: 
+@G: 
+@B: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_sRGB2scRGB_8 ##### -->
+<para>
+
+</para>
+
+@r: 
+@g: 
+@b: 
+@R: 
+@G: 
+@B: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_scRGB2XYZ ##### -->
+<para>
+
+</para>
+
+@R: 
+@G: 
+@B: 
+@X: 
+@Y: 
+@Z: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_scRGB2sRGB_16 ##### -->
+<para>
+
+</para>
+
+@R: 
+@G: 
+@B: 
+@r: 
+@g: 
+@b: 
+@or_ret: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_col_scRGB2sRGB_8 ##### -->
+<para>
+
+</para>
+
+@R: 
+@G: 
+@B: 
+@r: 
+@g: 
+@b: 
+@or_ret: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_colourspace ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@space: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_colourspace_issupported ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_dE00 ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_dE76 ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_dECMC ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_float2rad ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_icc_ac2rc ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@profile_filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_icc_export ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_icc_import ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_icc_present ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_icc_transform ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@output_profile: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_pythagoras ##### -->
+<para>
+
+</para>
+
+@L1: 
+@a1: 
+@b1: 
+@L2: 
+@a2: 
+@b2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rad2float ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sRGB2scRGB ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_scRGB2XYZ ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_scRGB2sRGB ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+

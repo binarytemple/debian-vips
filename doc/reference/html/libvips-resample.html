@@ -6,19 +6,19 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="ch02.html" title="VIPS operation API by section">
-<link rel="prev" href="libvips-other.html" title="other">
-<link rel="next" href="libvips-video.html" title="video">
+<link rel="prev" href="libvips-create.html" title="create">
+<link rel="next" href="ch03.html" title="Other API (no gtkdoc comments yet)">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libvips-other.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libvips-create.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">VIPS Reference Manual</th>
-<td><a accesskey="n" href="libvips-video.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="ch03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libvips-resample.synopsis" class="shortcut">Top</a>
@@ -44,61 +44,22 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#im-affinei" title="im_affinei ()">im_affinei</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a> *interpolate</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()">vips_affine</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> a</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> b</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> c</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> d</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dx</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dy</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ox</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> oy</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ow</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> oh</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#im-affinei-all" title="im_affinei_all ()">im_affinei_all</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a> *interpolate</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> a</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> b</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> c</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> d</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dx</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dy</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#im-match-linear" title="im_match_linear ()">im_match_linear</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ref</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sec</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys2</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#im-match-linear-search" title="im_match_linear_search ()">im_match_linear_search</a>              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ref</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sec</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> hwindowsize</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> hsearchsize</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#im-rightshift-size" title="im_rightshift_size ()">im_rightshift_size</a>                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xshift</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yshift</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> band_fmt</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#im-shrink" title="im_shrink ()">im_shrink</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-quadratic" title="vips_quadratic ()">vips_quadratic</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *coeff</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-resample.html#vips-shrink" title="vips_shrink ()">vips_shrink</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> xshrink</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>);
+                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -111,20 +72,25 @@ intermediate values.
 <div class="refsect1">
 <a name="libvips-resample.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="im-affinei"></a><h3>im_affinei ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_affinei                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a> *interpolate</code></em>,
+<a name="vips-affine"></a><h3>vips_affine ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_affine                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> a</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> b</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> c</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> d</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dx</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dy</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ox</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> oy</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ow</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> oh</code></em>);</pre>
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>interpolate</code></em>: interpolate pixels with this
+<em class="parameter"><code>oarea</code></em>: output rectangle
+<em class="parameter"><code>idx</code></em>: input horizontal offset
+<em class="parameter"><code>idy</code></em>: input vertical offset
+<em class="parameter"><code>odx</code></em>: output horizontal offset
+<em class="parameter"><code>ody</code></em>: output vertical offset
+</p>
 <p>
 This operator performs an affine transform on an image using <em class="parameter"><code>interpolate</code></em>.
 </p>
@@ -132,8 +98,8 @@ This operator performs an affine transform on an image using <em class="paramete
 The transform is:
 </p>
 <p>
-  X = <em class="parameter"><code>a</code></em> * x + <em class="parameter"><code>b</code></em> * y + <em class="parameter"><code>dx</code></em>
-  Y = <em class="parameter"><code>c</code></em> * x + <em class="parameter"><code>d</code></em> * y + <em class="parameter"><code>dy</code></em>
+  X = <em class="parameter"><code>a</code></em> * (x + <em class="parameter"><code>idx</code></em>) + <em class="parameter"><code>b</code></em> * (y + <em class="parameter"><code>idy</code></em>) + <em class="parameter"><code>odx</code></em>
+  Y = <em class="parameter"><code>c</code></em> * (x + <em class="parameter"><code>idx</code></em>) + <em class="parameter"><code>d</code></em> * (y + <em class="parameter"><code>idy</code></em>) + <em class="parameter"><code>doy</code></em>
 </p>
 <p>
   x and y are the coordinates in input image.  
@@ -141,12 +107,19 @@ The transform is:
   (0,0) is the upper left corner.
 </p>
 <p>
-The section of the output space defined by <em class="parameter"><code>ox</code></em>, <em class="parameter"><code>oy</code></em>, <em class="parameter"><code>ow</code></em>, <em class="parameter"><code>oh</code></em> is written to
-<em class="parameter"><code>out</code></em>. See <a class="link" href="libvips-resample.html#im-affinei-all" title="im_affinei_all ()"><code class="function">im_affinei_all()</code></a> for a function which outputs all the transformed 
-pixels.
+The section of the output space defined by <em class="parameter"><code>oarea</code></em> is written to
+<em class="parameter"><code>out</code></em>. <em class="parameter"><code>oarea</code></em> is a four-element int array of left, top, width, height. 
+By default <em class="parameter"><code>oarea</code></em> is just large enough to cover the whole of the 
+transformed input image.
 </p>
 <p>
-See also: <a class="link" href="libvips-resample.html#im-affinei-all" title="im_affinei_all ()"><code class="function">im_affinei_all()</code></a>, <a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a>.
+<em class="parameter"><code>interpolate</code></em> defaults to bilinear. 
+</p>
+<p>
+<em class="parameter"><code>idx</code></em>, <em class="parameter"><code>idy</code></em>, <em class="parameter"><code>odx</code></em>, <em class="parameter"><code>ody</code></em> default to zero.
+</p>
+<p>
+See also: <a class="link" href="libvips-resample.html#vips-shrink" title="vips_shrink ()"><code class="function">vips_shrink()</code></a>, <a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -158,50 +131,22 @@ See also: <a class="link" href="libvips-resample.html#im-affinei-all" title="im_
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
 <td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>interpolate</code></em> :</span></p></td>
-<td>interpolation method</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>transformation matrix</td>
+<td>transformation matrix coefficient</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>transformation matrix</td>
+<td>transformation matrix coefficient</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
-<td>transformation matrix</td>
+<td>transformation matrix coefficient</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>d</code></em> :</span></p></td>
-<td>transformation matrix</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>dx</code></em> :</span></p></td>
-<td>output offset</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>dy</code></em> :</span></p></td>
-<td>output offset</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ox</code></em> :</span></p></td>
-<td>output region</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>oy</code></em> :</span></p></td>
-<td>output region</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ow</code></em> :</span></p></td>
-<td>output region</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>oh</code></em> :</span></p></td>
-<td>output region</td>
+<td>transformation matrix coefficient</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -212,21 +157,19 @@ See also: <a class="link" href="libvips-resample.html#im-affinei-all" title="im_
 </div>
 <hr>
 <div class="refsect2">
-<a name="im-affinei-all"></a><h3>im_affinei_all ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_affinei_all                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a> *interpolate</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> a</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> b</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> c</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> d</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dx</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> dy</code></em>);</pre>
+<a name="vips-quadratic"></a><h3>vips_quadratic ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_quadratic                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *coeff</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
-As <a class="link" href="libvips-resample.html#im-affinei" title="im_affinei ()"><code class="function">im_affinei()</code></a>, but the entire image is output.
+Optional arguments:
 </p>
 <p>
-See also: <a class="link" href="libvips-resample.html#im-affinei" title="im_affinei ()"><code class="function">im_affinei()</code></a>, <a class="link" href="VipsInterpolate.html" title="VipsInterpolate"><span class="type">VipsInterpolate</span></a>.
+<em class="parameter"><code>interpolate</code></em>: use this interpolator (default bilinear)
+</p>
+<p>
+See also: <code class="function">im_affinei()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -240,32 +183,8 @@ See also: <a class="link" href="libvips-resample.html#im-affinei" title="im_affi
 <td>output image</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>interpolate</code></em> :</span></p></td>
-<td>interpolation method</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>transformation matrix</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>transformation matrix</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
-<td>transformation matrix</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>d</code></em> :</span></p></td>
-<td>transformation matrix</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>dx</code></em> :</span></p></td>
-<td>output offset</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>dy</code></em> :</span></p></td>
-<td>output offset</td>
+<td><p><span class="term"><em class="parameter"><code>coeff</code></em> :</span></p></td>
+<td>horizontal quadratic</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -276,236 +195,23 @@ See also: <a class="link" href="libvips-resample.html#im-affinei" title="im_affi
 </div>
 <hr>
 <div class="refsect2">
-<a name="im-match-linear"></a><h3>im_match_linear ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_match_linear                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ref</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sec</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys2</code></em>);</pre>
-<p>
-Scale, rotate and translate <em class="parameter"><code>sec</code></em> so that the tie-points line up.
-</p>
-<p>
-See also: <a class="link" href="libvips-resample.html#im-match-linear-search" title="im_match_linear_search ()"><code class="function">im_match_linear_search()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ref</code></em> :</span></p></td>
-<td>reference image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>sec</code></em> :</span></p></td>
-<td>secondary image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xr1</code></em> :</span></p></td>
-<td>first reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>yr1</code></em> :</span></p></td>
-<td>first reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xs1</code></em> :</span></p></td>
-<td>first secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ys1</code></em> :</span></p></td>
-<td>first secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xr2</code></em> :</span></p></td>
-<td>second reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>yr2</code></em> :</span></p></td>
-<td>second reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xs2</code></em> :</span></p></td>
-<td>second secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ys2</code></em> :</span></p></td>
-<td>second secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-match-linear-search"></a><h3>im_match_linear_search ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_match_linear_search              (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ref</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sec</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yr2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xs2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> ys2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> hwindowsize</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> hsearchsize</code></em>);</pre>
-<p>
-Scale, rotate and translate <em class="parameter"><code>sec</code></em> so that the tie-points line up.
-</p>
-<p>
-Before performing the transformation, the  tie-points are improved by 
-searching an area of <em class="parameter"><code>sec</code></em> of size <em class="parameter"><code>hsearchsize</code></em> for a
-match of size <em class="parameter"><code>hwindowsize</code></em> to <em class="parameter"><code>ref</code></em>. 
-</p>
-<p>
-This function will only work well for small rotates and scales.
-</p>
-<p>
-See also: <a class="link" href="libvips-resample.html#im-match-linear" title="im_match_linear ()"><code class="function">im_match_linear()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ref</code></em> :</span></p></td>
-<td>reference image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>sec</code></em> :</span></p></td>
-<td>secondary image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xr1</code></em> :</span></p></td>
-<td>first reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>yr1</code></em> :</span></p></td>
-<td>first reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xs1</code></em> :</span></p></td>
-<td>first secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ys1</code></em> :</span></p></td>
-<td>first secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xr2</code></em> :</span></p></td>
-<td>second reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>yr2</code></em> :</span></p></td>
-<td>second reference tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xs2</code></em> :</span></p></td>
-<td>second secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ys2</code></em> :</span></p></td>
-<td>second secondary tie-point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>hwindowsize</code></em> :</span></p></td>
-<td>half window size</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>hsearchsize</code></em> :</span></p></td>
-<td>half search size</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-rightshift-size"></a><h3>im_rightshift_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_rightshift_size                  (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> xshift</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> yshift</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> band_fmt</code></em>);</pre>
-<p>
-Shrink <em class="parameter"><code>in</code></em> by a pair of power-of-two factors, shifting to give 
-output of the specified band format. This is faster than <a class="link" href="libvips-resample.html#im-shrink" title="im_shrink ()"><code class="function">im_shrink()</code></a>. 
-</p>
-<p>
-See also: <a class="link" href="libvips-resample.html#im-shrink" title="im_shrink ()"><code class="function">im_shrink()</code></a>, <a class="link" href="libvips-resample.html#im-affinei" title="im_affinei ()"><code class="function">im_affinei()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
-<td>input image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
-<td>output image</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>xshift</code></em> :</span></p></td>
-<td>horizontal shrink</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>yshift</code></em> :</span></p></td>
-<td>vertical shrink</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>band_fmt</code></em> :</span></p></td>
-<td>output format</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, -1 on error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-shrink"></a><h3>im_shrink ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_shrink                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+<a name="vips-shrink"></a><h3>vips_shrink ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_shrink                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code><span class="type">double</span> xshrink</code></em>,
-                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">double</span> yshrink</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Shrink <em class="parameter"><code>in</code></em> by a pair of factors with a simple box filter. 
 </p>
 <p>
 You will get aliasing for non-integer shrinks. In this case, shrink with
 this function to the nearest integer size above the target shrink, then
-downsample to the exact size with <a class="link" href="libvips-resample.html#im-affinei" title="im_affinei ()"><code class="function">im_affinei()</code></a> and your choice of
+downsample to the exact size with <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a> and your choice of
 interpolator.
 </p>
 <p>
-<a class="link" href="libvips-resample.html#im-rightshift-size" title="im_rightshift_size ()"><code class="function">im_rightshift_size()</code></a> is faster for factors which are integer powers of two.
-</p>
-<p>
-See also: <a class="link" href="libvips-resample.html#im-rightshift-size" title="im_rightshift_size ()"><code class="function">im_rightshift_size()</code></a>, <a class="link" href="libvips-resample.html#im-affinei" title="im_affinei ()"><code class="function">im_affinei()</code></a>.
+See also: <a class="link" href="libvips-resample.html#vips-affine" title="vips_affine ()"><code class="function">vips_affine()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

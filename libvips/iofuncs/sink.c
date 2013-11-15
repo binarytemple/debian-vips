@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -200,7 +201,7 @@ void
 vips_sink_base_init( SinkBase *sink_base, VipsImage *image )
 {
 	/* Always clear kill before we start looping. See the 
-	 * call to vips_image_get_kill() below.
+	 * call to vips_image_iskilled() below.
 	 */
 	vips_image_set_kill( image, FALSE );
 
@@ -317,7 +318,7 @@ vips_sink_base_progress( void *a )
 	 * check for errors.
 	 */
 	vips_image_eval( sink_base->im, sink_base->processed );
-	if( vips_image_get_kill( sink_base->im ) )
+	if( vips_image_iskilled( sink_base->im ) )
 		return( -1 );
 
 	return( 0 );

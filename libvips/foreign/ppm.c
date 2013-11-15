@@ -47,7 +47,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -80,9 +81,7 @@
 static void 
 skip_line( FILE *fp )
 {
-        int ch;
-
-        while( (ch = fgetc( fp )) != '\n' )
+        while( fgetc( fp ) != '\n' )
 		;
 }
 
@@ -244,6 +243,10 @@ read_header( FILE *fp, VipsImage *out, int *bits, int *ascii, int *msb_first )
 
 	default:
 		g_assert( 0 );
+
+		/* Keep -Wall happy.
+		 */
+		return( 0 );
 	}
 
 	if( bands == 1 ) {

@@ -1,0 +1,218 @@
+<!-- ##### SECTION Title ##### -->
+convolution
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION im_aconv ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@n_layers: 
+@cluster: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_aconvsep ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@n_layers: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_addgnoise ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@sigma: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_compass ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_contrast_surface ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@half_win_size: 
+@spacing: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_conv ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_conv_f ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_convsep ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_convsep_f ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_fastcor ##### -->
+<para>
+
+</para>
+
+@in: 
+@ref: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_grad_x ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_grad_y ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_gradcor ##### -->
+<para>
+
+</para>
+
+@in: 
+@ref: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_gradient ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_lindetect ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_sharpen ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask_size: 
+@x1: 
+@y2: 
+@y3: 
+@m1: 
+@m2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_spcor ##### -->
+<para>
+
+</para>
+
+@in: 
+@ref: 
+@out: 
+@Returns: 
+
+

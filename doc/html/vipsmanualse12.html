@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- 3,html --> 
 <meta name="src" content="vipsmanual.tex"> 
-<meta name="date" content="2012-05-07 10:17:00"> 
+<meta name="date" content="2013-06-17 14:13:00"> 
 <link rel="stylesheet" type="text/css" href="vipsmanual.css"> 
 </head><body 
 >
@@ -199,27 +199,26 @@ the standard interpolators:
   <div class="verbatim" id="verbatim-124">
 VipsInterpolate&#x00A0;&#x22C6;vips_interpolate_nearest_static(&#x00A0;void&#x00A0;);
 &#x00A0;<br />VipsInterpolate&#x00A0;&#x22C6;vips_interpolate_bilinear_static(&#x00A0;void&#x00A0;);
-&#x00A0;<br />VipsInterpolate&#x00A0;&#x22C6;vips_interpolate_bicubic_static(&#x00A0;void&#x00A0;);
 </div>
-<!--l. 143--><p class="nopar" >
-<!--l. 145--><p class="noindent" >Don&#8217;t free the result.
-<!--l. 148--><p class="indent" >  Finally, <span class="obeylines-h"><span class="verb"><span 
+<!--l. 142--><p class="nopar" >
+<!--l. 144--><p class="noindent" >Don&#8217;t free the result.
+<!--l. 147--><p class="indent" >  Finally, <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">vips_interpolate_new()</span></span></span> makes a
 <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">VipsInterpolate</span></span></span> from a nickname:
                                                  <div class="verbatim" id="verbatim-125">
   VipsInterpolate&#x00A0;&#x22C6;vips_interpolate_new(&#x00A0;const&#x00A0;char&#x00A0;&#x22C6;nickname&#x00A0;); 
 </div>
-<!--l. 153--><p class="nopar" >
-<!--l. 155--><p class="indent" >  For example:
+<!--l. 152--><p class="nopar" >
+<!--l. 154--><p class="indent" >  For example:
                                                                                        
 
                                                                                        
   <div class="verbatim" id="verbatim-126">
 VipsInterpolate&#x00A0;&#x22C6;interpolate&#x00A0;=&#x00A0;vips_interpolate_new(&#x00A0;"nohalo"&#x00A0;);
 </div>
-<!--l. 159--><p class="nopar" >
-<!--l. 161--><p class="noindent" >You must drop your ref after you&#8217;re done with the object
+<!--l. 158--><p class="nopar" >
+<!--l. 160--><p class="noindent" >You must drop your ref after you&#8217;re done with the object
 with <span class="obeylines-h"><span class="verb"><span 
 class="pcrr7t-">g_object_unref()</span></span></span>.
                                            

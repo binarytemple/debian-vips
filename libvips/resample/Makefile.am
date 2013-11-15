@@ -5,12 +5,13 @@
 if ENABLE_CXX
 
 libresample_la_SOURCES = \
-	im_affine.c \
+	affine.c \
+	quadratic.c \
+	resample.c \
+	presample.h \
+	shrink.c \
 	interpolate.c \
-	im_shrink.c \
-	im_rightshift_size.c \
 	transform.c \
-	resample_dispatch.c \
 	bicubic.cpp \
 	lbb.cpp \
 	nohalo.cpp \
@@ -20,12 +21,13 @@ libresample_la_SOURCES = \
 else
 
 libresample_la_SOURCES = \
-	im_affine.c \
+	resample.c \
+	presample.h \
+	shrink.c \
+	affine.c \
 	interpolate.c \
-	im_shrink.c \
-	im_rightshift_size.c \
-	transform.c \
-	resample_dispatch.c 
+	quadratic.c \
+	transform.c 
 
 EXTRA_DIST = \
 	bicubic.cpp \
@@ -38,4 +40,4 @@ endif
 
 noinst_LTLIBRARIES = libresample.la
 
-INCLUDES = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 
+AM_CPPFLAGS = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 

@@ -45,20 +45,22 @@ Stable, unless otherwise indicated
 </div>
 <div class="refsynopsisdiv">
 <a name="VipsForeignSave.synopsis"></a><h2>Synopsis</h2>
-<a name="VipsForeign"></a><a name="VipsForeignFlags"></a><a name="VipsForeignLoad"></a><a name="VipsForeignTiffCompression"></a><a name="VipsForeignTiffPredictor"></a><a name="VipsForeignTiffResunit"></a><a name="VipsSaveable"></a><pre class="synopsis">
+<a name="VipsForeign"></a><a name="VipsForeignLoad"></a><pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
                     <a class="link" href="VipsForeignSave.html#VipsForeign-struct" title="VipsForeign">VipsForeign</a>;
                     <a class="link" href="VipsForeignSave.html#VipsForeignClass" title="VipsForeignClass">VipsForeignClass</a>;
-enum                <a class="link" href="VipsForeignSave.html#VipsForeignFlags-enum" title="enum VipsForeignFlags">VipsForeignFlags</a>;
+enum                <a class="link" href="VipsForeignSave.html#VipsForeignDzDepth" title="enum VipsForeignDzDepth">VipsForeignDzDepth</a>;
+enum                <a class="link" href="VipsForeignSave.html#VipsForeignDzLayout" title="enum VipsForeignDzLayout">VipsForeignDzLayout</a>;
+enum                <a class="link" href="VipsForeignSave.html#VipsForeignFlags" title="enum VipsForeignFlags">VipsForeignFlags</a>;
                     <a class="link" href="VipsForeignSave.html#VipsForeignLoad-struct" title="VipsForeignLoad">VipsForeignLoad</a>;
                     <a class="link" href="VipsForeignSave.html#VipsForeignLoadClass" title="VipsForeignLoadClass">VipsForeignLoadClass</a>;
                     <a class="link" href="VipsForeignSave.html#VipsForeignSave-struct" title="VipsForeignSave">VipsForeignSave</a>;
                     <a class="link" href="VipsForeignSave.html#VipsForeignSaveClass" title="VipsForeignSaveClass">VipsForeignSaveClass</a>;
-enum                <a class="link" href="VipsForeignSave.html#VipsForeignTiffCompression-enum" title="enum VipsForeignTiffCompression">VipsForeignTiffCompression</a>;
-enum                <a class="link" href="VipsForeignSave.html#VipsForeignTiffPredictor-enum" title="enum VipsForeignTiffPredictor">VipsForeignTiffPredictor</a>;
-enum                <a class="link" href="VipsForeignSave.html#VipsForeignTiffResunit-enum" title="enum VipsForeignTiffResunit">VipsForeignTiffResunit</a>;
-enum                <a class="link" href="VipsForeignSave.html#VipsSaveable-enum" title="enum VipsSaveable">VipsSaveable</a>;
+enum                <a class="link" href="VipsForeignSave.html#VipsForeignTiffCompression" title="enum VipsForeignTiffCompression">VipsForeignTiffCompression</a>;
+enum                <a class="link" href="VipsForeignSave.html#VipsForeignTiffPredictor" title="enum VipsForeignTiffPredictor">VipsForeignTiffPredictor</a>;
+enum                <a class="link" href="VipsForeignSave.html#VipsForeignTiffResunit" title="enum VipsForeignTiffResunit">VipsForeignTiffResunit</a>;
+enum                <a class="link" href="VipsForeignSave.html#VipsSaveable" title="enum VipsSaveable">VipsSaveable</a>;
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-analyzeload" title="vips_analyzeload ()">vips_analyzeload</a>                    (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
@@ -67,6 +69,9 @@ enum                <a class="link" href="VipsForeignSave.html#VipsSaveable-enum
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-csvsave" title="vips_csvsave ()">vips_csvsave</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-dzsave" title="vips_dzsave ()">vips_dzsave</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *basename</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-fitsload" title="vips_fitsload ()">vips_fitsload</a>                       (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
@@ -78,7 +83,7 @@ const <span class="returnvalue">char</span> *        <a class="link" href="VipsF
 const <span class="returnvalue">char</span> *        <a class="link" href="VipsForeignSave.html#vips-foreign-find-load-options" title="vips_foreign_find_load_options ()">vips_foreign_find_load_options</a>      (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);
 const <span class="returnvalue">char</span> *        <a class="link" href="VipsForeignSave.html#vips-foreign-find-save" title="vips_foreign_find_save ()">vips_foreign_find_save</a>              (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);
 const <span class="returnvalue">char</span> *        <a class="link" href="VipsForeignSave.html#vips-foreign-find-save-options" title="vips_foreign_find_save_options ()">vips_foreign_find_save_options</a>      (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);
-<a class="link" href="VipsForeignSave.html#VipsForeignFlags"><span class="returnvalue">VipsForeignFlags</span></a>    <a class="link" href="VipsForeignSave.html#vips-foreign-flags" title="vips_foreign_flags ()">vips_foreign_flags</a>                  (<em class="parameter"><code>const <span class="type">char</span> *loader</code></em>,
+<a class="link" href="VipsForeignSave.html#VipsForeignFlags" title="enum VipsForeignFlags"><span class="returnvalue">VipsForeignFlags</span></a>    <a class="link" href="VipsForeignSave.html#vips-foreign-flags" title="vips_foreign_flags ()">vips_foreign_flags</a>                  (<em class="parameter"><code>const <span class="type">char</span> *loader</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="VipsForeignSave.html#vips-foreign-is-a" title="vips_foreign_is_a ()">vips_foreign_is_a</a>                   (<em class="parameter"><code>const <span class="type">char</span> *loader</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);
@@ -86,17 +91,18 @@ const <span class="returnvalue">char</span> *        <a class="link" href="VipsF
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-foreign-load-options" title="vips_foreign_load_options ()">vips_foreign_load_options</a>           (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>);
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">void</span> *              <a class="link" href="VipsForeignSave.html#vips-foreign-map" title="vips_foreign_map ()">vips_foreign_map</a>                    (<em class="parameter"><code>const <span class="type">char</span> *base</code></em>,
-                                                         <em class="parameter"><code><a href="http://http://www.vips.ecs.soton.ac.uk/libvips-util.html#VipsSListMap2Fn"><span class="type">VipsSListMap2Fn</span></a> fn</code></em>,
+                                                         <em class="parameter"><code><span class="type">VipsSListMap2Fn</span> fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="VipsForeignSave.html#vips-foreign-operation-init" title="vips_foreign_operation_init ()">vips_foreign_operation_init</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-foreign-save" title="vips_foreign_save ()">vips_foreign_save</a>                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-foreign-save-options" title="vips_foreign_save_options ()">vips_foreign_save_options</a>           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-jpegload" title="vips_jpegload ()">vips_jpegload</a>                       (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
@@ -126,6 +132,10 @@ const <span class="returnvalue">char</span> *        <a class="link" href="VipsF
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-pngload" title="vips_pngload ()">vips_pngload</a>                        (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-pngload-buffer" title="vips_pngload_buffer ()">vips_pngload_buffer</a>                 (<em class="parameter"><code><span class="type">void</span> *buf</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="VipsForeignSave.html#vips-pngsave" title="vips_pngsave ()">vips_pngsave</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
@@ -178,10 +188,6 @@ const <span class="returnvalue">char</span> *        <a class="link" href="VipsF
                      +----<a class="link" href="VipsForeignSave.html" title="VipsForeignSave">VipsForeignSave</a>
 </pre>
 <pre class="synopsis">
-  GFlags
-   +----VipsForeignFlags
-</pre>
-<pre class="synopsis">
   GObject
    +----<a class="link" href="VipsObject.html" title="VipsObject">VipsObject</a>
          +----<a class="link" href="VipsOperation.html" title="VipsOperation">VipsOperation</a>
@@ -195,28 +201,12 @@ const <span class="returnvalue">char</span> *        <a class="link" href="VipsF
                +----<a class="link" href="VipsForeignSave.html#VipsForeign">VipsForeign</a>
                      +----VipsForeignSave
 </pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsForeignTiffCompression
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsForeignTiffPredictor
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsForeignTiffResunit
-</pre>
-<pre class="synopsis">
-  GEnum
-   +----VipsSaveable
-</pre>
 </div>
 <div class="refsect1">
 <a name="VipsForeignSave.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="VipsForeignSave.html#VipsForeignLoad--disc" title='The "disc" property'>disc</a>"                     <span class="type">gboolean</span>              : Read / Write
-  "<a class="link" href="VipsForeignSave.html#VipsForeignLoad--flags" title='The "flags" property'>flags</a>"                    <a class="link" href="VipsForeignSave.html#VipsForeignFlags"><span class="type">VipsForeignFlags</span></a>      : Read / Write
+  "<a class="link" href="VipsForeignSave.html#VipsForeignLoad--flags" title='The "flags" property'>flags</a>"                    <a class="link" href="VipsForeignSave.html#VipsForeignFlags" title="enum VipsForeignFlags"><span class="type">VipsForeignFlags</span></a>      : Read / Write
   "<a class="link" href="VipsForeignSave.html#VipsForeignLoad--out" title='The "out" property'>out</a>"                      <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>*            : Read / Write
   "<a class="link" href="VipsForeignSave.html#VipsForeignLoad--sequential" title='The "sequential" property'>sequential</a>"               <span class="type">gboolean</span>              : Read / Write
   "<a class="link" href="VipsForeignSave.html#VipsForeignSave--in" title='The "in" property'>in</a>"                       <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a>*            : Read / Write
@@ -301,6 +291,8 @@ load with libMagick and with OpenSlide.
 <div class="refsect2">
 <a name="VipsForeign-struct"></a><h3>VipsForeign</h3>
 <pre class="programlisting">typedef struct _VipsForeign VipsForeign;</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -332,7 +324,85 @@ You should also define <em class="parameter"><code>nickname</code></em> and <em 
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsForeignFlags-enum"></a><h3>enum VipsForeignFlags</h3>
+<a name="VipsForeignDzDepth"></a><h3>enum VipsForeignDzDepth</h3>
+<pre class="programlisting">typedef enum {
+	VIPS_FOREIGN_DZ_DEPTH_1PIXEL,
+	VIPS_FOREIGN_DZ_DEPTH_1TILE,
+	VIPS_FOREIGN_DZ_DEPTH_1,
+	VIPS_FOREIGN_DZ_DEPTH_LAST
+} VipsForeignDzDepth;
+</pre>
+<p>
+How many pyramid layers to create.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-DEPTH-1PIXEL:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_DEPTH_1PIXEL</code></span></p></td>
+<td>create layers down to 1x1 pixel
+</td>
+</tr>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-DEPTH-1TILE:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_DEPTH_1TILE</code></span></p></td>
+<td>create layers down to 1x1 tile
+</td>
+</tr>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-DEPTH-1:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_DEPTH_1</code></span></p></td>
+<td>only create a single layer
+</td>
+</tr>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-DEPTH-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_DEPTH_LAST</code></span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VipsForeignDzLayout"></a><h3>enum VipsForeignDzLayout</h3>
+<pre class="programlisting">typedef enum {
+	VIPS_FOREIGN_DZ_LAYOUT_DZ,
+	VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY,
+	VIPS_FOREIGN_DZ_LAYOUT_GOOGLE,
+	VIPS_FOREIGN_DZ_LAYOUT_LAST
+} VipsForeignDzLayout;
+</pre>
+<p>
+What directory layout and metadata standard to use.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-LAYOUT-DZ:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_LAYOUT_DZ</code></span></p></td>
+<td>use DeepZoom directory layout
+</td>
+</tr>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-LAYOUT-ZOOMIFY:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY</code></span></p></td>
+<td>use Zoomify directory layout
+</td>
+</tr>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-LAYOUT-GOOGLE:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_LAYOUT_GOOGLE</code></span></p></td>
+<td>use Google maps directory layout
+</td>
+</tr>
+<tr>
+<td><p><a name="VIPS-FOREIGN-DZ-LAYOUT-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_DZ_LAYOUT_LAST</code></span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VipsForeignFlags"></a><h3>enum VipsForeignFlags</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_FOREIGN_NONE = 0,		/* No flags set */
 	VIPS_FOREIGN_PARTIAL = 1, /* Lazy read OK (eg. tiled tiff) */
@@ -387,7 +457,8 @@ need to swap bytes. See <code class="function">copy_swap()</code>.
 </tr>
 <tr>
 <td><p><a name="VIPS-FOREIGN-ALL:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_ALL</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -404,6 +475,10 @@ need to swap bytes. See <code class="function">copy_swap()</code>.
 	 * disc foreign or a memory buffer. This must be set by -&gt;load().
 	 */
 	VipsImage *real;
+
+	/* Set this to tag the operation as nocache.
+	 */
+	gboolean nocache;
 } VipsForeignLoad;
 </pre>
 <p>
@@ -589,6 +664,8 @@ vips_foreign_load_png_init( VipsForeignLoadPng *png )
 	VipsImage *ready;
 } VipsForeignSave;
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -722,7 +799,7 @@ vips_foreign_save_csv_init( VipsForeignSaveCsv *csv )
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsForeignTiffCompression-enum"></a><h3>enum VipsForeignTiffCompression</h3>
+<a name="VipsForeignTiffCompression"></a><h3>enum VipsForeignTiffCompression</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_FOREIGN_TIFF_COMPRESSION_NONE,
 	VIPS_FOREIGN_TIFF_COMPRESSION_JPEG,
@@ -777,14 +854,15 @@ Use <em class="parameter"><code>prediction</code></em> to set the lzw or deflate
 </tr>
 <tr>
 <td><p><a name="VIPS-FOREIGN-TIFF-COMPRESSION-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_TIFF_COMPRESSION_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsForeignTiffPredictor-enum"></a><h3>enum VipsForeignTiffPredictor</h3>
+<a name="VipsForeignTiffPredictor"></a><h3>enum VipsForeignTiffPredictor</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_FOREIGN_TIFF_PREDICTOR_NONE = 1,
 	VIPS_FOREIGN_TIFF_PREDICTOR_HORIZONTAL = 2,
@@ -806,7 +884,7 @@ the tiff library.
 </tr>
 <tr>
 <td><p><a name="VIPS-FOREIGN-TIFF-PREDICTOR-HORIZONTAL:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_TIFF_PREDICTOR_HORIZONTAL</code></span></p></td>
-<td>horizontal differenceing
+<td>horizontal differencing
 </td>
 </tr>
 <tr>
@@ -816,14 +894,15 @@ the tiff library.
 </tr>
 <tr>
 <td><p><a name="VIPS-FOREIGN-TIFF-PREDICTOR-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_TIFF_PREDICTOR_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsForeignTiffResunit-enum"></a><h3>enum VipsForeignTiffResunit</h3>
+<a name="VipsForeignTiffResunit"></a><h3>enum VipsForeignTiffResunit</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_FOREIGN_TIFF_RESUNIT_CM,
 	VIPS_FOREIGN_TIFF_RESUNIT_INCH,
@@ -848,14 +927,15 @@ Use inches or centimeters as the resolution unit for a tiff file.
 </tr>
 <tr>
 <td><p><a name="VIPS-FOREIGN-TIFF-RESUNIT-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_FOREIGN_TIFF_RESUNIT_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="VipsSaveable-enum"></a><h3>enum VipsSaveable</h3>
+<a name="VipsSaveable"></a><h3>enum VipsSaveable</h3>
 <pre class="programlisting">typedef enum {
 	VIPS_SAVEABLE_MONO,
 	VIPS_SAVEABLE_RGB,
@@ -898,7 +978,8 @@ See also: <a class="link" href="VipsForeignSave.html" title="VipsForeignSave"><s
 </tr>
 <tr>
 <td><p><a name="VIPS-SAVEABLE-LAST:CAPS"></a><span class="term"><code class="literal">VIPS_SAVEABLE_LAST</code></span></p></td>
-<td></td>
+<td>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -1054,6 +1135,82 @@ See also: <code class="function">vips_image_write_file()</code>.
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td>file to write to</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-dzsave"></a><h3>vips_dzsave ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_dzsave                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *basename</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>layout</code></em>; directory layout convention
+<em class="parameter"><code>suffix</code></em>: suffix for tile tiles 
+<em class="parameter"><code>overlap</code></em>; set tile overlap 
+<em class="parameter"><code>tile_size</code></em>; set tile size 
+<em class="parameter"><code>background</code></em>: background colour
+<em class="parameter"><code>depth</code></em>: how deep to make the pyramid
+<em class="parameter"><code>centre</code></em>: centre the tiles 
+<em class="parameter"><code>angle</code></em>: rotate the image by this much
+</p>
+<p>
+Save an image as a set of tiles at various resolutions. By default dzsave
+uses DeepZoom layout -- use <em class="parameter"><code>layout</code></em> to pick other conventions.
+</p>
+<p>
+In DeepZoom layout a directory called
+"<em class="parameter"><code>basename_files</code></em>" is created to hold the tiles, and an XML file called
+"<em class="parameter"><code>basename.dzi</code></em>" is written with the image metadata, 
+</p>
+<p>
+In Zoomify and Google layout, a directory called <em class="parameter"><code>basename</code></em> is created to 
+hold the tile structure. 
+</p>
+<p>
+You can set <em class="parameter"><code>suffix</code></em> to something like ".jpg[Q=85]" to control the tile write
+options. 
+</p>
+<p>
+In Google layout mode, edge tiles are expanded to <em class="parameter"><code>tile_size</code></em> by <em class="parameter"><code>tile_size</code></em> 
+pixels. Normally they are filled with white, but you can set another colour
+with <em class="parameter"><code>background</code></em>. Images are usually placed at the top-left of the tile,
+but you can have them centred by turning on <em class="parameter"><code>centre</code></em>. 
+</p>
+<p>
+You can set the size and overlap of tiles with <em class="parameter"><code>tile_size</code></em> and <em class="parameter"><code>overlap</code></em>.
+They default to the correct settings for the selected <em class="parameter"><code>layout</code></em>. 
+</p>
+<p>
+Use <em class="parameter"><code>depth</code></em> to control how low the pyramid goes. This defaults to the
+correct setting for the <em class="parameter"><code>layout</code></em> you select.
+</p>
+<p>
+See also: <a class="link" href="VipsForeignSave.html#vips-tiffsave" title="vips_tiffsave ()"><code class="function">vips_tiffsave()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>image to save</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>basename</code></em> :</span></p></td>
+<td>basename to save to</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
@@ -1248,7 +1405,7 @@ See also: <code class="function">vips_foreign_write()</code>.
 <hr>
 <div class="refsect2">
 <a name="vips-foreign-flags"></a><h3>vips_foreign_flags ()</h3>
-<pre class="programlisting"><a class="link" href="VipsForeignSave.html#VipsForeignFlags"><span class="returnvalue">VipsForeignFlags</span></a>    vips_foreign_flags                  (<em class="parameter"><code>const <span class="type">char</span> *loader</code></em>,
+<pre class="programlisting"><a class="link" href="VipsForeignSave.html#VipsForeignFlags" title="enum VipsForeignFlags"><span class="returnvalue">VipsForeignFlags</span></a>    vips_foreign_flags                  (<em class="parameter"><code>const <span class="type">char</span> *loader</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);</pre>
 <p>
 Return the flags for <em class="parameter"><code>filename</code></em> using <em class="parameter"><code>loader</code></em>. 
@@ -1340,14 +1497,16 @@ See also: <a class="link" href="VipsForeignSave.html#vips-foreign-save" title="v
 <div class="refsect2">
 <a name="vips-foreign-load-options"></a><h3>vips_foreign_load_options ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_foreign_load_options           (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>);</pre>
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Loads <em class="parameter"><code>filename</code></em> into <em class="parameter"><code>out</code></em> using the loader recommended by
 <a class="link" href="VipsForeignSave.html#vips-foreign-find-load" title="vips_foreign_find_load ()"><code class="function">vips_foreign_find_load()</code></a>.
 </p>
 <p>
 Arguments to the loader may be embedded in the filename using the usual
-syntax.
+syntax. They may also be given as a set of NULL-terminated optional
+arguments.
 </p>
 <p>
 See also: <a class="link" href="VipsForeignSave.html#vips-foreign-load" title="vips_foreign_load ()"><code class="function">vips_foreign_load()</code></a>.
@@ -1364,6 +1523,11 @@ See also: <a class="link" href="VipsForeignSave.html#vips-foreign-load" title="v
 <td>output image</td>
 </tr>
 <tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>0 on success, -1 on error</td>
 </tr>
@@ -1374,7 +1538,7 @@ See also: <a class="link" href="VipsForeignSave.html#vips-foreign-load" title="v
 <div class="refsect2">
 <a name="vips-foreign-map"></a><h3>vips_foreign_map ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span> *              vips_foreign_map                    (<em class="parameter"><code>const <span class="type">char</span> *base</code></em>,
-                                                         <em class="parameter"><code><a href="http://http://www.vips.ecs.soton.ac.uk/libvips-util.html#VipsSListMap2Fn"><span class="type">VipsSListMap2Fn</span></a> fn</code></em>,
+                                                         <em class="parameter"><code><span class="type">VipsSListMap2Fn</span> fn</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
 <p>
@@ -1419,11 +1583,6 @@ See also: <code class="function">vips_slist_map()</code>.
 </div>
 <hr>
 <div class="refsect2">
-<a name="vips-foreign-operation-init"></a><h3>vips_foreign_operation_init ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                vips_foreign_operation_init         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-</div>
-<hr>
-<div class="refsect2">
 <a name="vips-foreign-save"></a><h3>vips_foreign_save ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_foreign_save                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
@@ -1463,14 +1622,16 @@ See also: <a class="link" href="VipsForeignSave.html#vips-foreign-load" title="v
 <div class="refsect2">
 <a name="vips-foreign-save-options"></a><h3>vips_foreign_save_options ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_foreign_save_options           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Saves <em class="parameter"><code>in</code></em> to <em class="parameter"><code>filename</code></em> using the saver recommended by
 <a class="link" href="VipsForeignSave.html#vips-foreign-find-save" title="vips_foreign_find_save ()"><code class="function">vips_foreign_find_save()</code></a>. 
 </p>
 <p>
 Arguments to the saver may be embedded in the filename using the usual
-syntax.
+syntax. They may also be given as a set of NULL-terminated optional
+arguments.
 </p>
 <p>
 See also: <a class="link" href="VipsForeignSave.html#vips-foreign-save" title="vips_foreign_save ()"><code class="function">vips_foreign_save()</code></a>.
@@ -1485,6 +1646,11 @@ See also: <a class="link" href="VipsForeignSave.html#vips-foreign-save" title="v
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td>file to write to</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -1536,8 +1702,13 @@ vips_jpegload( "fred.jpg", &amp;out,
 <p>
 Any embedded ICC profiles are ignored: you always just get the RGB from 
 the file. Instead, the embedded profile will be attached to the image as 
-metadata.  You need to use something like <a class="link" href="libvips-colour.html#im-icc-import" title="im_icc_import ()"><code class="function">im_icc_import()</code></a> to get CIE 
-values from the file. Any EXIF data is also attached as VIPS metadata.
+<em class="parameter"><code>VIPS_META_ICC_NAME</code></em> ("icc-profile-data"). You need to use something like 
+<a class="link" href="libvips-colour.html#vips-icc-import" title="vips_icc_import ()"><code class="function">vips_icc_import()</code></a> to get CIE values from the file. 
+</p>
+<p>
+EXIF metadata is attached as <em class="parameter"><code>VIPS_META_EXIF_NAME</code></em> ("exif-data"), IPCT as
+<em class="parameter"><code>VIPS_META_IPCT_NAME</code></em> ("ipct-data"), and XMP as VIPS_META_XMP_NAME
+("xmp-data").
 </p>
 <p>
 The int metadata item "jpeg-multiscan" is set to the result of 
@@ -1649,7 +1820,7 @@ Write a VIPS image to a file as JPEG.
 Use <em class="parameter"><code>Q</code></em> to set the JPEG compression factor. Default 75.
 </p>
 <p>
-Use <em class="parameter"><code>profile</code></em> to give the filename of a profile to be em,bedded in the JPEG.
+Use <em class="parameter"><code>profile</code></em> to give the filename of a profile to be embedded in the JPEG.
 This does not affect the pixels which are written, just the way 
 they are tagged. You can use the special string "none" to mean 
 "don't attach a profile".
@@ -1661,7 +1832,16 @@ profile from the VIPS header will be attached.
 </p>
 <p>
 The image is automatically converted to RGB, Monochrome or CMYK before 
-saving. Any metadata attached to the image is saved as EXIF, if possible.
+saving. 
+</p>
+<p>
+EXIF data is constructed from <em class="parameter"><code>VIPS_META_EXIF_NAME</code></em> ("exif-data"), then
+modified with any other related tags on the image before being written to
+the file. 
+</p>
+<p>
+IPCT as <em class="parameter"><code>VIPS_META_IPCT_NAME</code></em> ("ipct-data") and XMP as VIPS_META_XMP_NAME
+("xmp-data") are coded and attached. 
 </p>
 <p>
 See also: <a class="link" href="VipsForeignSave.html#vips-jpegsave-buffer" title="vips_jpegsave_buffer ()"><code class="function">vips_jpegsave_buffer()</code></a>, <code class="function">vips_image_write_file()</code>.
@@ -1785,6 +1965,12 @@ See also: <a class="link" href="VipsForeignSave.html#vips-jpegsave" title="vips_
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>all_frames</code></em>: load all frames in sequence
+</p>
+<p>
 Read in an image using libMagick, the ImageMagick library. This library can
 read more than 80 file formats, including SVG, BMP, EPS, DICOM and many 
 others.
@@ -1795,6 +1981,10 @@ attached to the libMagick image is copied on to the VIPS image.
 <p>
 The reader should also work with most versions of GraphicsMagick. See the
 "--with-magickpackage" configure option.
+</p>
+<p>
+Normally it will only load the first image in a many-image sequence (such
+as a GIF). Set <em class="parameter"><code>all_frames</code></em> to true to read the whole image sequence. 
 </p>
 <p>
 See also: <a class="link" href="VipsImage.html#vips-image-new-from-file" title="vips_image_new_from_file ()"><code class="function">vips_image_new_from_file()</code></a>.
@@ -1980,22 +2170,11 @@ See also: <a class="link" href="VipsImage.html#vips-image-new-from-file" title="
 Optional arguments:
 </p>
 <p>
-<em class="parameter"><code>sequential</code></em>: sequential read only 
-</p>
-<p>
 Read a PNG file into a VIPS image. It can read all png images, including 8-
 and 16-bit images, 1 and 3 channel, with and without an alpha channel.
 </p>
 <p>
-Setting <em class="parameter"><code>sequential</code></em> to <code class="literal">TRUE</code> means you promise to only demand tiles from
-this image top-top-bottom, ie. to read sequentially. This means the png
-loader can read directly from the image without having to generate a
-random-access intermediate. This can save a lot of time and memory for
-large images, but limits the sorts of operation you can perform. It's
-useful for things like generating thumbnails. 
-</p>
-<p>
-There is no support for embedded ICC profiles.
+Any ICC profile is read and attached to the VIPS image.
 </p>
 <p>
 See also: <a class="link" href="VipsImage.html#vips-image-new-from-file" title="vips_image_new_from_file ()"><code class="function">vips_image_new_from_file()</code></a>.
@@ -2010,6 +2189,56 @@ See also: <a class="link" href="VipsImage.html#vips-image-new-from-file" title="
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
 <td>decompressed image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-pngload-buffer"></a><h3>vips_pngload_buffer ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_pngload_buffer                 (<em class="parameter"><code><span class="type">void</span> *buf</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Read a PNG-formatted memory block into a VIPS image. It can read all png 
+images, including 8- and 16-bit images, 1 and 3 channel, with and without 
+an alpha channel.
+</p>
+<p>
+Any ICC profile is read and attached to the VIPS image.
+</p>
+<p>
+Caution: on return only the header will have been read, the pixel data is
+not decompressed until the first pixel is read. Therefore you must not free
+<em class="parameter"><code>buf</code></em> until you have read pixel data from <em class="parameter"><code>out</code></em>.
+</p>
+<p>
+See also: <a class="link" href="VipsForeignSave.html#vips-pngload" title="vips_pngload ()"><code class="function">vips_pngload()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td>memory area to load</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>size of memory area</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>image to write</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
@@ -2049,7 +2278,9 @@ than an interlaced PNG can be up to 7 times slower to write than a
 non-interlaced image.
 </p>
 <p>
-There is no support for attaching ICC profiles to PNG images.
+If the VIPS header 
+contains an ICC profile named VIPS_META_ICC_NAME ("icc-profile-data"), the
+profile from the VIPS header will be attached.
 </p>
 <p>
 The image is automatically converted to RGB, RGBA, Monochrome or Mono +
@@ -2244,7 +2475,7 @@ Radiance files are read as <a class="link" href="VipsImage.html#VIPS-CODING-RAD:
 red, green and blue, and one byte of shared exponent. Some operations (like
 <a class="link" href="libvips-conversion.html#vips-extract-area" title="vips_extract_area ()"><code class="function">vips_extract_area()</code></a>) can work directly with images in this format, but 
 mmany (all the arithmetic operations, for example) will not. Unpack 
-<a class="link" href="VipsImage.html#VIPS-CODING-RAD:CAPS"><span class="type">VIPS_CODING_RAD</span></a> images to 3 band float with <a class="link" href="libvips-colour.html#im-rad2float" title="im_rad2float ()"><code class="function">im_rad2float()</code></a> if you want to do
+<a class="link" href="VipsImage.html#VIPS-CODING-RAD:CAPS"><span class="type">VIPS_CODING_RAD</span></a> images to 3 band float with <code class="function">im_rad2float()</code> if you want to do
 arithmetic on them.
 </p>
 <p>
@@ -2511,9 +2742,9 @@ Optional arguments:
 <em class="parameter"><code>tile_height</code></em>; set tile size
 <em class="parameter"><code>pyramid</code></em>; set <code class="literal">TRUE</code> to write an image pyramid
 <em class="parameter"><code>squash</code></em>; squash 8-bit images down to 1 bit
-<em class="parameter"><code>resunit</code></em>; use pixels per inch or cm for the resolution
-<em class="parameter"><code>xres</code></em>; horizontal resolution
-<em class="parameter"><code>yres</code></em>; vertical resolution
+<em class="parameter"><code>resunit</code></em>; convert resolution to pixels per inch or cm during write
+<em class="parameter"><code>xres</code></em>; horizontal resolution in pixels/mm
+<em class="parameter"><code>yres</code></em>; vertical resolution in pixels/mm
 <em class="parameter"><code>bigtiff</code></em>; write a BigTiff file
 </p>
 <p>
@@ -2575,6 +2806,7 @@ VIPS defaults to cm.
 <p>
 Use <em class="parameter"><code>xres</code></em> and <em class="parameter"><code>yres</code></em> to override the default horizontal and vertical
 resolutions. By default these values are taken from the VIPS image header. 
+libvips resolution is always in pixels per millimetre.
 </p>
 <p>
 Set <em class="parameter"><code>bigtiff</code></em> to attempt to write a bigtiff. 
@@ -2619,7 +2851,7 @@ See also: <a class="link" href="VipsForeignSave.html#vips-tiffload" title="vips_
 <hr>
 <div class="refsect2">
 <a name="VipsForeignLoad--flags"></a><h3>The <code class="literal">"flags"</code> property</h3>
-<pre class="programlisting">  "flags"                    <a class="link" href="VipsForeignSave.html#VipsForeignFlags"><span class="type">VipsForeignFlags</span></a>      : Read / Write</pre>
+<pre class="programlisting">  "flags"                    <a class="link" href="VipsForeignSave.html#VipsForeignFlags" title="enum VipsForeignFlags"><span class="type">VipsForeignFlags</span></a>      : Read / Write</pre>
 <p>Flags for this file.</p>
 </div>
 <hr>

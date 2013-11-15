@@ -17,6 +17,10 @@ GType vips_foreign_tiff_predictor_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_FOREIGN_TIFF_PREDICTOR (vips_foreign_tiff_predictor_get_type())
 GType vips_foreign_tiff_resunit_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_FOREIGN_TIFF_RESUNIT (vips_foreign_tiff_resunit_get_type())
+GType vips_foreign_dz_layout_get_type (void) G_GNUC_CONST;
+#define VIPS_TYPE_FOREIGN_DZ_LAYOUT (vips_foreign_dz_layout_get_type())
+GType vips_foreign_dz_depth_get_type (void) G_GNUC_CONST;
+#define VIPS_TYPE_FOREIGN_DZ_DEPTH (vips_foreign_dz_depth_get_type())
 /* enumerations from "../../../libvips/include/vips/arithmetic.h" */
 GType vips_operation_math_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_OPERATION_MATH (vips_operation_math_get_type())
@@ -30,6 +34,8 @@ GType vips_operation_boolean_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_OPERATION_BOOLEAN (vips_operation_boolean_get_type())
 GType vips_operation_complex_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_OPERATION_COMPLEX (vips_operation_complex_get_type())
+GType vips_operation_complex2_get_type (void) G_GNUC_CONST;
+#define VIPS_TYPE_OPERATION_COMPLEX2 (vips_operation_complex2_get_type())
 GType vips_operation_complexget_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_OPERATION_COMPLEXGET (vips_operation_complexget_get_type())
 /* enumerations from "../../../libvips/include/vips/conversion.h" */
@@ -57,6 +63,12 @@ GType vips_band_format_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_BAND_FORMAT (vips_band_format_get_type())
 GType vips_coding_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_CODING (vips_coding_get_type())
+/* enumerations from "../../../libvips/include/vips/colour.h" */
+GType vips_intent_get_type (void) G_GNUC_CONST;
+#define VIPS_TYPE_INTENT (vips_intent_get_type())
+/* enumerations from "../../../libvips/include/vips/operation.h" */
+GType vips_operation_flags_get_type (void) G_GNUC_CONST;
+#define VIPS_TYPE_OPERATION_FLAGS (vips_operation_flags_get_type())
 /* enumerations from "../../../libvips/include/vips/object.h" */
 GType vips_argument_flags_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_ARGUMENT_FLAGS (vips_argument_flags_get_type())

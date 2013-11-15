@@ -40,7 +40,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -229,23 +230,16 @@ vips_tracked_free( void *s )
 	if( vips_tracked_allocs <= 0 ) 
 		vips_warn( "vips_tracked", 
 			"%s", _( "vips_free: too many frees" ) );
-	vips_tracked_mem -= size;
-	if( vips_tracked_mem < 0 ) 
+	if( vips_tracked_mem < size )
 		vips_warn( "vips_tracked", 
 			"%s", _( "vips_free: too much free" ) );
+
+	vips_tracked_mem -= size;
 	vips_tracked_allocs -= 1;
 
 	g_mutex_unlock( vips_tracked_mutex );
 
 	g_free( s );
-}
-
-/* g_mutex_new() is a macro.
- */
-static void *
-vips_tracked_mutex_new( void *data )
-{
-	return( g_mutex_new() );
 }
 
 static void
@@ -254,7 +248,7 @@ vips_tracked_init( void )
 	static GOnce vips_tracked_once = G_ONCE_INIT;
 
 	vips_tracked_mutex = g_once( &vips_tracked_once, 
-		vips_tracked_mutex_new, NULL );
+		(GThreadFunc) vips_g_mutex_new, NULL );
 }
 
 /**

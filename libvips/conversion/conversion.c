@@ -1,29 +1,27 @@
 /* base class for all conversion operations
  *
  * properties:
- * 	- unary, binary or binary with one arg a constant
- * 	- cast binary args to match
- * 	- not point-to-point
- * 	- format, bands etc. can all change
+ * 	- single output image
  */
 
 /*
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -49,7 +47,27 @@
 #include <vips/vips.h>
 #include <vips/internal.h>
 
-#include "conversion.h"
+#include "pconversion.h"
+
+/** 
+ * SECTION: conversion
+ * @short_description: convert images in some way: change band format, change header, insert, extract, join
+ * @see_also: <link linkend="libvips-resample">resample</link>
+ * @stability: Stable
+ * @include: vips/vips.h
+ *
+ * These operations convert an image in some way. They can be split into a two
+ * main groups.
+ *
+ * The first set of operations change an image's format in some way. You
+ * can change the band format (for example, cast to 32-bit unsigned
+ * int), form complex images from real images, convert images to
+ * matrices and back, change header fields, and a few others.
+ *
+ * The second group move pixels about in some way. You can flip, rotate,
+ * extract, insert and join pairs of images in various ways.
+ *
+ */
 
 G_DEFINE_ABSTRACT_TYPE( VipsConversion, vips_conversion, VIPS_TYPE_OPERATION );
 
@@ -105,6 +123,7 @@ vips_conversion_operation_init( void )
 {
 	extern GType vips_copy_get_type( void ); 
 	extern GType vips_tile_cache_get_type( void ); 
+	extern GType vips_line_cache_get_type( void ); 
 	extern GType vips_sequential_get_type( void ); 
 	extern GType vips_cache_get_type( void ); 
 	extern GType vips_embed_get_type( void ); 
@@ -121,9 +140,23 @@ vips_conversion_operation_init( void )
 	extern GType vips_ifthenelse_get_type( void ); 
 	extern GType vips_recomb_get_type( void ); 
 	extern GType vips_bandmean_get_type( void ); 
+	extern GType vips_flatten_get_type( void ); 
+	extern GType vips_bandbool_get_type( void ); 
+	extern GType vips_gaussnoise_get_type( void ); 
+	extern GType vips_grid_get_type( void ); 
+	extern GType vips_scale_get_type( void ); 
+	extern GType vips_wrap_get_type( void ); 
+	extern GType vips_zoom_get_type( void ); 
+	extern GType vips_subsample_get_type( void ); 
+	extern GType vips_msb_get_type( void ); 
+#ifdef HAVE_PANGOFT2
+	extern GType vips_text_get_type( void ); 
+#endif /*HAVE_PANGOFT2*/
+	extern GType vips_xyz_get_type( void ); 
 
 	vips_copy_get_type();
 	vips_tile_cache_get_type(); 
+	vips_line_cache_get_type(); 
 	vips_sequential_get_type(); 
 	vips_cache_get_type(); 
 	vips_embed_get_type();
@@ -140,6 +173,19 @@ vips_conversion_operation_init( void )
 	vips_ifthenelse_get_type();
 	vips_recomb_get_type(); 
 	vips_bandmean_get_type(); 
+	vips_flatten_get_type(); 
+	vips_bandbool_get_type(); 
+	vips_gaussnoise_get_type(); 
+	vips_grid_get_type(); 
+	vips_scale_get_type(); 
+	vips_wrap_get_type(); 
+	vips_zoom_get_type(); 
+	vips_subsample_get_type(); 
+	vips_msb_get_type(); 
+#ifdef HAVE_PANGOFT2
+	vips_text_get_type(); 
+#endif /*HAVE_PANGOFT2*/
+	vips_xyz_get_type(); 
 }
 
 /* The common part of most binary conversion
@@ -150,7 +196,6 @@ vips_conversion_operation_init( void )
  * - equalise bands 
  * - make an input array
  * - return the matched images in vec[0] and vec[1]
- *
  *
  * A left-over, remove soon.
  */

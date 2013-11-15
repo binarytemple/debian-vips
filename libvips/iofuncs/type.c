@@ -1,10 +1,12 @@
 /* array type 
  *
- * Unlike GArray, this has fixed length, tracks a GType for emements, and has
+ * Unlike GArray, this has fixed length, tracks a GType for elements, and has
  * a per-element free function.
  *
  * 27/10/11
  * 	- from header.c
+ * 16/7/13
+ * 	- leakcheck VipsArea
  */
 
 /*
@@ -23,7 +25,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -46,6 +49,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include <vips/vips.h>
 #include <vips/internal.h>
@@ -101,9 +105,28 @@ vips_thing_get_i( VipsThing *thing )
 	return( thing->i );
 }
 
+/*
+ * glib-2.26+ only 
+ 
 G_DEFINE_BOXED_TYPE( VipsThing, vips_thing,
 	(GBoxedCopyFunc) vips_thing_copy, 
 	(GBoxedFreeFunc) vips_thing_free );
+
+ */
+
+GType
+vips_thing_get_type( void )
+{
+	static GType type = 0;
+
+	if( !type ) {
+		type = g_boxed_type_register_static( "VipsThing",
+			(GBoxedCopyFunc) vips_thing_copy, 
+			(GBoxedFreeFunc) vips_thing_free );
+	}
+
+	return( type );
+}
 
 /**
  * SECTION: VipsArea
@@ -116,18 +139,18 @@ G_DEFINE_BOXED_TYPE( VipsThing, vips_thing,
  * function. It also keeps a count and a GType, so the area can be an array.
  *
  * This type is used for things like passing an array of double or an array of
- * VipsObject pointers to operations, and for reference-countred immutable
+ * VipsObject pointers to operations, and for reference-counted immutable
  * strings. 
  */
 
-#ifdef DEBUG
-static int vips_area_number = 0;
-#endif /*DEBUG*/
+static GSList *vips_area_all = NULL;
 
 VipsArea *
 vips_area_copy( VipsArea *area )
 {
-	g_assert( area->count >= 0 );
+	g_mutex_lock( area->lock );
+
+	g_assert( area->count > 0 );
 
 	area->count += 1;
 
@@ -135,12 +158,16 @@ vips_area_copy( VipsArea *area )
 	printf( "vips_area_copy: %p count = %d\n", area, area->count );
 #endif /*DEBUG*/
 
+	g_mutex_unlock( area->lock );
+
 	return( area );
 }
 
 void
 vips_area_unref( VipsArea *area )
 {
+	g_mutex_lock( area->lock );
+
 	g_assert( area->count > 0 );
 
 	area->count -= 1;
@@ -149,6 +176,12 @@ vips_area_unref( VipsArea *area )
 	printf( "vips_area_unref: %p count = %d\n", area, area->count );
 #endif /*DEBUG*/
 
+	if( vips__leak ) {
+		g_mutex_lock( vips__global_lock );
+		g_assert( g_slist_find( vips_area_all, area ) ); 
+		g_mutex_unlock( vips__global_lock );
+	}
+
 	if( area->count == 0 ) {
 		if( area->free_fn && area->data ) {
 			area->free_fn( area->data, area );
@@ -156,14 +189,27 @@ vips_area_unref( VipsArea *area )
 			area->free_fn = NULL;
 		}
 
+		g_mutex_unlock( area->lock );
+
+		VIPS_FREEF( vips_g_mutex_free, area->lock );
+
 		g_free( area );
 
+		if( vips__leak ) {
+			g_mutex_lock( vips__global_lock );
+			vips_area_all = g_slist_remove( vips_area_all, area ); 
+			g_mutex_unlock( vips__global_lock );
+		}
+
 #ifdef DEBUG
-		vips_area_number -= 1;
+		g_mutex_lock( vips__global_lock );
 		printf( "vips_area_unref: free .. total = %d\n", 
-			vips_area_number );
+			g_slist_length( vips_area_all ) );
+		g_mutex_unlock( vips__global_lock );
 #endif /*DEBUG*/
 	}
+	else
+		g_mutex_unlock( area->lock );
 }
 
 /**
@@ -185,19 +231,44 @@ vips_area_new( VipsCallbackFn free_fn, void *data )
 
 	area = g_new( VipsArea, 1 );
 	area->count = 1;
+	area->lock = vips_g_mutex_new();
 	area->length = 0;
 	area->data = data;
 	area->free_fn = free_fn;
 	area->type = 0;
 	area->sizeof_type = 0;
 
+	if( vips__leak ) {
+		g_mutex_lock( vips__global_lock );
+		vips_area_all = g_slist_prepend( vips_area_all, area ); 
+		g_mutex_unlock( vips__global_lock );
+	}
+
 #ifdef DEBUG
-	vips_area_number += 1;
+	g_mutex_lock( vips__global_lock );
 	printf( "vips_area_new: %p count = %d (%d in total)\n", 
-		area, area->count, vips_area_number );
+		area, area->count, 
+		g_slist_length( vips_area_all ) );
+	g_mutex_unlock( vips__global_lock );
 #endif /*DEBUG*/
 
 	return( area );
+}
+
+void
+vips__type_leak( void )
+{
+	if( vips_area_all ) {
+		GSList *p; 
+
+		printf( "VipsArea leaks:\n" ); 
+		for( p = vips_area_all; p; p = p->next ) {
+			VipsArea *area = (VipsArea *) p->data;
+
+			printf( "\t%p count = %d\n", area, area->count );
+		}
+		printf( "%d in total\n", g_slist_length( vips_area_all ) );
+	}
 }
 
 /**
@@ -527,6 +598,94 @@ vips_blob_get_type( void )
 }
 
 static void
+transform_array_int_g_string( const GValue *src_value, GValue *dest_value )
+{
+	int n;
+	int *array = vips_value_get_array_int( src_value, &n );
+
+	char txt[1024];
+	VipsBuf buf = VIPS_BUF_STATIC( txt );
+	int i;
+
+	for( i = 0; i < n; i++ ) 
+		/* Use space as a separator since ',' may be a decimal point
+		 * in this locale.
+		 */
+		vips_buf_appendf( &buf, "%d ", array[i] );
+
+	g_value_set_string( dest_value, vips_buf_all( &buf ) );
+}
+
+/* It'd be great to be able to write a generic string->array function, but
+ * it doesn't seem possible.
+ */
+static void
+transform_g_string_array_int( const GValue *src_value, GValue *dest_value )
+{
+	char *str;
+	int n;
+	char *p, *q;
+	int i;
+	int *array;
+
+	/* Walk the string to get the number of elements. 
+	 * We need a copy of the string, since we insert \0 during
+	 * scan.
+	 *
+	 * We can't allow ',' as a separator, since some locales use it as a
+	 * decimal point.
+	 */
+	str = g_value_dup_string( src_value );
+
+	n = 0;
+	for( p = str; (q = vips_break_token( p, "\t; " )); p = q ) 
+		n += 1;
+
+	g_free( str );
+
+	vips_value_set_array( dest_value, n, G_TYPE_INT, sizeof( int ) );
+	array = (int *) vips_value_get_array( dest_value, NULL, NULL, NULL );
+
+	str = g_value_dup_string( src_value );
+
+	i = 0;
+	for( p = str; (q = vips_break_token( p, "\t; " )); p = q ) {
+		if( sscanf( p, "%d", &array[i] ) != 1 ) { 
+			/* Set array to length zero to indicate an error.
+			 */
+			vips_error( "vipstype", 
+				_( "unable to convert \"%s\" to int" ), p );
+			vips_value_set_array( dest_value, 
+				0, G_TYPE_INT, sizeof( int ) );
+			g_free( str );
+			return;
+		}
+
+		i += 1;
+	}
+
+	g_free( str );
+}
+
+GType
+vips_array_int_get_type( void )
+{
+	static GType type = 0;
+
+	if( !type ) {
+		type = g_boxed_type_register_static( "VipsArrayInt",
+			(GBoxedCopyFunc) vips_area_copy, 
+			(GBoxedFreeFunc) vips_area_unref );
+		g_value_register_transform_func( type, G_TYPE_STRING,
+			transform_array_int_g_string );
+		g_value_register_transform_func( G_TYPE_STRING, type,
+			transform_g_string_array_int );
+	}
+
+	return( type );
+}
+
+static void
 transform_array_double_g_string( const GValue *src_value, GValue *dest_value )
 {
 	int n;
@@ -558,25 +717,41 @@ transform_g_string_array_double( const GValue *src_value, GValue *dest_value )
 	double *array;
 
 	/* Walk the string to get the number of elements. 
-	 * We need a copy of the string, since we insert \0 during
+	 * We need a copy of the string since we insert \0 during
 	 * scan.
 	 *
-	 * We can't allow ',' as a separator, since some locales use it as a
+	 * We can't allow ',' as a separator since some locales use it as a
 	 * decimal point.
 	 */
 	str = g_value_dup_string( src_value );
+
 	n = 0;
 	for( p = str; (q = vips_break_token( p, "\t; " )); p = q ) 
 		n += 1;
+
 	g_free( str );
 
 	vips_value_set_array( dest_value, n, G_TYPE_DOUBLE, sizeof( double ) );
 	array = (double *) vips_value_get_array( dest_value, NULL, NULL, NULL );
 
 	str = g_value_dup_string( src_value );
+
 	i = 0;
-	for( p = str; (q = vips_break_token( p, "\t; " )); p = q ) 
-		array[i++] = atof( p );
+	for( p = str; (q = vips_break_token( p, "\t; " )); p = q ) {
+		if( sscanf( p, "%lf", &array[i] ) != 1 ) { 
+			/* Set array to length zero to indicate an error.
+			 */
+			vips_error( "vipstype", 
+				_( "unable to convert \"%s\" to float" ), p );
+			vips_value_set_array( dest_value, 
+				0, G_TYPE_DOUBLE, sizeof( double ) );
+			g_free( str );
+			return;
+		}
+
+		i += 1;
+	}
+
 	g_free( str );
 }
 
@@ -611,15 +786,18 @@ transform_g_string_array_image( const GValue *src_value, GValue *dest_value )
 	 * scan.
 	 */
 	str = g_value_dup_string( src_value );
+
 	n = 0;
 	for( p = str; (q = vips_break_token( p, " " )); p = q ) 
 		n += 1;
+
 	g_free( str );
 
 	vips_value_set_array_object( dest_value, n );
 	array = vips_value_get_array_object( dest_value, NULL );
 
 	str = g_value_dup_string( src_value );
+
 	for( i = 0, p = str; (q = vips_break_token( p, " " )); i++, p = q )
 		if( !(array[i] = G_OBJECT( vips_image_new_from_file( p ) )) ) {
 			/* Set the dest to length zero to indicate error.
@@ -628,6 +806,7 @@ transform_g_string_array_image( const GValue *src_value, GValue *dest_value )
 			g_free( str );
 			return;
 		}
+
 	g_free( str );
 }
 
@@ -896,6 +1075,105 @@ vips_value_get_array( const GValue *value,
 }
 
 /**
+ * vips_array_int_new:
+ * @array: (array length=n): array of int
+ * @n: number of ints
+ *
+ * Allocate a new array of ints and copy @array into it. Free with
+ * vips_area_unref().
+ *
+ * See also: #VipsArea.
+ *
+ * Returns: (transfer full): A new #VipsArrayInt.
+ */
+VipsArrayInt *
+vips_array_int_new( const int *array, int n )
+{
+	VipsArea *area;
+	int *array_copy;
+
+	area = vips_area_new_array( G_TYPE_INT, sizeof( int ), n );
+	array_copy = vips_area_get_data( area, NULL, NULL, NULL, NULL );
+	memcpy( array_copy, array, n * sizeof( int ) );
+
+	return( area );
+}
+
+/**
+ * vips_array_int_newv:
+ * @n: number of ints
+ * @...: list of int arguments
+ *
+ * Allocate a new array of @n ints and copy @... into it. Free with
+ * vips_area_unref().
+ *
+ * See also: vips_array_int_new()
+ *
+ * Returns: (transfer full): A new #VipsArrayInt.
+ */
+VipsArrayInt *
+vips_array_int_newv( int n, ... )
+{
+	va_list ap;
+	VipsArea *area;
+	int *array;
+	int i;
+
+	area = vips_area_new_array( G_TYPE_INT, sizeof( int ), n );
+	array = vips_area_get_data( area, NULL, NULL, NULL, NULL );
+
+	va_start( ap, n );
+	for( i = 0; i < n; i++ )
+		array[i] = va_arg( ap, int ); 
+	va_end( ap );
+
+	return( area );
+}
+
+/** 
+ * vips_value_get_array_int:
+ * @value: %GValue to get from
+ * @n: (allow-none): return the number of elements here, optionally
+ *
+ * Return the start of the array of ints held by @value.
+ * optionally return the number of elements in @n.
+ *
+ * See also: vips_array_int_set().
+ *
+ * Returns: (transfer none): The array address.
+ */
+int *
+vips_value_get_array_int( const GValue *value, int *n )
+{
+	return( vips_value_get_array( value, n, NULL, NULL ) );
+}
+
+/** 
+ * vips_value_set_array_int:
+ * @value: (out): %GValue to get from
+ * @array: (array length=n): array of ints
+ * @n: the number of elements 
+ *
+ * Set @value to hold a copy of @array. Pass in the array length in @n. 
+ *
+ * See also: vips_array_int_get().
+ *
+ * Returns: 0 on success, -1 otherwise.
+ */
+int
+vips_value_set_array_int( GValue *value, const int *array, int n )
+{
+	int *array_copy;
+
+	g_value_init( value, VIPS_TYPE_ARRAY_INT );
+	vips_value_set_array( value, n, G_TYPE_INT, sizeof( int ) );
+	array_copy = vips_value_get_array_int( value, NULL );
+	memcpy( array_copy, array, n * sizeof( int ) );
+
+	return( 0 );
+}
+
+/**
  * vips_array_double_new:
  * @array: (array length=n): array of double
  * @n: number of doubles
@@ -913,11 +1191,40 @@ vips_array_double_new( const double *array, int n )
 	VipsArea *area;
 	double *array_copy;
 
-	printf( "hello, world!\n" );
-
 	area = vips_area_new_array( G_TYPE_DOUBLE, sizeof( double ), n );
 	array_copy = vips_area_get_data( area, NULL, NULL, NULL, NULL );
 	memcpy( array_copy, array, n * sizeof( double ) );
+
+	return( area );
+}
+
+/**
+ * vips_array_double_newv:
+ * @n: number of doubles
+ * @...: list of double arguments
+ *
+ * Allocate a new array of @n doubles and copy @... into it. Free with
+ * vips_area_unref().
+ *
+ * See also: vips_array_double_new()
+ *
+ * Returns: (transfer full): A new #VipsArrayDouble.
+ */
+VipsArrayDouble *
+vips_array_double_newv( int n, ... )
+{
+	va_list ap;
+	VipsArea *area;
+	double *array;
+	int i;
+
+	area = vips_area_new_array( G_TYPE_DOUBLE, sizeof( double ), n );
+	array = vips_area_get_data( area, NULL, NULL, NULL, NULL );
+
+	va_start( ap, n );
+	for( i = 0; i < n; i++ )
+		array[i] = va_arg( ap, double ); 
+	va_end( ap );
 
 	return( area );
 }

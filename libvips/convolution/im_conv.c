@@ -85,7 +85,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -524,7 +525,7 @@ conv_new( IMAGE *in, IMAGE *out, INTMASK *mask )
 
 	/* Generate code for this mask / image, if possible.
 	 */
-	if( vips_vector_get_enabled() ) {
+	if( vips_vector_isenabled() ) {
 		if( conv_compile_convolution_u8s16( conv ) ||
 			conv_compile_scale_s16u8( conv ) ) 
 			conv_vector_free( conv );
@@ -608,7 +609,7 @@ conv_start( IMAGE *out, void *a, void *b )
 		return( NULL );
 	}
 
-	if( vips_vector_get_enabled() && 
+	if( vips_vector_isenabled() && 
 		conv->n_pass ) {
 		seq->t1 = IM_ARRAY( NULL, IM_IMAGE_N_ELEMENTS( in ), short );
 		seq->t2 = IM_ARRAY( NULL, IM_IMAGE_N_ELEMENTS( in ), short );

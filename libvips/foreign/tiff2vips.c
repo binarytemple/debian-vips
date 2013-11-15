@@ -128,6 +128,13 @@
  * 18/2/12
  * 	- switch to sequential read
  * 	- remove the lock ... tilecache does this for us
+ * 3/6/12
+ * 	- always offer THINSTRIP ... later stages can ask for something more
+ * 	  relaxed if they wish
+ * 7/6/12
+ * 	- clip rows_per_strip down to image height to avoid overflows for huge
+ * 	  values (thanks Nicolas)
+ * 	- better error msg for not PLANARCONFIG_CONTIG images
  */
 
 /*
@@ -146,7 +153,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -222,19 +230,29 @@ typedef struct {
  * more than one thread, but vips_error and vips_warn have mutexes in, so that's
  * OK.
  */
-void 
+static void 
 vips__thandler_error( const char *module, const char *fmt, va_list ap )
 {
 	vips_verror( module, fmt, ap );
 }
 
-void 
+static void 
 vips__thandler_warning( const char *module, const char *fmt, va_list ap )
 {
 	char buf[256];
 
 	vips_vsnprintf( buf, 256, fmt, ap );
 	vips_warn( module, "%s", buf );
+}
+
+/* Call this during startup. Other libraries may be using libtiff and we want
+ * to capture any messages they send as well.
+ */
+void
+vips__tiff_init( void )
+{
+	TIFFSetErrorHandler( vips__thandler_error );
+	TIFFSetWarningHandler( vips__thandler_warning );
 }
 
 /* Test for field exists.
@@ -248,29 +266,6 @@ tfexists( TIFF *tif, ttag_t tag )
 		return( 1 );
 	else 
 		return( 0 );
-}
-
-/* Test a uint16 field. Field must be defined and equal to the value.
- */
-static int
-tfequals( TIFF *tif, ttag_t tag, uint16 val )
-{
-	uint16 fld;
-
-	if( !TIFFGetFieldDefaulted( tif, tag, &fld ) ) {
-		vips_error( "tiff2vips", 
-			_( "required field %d missing" ), tag );
-		return( 0 );
-	}
-	if( fld != val ) {
-		vips_error( "tiff2vips", _( "required field %d=%d, not %d" ),
-			tag, fld, val );
-		return( 0 );
-	}
-
-	/* All ok.
-	 */
-	return( 1 );
 }
 
 /* Get a uint32 field. 
@@ -304,9 +299,26 @@ tfget16( TIFF *tif, ttag_t tag, int *out )
 		return( 0 );
 	}
 
-	/* All ok.
-	 */
 	*out = fld;
+
+	return( 1 );
+}
+
+/* Test a uint16 field. Field must be defined and equal to the value.
+ */
+static int
+tfequals( TIFF *tif, ttag_t tag, uint16 val )
+{
+	int v; 
+
+	if( !tfget16( tif, tag, &v ) )
+		return( 0 );
+	if( v != val ) {
+		vips_error( "tiff2vips", 
+			_( "required field %d = %d, not %d" ), tag, v, val );
+		return( 0 );
+	}
+
 	return( 1 );
 }
 
@@ -884,7 +896,7 @@ parse_resolution( TIFF *tiff, VipsImage *out )
 	return( 0 );
 }
 
-/* Look at PhotometricInterpretation and BitsPerPixel, and try to figure out 
+/* Look at PhotometricInterpretation and BitsPerPixel and try to figure out 
  * which of the image classes this is.
  */
 static int
@@ -897,10 +909,16 @@ parse_header( ReadTiff *rtiff, VipsImage *out )
 
 	/* Ban separate planes, too annoying.
 	 */
-	if( tfexists( rtiff->tiff, TIFFTAG_PLANARCONFIG ) && 
-		!tfequals( rtiff->tiff, 
-			TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG ) ) 
-		return( -1 );
+	if( tfexists( rtiff->tiff, TIFFTAG_PLANARCONFIG ) ) {
+		int v; 
+
+		tfget16( rtiff->tiff, TIFFTAG_PLANARCONFIG, &v );
+		if( v != PLANARCONFIG_CONTIG ) {
+			vips_error( "tiff2vips",
+				"%s", _( "not a PLANARCONFIG_CONTIG image" ) );
+			return( -1 );
+		}
+	}
 
 	/* Always need dimensions.
 	 */
@@ -1143,7 +1161,7 @@ tiff_fill_region_aligned( VipsRegion *out, void *seq, void *a, void *b )
 	return( 0 );
 }
 
-/* Loop over the output region, painting in tiles from the file.
+/* Loop over the output region painting in tiles from the file.
  */
 static int
 tiff_fill_region( VipsRegion *out, void *seq, void *a, void *b, gboolean *stop )
@@ -1163,7 +1181,7 @@ tiff_fill_region( VipsRegion *out, void *seq, void *a, void *b, gboolean *stop )
 
 	/* Sizeof a pel in the TIFF file. This won't work for formats which
 	 * are <1 byte per pel, like onebit :-( Fortunately, it's only used
-	 * to calculate addresses within a tile, and because we are wrapped in
+	 * to calculate addresses within a tile and, because we are wrapped in
 	 * vips_tilecache(), we will never have to calculate positions not 
 	 * within a tile.
 	 */
@@ -1172,7 +1190,7 @@ tiff_fill_region( VipsRegion *out, void *seq, void *a, void *b, gboolean *stop )
 	int x, y, z;
 
 	/* Special case: we are filling a single tile exactly sized to match
-	 * the tiff tile, and we have no repacking to do for this format.
+	 * the tiff tile and we have no repacking to do for this format.
 	 */
 	if( rtiff->memcpy &&
 		r->left % rtiff->twidth == 0 &&
@@ -1203,7 +1221,7 @@ tiff_fill_region( VipsRegion *out, void *seq, void *a, void *b, gboolean *stop )
 			 */
 			vips_rect_intersectrect( &tile, r, &hit );
 
-			/* Unpack to VIPS format. We can do this in parallel.
+			/* Unpack to VIPS format. 
 			 * Just unpack the section of the tile we need.
 			 */
 			for( z = 0; z < hit.height; z++ ) {
@@ -1257,15 +1275,16 @@ read_tilewise( ReadTiff *rtiff, VipsImage *out )
 	if( parse_header( rtiff, raw ) )
 		return( -1 );
 
-	/* Process and save as VIPS.
+	/* Even though this is a tiled reader, we hint thinstrip since with
+	 * the cache we are quite happy serving that if anything downstream 
+	 * would like it.
 	 */
-        vips_demand_hint( raw, 
-		VIPS_DEMAND_STYLE_SMALLTILE, NULL );
+        vips_demand_hint( raw, VIPS_DEMAND_STYLE_THINSTRIP, NULL );
+
 	if( vips_image_generate( raw, 
 		tiff_seq_start, tiff_fill_region, tiff_seq_stop, 
 		rtiff, NULL ) )
 		return( -1 );
-
 
 	/* Copy to out, adding a cache. Enough tiles for two complete rows.
 	 */
@@ -1311,6 +1330,12 @@ tiff2vips_stripwise_generate( VipsRegion *or,
 	 */
 	g_assert( r->top % rtiff->rows_per_strip == 0 );
 
+	/* Tiles should always be a strip in height, unless it's the final
+	 * strip.
+	 */
+	g_assert( r->height == 
+		VIPS_MIN( rtiff->rows_per_strip, or->im->Ysize - r->top ) ); 
+
 	for( y = 0; y < r->height; y += rtiff->rows_per_strip ) {
 		tdata_t dst;
 		tstrip_t strip;
@@ -1335,8 +1360,8 @@ tiff2vips_stripwise_generate( VipsRegion *or,
 		/* If necessary, unpack to destination.
 		 */
 		if( !rtiff->memcpy ) {
-			int height = VIPS_MIN( rtiff->rows_per_strip,
-				or->im->Ysize - (r->top + y) );
+			int height = VIPS_MIN( VIPS_MIN( rtiff->rows_per_strip,
+				or->im->Ysize - (r->top + y) ), r->height );
 			int z;
 
 			for( z = 0; z < height; z++ ) { 
@@ -1376,8 +1401,7 @@ read_stripwise( ReadTiff *rtiff, VipsImage *out )
 	if( parse_header( rtiff, t[0] ) )
 		return( -1 );
 
-        vips_demand_hint( t[0], 
-		VIPS_DEMAND_STYLE_FATSTRIP, NULL );
+        vips_demand_hint( t[0], VIPS_DEMAND_STYLE_THINSTRIP, NULL );
 
 	if( !tfget32( rtiff->tiff, 
 		TIFFTAG_ROWSPERSTRIP, &rtiff->rows_per_strip ) )
@@ -1385,6 +1409,11 @@ read_stripwise( ReadTiff *rtiff, VipsImage *out )
 	rtiff->scanline_size = TIFFScanlineSize( rtiff->tiff );
 	rtiff->strip_size = TIFFStripSize( rtiff->tiff );
 	rtiff->number_of_strips = TIFFNumberOfStrips( rtiff->tiff );
+
+	/* rows_per_strip can be 2**32-1, meaning the whole image. Clip this
+	 * down to ysize to avoid confusing vips. 
+	 */
+	rtiff->rows_per_strip = VIPS_MIN( rtiff->rows_per_strip, t[0]->Ysize );
 
 #ifdef DEBUG
 	printf( "read_stripwise: rows_per_strip = %u\n", 
@@ -1407,9 +1436,10 @@ read_stripwise( ReadTiff *rtiff, VipsImage *out )
 		vips_image_generate( t[0], 
 			NULL, tiff2vips_stripwise_generate, NULL, 
 			rtiff, tbuf ) ||
-		vips_sequential( t[0], &t[1], NULL ) ||
-		vips_foreign_tilecache( t[1], &t[2], rtiff->rows_per_strip ) || 
-		vips_image_write( t[2], out ) )
+		vips_sequential( t[0], &t[1], 
+			"tile_height", rtiff->rows_per_strip,
+			NULL ) ||
+		vips_image_write( t[1], out ) )
 		return( -1 );
 
 	return( 0 );
@@ -1487,8 +1517,7 @@ istiffpyramid( const char *name )
 {
 	TIFF *tif;
 
-	TIFFSetErrorHandler( vips__thandler_error );
-	TIFFSetWarningHandler( vips__thandler_warning );
+	vips__tiff_init();
 
 	if( (tif = get_directory( name, 2 )) ) {
 		// We can see page 2 ... assume it is.
@@ -1510,8 +1539,7 @@ vips__tiff_read( const char *filename, VipsImage *out, int page )
 	printf( "tiff2vips: libtiff starting for %s\n", filename );
 #endif /*DEBUG*/
 
-	TIFFSetErrorHandler( vips__thandler_error );
-	TIFFSetWarningHandler( vips__thandler_warning );
+	vips__tiff_init();
 
 	if( !(rtiff = readtiff_new( filename, out, page )) )
 		return( -1 );
@@ -1539,8 +1567,7 @@ vips__tiff_read_header( const char *filename, VipsImage *out, int page )
 {
 	ReadTiff *rtiff;
 
-	TIFFSetErrorHandler( vips__thandler_error );
-	TIFFSetWarningHandler( vips__thandler_warning );
+	vips__tiff_init();
 
 	if( !(rtiff = readtiff_new( filename, out, page )) )
 		return( -1 );
@@ -1564,10 +1591,7 @@ vips__istifftiled( const char *filename )
 	TIFF *tif;
 	gboolean tiled;
 
-	/* Override the default TIFF error handler.
-	 */
-	TIFFSetErrorHandler( vips__thandler_error );
-	TIFFSetWarningHandler( vips__thandler_warning );
+	vips__tiff_init();
 
 	if( !(tif = TIFFOpen( filename, "rm" )) ) {
 		vips_error_clear();

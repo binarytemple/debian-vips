@@ -24,7 +24,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -103,11 +104,12 @@ rank_stop( void *vseq, void *a, void *b )
 	RankSequence *seq = (RankSequence *) vseq;
 	Rank *rank = (Rank *) b;
 
-	int i;
+	if( seq->ir ) {
+		int i;
 
-	if( seq->ir )
 		for( i = 0; i < rank->n; i++ ) 
 			IM_FREEF( im_region_free, seq->ir[i] );
+	}
 
 	return( 0 );
 }

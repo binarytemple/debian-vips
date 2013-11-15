@@ -19,7 +19,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -394,6 +395,10 @@ im_isnative( im_arch_type arch )
 	default:
 		g_assert( 0 );
 	}  
+
+	/* Keep -Wall happy.
+	 */
+	return( -1 );
 }
 
 int
@@ -702,3 +707,20 @@ im_flood_other( IMAGE *test, IMAGE *mark,
 	return( im_draw_flood_other( mark, test, x, y, serial, dout ) );
 }
 
+int
+vips_check_coding_rad( const char *domain, VipsImage *im )
+{
+	return( vips_check_coding( domain, im, VIPS_CODING_RAD ) ); 
+}
+
+int
+vips_check_coding_labq( const char *domain, VipsImage *im )
+{
+	return( vips_check_coding( domain, im, VIPS_CODING_LABQ ) ); 
+}
+
+int
+vips_check_bands_3ormore( const char *domain, VipsImage *im )
+{
+	return( vips_check_bands_atleast( domain, im, 3 ) ); 
+}

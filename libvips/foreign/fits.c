@@ -21,6 +21,8 @@
  * 	- bandsplit for write 
  * 13/12/11
  * 	- redo as a set of fns ready for wrapping in a new-style class
+ * 23/6/13
+ * 	- fix ushort save with values >32k, thanks weaverwb
  */
 
 /*
@@ -39,7 +41,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -133,7 +136,7 @@ static void
 vips_fits_close( VipsFits *fits )
 {
 	VIPS_FREE( fits->filename );
-	VIPS_FREEF( g_mutex_free, fits->lock );
+	VIPS_FREEF( vips_g_mutex_free, fits->lock );
 
 	if( fits->fptr ) {
 		int status;
@@ -180,7 +183,7 @@ vips_fits_new_read( const char *filename, VipsImage *out, int band_select )
 		return( NULL );
 	}
 
-	fits->lock = g_mutex_new();
+	fits->lock = vips_g_mutex_new();
 
 	return( fits );
 }
@@ -190,8 +193,10 @@ vips_fits_new_read( const char *filename, VipsImage *out, int band_select )
  */
 static int fits2vips_formats[][3] = {
 	{ BYTE_IMG, VIPS_FORMAT_UCHAR, TBYTE },
-	{ SHORT_IMG,  VIPS_FORMAT_USHORT, TUSHORT },
-	{ LONG_IMG,  VIPS_FORMAT_UINT, TUINT },
+	{ SHORT_IMG,  VIPS_FORMAT_SHORT, TSHORT },
+	{ USHORT_IMG,  VIPS_FORMAT_USHORT, TUSHORT },
+	{ LONG_IMG,  VIPS_FORMAT_INT, TINT },
+	{ ULONG_IMG,  VIPS_FORMAT_UINT, TUINT },
 	{ FLOAT_IMG,  VIPS_FORMAT_FLOAT, TFLOAT },
 	{ DOUBLE_IMG, VIPS_FORMAT_DOUBLE, TDOUBLE }
 };
@@ -578,7 +583,7 @@ vips_fits_new_write( VipsImage *in, const char *filename )
 		return( NULL );
 	}
 
-	fits->lock = g_mutex_new();
+	fits->lock = vips_g_mutex_new();
 
 	return( fits );
 }

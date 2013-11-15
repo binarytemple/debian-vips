@@ -1,0 +1,715 @@
+<!-- ##### SECTION Title ##### -->
+util
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_ABS ##### -->
+<para>
+
+</para>
+
+@X: 
+
+
+<!-- ##### MACRO VIPS_CLIP ##### -->
+<para>
+
+</para>
+
+@A: 
+@V: 
+@B: 
+
+
+<!-- ##### MACRO VIPS_CLIP_CHAR ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_NONE ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_SHORT ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_UCHAR ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_UINT ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_USHORT ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_DEG ##### -->
+<para>
+
+</para>
+
+@A: 
+
+
+<!-- ##### MACRO VIPS_MAX ##### -->
+<para>
+
+</para>
+
+@A: 
+@B: 
+
+
+<!-- ##### MACRO VIPS_MIN ##### -->
+<para>
+
+</para>
+
+@A: 
+@B: 
+
+
+<!-- ##### MACRO VIPS_NUMBER ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_PI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_RAD ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_RINT ##### -->
+<para>
+
+</para>
+
+@R: 
+
+
+<!-- ##### MACRO VIPS_SWAP ##### -->
+<para>
+
+</para>
+
+@TYPE: 
+@A: 
+@B: 
+
+
+<!-- ##### MACRO VIPS_UNROLL ##### -->
+<para>
+
+</para>
+
+@N: 
+@OPER: 
+
+
+<!-- ##### ENUM VipsToken ##### -->
+<para>
+
+</para>
+
+@VIPS_TOKEN_LEFT: 
+@VIPS_TOKEN_RIGHT: 
+@VIPS_TOKEN_STRING: 
+@VIPS_TOKEN_EQUALS: 
+@VIPS_TOKEN_COMMA: 
+
+<!-- ##### FUNCTION vips__change_suffix ##### -->
+<para>
+
+</para>
+
+@name: 
+@out: 
+@mx: 
+@new_suff: 
+@olds: 
+@nolds: 
+
+
+<!-- ##### FUNCTION vips__file_open_read ##### -->
+<para>
+
+</para>
+
+@filename: 
+@fallback_dir: 
+@text_mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__file_open_write ##### -->
+<para>
+
+</para>
+
+@filename: 
+@text_mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__file_read ##### -->
+<para>
+
+</para>
+
+@fp: 
+@name: 
+@length_out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__file_read_name ##### -->
+<para>
+
+</para>
+
+@name: 
+@fallback_dir: 
+@length_out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__file_write ##### -->
+<para>
+
+</para>
+
+@data: 
+@size: 
+@nmemb: 
+@stream: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__find_rightmost_brackets ##### -->
+<para>
+
+</para>
+
+@p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__ftruncate ##### -->
+<para>
+
+</para>
+
+@fd: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__get_bytes ##### -->
+<para>
+
+</para>
+
+@filename: 
+@buf: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__gslist_gvalue_copy ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__gslist_gvalue_free ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
+<!-- ##### FUNCTION vips__gslist_gvalue_get ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__gslist_gvalue_merge ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__gvalue_ref_string_new ##### -->
+<para>
+
+</para>
+
+@text: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__seek ##### -->
+<para>
+
+</para>
+
+@fd: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__temp_name ##### -->
+<para>
+
+</para>
+
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__token_get ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@token: 
+@string: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__token_must ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@token: 
+@string: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__token_need ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@need_token: 
+@string: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__write ##### -->
+<para>
+
+</para>
+
+@fd: 
+@buf: 
+@count: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_amiMSBfirst ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_break_token ##### -->
+<para>
+
+</para>
+
+@str: 
+@brk: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_enum_from_nick ##### -->
+<para>
+
+</para>
+
+@domain: 
+@type: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_enum_nick ##### -->
+<para>
+
+</para>
+
+@enm: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_enum_string ##### -->
+<para>
+
+</para>
+
+@enm: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_existsf ##### -->
+<para>
+
+</para>
+
+@name: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_file_length ##### -->
+<para>
+
+</para>
+
+@fd: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_filename_split ##### -->
+<para>
+
+</para>
+
+@path: 
+@name: 
+@mode: 
+
+
+<!-- ##### FUNCTION vips_filename_suffix ##### -->
+<para>
+
+</para>
+
+@path: 
+@suffix: 
+
+
+<!-- ##### FUNCTION vips_filename_suffix_match ##### -->
+<para>
+
+</para>
+
+@path: 
+@suffixes: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_getnextoption ##### -->
+<para>
+
+</para>
+
+@in: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_getsuboption ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hash_table_map ##### -->
+<para>
+
+</para>
+
+@hash: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_ispostfix ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_ispoweroftwo ##### -->
+<para>
+
+</para>
+
+@p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_isprefix ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_map_equal ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_mkdirf ##### -->
+<para>
+
+</para>
+
+@name: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_popenf ##### -->
+<para>
+
+</para>
+
+@fmt: 
+@mode: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_skip_dir ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_equal ##### -->
+<para>
+
+</para>
+
+@l1: 
+@l2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_filter ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_fold2 ##### -->
+<para>
+
+</para>
+
+@list: 
+@start: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_free_all ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
+<!-- ##### FUNCTION vips_slist_map2 ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_map2_rev ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_map4 ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@c: 
+@d: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_snprintf ##### -->
+<para>
+
+</para>
+
+@str: 
+@size: 
+@format: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_strncpy ##### -->
+<para>
+
+</para>
+
+@dest: 
+@src: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_strrstr ##### -->
+<para>
+
+</para>
+
+@haystack: 
+@needle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_vsnprintf ##### -->
+<para>
+
+</para>
+
+@str: 
+@size: 
+@format: 
+@ap: 
+@Returns: 
+
+

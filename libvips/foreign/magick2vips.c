@@ -38,6 +38,8 @@
  * 	- use new API stuff, argh
  * 17/12/11
  * 	- turn into a set of read fns ready to be called from a class
+ * 11/6/13
+ * 	- add @all_frames option, off by default
  */
 
 /*
@@ -56,7 +58,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -105,6 +108,7 @@
 typedef struct _Read {
 	char *filename;
 	VipsImage *im;
+	gboolean all_frames;
 
 	Image *image;
 	ImageInfo *image_info;
@@ -131,13 +135,13 @@ read_destroy( VipsImage *im, Read *read )
 	VIPS_FREEF( DestroyImageInfo, read->image_info ); 
 	VIPS_FREE( read->frames );
 	DestroyExceptionInfo( &read->exception );
-	VIPS_FREEF( g_mutex_free, read->lock );
+	VIPS_FREEF( vips_g_mutex_free, read->lock );
 
 	return( 0 );
 }
 
 static Read *
-read_new( const char *filename, VipsImage *im )
+read_new( const char *filename, VipsImage *im, gboolean all_frames )
 {
 	Read *read;
 	static int inited = 0;
@@ -154,6 +158,7 @@ read_new( const char *filename, VipsImage *im )
 	if( !(read = VIPS_NEW( im, Read )) )
 		return( NULL );
 	read->filename = g_strdup( filename );
+	read->all_frames = all_frames;
 	read->im = im;
 	read->image = NULL;
 	read->image_info = CloneImageInfo( NULL );
@@ -161,7 +166,7 @@ read_new( const char *filename, VipsImage *im )
 	read->n_frames = 0;
 	read->frames = NULL;
 	read->frame_height = 0;
-	read->lock = g_mutex_new();
+	read->lock = vips_g_mutex_new();
 
 	g_signal_connect( im, "close", G_CALLBACK( read_destroy ), read );
 
@@ -231,11 +236,11 @@ parse_header( Read *read )
 
 #ifdef DEBUG
 	printf( "parse_header: filename = %s\n", read->filename );
-	printf( "GetImageChannelDepth(AllChannels) = %d\n",
+	printf( "GetImageChannelDepth(AllChannels) = %zd\n",
 		GetImageChannelDepth( image, AllChannels, &image->exception ) );
-	printf( "GetImageDepth() = %ld\n",
+	printf( "GetImageDepth() = %zd\n",
 		GetImageDepth( image, &image->exception ) );
-	printf( "image->depth = %u\n", image->depth );
+	printf( "image->depth = %zd\n", image->depth );
 	printf( "GetImageType() = %d\n",
 		GetImageType( image, &image->exception ) );
 	printf( "IsGrayImage() = %d\n",
@@ -244,6 +249,8 @@ parse_header( Read *read )
 		IsMonochromeImage( image, &image->exception ) );
 	printf( "IsOpaqueImage() = %d\n",
 		IsOpaqueImage( image, &image->exception ) );
+	printf( "image->columns = %zd\n", image->columns ); 
+	printf( "image->rows = %zd\n", image->rows ); 
 #endif /*DEBUG*/
 
 	im->Xsize = image->columns;
@@ -402,6 +409,15 @@ parse_header( Read *read )
 	if( p ) 
 		/* Nope ... just do the first image in the list.
 		 */
+		read->n_frames = 1;
+
+#ifdef DEBUG
+	printf( "image has %d frames\n", read->n_frames );
+#endif /*DEBUG*/
+
+	/* If all_frames is off, just get the first one.
+	 */
+	if( !read->all_frames )
 		read->n_frames = 1;
 
 	/* Record frame pointers.
@@ -631,7 +647,7 @@ magick_fill_region( VipsRegion *out,
 }
 
 int
-vips__magick_read( const char *filename, VipsImage *out )
+vips__magick_read( const char *filename, VipsImage *out, gboolean all_frames )
 {
 	Read *read;
 
@@ -639,7 +655,7 @@ vips__magick_read( const char *filename, VipsImage *out )
 	printf( "magick2vips: vips__magick_read: %s\n", filename );
 #endif /*DEBUG*/
 
-	if( !(read = read_new( filename, out )) )
+	if( !(read = read_new( filename, out, all_frames )) )
 		return( -1 );
 
 #ifdef HAVE_SETIMAGEOPTION
@@ -652,6 +668,10 @@ vips__magick_read( const char *filename, VipsImage *out )
 	 */
   	SetImageOption( read->image_info, "dcm:display-range", "reset" );
 #endif /*HAVE_SETIMAGEOPTION*/
+
+#ifdef DEBUG
+	printf( "magick2vips: calling ReadImage() ...\n" );
+#endif /*DEBUG*/
 
 	read->image = ReadImage( read->image_info, &read->exception );
 	if( !read->image ) {
@@ -676,16 +696,21 @@ vips__magick_read( const char *filename, VipsImage *out )
  * http://www.imagemagick.org/discourse-server/viewtopic.php?f=1&t=20017
  */
 int
-vips__magick_read_header( const char *filename, VipsImage *im )
+vips__magick_read_header( const char *filename, VipsImage *im, 
+	gboolean all_frames )
 {
 	Read *read;
 
 #ifdef DEBUG
-	printf( "magick2vips: vips__magick_read_header: %s\n", filename );
+	printf( "vips__magick_read_header: %s\n", filename );
 #endif /*DEBUG*/
 
-	if( !(read = read_new( filename, im )) )
+	if( !(read = read_new( filename, im, all_frames )) )
 		return( -1 );
+
+#ifdef DEBUG
+	printf( "vips__magick_read_header: pinging image ...\n" );
+#endif /*DEBUG*/
 
 	read->image = PingImage( read->image_info, &read->exception );
 	if( !read->image ) {

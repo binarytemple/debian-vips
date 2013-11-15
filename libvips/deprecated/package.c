@@ -28,7 +28,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -36,6 +37,10 @@
 
     These files are distributed with VIPS - http://www.vips.ecs.soton.ac.uk
 
+ */
+
+/*
+#define DEBUG
  */
 
 #ifdef HAVE_CONFIG_H
@@ -631,6 +636,10 @@ im_load_plugin( const char *name )
 {
 	Plugin *plug;
 
+#ifdef DEBUG
+	printf( "im_load_plugin: \"%s\"\n", name );
+#endif /*DEBUG*/
+
 	if( !g_module_supported() ) {
 		vips_error( "plugin",	
 			"%s", _( "plugins not supported on this platform" ) );
@@ -683,7 +692,7 @@ im_load_plugin( const char *name )
 	}
 
 #ifdef DEBUG
-	printf( "added package \"%s\" ...\n", plug->pack->name );
+	printf( "added package \"%s\"\n", plug->pack->name );
 #endif /*DEBUG*/
 
 	return( plug->pack );
@@ -709,6 +718,10 @@ im_load_plugins( const char *fmt, ... )
         va_start( ap, fmt );
         (void) im_vsnprintf( dir_name, PATH_MAX - 1, fmt, ap );
         va_end( ap );
+
+#ifdef DEBUG
+	printf( "im_load_plugins: searching \"%s\"\n", dir_name );
+#endif /*DEBUG*/
 
         if( !(dir = g_dir_open( dir_name, 0, NULL )) ) 
 		/* Silent success for dir not there.
@@ -761,14 +774,16 @@ im_map_packages( VSListMap2Fn fn, void *a )
 {
 	void *r = im_slist_map2( plugin_list, 
 		(VSListMap2Fn) apply_plugin, (void *) fn, a );
-	int i;
 
 	/* If not there, try main VIPS package list.
 	 */
-	if( !r )
+	if( !r ) {
+		int i;
+
 		for( i = 0; i < VIPS_NUMBER( built_in ); i++ )
 			if( (r = fn( built_in[i], a, NULL )) )
 				return( r );
+	}
 
 	return( r );
 }
@@ -1076,8 +1091,6 @@ add_hist( im_function *fn, im_object *vargv, int argc, char **argv )
 static int
 dispatch_function( im_function *fn, im_object *vargv, int argc, char **argv )
 {
-	int i;
-
 	/* Init memory from command line arguments.
 	 */
 	if( build_args( fn, vargv, argc, argv ) ) 
@@ -1094,7 +1107,9 @@ dispatch_function( im_function *fn, im_object *vargv, int argc, char **argv )
 	 *			- create a region on the input, closed by a
 	 *			  close callback on the output image
 	 */
-	if( fn->flags & IM_FN_PIO )
+	if( fn->flags & IM_FN_PIO ) {
+		int i;
+
 		for( i = 0; i < fn->argc; i++ ) {
 			im_type_desc *type = fn->argv[i].desc;
 
@@ -1103,6 +1118,7 @@ dispatch_function( im_function *fn, im_object *vargv, int argc, char **argv )
 				if( note_dependencies( fn, vargv, i ) )
 					return( -1 );
 		}
+	}
 
 	/* Call function.
 	 */

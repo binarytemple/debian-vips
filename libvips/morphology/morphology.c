@@ -19,6 +19,8 @@
  * 7/11/10
  * 	- gtk-doc
  * 	- do (!=0) to make uchar, if we're not given uchar
+ * 28/6/13
+ * 	- oops, fix !=0 code
  */
 
 /*
@@ -37,7 +39,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -333,7 +336,7 @@ morph_new( IMAGE *in, IMAGE *out, INTMASK *mask, MorphOp op )
 
 	/* Generate code for this mask / image, if possible.
 	 */
-	if( vips_vector_get_enabled() ) {
+	if( vips_vector_isenabled() ) {
 		if( pass_compile( morph ) )
 			pass_free( morph );
 	}
@@ -713,11 +716,12 @@ morphology( IMAGE *in, IMAGE *out, INTMASK *mask, MorphOp op )
 	/* Prepare output. Consider a 7x7 mask and a 7x7 image --- the output
 	 * would be 1x1.
 	 */
-	if( im_cp_desc( out, in ) )
+	if( im_cp_desc( morph->out, morph->in ) )
 		return( -1 );
-	out->Xsize -= mask->xsize - 1;
-	out->Ysize -= mask->ysize - 1;
-	if( out->Xsize <= 0 || out->Ysize <= 0 ) {
+	morph->out->Xsize -= morph->mask->xsize - 1;
+	morph->out->Ysize -= morph->mask->ysize - 1;
+	if( morph->out->Xsize <= 0 || 
+		morph->out->Ysize <= 0 ) {
 		im_error( "morph", "%s", _( "image too small for mask" ) );
 		return( -1 );
 	}
@@ -729,7 +733,7 @@ morphology( IMAGE *in, IMAGE *out, INTMASK *mask, MorphOp op )
 		printf( "morph_vector_gen: %d passes\n", morph->n_pass );
 #endif /*DEBUG*/
 	}
-	else if( op == DILATE )
+	else if( morph->op == DILATE )
 		generate = dilate_gen;
 	else
 		generate = erode_gen;
@@ -737,13 +741,13 @@ morphology( IMAGE *in, IMAGE *out, INTMASK *mask, MorphOp op )
 	/* Set demand hints. FATSTRIP is good for us, as THINSTRIP will cause
 	 * too many recalculations on overlaps.
 	 */
-	if( im_demand_hint( out, IM_FATSTRIP, in, NULL ) ||
-		im_generate( out, 
-			morph_start, generate, morph_stop, in, morph ) )
+	if( im_demand_hint( morph->out, IM_FATSTRIP, morph->in, NULL ) ||
+		im_generate( morph->out, 
+			morph_start, generate, morph_stop, morph->in, morph ) )
 		return( -1 );
 
-	out->Xoffset = -mask->xsize / 2;
-	out->Yoffset = -mask->ysize / 2;
+	morph->out->Xoffset = -morph->mask->xsize / 2;
+	morph->out->Yoffset = -morph->mask->ysize / 2;
 
 	return( 0 );
 }

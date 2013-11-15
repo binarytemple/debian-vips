@@ -43,7 +43,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -171,7 +172,7 @@ read_double( FILE *fp, const char whitemap[256], const char sepmap[256],
 
 	if( ch == '"' ) {
 		(void) fgetc( fp );
-		ch = skip_to_quote( fp );
+		(void) skip_to_quote( fp );
 		ch = fgetc( fp );
 	}
 	else if( !sepmap[ch] && 

@@ -5,19 +5,20 @@
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -45,6 +46,24 @@
 #include <vips/debug.h>
 
 #include <gobject/gvaluecollector.h>
+
+/**
+ * SECTION: operation
+ * @short_description: the VIPS operation base object class
+ * @stability: Stable
+ * @see_also: <link linkend="libvips-object">object</link>
+ * @include: vips/vips.h
+ *
+ * The #VipsOperation class and associated types and macros.
+ *
+ * #VipsOperation is the base class for all operations in libvips. It builds
+ * on #VipsObject to provide the introspection and command-line interface to
+ * libvips. 
+ *
+ * It also maintains a cache of recent operations. You can tune the cache
+ * behaviour in various ways. 
+ *
+ */
 
 /* Abstract base class for operations.
  */
@@ -85,7 +104,8 @@ vips_operation_class_usage_arg( VipsObjectClass *object_class,
 	 */
 	if( usage->required == 
 		((argument_class->flags & VIPS_ARGUMENT_REQUIRED) != 0) &&
-		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) ) {
+		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) &&
+		!(argument_class->flags & VIPS_ARGUMENT_DEPRECATED) ) { 
 		if( usage->message && usage->n == 0 ) 
 			vips_buf_appendf( buf, "%s\n", usage->message );
 
@@ -129,6 +149,8 @@ vips_operation_usage( VipsOperationClass *class, VipsBuf *buf )
 			buf, &usage );
 	vips_buf_appends( buf, "\n" );
 
+	vips_buf_appendf( buf, "%s\n", object_class->description );
+
 	/* Show required types.
 	 */
 	usage.message = "where:";
@@ -148,6 +170,24 @@ vips_operation_usage( VipsOperationClass *class, VipsBuf *buf )
 	vips_argument_class_map( object_class,
 		(VipsArgumentClassMapFn) vips_operation_class_usage_arg, 
 			buf, &usage );
+
+	/* Show flags.
+	 */
+	if( class->flags ) {
+		GFlagsValue *value;
+		VipsOperationFlags flags;
+		GFlagsClass *flags_class = 
+			g_type_class_ref( VIPS_TYPE_OPERATION_FLAGS );
+
+		vips_buf_appendf( buf, "operation flags: " );
+		flags = class->flags; 
+		while( flags && (value = 
+			g_flags_get_first_value( flags_class, flags )) ) {
+			vips_buf_appendf( buf, "%s ", value->value_nick );
+			flags &= ~value->value;
+		}
+		vips_buf_appends( buf, "\n" );
+	}
 }
 
 static void *
@@ -200,7 +240,6 @@ vips_operation_vips_operation_print_summary_arg( VipsObject *object,
 	 */
 	if( (argument_class->flags & VIPS_ARGUMENT_REQUIRED) &&
 		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) &&
-		(argument_class->flags & VIPS_ARGUMENT_INPUT) && 
 		argument_instance->assigned ) {
 		const char *name = g_param_spec_get_name( pspec );
 		GType type = G_PARAM_SPEC_VALUE_TYPE( pspec );
@@ -211,7 +250,7 @@ vips_operation_vips_operation_print_summary_arg( VipsObject *object,
 		g_value_init( &gvalue, type );
 		g_object_get_property( G_OBJECT( object ), name, &gvalue ); 
 		str = g_strdup_value_contents( &gvalue );
-		vips_buf_appendf( buf, " %s", str );
+		vips_buf_appendf( buf, " %s=%s", name, str );
 		g_free( str );
 		g_value_unset( &gvalue ); 
 	}
@@ -229,8 +268,18 @@ vips_operation_summary( VipsObject *object, VipsBuf *buf )
 	vips_argument_map( VIPS_OBJECT( operation ),
 		vips_operation_vips_operation_print_summary_arg, buf, NULL );
 
+	vips_buf_appends( buf, " -" );
+
 	VIPS_OBJECT_CLASS( vips_operation_parent_class )->
 		summary( object, buf );
+}
+
+static VipsOperationFlags
+vips_operation_real_get_flags( VipsOperation *operation ) 
+{
+	VipsOperationClass *class = VIPS_OPERATION_GET_CLASS( operation );
+
+	return( class->flags );
 }
 
 static void
@@ -248,13 +297,28 @@ vips_operation_class_init( VipsOperationClass *class )
 	vobject_class->dump = vips_operation_dump;
 
 	class->usage = vips_operation_usage;
+	class->get_flags = vips_operation_real_get_flags;
 }
 
 static void
 vips_operation_init( VipsOperation *operation )
 {
-	/* Init our instance fields.
-	 */
+}
+
+/**
+ * vips_operation_get_flags:
+ * @operation: operation to fetch flags from
+ *
+ * Returns the set of flags for this operation.
+ *
+ * Returns: 0 on success, or -1 on error.
+ */
+VipsOperationFlags
+vips_operation_get_flags( VipsOperation *operation ) 
+{
+	VipsOperationClass *class = VIPS_OPERATION_GET_CLASS( operation );
+
+	return( class->get_flags( operation ) );
 }
 
 /**
@@ -348,41 +412,6 @@ vips_operation_set_valist_required( VipsOperation *operation, va_list ap )
 }
 
 static int
-vips_operation_set_valist_optional( VipsOperation *operation, va_list ap )
-{
-	char *name;
-
-	VIPS_DEBUG_MSG( "vips_operation_set_valist_optional:\n" );
-
-	name = va_arg( ap, char * );
-
-	while( name ) {
-		GParamSpec *pspec;
-		VipsArgumentClass *argument_class;
-		VipsArgumentInstance *argument_instance;
-
-		VIPS_DEBUG_MSG( "\tname = '%s' (%p)\n", name, name );
-
-		if( vips_object_get_argument( VIPS_OBJECT( operation ), name,
-			&pspec, &argument_class, &argument_instance ) )
-			return( -1 );
-
-		VIPS_ARGUMENT_COLLECT_SET( pspec, argument_class, ap );
-
-		g_object_set_property( G_OBJECT( operation ), 
-			name, &value );
-
-		VIPS_ARGUMENT_COLLECT_GET( pspec, argument_class, ap );
-
-		VIPS_ARGUMENT_COLLECT_END
-
-		name = va_arg( ap, char * );
-	}
-
-	return( 0 );
-}
-
-static int
 vips_operation_get_valist_required( VipsOperation *operation, va_list ap )
 {
 	VIPS_DEBUG_MSG( "vips_operation_get_valist_required:\n" );
@@ -433,9 +462,7 @@ vips_operation_get_valist_optional( VipsOperation *operation, va_list ap )
 
 	VIPS_DEBUG_MSG( "vips_operation_get_valist_optional:\n" );
 
-	name = va_arg( ap, char * );
-
-	while( name ) {
+	for( name = va_arg( ap, char * ); name; name = va_arg( ap, char * ) ) { 
 		GParamSpec *pspec;
 		VipsArgumentClass *argument_class;
 		VipsArgumentInstance *argument_instance;
@@ -482,8 +509,6 @@ vips_operation_get_valist_optional( VipsOperation *operation, va_list ap )
 		}
 
 		VIPS_ARGUMENT_COLLECT_END
-
-		name = va_arg( ap, char * );
 	}
 
 	return( 0 );
@@ -506,7 +531,7 @@ vips_call_required_optional( VipsOperation **operation,
 	va_copy( a, required );
 	va_copy( b, optional );
 	result = vips_operation_set_valist_required( *operation, a ) ||
-		vips_operation_set_valist_optional( *operation, b );
+		vips_object_set_valist( VIPS_OBJECT( *operation ), b );
 	va_end( a );
 	va_end( b );
 
@@ -542,7 +567,7 @@ vips_call( const char *operation_name, ... )
 
 #ifdef VIPS_DEBUG
 	VIPS_DEBUG_MSG( "where:\n" );
-	vips_object_print( VIPS_OBJECT( operation ) );
+	vips_object_print_dump( VIPS_OBJECT( operation ) );
 #endif /*VIPS_DEBUG*/
 
 	/* We have to break the va_list into separate required and optional 
@@ -663,12 +688,16 @@ vips_call_option_output( VipsObject *object,
 	VipsArgumentInstance *argument_instance = output->argument_instance;
 	GParamSpec *pspec = ((VipsArgument *) argument_instance)->pspec;
 
-	if( vips_object_get_argument_to_string( object, 
-		g_param_spec_get_name( pspec ), output->value ) ) {
-		/* FIXME .. Hmm what can we do here? If an arg is image
-		 * output, for example, we will lose the error.
-		 */
-	}
+	/* Don't look at the output arg if _build() hasn't run sucessfully, it
+	 * probably won't have been set. 
+	 */
+	if( object->constructed )
+		if( vips_object_get_argument_to_string( object, 
+			g_param_spec_get_name( pspec ), output->value ) ) {
+			/* FIXME .. Hmm what can we do here? If an arg is image
+			 * output, for example, we will lose the error.
+			 */
+		}
 
 	g_free( output );
 }
@@ -697,6 +726,7 @@ vips_call_options_set( const gchar *option_name, const gchar *value,
 			vips_call_find_pspec, (void *) name, NULL )) ) {
 		vips_error( VIPS_OBJECT_GET_CLASS( operation )->nickname, 
 			_( "unknown argument '%s'" ), name );
+		vips_error_g( error );
 		return( FALSE );
 	}
 	argument_class = argument_instance->argument_class;
@@ -705,8 +735,10 @@ vips_call_options_set( const gchar *option_name, const gchar *value,
 	if( (argument_class->flags & VIPS_ARGUMENT_INPUT) ) {
 		if( vips_object_set_argument_from_string( 
 			VIPS_OBJECT( operation ),
-			g_param_spec_get_name( pspec ), value ) )
+			g_param_spec_get_name( pspec ), value ) ) {
+			vips_error_g( error );
 			return( FALSE );
+		}
 
 #ifdef VIPS_DEBUG
 {
@@ -759,17 +791,21 @@ vips_call_options_add( VipsObject *object,
 		!argument_instance->assigned ) {
 		const char *name = g_param_spec_get_name( pspec );
 		gboolean needs_string = 
-			vips_object_get_argument_needs_string( object, name );
+			vips_object_argument_needsstring( object, name );
 		GOptionEntry entry[2];
 
 		entry[0].long_name = name;
 		entry[0].short_name = name[0];
+		entry[0].description = g_param_spec_get_blurb( pspec );
+
 		entry[0].flags = 0;
 		if( !needs_string ) 
 			entry[0].flags |= G_OPTION_FLAG_NO_ARG;
+		if( argument_class->flags & VIPS_ARGUMENT_DEPRECATED ) 
+			entry[0].flags |= G_OPTION_FLAG_HIDDEN;
+
 		entry[0].arg = G_OPTION_ARG_CALLBACK;
 		entry[0].arg_data = (gpointer) vips_call_options_set;
-		entry[0].description = g_param_spec_get_blurb( pspec );
 		if( needs_string ) 
 			entry[0].arg_description = 
 				g_type_name( G_PARAM_SPEC_VALUE_TYPE( pspec ) );
@@ -826,7 +862,8 @@ vips_call_argv_input( VipsObject *object,
 	/* Loop over all required construct args.
 	 */
 	if( (argument_class->flags & VIPS_ARGUMENT_REQUIRED) &&
-		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) ) {
+		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) &&
+		!(argument_class->flags & VIPS_ARGUMENT_DEPRECATED) ) { 
 		const char *name = g_param_spec_get_name( pspec );
 
 		if( (argument_class->flags & VIPS_ARGUMENT_INPUT) ) {
@@ -840,8 +877,7 @@ vips_call_argv_input( VipsObject *object,
 			call->i += 1;
 		}
 		else if( (argument_class->flags & VIPS_ARGUMENT_OUTPUT) ) {
-			if( vips_object_get_argument_needs_string( object,
-				name ) )
+			if( vips_object_argument_needsstring( object, name ) )
 				call->i += 1;
 		}
 	}
@@ -861,7 +897,8 @@ vips_call_argv_output( VipsObject *object,
 	/* Loop over all required construct args.
 	 */
 	if( (argument_class->flags & VIPS_ARGUMENT_REQUIRED) &&
-		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) ) {
+		(argument_class->flags & VIPS_ARGUMENT_CONSTRUCT) &&
+		!(argument_class->flags & VIPS_ARGUMENT_DEPRECATED) ) { 
 		if( (argument_class->flags & VIPS_ARGUMENT_INPUT) ) 
 			call->i += 1;
 		else if( (argument_class->flags & VIPS_ARGUMENT_OUTPUT) ) {
@@ -869,8 +906,7 @@ vips_call_argv_output( VipsObject *object,
 			const char *arg;
 
 			arg = NULL;
-			if( vips_object_get_argument_needs_string( object,
-				name ) ) {
+			if( vips_object_argument_needsstring( object, name ) ) {
 				arg = vips_call_get_arg( call, call->i );
 				if( !arg )
 					return( pspec );
@@ -945,4 +981,3 @@ vips_call_argv( VipsOperation *operation, int argc, char **argv )
 
 	return( 0 );
 }
-

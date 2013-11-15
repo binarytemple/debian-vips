@@ -405,10 +405,10 @@ Draw <em class="parameter"><code>sub</code></em> on top of <em class="parameter"
 same
 Coding. If <em class="parameter"><code>sub</code></em> has 1 band, the bands will be duplicated to match the
 number of bands in <em class="parameter"><code>image</code></em>. <em class="parameter"><code>sub</code></em> will be converted to <em class="parameter"><code>image</code></em>'s format, see
-<a href="http://http://www.vips.ecs.soton.ac.uk/libvips-conversion.html#im-clip2fmt"><code class="function">im_clip2fmt()</code></a>.
+<code class="function">im_clip2fmt()</code>.
 </p>
 <p>
-See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-conversion.html#im-insert"><code class="function">im_insert()</code></a>.
+See also: <code class="function">im_insert()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -567,7 +567,7 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-mask" title="im_dra
 <p>
 Draw a mask on the image. <em class="parameter"><code>mask_im</code></em> is a monochrome 8-bit image with 0/255
 for transparent or <em class="parameter"><code>ink</code></em> coloured points. Intermediate values blend the ink
-with the pixel. Use with <a class="link" href="libvips-conversion.html#im-text" title="im_text ()"><code class="function">im_text()</code></a> to draw text on an image.
+with the pixel. Use with <code class="function">im_text()</code> to draw text on an image.
 </p>
 <p>
 <em class="parameter"><code>ink</code></em> is an array of bytes 
@@ -575,7 +575,7 @@ containing a valid pixel for the image's format.
 It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>image</code></em> ) bytes.
 </p>
 <p>
-See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>, <a class="link" href="libvips-conversion.html#im-text" title="im_text ()"><code class="function">im_text()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()"><code class="function">im_draw_line_user()</code></a>.
+See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>, <code class="function">im_text()</code>, <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()"><code class="function">im_draw_line_user()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -583,6 +583,10 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_d
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
 <td>image to draw on</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mask_im</code></em> :</span></p></td>
+<td>mask of 0/255 values showing where to plot</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
@@ -595,10 +599,6 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_d
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ink</code></em> :</span></p></td>
 <td>value to draw</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>mask_im</code></em> :</span></p></td>
-<td>mask of 0/255 values showing where to plot</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -767,6 +767,8 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-line" title="im_dra
                                                          <em class="parameter"><code><span class="type">int</span> *y1v</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> *x2v</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> *y2v</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">

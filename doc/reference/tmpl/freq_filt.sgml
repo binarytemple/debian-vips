@@ -1,0 +1,147 @@
+<!-- ##### SECTION Title ##### -->
+freq_filt
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### ENUM VipsMaskType ##### -->
+<para>
+
+</para>
+
+@VIPS_MASK_IDEAL_HIGHPASS: 
+@VIPS_MASK_IDEAL_LOWPASS: 
+@VIPS_MASK_BUTTERWORTH_HIGHPASS: 
+@VIPS_MASK_BUTTERWORTH_LOWPASS: 
+@VIPS_MASK_GAUSS_HIGHPASS: 
+@VIPS_MASK_GAUSS_LOWPASS: 
+@VIPS_MASK_IDEAL_RINGPASS: 
+@VIPS_MASK_IDEAL_RINGREJECT: 
+@VIPS_MASK_BUTTERWORTH_RINGPASS: 
+@VIPS_MASK_BUTTERWORTH_RINGREJECT: 
+@VIPS_MASK_GAUSS_RINGPASS: 
+@VIPS_MASK_GAUSS_RINGREJECT: 
+@VIPS_MASK_IDEAL_BANDPASS: 
+@VIPS_MASK_IDEAL_BANDREJECT: 
+@VIPS_MASK_BUTTERWORTH_BANDPASS: 
+@VIPS_MASK_BUTTERWORTH_BANDREJECT: 
+@VIPS_MASK_GAUSS_BANDPASS: 
+@VIPS_MASK_GAUSS_BANDREJECT: 
+@VIPS_MASK_FRACTAL_FLT: 
+
+<!-- ##### FUNCTION im_create_fmask ##### -->
+<para>
+
+</para>
+
+@out: 
+@xsize: 
+@ysize: 
+@flag: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_disp_ps ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_flt_image_freq ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@flag: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_fractsurf ##### -->
+<para>
+
+</para>
+
+@out: 
+@size: 
+@frd: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_freqflt ##### -->
+<para>
+
+</para>
+
+@in: 
+@mask: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_fwfft ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_invfft ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_invfftr ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_phasecor_fft ##### -->
+<para>
+
+</para>
+
+@in1: 
+@in2: 
+@out: 
+@Returns: 
+
+

@@ -44,19 +44,20 @@
 
     Copyright (C) 1991-2005 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -106,6 +107,7 @@ G_DEFINE_TYPE( VipsLinear, vips_linear, VIPS_TYPE_UNARY );
 static int
 vips_linear_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsArithmetic *arithmetic = VIPS_ARITHMETIC( object );
 	VipsUnary *unary = (VipsUnary *) object;
 	VipsLinear *linear = (VipsLinear *) object;
@@ -124,9 +126,9 @@ vips_linear_build( VipsObject *object )
 	arithmetic->base_bands = linear->n;
 
 	if( unary->in && linear->a && linear->b ) {
-		if( vips_check_vector( "VipsLinear", 
+		if( vips_check_vector( class->nickname, 
 			linear->a->n, unary->in ) ||
-			vips_check_vector( "VipsLinear", 
+			vips_check_vector( class->nickname, 
 				linear->b->n, unary->in ) )
 		return( -1 );
 	}
@@ -279,19 +281,10 @@ vips_linearv( VipsImage *in, VipsImage **out,
 {
 	VipsArea *area_a;
 	VipsArea *area_b;
-	double *array; 
 	int result;
-	int i;
 
-	area_a = vips_area_new_array( G_TYPE_DOUBLE, sizeof( double ), n ); 
-	array = (double *) area_a->data;
-	for( i = 0; i < n; i++ ) 
-		array[i] = a[i];
-
-	area_b = vips_area_new_array( G_TYPE_DOUBLE, sizeof( double ), n ); 
-	array = (double *) area_b->data;
-	for( i = 0; i < n; i++ ) 
-		array[i] = b[i];
+	area_a = (VipsArea *) vips_array_double_new( a, n );
+	area_b = (VipsArea *) vips_array_double_new( b, n );
 
 	result = vips_call_split( "linear", ap, in, out, area_a, area_b );
 
@@ -305,8 +298,8 @@ vips_linearv( VipsImage *in, VipsImage **out,
  * vips_linear:
  * @in: image to transform
  * @out: output image
- * @a: array of constants for multiplication
- * @b: array of constants for addition
+ * @a: (array length=n): array of constants for multiplication
+ * @b: (array length=n): array of constants for addition
  * @n: length of constant arrays
  * @...: %NULL-terminated list of optional named arguments
  *

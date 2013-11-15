@@ -1,0 +1,911 @@
+<!-- ##### SECTION Title ##### -->
+VipsObject
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_COLLECT_END ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_COLLECT_GET ##### -->
+<para>
+
+</para>
+
+@PSPEC: 
+@ARG_CLASS: 
+@AP: 
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_COLLECT_SET ##### -->
+<para>
+
+</para>
+
+@PSPEC: 
+@ARG_CLASS: 
+@AP: 
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_FOR_ALL ##### -->
+<para>
+
+</para>
+
+@OBJECT: 
+@PSPEC: 
+@ARG_CLASS: 
+@ARG_INSTANCE: 
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_OPTIONAL_INPUT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_OPTIONAL_OUTPUT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_REQUIRED_INPUT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_ARGUMENT_REQUIRED_OUTPUT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_ARG_BOOL ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@VALUE: 
+
+
+<!-- ##### MACRO VIPS_ARG_BOXED ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@TYPE: 
+
+
+<!-- ##### MACRO VIPS_ARG_DOUBLE ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@MIN: 
+@MAX: 
+@VALUE: 
+
+
+<!-- ##### MACRO VIPS_ARG_ENUM ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@TYPE: 
+@VALUE: 
+
+
+<!-- ##### MACRO VIPS_ARG_FLAGS ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@TYPE: 
+@VALUE: 
+
+
+<!-- ##### MACRO VIPS_ARG_IMAGE ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+
+
+<!-- ##### MACRO VIPS_ARG_INT ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@MIN: 
+@MAX: 
+@VALUE: 
+
+
+<!-- ##### MACRO VIPS_ARG_INTERPOLATE ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+
+
+<!-- ##### MACRO VIPS_ARG_POINTER ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+
+
+<!-- ##### MACRO VIPS_ARG_STRING ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@VALUE: 
+
+
+<!-- ##### MACRO VIPS_ARG_UINT64 ##### -->
+<para>
+
+</para>
+
+@CLASS: 
+@NAME: 
+@PRIORITY: 
+@LONG: 
+@DESC: 
+@FLAGS: 
+@OFFSET: 
+@MIN: 
+@MAX: 
+@VALUE: 
+
+
+<!-- ##### MACRO VIPS_UNREF ##### -->
+<para>
+
+</para>
+
+@X: 
+
+
+<!-- ##### STRUCT VipsArgument ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+<!-- ##### STRUCT VipsArgumentClass ##### -->
+<para>
+
+</para>
+
+@parent: 
+@object_class: 
+@flags: 
+@priority: 
+@offset: 
+
+<!-- ##### USER_FUNCTION VipsArgumentClassMapFn ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### ENUM VipsArgumentFlags ##### -->
+<para>
+
+</para>
+
+@VIPS_ARGUMENT_NONE: 
+@VIPS_ARGUMENT_REQUIRED: 
+@VIPS_ARGUMENT_CONSTRUCT: 
+@VIPS_ARGUMENT_SET_ONCE: 
+@VIPS_ARGUMENT_SET_ALWAYS: 
+@VIPS_ARGUMENT_INPUT: 
+@VIPS_ARGUMENT_OUTPUT: 
+@VIPS_ARGUMENT_DEPRECATED: 
+
+<!-- ##### STRUCT VipsArgumentInstance ##### -->
+<para>
+
+</para>
+
+@parent: 
+@argument_class: 
+@object: 
+@assigned: 
+@close_id: 
+
+<!-- ##### USER_FUNCTION VipsArgumentMapFn ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF VipsArgumentTable ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION VipsClassMapFn ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### STRUCT VipsObject ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL VipsObject::close ##### -->
+<para>
+
+</para>
+
+@vipsobject: the object which received the signal.
+
+<!-- ##### SIGNAL VipsObject::postclose ##### -->
+<para>
+
+</para>
+
+@vipsobject: the object which received the signal.
+
+<!-- ##### SIGNAL VipsObject::preclose ##### -->
+<para>
+
+</para>
+
+@vipsobject: the object which received the signal.
+
+<!-- ##### ARG VipsObject:description ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG VipsObject:nickname ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT VipsObjectClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@build: 
+@summary_class: 
+@summary: 
+@dump: 
+@sanity: 
+@rewind: 
+@preclose: 
+@close: 
+@postclose: 
+@new_from_string: 
+@to_string: 
+@output_needs_arg: 
+@output_to_arg: 
+@nickname: 
+@description: 
+@argument_table: 
+@argument_table_traverse: 
+@argument_table_traverse_gtype: 
+
+<!-- ##### USER_FUNCTION VipsObjectSetArguments ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsTypeMap2Fn ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsTypeMapFn ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__argument_get_instance ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__argument_table_lookup ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__object_set_member ##### -->
+<para>
+
+</para>
+
+@object: 
+@pspec: 
+@member: 
+@argument: 
+
+
+<!-- ##### FUNCTION vips_argument_class_map ##### -->
+<para>
+
+</para>
+
+@object_class: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_argument_map ##### -->
+<para>
+
+</para>
+
+@object: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_class_find ##### -->
+<para>
+
+</para>
+
+@basename: 
+@nickname: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_class_map_all ##### -->
+<para>
+
+</para>
+
+@base: 
+@fn: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_argument_isset ##### -->
+<para>
+
+</para>
+
+@object: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_argument_needsstring ##### -->
+<para>
+
+</para>
+
+@object: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_build ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_class_install_argument ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@pspec: 
+@flags: 
+@priority: 
+@offset: 
+
+
+<!-- ##### FUNCTION vips_object_dump ##### -->
+<para>
+
+</para>
+
+@object: 
+@buf: 
+
+
+<!-- ##### FUNCTION vips_object_get_argument ##### -->
+<para>
+
+</para>
+
+@object: 
+@name: 
+@pspec: 
+@argument_class: 
+@argument_instance: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_get_argument_flags ##### -->
+<para>
+
+</para>
+
+@object: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_get_argument_priority ##### -->
+<para>
+
+</para>
+
+@object: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_get_argument_to_string ##### -->
+<para>
+
+</para>
+
+@object: 
+@name: 
+@arg: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_get_property ##### -->
+<para>
+
+</para>
+
+@gobject: 
+@property_id: 
+@value: 
+@pspec: 
+
+
+<!-- ##### MACRO vips_object_local ##### -->
+<para>
+
+</para>
+
+@V: 
+@G: 
+
+
+<!-- ##### FUNCTION vips_object_local_array ##### -->
+<para>
+
+</para>
+
+@parent: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_local_cb ##### -->
+<para>
+
+</para>
+
+@vobject: 
+@gobject: 
+
+
+<!-- ##### FUNCTION vips_object_map ##### -->
+<para>
+
+</para>
+
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_new ##### -->
+<para>
+
+</para>
+
+@type: 
+@set: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_new_from_string ##### -->
+<para>
+
+</para>
+
+@object_class: 
+@p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_preclose ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION vips_object_print_all ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_object_print_dump ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION vips_object_print_name ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION vips_object_print_summary ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION vips_object_print_summary_class ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### FUNCTION vips_object_rewind ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION vips_object_sanity ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_sanity_all ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_object_set ##### -->
+<para>
+
+</para>
+
+@object: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_set_argument_from_string ##### -->
+<para>
+
+</para>
+
+@object: 
+@name: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_set_property ##### -->
+<para>
+
+</para>
+
+@gobject: 
+@property_id: 
+@value: 
+@pspec: 
+
+
+<!-- ##### FUNCTION vips_object_set_required ##### -->
+<para>
+
+</para>
+
+@object: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_set_static ##### -->
+<para>
+
+</para>
+
+@object: 
+@static_object: 
+
+
+<!-- ##### FUNCTION vips_object_set_valist ##### -->
+<para>
+
+</para>
+
+@object: 
+@ap: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_object_summary ##### -->
+<para>
+
+</para>
+
+@object: 
+@buf: 
+
+
+<!-- ##### FUNCTION vips_object_summary_class ##### -->
+<para>
+
+</para>
+
+@klass: 
+@buf: 
+
+
+<!-- ##### FUNCTION vips_object_to_string ##### -->
+<para>
+
+</para>
+
+@object: 
+@buf: 
+
+
+<!-- ##### FUNCTION vips_object_unref_outputs ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION vips_type_depth ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_type_find ##### -->
+<para>
+
+</para>
+
+@basename: 
+@nickname: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_type_map ##### -->
+<para>
+
+</para>
+
+@base: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_type_map_all ##### -->
+<para>
+
+</para>
+
+@base: 
+@fn: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_is_null ##### -->
+<para>
+
+</para>
+
+@psoec: 
+@value: 
+@Returns: 
+
+

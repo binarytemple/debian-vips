@@ -1,0 +1,581 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>create</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch02.html" title="VIPS operation API by section">
+<link rel="prev" href="libvips-mosaicing.html" title="mosaicing">
+<link rel="next" href="libvips-resample.html" title="resample">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-mosaicing.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-resample.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-create.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libvips-create.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="libvips-create"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-create.top_of_page"></a>create</span></h2>
+<p>create — create <a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> in various ways</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="libvips-create.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv">
+<a name="libvips-create.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#include &lt;vips/vips.h&gt;
+
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#im-benchmark2" title="im_benchmark2 ()">im_benchmark2</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#im-benchmarkn" title="im_benchmarkn ()">im_benchmarkn</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-black" title="vips_black ()">vips_black</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libvips-create.html#vips-create-operation-init" title="vips_create_operation_init ()">vips_create_operation_init</a>          (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-eye" title="vips_eye ()">vips_eye</a>                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-gaussnoise" title="vips_gaussnoise ()">vips_gaussnoise</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-grey" title="vips_grey ()">vips_grey</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-sines" title="vips_sines ()">vips_sines</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-text" title="vips_text ()">vips_text</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *text</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-xyz" title="vips_xyz ()">vips_xyz</a>                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-create.html#vips-zone" title="vips_zone ()">vips_zone</a>                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="libvips-create.description"></a><h2>Description</h2>
+<p>
+These functions generate various test images. You can combine them with
+the arithmetic and rotate functions to build more complicated images.
+</p>
+<p>
+The <code class="function">im_benchmark()</code> operations are for testing the VIPS SMP system.
+</p>
+</div>
+<div class="refsect1">
+<a name="libvips-create.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="im-benchmark2"></a><h3>im_benchmark2 ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_benchmark2                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> *out</code></em>);</pre>
+<p>
+This operation runs a single <a class="link" href="libvips-create.html#im-benchmarkn" title="im_benchmarkn ()"><code class="function">im_benchmarkn()</code></a> and calculates the average
+pixel value. It's useful if you just want to test image input.
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#im-benchmarkn" title="im_benchmarkn ()"><code class="function">im_benchmarkn()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>average image value</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="im-benchmarkn"></a><h3>im_benchmarkn ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_benchmarkn                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>);</pre>
+<p>
+This operation runs a complicated set of other operations on image <em class="parameter"><code>in</code></em>,
+producing image <em class="parameter"><code>out</code></em>. Use <em class="parameter"><code>n</code></em> to set the number of iterations to run: a
+larger number will make the operation more CPU-bound, a smaller number will
+make the operation more IO-bound.
+</p>
+<p>
+See http://www.vips.ecs.soton.ac.uk/index.php?title=Benchmarks for a
+detailed discussion of the benchmark and some sample results.
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#im-benchmark2" title="im_benchmark2 ()"><code class="function">im_benchmark2()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
+<td>iterations</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-black"></a><h3>vips_black ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_black                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>bands</code></em>: output bands
+</p>
+<p>
+Make a black unsigned char image of a specified size.
+</p>
+<p>
+See also: <code class="function">im_make_xy()</code>, <code class="function">im_text()</code>, <code class="function">im_gaussnoise()</code>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>output width</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>output height</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-create-operation-init"></a><h3>vips_create_operation_init ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                vips_create_operation_init          (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-eye"></a><h3>vips_eye ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_eye                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>factor</code></em>: maximum spatial frequency
+<em class="parameter"><code>uchar</code></em>: output a uchar image
+</p>
+<p>
+Create a test pattern with increasing spatial frequence in X and 
+amplitude in Y. <em class="parameter"><code>factor</code></em> should be between 0 and 1 and determines the 
+maximum spatial frequency.
+</p>
+<p>
+Set <em class="parameter"><code>uchar</code></em> to output a uchar image. 
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#vips-zone" title="vips_zone ()"><code class="function">vips_zone()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-gaussnoise"></a><h3>vips_gaussnoise ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_gaussnoise                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>mean</code></em>: mean of generated pixels
+<em class="parameter"><code>sigma</code></em>: standard deviation of generated pixels
+</p>
+<p>
+Make a one band float image of gaussian noise with the specified
+distribution. The noise distribution is created by averaging 12 random 
+numbers with the appropriate weights.
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#vips-black" title="vips_black ()"><code class="function">vips_black()</code></a>, <code class="function">im_make_xy()</code>, <code class="function">im_text()</code>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>output width</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>output height</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-grey"></a><h3>vips_grey ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_grey                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>uchar</code></em>: output a uchar image
+</p>
+<p>
+Create a one-band float image with the left-most column zero and the
+right-most 1. Intermediate pixels are a linear ramp.
+</p>
+<p>
+Set <em class="parameter"><code>uchar</code></em> to output a uchar image with the leftmost pixel 0 and the
+rightmost 255. 
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#vips-xyz" title="vips_xyz ()"><code class="function">vips_xyz()</code></a>, <code class="function">vips_identity()</code>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-sines"></a><h3>vips_sines ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_sines                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>hfreq</code></em>: horizontal frequency
+<em class="parameter"><code>vreq</code></em>: vertical frequency
+<em class="parameter"><code>uchar</code></em>: output a uchar image
+</p>
+<p>
+Creates a float one band image of the a sine waveform in two
+dimensions.  
+</p>
+<p>
+The number of horizontal and vertical spatial frequencies are
+determined by the variables <em class="parameter"><code>hfreq</code></em> and <em class="parameter"><code>vfreq</code></em> respectively.  The
+function is useful for creating displayable sine waves and
+square waves in two dimensions.
+</p>
+<p>
+If horfreq and verfreq are integers the resultant image is periodical
+and therfore the Fourier transform does not present spikes
+</p>
+<p>
+Pixels are normally in [-1, +1], set <em class="parameter"><code>uchar</code></em> to output [0, 255]. 
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#vips-grey" title="vips_grey ()"><code class="function">vips_grey()</code></a>, <a class="link" href="libvips-create.html#vips-xyz" title="vips_xyz ()"><code class="function">vips_xyz()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-text"></a><h3>vips_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_text                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *text</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>font</code></em>: font to render with
+<em class="parameter"><code>width</code></em>: render within this many pixels across
+<em class="parameter"><code>alignment</code></em>: left/centre/right alignment
+<em class="parameter"><code>dpi</code></em>: render at this resolution
+</p>
+<p>
+Draw the string <em class="parameter"><code>text</code></em> to an image. <em class="parameter"><code>out</code></em> is a one-band 8-bit
+unsigned char image, with 0 for no text and 255 for text. Values inbetween
+are used for anti-aliasing.
+</p>
+<p>
+<em class="parameter"><code>text</code></em> is the text to render as a UTF-8 string. It can contain Pango markup,
+for example "&lt;i&gt;The&lt;/i&gt;Guardian".
+</p>
+<p>
+<em class="parameter"><code>font</code></em> is the font to render with, as a fontconfig name. Examples might be
+"sans 12" or perhaps "bitstream charter bold 10".
+</p>
+<p>
+<em class="parameter"><code>width</code></em> is the maximum number of pixels across to draw within. If the
+generated text is wider than this, it will wrap to a new line. In this
+case, <em class="parameter"><code>alignment</code></em> can be used to set the alignment style for multi-line
+text. 0 means left-align, 1 centre, 2 right-align.
+</p>
+<p>
+<em class="parameter"><code>dpi</code></em> sets the resolution to render at. "sans 12" at 72 dpi draws characters
+approximately 12 pixels high.
+</p>
+<p>
+See also: <code class="function">vips_make_xy()</code>, <a class="link" href="libvips-create.html#vips-text" title="vips_text ()"><code class="function">vips_text()</code></a>, <a class="link" href="libvips-create.html#vips-gaussnoise" title="vips_gaussnoise ()"><code class="function">vips_gaussnoise()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>text</code></em> :</span></p></td>
+<td>utf-8 text string to render</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-xyz"></a><h3>vips_xyz ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_xyz                            (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>csize</code></em>: size for third dimension
+<em class="parameter"><code>dsize</code></em>: size for fourth dimension
+<em class="parameter"><code>esize</code></em>: size for fifth dimension
+</p>
+<p>
+Create a two-band uint32 image where the elements in the first band have the
+value of their x coordinate and elements in the second band have their y
+coordinate. 
+</p>
+<p>
+You can make any image where the value of a pixel is a function of its (x,
+y) coordinate by combining this operator with the arithmetic operators. 
+</p>
+<p>
+Set <em class="parameter"><code>csize</code></em>, <em class="parameter"><code>dsize</code></em>, <em class="parameter"><code>esize</code></em> to generate higher dimensions and add more
+bands. The extra dimensions are placed down the vertical axis. Use
+<a class="link" href="libvips-conversion.html#vips-grid" title="vips_grid ()"><code class="function">vips_grid()</code></a> to change the layout. 
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#vips-grey" title="vips_grey ()"><code class="function">vips_grey()</code></a>, <a class="link" href="libvips-conversion.html#vips-grid" title="vips_grid ()"><code class="function">vips_grid()</code></a>, <code class="function">vips_identity()</code>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>horizontal size</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>vertical size</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-zone"></a><h3>vips_zone ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_zone                           (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>uchar</code></em>: output a uchar image
+</p>
+<p>
+Create a one-band image of a zone plate. 
+</p>
+<p>
+Pixels are normally in [-1, +1], set <em class="parameter"><code>uchar</code></em> to output [0, 255]. 
+</p>
+<p>
+See also: <a class="link" href="libvips-create.html#vips-eye" title="vips_eye ()"><code class="function">vips_eye()</code></a>, <a class="link" href="libvips-create.html#vips-xyz" title="vips_xyz ()"><code class="function">vips_xyz()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18</div>
+</body>
+</html>

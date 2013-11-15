@@ -26,7 +26,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -324,8 +325,6 @@ vips_sink_memory( VipsImage *image )
 	SinkMemory memory;
 	int result;
 
-	VIPS_DEBUG_MSG( "vips_sink_memory2:\n" );
-
 	if( sink_memory_init( &memory, image ) )
 		return( -1 );
 
@@ -345,7 +344,7 @@ vips_sink_memory( VipsImage *image )
 
 	sink_memory_free( &memory );
 
-	VIPS_DEBUG_MSG( "vips_sink_memory2: done\n" );
+	VIPS_DEBUG_MSG( "vips_sink_memory: done\n" );
 
 	return( result );
 }

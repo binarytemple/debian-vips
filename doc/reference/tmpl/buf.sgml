@@ -1,0 +1,270 @@
+<!-- ##### SECTION Title ##### -->
+buf
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_BUF_STATIC ##### -->
+<para>
+
+</para>
+
+@TEXT: 
+
+
+<!-- ##### STRUCT VipsBuf ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION vips_buf_all ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_append_size ##### -->
+<para>
+
+</para>
+
+@buf: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendc ##### -->
+<para>
+
+</para>
+
+@buf: 
+@ch: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendd ##### -->
+<para>
+
+</para>
+
+@buf: 
+@d: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendf ##### -->
+<para>
+
+</para>
+
+@buf: 
+@fmt: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendg ##### -->
+<para>
+
+</para>
+
+@buf: 
+@g: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendgv ##### -->
+<para>
+
+</para>
+
+@buf: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendns ##### -->
+<para>
+
+</para>
+
+@buf: 
+@str: 
+@sz: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appends ##### -->
+<para>
+
+</para>
+
+@buf: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_appendsc ##### -->
+<para>
+
+</para>
+
+@buf: 
+@quote: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_change ##### -->
+<para>
+
+</para>
+
+@buf: 
+@o: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_destroy ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION vips_buf_firstline ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_init ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION vips_buf_init_dynamic ##### -->
+<para>
+
+</para>
+
+@buf: 
+@mx: 
+
+
+<!-- ##### FUNCTION vips_buf_init_static ##### -->
+<para>
+
+</para>
+
+@buf: 
+@base: 
+@mx: 
+
+
+<!-- ##### FUNCTION vips_buf_is_empty ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_is_full ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_len ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_removec ##### -->
+<para>
+
+</para>
+
+@buf: 
+@ch: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buf_rewind ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION vips_buf_set_dynamic ##### -->
+<para>
+
+</para>
+
+@buf: 
+@mx: 
+
+
+<!-- ##### FUNCTION vips_buf_set_static ##### -->
+<para>
+
+</para>
+
+@buf: 
+@base: 
+@mx: 
+
+
+<!-- ##### FUNCTION vips_buf_vappendf ##### -->
+<para>
+
+</para>
+
+@buf: 
+@fmt: 
+@ap: 
+@Returns: 
+
+

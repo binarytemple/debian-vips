@@ -4,6 +4,8 @@
  * 	- from openslideload.c
  * 17/1/12
  * 	- remove header-only loads
+ * 11/6/13
+ * 	- add @all_frames option, off by default
  */
 
 /*
@@ -22,7 +24,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -56,9 +59,8 @@
 typedef struct _VipsForeignLoadMagick {
 	VipsForeignLoad parent_object;
 
-	/* Filename for load.
-	 */
 	char *filename; 
+	gboolean all_frames;
 
 } VipsForeignLoadMagick;
 
@@ -73,7 +75,7 @@ ismagick( const char *filename )
 	VipsImage *t;
 
 	t = vips_image_new();
-	if( vips__magick_read_header( filename, t ) ) {
+	if( vips__magick_read_header( filename, t, FALSE ) ) {
 		g_object_unref( t );
 		return( FALSE );
 	}
@@ -110,7 +112,8 @@ vips_foreign_load_magick_header( VipsForeignLoad *load )
 {
 	VipsForeignLoadMagick *magick = (VipsForeignLoadMagick *) load;
 
-	if( vips__magick_read( magick->filename, load->out ) ) 
+	if( vips__magick_read( magick->filename, 
+		load->out, magick->all_frames ) ) 
 		return( -1 );
 
 	return( 0 );
@@ -148,6 +151,13 @@ vips_foreign_load_magick_class_init( VipsForeignLoadMagickClass *class )
 		VIPS_ARGUMENT_REQUIRED_INPUT, 
 		G_STRUCT_OFFSET( VipsForeignLoadMagick, filename ),
 		NULL );
+
+	VIPS_ARG_BOOL( class, "all_frames", 3, 
+		_( "all_frames" ), 
+		_( "Read all frames from an image" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsForeignLoadMagick, all_frames ),
+		FALSE );
 }
 
 static void

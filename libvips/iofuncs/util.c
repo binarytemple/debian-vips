@@ -5,19 +5,20 @@
 
     Copyright (C) 1991-2003 The National Gallery
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+    Lesser General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -249,7 +250,7 @@ typedef struct {
 static gboolean
 vips_hash_table_predicate( const char *key, void *value, Pair *pair )
 {
-	return( (pair->result == pair->fn( value, pair->a, pair->b )) );
+	return( (pair->result = pair->fn( value, pair->a, pair->b )) != NULL );
 }
 
 /* Like slist map, but for a hash table.
@@ -565,16 +566,28 @@ vips_filename_suffix_match( const char *path, const char *suffixes[] )
 char *
 vips_getnextoption( char **in )
 {
-        char *p = *in;
-        char *q = p;
+        char *p;
+        char *q;
+
+        p = *in;
+        q = p;
 
         if( !p || !*p )
                 return( NULL );
 
-	/* Find the next ',' not prefixed with a '\'.
+	/* Find the next ',' not prefixed with a '\'. If the first character
+	 * of p is ',', there can't be a previous escape character.
 	 */
-	while( (p = strchr( p, ',' )) && p[-1] == '\\' )
+	for(;;) {
+		if( !(p = strchr( p, ',' )) )
+			break;
+		if( p == q )
+			break;
+		if( p[-1] != '\\' )
+			break;
+
 		p += 1;
+	}
 
         if( p ) {
                 /* Another option follows this one .. set up to pick that out
@@ -778,12 +791,16 @@ vips__file_read( FILE *fp, const char *filename, unsigned int *length_out )
 		len = 0;
 		size = 0;
 		do {
+			char *str2;
+
 			size += 1024;
-			if( !(str = realloc( str, size )) ) {
+			if( !(str2 = realloc( str, size )) ) {
+				free( str ); 
 				vips_error( "vips__file_read", 
 					"%s", _( "out of memory" ) );
 				return( NULL );
 			}
+			str = str2;
 
 			/* -1 to allow space for an extra NULL we add later.
 			 */
@@ -1168,6 +1185,47 @@ vips_popenf( const char *fmt, const char *mode, ... )
 	return( fp );
 }
 
+/* Handle broken mkdirs()
+ */
+#if HAVE_MKDIR
+# if MKDIR_TAKES_ONE_ARG
+   /* Mingw32 */
+#  define mkdir(a,b) mkdir(a)
+# endif
+#else
+# ifdef HAVE__MKDIR
+   /* plain Win32 */
+#  include <direct.h>
+#  define mkdir(a,b) _mkdir(a)
+# else
+#  error "Don't know how to create a directory on this system."
+# endif
+#endif
+
+/* Make a directory.
+ */
+int
+vips_mkdirf( const char *name, ... )
+{
+        va_list ap;
+        char buf1[PATH_MAX];
+
+        va_start( ap, name );
+        (void) vips_vsnprintf( buf1, PATH_MAX - 1, name, ap );
+        va_end( ap );
+
+        /* Try that.
+         */
+        if( mkdir( buf1, 0755 ) ) {
+		vips_error( "mkdirf", 
+			_( "unable to create directory \"%s\", %s" ), 
+			buf1, strerror( errno ) );
+                return( -1 );
+	}
+
+        return( 0 );
+}
+
 /* Break a command-line argument into tokens separated by whitespace. 
  *
  * Strings can't be adjacent, so "hello world" (without quotes) is a single 
@@ -1547,16 +1605,17 @@ vips__parse_size( const char *size_string )
 
 	guint64 size;
 	int n;
-	int i, j;
+	int i;
 	char *unit;
 
 	/* An easy way to alloc a buffer large enough.
 	 */
 	unit = g_strdup( size_string );
 	n = sscanf( size_string, "%d %s", &i, unit );
-	if( n > 0 )
-		size = i;
+	size = i;
 	if( n > 1 ) {
+		int j;
+
 		for( j = 0; j < VIPS_NUMBER( units ); j++ )
 			if( tolower( unit[0] ) == units[j].unit ) {
 				size *= units[j].multiplier;
@@ -1593,4 +1652,40 @@ vips_enum_nick( GType enm, int v )
 		return( "(null)" );
 
 	return( value->value_nick );
+}
+
+int
+vips_enum_from_nick( const char *domain, GType type, const char *nick )
+{
+	GTypeClass *class;
+	GEnumClass *genum;
+	GEnumValue *enum_value;
+	int i;
+	char str[1000];
+	VipsBuf buf = VIPS_BUF_STATIC( str );
+
+	if( !(class = g_type_class_ref( type )) ) {
+		vips_error( domain, "%s", _( "no such enum type" ) ); 
+		return( -1 );
+	}
+	genum = G_ENUM_CLASS( class );
+
+	if( (enum_value = g_enum_get_value_by_name( genum, nick )) ) 
+		return( enum_value->value );
+	if( (enum_value = g_enum_get_value_by_nick( genum, nick )) ) 
+		return( enum_value->value );
+
+	/* -1 since we always have a "last" member.
+	 */
+	for( i = 0; i < genum->n_values - 1; i++ ) {
+		if( i > 0 )
+			vips_buf_appends( &buf, ", " );
+		vips_buf_appends( &buf, genum->values[i].value_nick );
+	}
+
+	vips_error( domain, _( "enum '%s' has no member '%s', " 
+		"should be one of: %s" ),
+		g_type_name( type ), nick, vips_buf_all( &buf ) );
+
+	return( -1 );
 }

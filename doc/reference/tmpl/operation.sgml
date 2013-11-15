@@ -1,0 +1,245 @@
+<!-- ##### SECTION Title ##### -->
+VipsOperation
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT VipsOperation ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION VipsOperationBuildFn ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Returns: 
+
+
+<!-- ##### STRUCT VipsOperationClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@usage: 
+@get_flags: 
+@flags: 
+
+<!-- ##### ENUM VipsOperationFlags ##### -->
+<para>
+
+</para>
+
+@VIPS_OPERATION_NONE: 
+@VIPS_OPERATION_SEQUENTIAL: 
+@VIPS_OPERATION_NOCACHE: 
+
+<!-- ##### FUNCTION vips_cache_drop_all ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_cache_get_max ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cache_get_max_files ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cache_get_max_mem ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cache_get_size ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cache_operation_build ##### -->
+<para>
+
+</para>
+
+@operation: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cache_operation_buildp ##### -->
+<para>
+
+</para>
+
+@operation: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cache_print ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_cache_set_dump ##### -->
+<para>
+
+</para>
+
+@dump: 
+
+
+<!-- ##### FUNCTION vips_cache_set_max ##### -->
+<para>
+
+</para>
+
+@max: 
+
+
+<!-- ##### FUNCTION vips_cache_set_max_files ##### -->
+<para>
+
+</para>
+
+@max_files: 
+
+
+<!-- ##### FUNCTION vips_cache_set_max_mem ##### -->
+<para>
+
+</para>
+
+@max_mem: 
+
+
+<!-- ##### FUNCTION vips_cache_set_trace ##### -->
+<para>
+
+</para>
+
+@trace: 
+
+
+<!-- ##### FUNCTION vips_call ##### -->
+<para>
+
+</para>
+
+@operation_name: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_call_argv ##### -->
+<para>
+
+</para>
+
+@operation: 
+@argc: 
+@argv: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_call_options ##### -->
+<para>
+
+</para>
+
+@group: 
+@operation: 
+
+
+<!-- ##### FUNCTION vips_call_split ##### -->
+<para>
+
+</para>
+
+@operation_name: 
+@optional: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_operation_call_valist ##### -->
+<para>
+
+</para>
+
+@operation: 
+@ap: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_operation_class_print_usage ##### -->
+<para>
+
+</para>
+
+@operation_class: 
+
+
+<!-- ##### FUNCTION vips_operation_get_flags ##### -->
+<para>
+
+</para>
+
+@operation: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_operation_new ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
+
+

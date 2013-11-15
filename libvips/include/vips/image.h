@@ -22,7 +22,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -109,27 +110,28 @@ typedef enum {
 
 /**
  * VipsInterpretation: 
- * @VIPS_INTERPREATION_MULTIBAND: generic many-band image
- * @VIPS_INTERPREATION_B_W: some kind of single-band image
- * @VIPS_INTERPREATION_HISTOGRAM: a 1D image such as a histogram or lookup table
- * @VIPS_INTERPREATION_FOURIER: image is in fourier space
- * @VIPS_INTERPREATION_XYZ: the first three bands are CIE XYZ 
- * @VIPS_INTERPREATION_LAB: pixels are in CIE Lab space
- * @VIPS_INTERPREATION_CMYK: the first four bands are in CMYK space
- * @VIPS_INTERPREATION_LABQ: implies #VIPS_CODING_LABQ
- * @VIPS_INTERPREATION_RGB: generic RGB space
- * @VIPS_INTERPREATION_UCS: a uniform colourspace based on CMC
- * @VIPS_INTERPREATION_LCH: pixels are in CIE LCh space
- * @VIPS_INTERPREATION_LABS: CIE LAB coded as three signed 16-bit values
- * @VIPS_INTERPREATION_sRGB: pixels are sRGB
- * @VIPS_INTERPREATION_YXY: pixels are CIE Yxy
- * @VIPS_INTERPREATION_RGB16: generic 16-bit RGB
- * @VIPS_INTERPREATION_GREY16: generic 16-bit mono
- * @VIPS_INTERPREATION_ARRAY: an array
+ * @VIPS_INTERPRETATION_MULTIBAND: generic many-band image
+ * @VIPS_INTERPRETATION_B_W: some kind of single-band image
+ * @VIPS_INTERPRETATION_HISTOGRAM: a 1D image, eg. histogram or lookup table
+ * @VIPS_INTERPRETATION_FOURIER: image is in fourier space
+ * @VIPS_INTERPRETATION_XYZ: the first three bands are CIE XYZ 
+ * @VIPS_INTERPRETATION_LAB: pixels are in CIE Lab space
+ * @VIPS_INTERPRETATION_CMYK: the first four bands are in CMYK space
+ * @VIPS_INTERPRETATION_LABQ: implies #VIPS_CODING_LABQ
+ * @VIPS_INTERPRETATION_RGB: generic RGB space
+ * @VIPS_INTERPRETATION_CMC: a uniform colourspace based on CMC(1:1)
+ * @VIPS_INTERPRETATION_LCH: pixels are in CIE LCh space
+ * @VIPS_INTERPRETATION_LABS: CIE LAB coded as three signed 16-bit values
+ * @VIPS_INTERPRETATION_sRGB: pixels are sRGB
+ * @VIPS_INTERPRETATION_scRGB: pixels are scRGB
+ * @VIPS_INTERPRETATION_YXY: pixels are CIE Yxy
+ * @VIPS_INTERPRETATION_RGB16: generic 16-bit RGB
+ * @VIPS_INTERPRETATION_GREY16: generic 16-bit mono
+ * @VIPS_INTERPRETATION_ARRAY: an array
  *
  * How the values in an image should be interpreted. For example, a
- * three-band float image of type #VIPS_INTERPREATION_LAB should have its pixels
- * interpreted as coordinates in CIE Lab space.
+ * three-band float image of type #VIPS_INTERPRETATION_LAB should have its 
+ * pixels interpreted as coordinates in CIE Lab space.
  *
  * These values are set by operations as hints to user-interfaces built on top 
  * of VIPS to help them show images to the user in a meaningful way. 
@@ -143,20 +145,21 @@ typedef enum {
 	VIPS_INTERPRETATION_MULTIBAND = 0,
 	VIPS_INTERPRETATION_B_W = 1,
 	VIPS_INTERPRETATION_HISTOGRAM = 10,
-	VIPS_INTERPRETATION_FOURIER = 24,
 	VIPS_INTERPRETATION_XYZ = 12,
 	VIPS_INTERPRETATION_LAB = 13,
 	VIPS_INTERPRETATION_CMYK = 15,
 	VIPS_INTERPRETATION_LABQ = 16,
 	VIPS_INTERPRETATION_RGB = 17,
-	VIPS_INTERPRETATION_UCS = 18,
+	VIPS_INTERPRETATION_CMC = 18,
 	VIPS_INTERPRETATION_LCH = 19,
 	VIPS_INTERPRETATION_LABS = 21,
 	VIPS_INTERPRETATION_sRGB = 22,
 	VIPS_INTERPRETATION_YXY = 23,
+	VIPS_INTERPRETATION_FOURIER = 24,
 	VIPS_INTERPRETATION_RGB16 = 25,
 	VIPS_INTERPRETATION_GREY16 = 26,
-	VIPS_INTERPRETATION_ARRAY = 27
+	VIPS_INTERPRETATION_ARRAY = 27,
+	VIPS_INTERPRETATION_scRGB = 28
 } VipsInterpretation;
 
 /**
@@ -419,6 +422,16 @@ typedef struct _VipsImageClass {
 	 */
 	void (*invalidate)( VipsImage *image );
 
+	/* Minimise this pipeline. 
+	 *
+	 * This is triggered (sometimes) at the end of eval to signal that
+	 * we're probably done and that operations involved should try to
+	 * minimise memory use by, for example, dropping caches. 
+	 *
+	 * See vips_tilecache().
+	 */
+	void (*minimise)( VipsImage *image );
+
 } VipsImageClass;
 
 GType vips_image_get_type( void );
@@ -475,12 +488,14 @@ int vips_image_written( VipsImage *image );
 
 void vips_image_invalidate_all( VipsImage *image );
 
+void vips_image_minimise_all( VipsImage *image );
+
 void vips_image_preeval( VipsImage *image );
 void vips_image_eval( VipsImage *image, guint64 processed );
 void vips_image_posteval( VipsImage *image );
 void vips_image_set_progress( VipsImage *image, gboolean progress );
 
-gboolean vips_image_get_kill( VipsImage *image );
+gboolean vips_image_iskilled( VipsImage *image );
 void vips_image_set_kill( VipsImage *image, gboolean kill );
 
 VipsImage *vips_image_new( void );
@@ -494,7 +509,7 @@ VipsImage *vips_image_new_from_memory( void *buffer,
 VipsImage *vips_image_new_array( int xsize, int ysize );
 void vips_image_set_delete_on_close( VipsImage *image, 
 	gboolean delete_on_close );
-VipsImage *vips_image_new_disc_temp( const char *format );
+VipsImage *vips_image_new_temp_file( const char *format );
 int vips_image_write( VipsImage *image, VipsImage *out );
 int vips_image_write_to_file( VipsImage *image, const char *filename );
 
@@ -511,8 +526,12 @@ int vips_image_write_line( VipsImage *image, int ypos, VipsPel *linebuffer );
 
 gboolean vips_band_format_isint( VipsBandFormat format );
 gboolean vips_band_format_isuint( VipsBandFormat format );
+gboolean vips_band_format_is8bit( VipsBandFormat format );
 gboolean vips_band_format_isfloat( VipsBandFormat format );
 gboolean vips_band_format_iscomplex( VipsBandFormat format );
+
+int vips_system( const char *cmd_format, ... )
+	__attribute__((sentinel));
 
 #ifdef __cplusplus
 }

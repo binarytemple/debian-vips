@@ -44,7 +44,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -113,6 +114,7 @@ vips_bandary_gen( VipsRegion *or, void *seq, void *a, void *b, gboolean *stop )
 static int
 vips_bandary_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsConversion *conversion = VIPS_CONVERSION( object );
 	VipsBandary *bandary = (VipsBandary *) object;
 
@@ -124,16 +126,18 @@ vips_bandary_build( VipsObject *object )
 		return( -1 );
 
 	if( bandary->n <= 0 ) {
-		vips_error( "VipsBandary", "%s", _( "no input images" ) );
+		vips_error( class->nickname, 
+			"%s", _( "no input images" ) );
 		return( -1 );
 	}
 	if( bandary->n > MAX_INPUT_IMAGES ) {
-		vips_error( "VipsBandary", "%s", _( "too many input images" ) );
+		vips_error( class->nickname, 
+			"%s", _( "too many input images" ) );
 		return( -1 );
 	}
 	for( i = 0; i < bandary->n; i++ )
 		if( vips_image_pio_input( bandary->in[i] ) || 
-			vips_check_uncoded( "VipsBandary", bandary->in[i] ) )
+			vips_check_uncoded( class->nickname, bandary->in[i] ) )
 			return( -1 );
 
 	format = (VipsImage **) vips_object_local_array( object, bandary->n );
@@ -163,6 +167,7 @@ vips_bandary_class_init( VipsBandaryClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	VIPS_DEBUG_MSG( "vips_bandary_class_init\n" );
 
@@ -173,13 +178,13 @@ vips_bandary_class_init( VipsBandaryClass *class )
 	vobject_class->description = _( "operations on image bands" );
 	vobject_class->build = vips_bandary_build;
 
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 }
 
 static void
-vips_bandary_init( VipsBandary *bandjoin )
+vips_bandary_init( VipsBandary *bandary )
 {
-	/* Init our instance fields.
-	 */
+	bandary->out_bands = -1;
 }
 
 /* Call this before chaining up in _build() to make the operation fall back to

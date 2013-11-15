@@ -15,10 +15,9 @@
  * 
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301  USA
  * 
- * $Id: base64.c,v 1.5 2007/01/03 18:31:34 jcupitt Exp $
- *
  * \section{Base-64 Routines}
  *
  * \intro These routines use the 64-character subset of International
@@ -138,7 +137,7 @@ encode24( char *p, int bits, size_t remaining )
 	int i;
 
 	for( i = 0; i < 4; i++ ) {
-		if( remaining <= 0 )
+		if( remaining == 0 )
 			p[i] = '=';
 		else {
 			/* Take the top 6 bits of 24.
@@ -166,7 +165,7 @@ vips__b64_encode( const unsigned char *data, size_t data_length )
 	size_t i;
 	int cursor;
 
-	if( data_length <= 0 ) {
+	if( data_length == 0 ) {
 		vips_error( "vips__b64_encode", "%s", _( "too little data" ) );
 		return( NULL );
 	}
@@ -210,7 +209,7 @@ vips__b64_encode( const unsigned char *data, size_t data_length )
 	for( total = 0, i = 0; i < data_length; i++ )
 		total += data[i];
 
-	printf( "vips__b64_encode: length = %d, checksum 0x%x\n", 
+	printf( "vips__b64_encode: length = %u, checksum 0x%x\n", 
 		data_length, total & 0xffff );
 }
 #endif /*DEBUG*/

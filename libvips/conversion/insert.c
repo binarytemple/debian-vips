@@ -46,7 +46,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -73,7 +74,7 @@
 #include <vips/internal.h>
 #include <vips/debug.h>
 
-#include "conversion.h"
+#include "pconversion.h"
 
 typedef struct _VipsInsert {
 	VipsConversion parent_instance;
@@ -223,6 +224,9 @@ vips__vector_to_ink( const char *domain, VipsImage *im, double *vec, int n )
 	if( vips_check_vector( domain, n, im ) )
 		return( NULL );
 
+	/* This looks a bit dodgy, but the pipeline we are creating does not
+	 * depend upon im, so it's OK to make t depend on im.
+	 */
 	t = (VipsImage **) vips_object_local_array( VIPS_OBJECT( im ), 4 );
 	ones = VIPS_ARRAY( im, n, double );
 	for( i = 0; i < n; i++ )
@@ -250,6 +254,7 @@ vips__vector_to_ink( const char *domain, VipsImage *im, double *vec, int n )
 static int
 vips_insert_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsConversion *conversion = VIPS_CONVERSION( object );
 	VipsInsert *insert = (VipsInsert *) object;
 	VipsImage **t = (VipsImage **) vips_object_local_array( object, 6 );
@@ -261,17 +266,17 @@ vips_insert_build( VipsObject *object )
 
 	if( vips_image_pio_input( insert->main ) || 
 		vips_image_pio_input( insert->sub ) || 
-		vips_check_bands_1orn( "VipsInsert", 
+		vips_check_bands_1orn( class->nickname, 
 			insert->main, insert->sub ) ||
-		vips_check_coding_known( "VipsInsert", insert->main ) ||
-		vips_check_coding_same( "VipsInsert", 
+		vips_check_coding_known( class->nickname, insert->main ) ||
+		vips_check_coding_same( class->nickname, 
 			insert->main, insert->sub ) )
 		return( -1 );
 
 	/* Cast our input images up to a common format and bands.
 	 */
 	if( vips__formatalike( insert->main, insert->sub, &t[0], &t[1] ) ||
-		vips__bandalike( "VipsInsert", t[0], t[1], &t[2], &t[3] ) )
+		vips__bandalike( class->nickname, t[0], t[1], &t[2], &t[3] ) )
 		return( -1 );
 	insert->main_processed = t[2];
 	insert->sub_processed = t[3];
@@ -282,7 +287,7 @@ vips_insert_build( VipsObject *object )
 	if( vips_image_copy_fields_array( conversion->out, arry ) )
 		return( -1 );
         vips_demand_hint_array( conversion->out, 
-		VIPS_DEMAND_STYLE_SMALLTILE, arry );
+		VIPS_DEMAND_STYLE_ANY, arry );
 
 	/* Calculate geometry. 
 	 */
@@ -317,7 +322,7 @@ vips_insert_build( VipsObject *object )
 	conversion->out->Ysize = insert->rout.height;
 
 	if( !(insert->ink = vips__vector_to_ink( 
-		"VipsInsert", conversion->out,
+		class->nickname, conversion->out,
 		insert->background->data, insert->background->n )) )
 		return( -1 );
 
@@ -339,6 +344,7 @@ vips_insert_class_init( VipsInsertClass *class )
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS( class );
 	VipsObjectClass *vobject_class = VIPS_OBJECT_CLASS( class );
+	VipsOperationClass *operation_class = VIPS_OPERATION_CLASS( class );
 
 	VIPS_DEBUG_MSG( "vips_insert_class_init\n" );
 
@@ -348,6 +354,8 @@ vips_insert_class_init( VipsInsertClass *class )
 	vobject_class->nickname = "insert";
 	vobject_class->description = _( "insert an image" );
 	vobject_class->build = vips_insert_build;
+
+	operation_class->flags = VIPS_OPERATION_SEQUENTIAL;
 
 	VIPS_ARG_IMAGE( class, "main", -1, 
 		_( "Main" ), 

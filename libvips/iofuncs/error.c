@@ -32,7 +32,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -135,6 +136,15 @@ vips_error_buffer( void )
 	return( msg );
 }
 
+/* Some systems do not have va_copy() ... this might work (it does on MSVC),
+ * apparently.
+ *
+ * FIXME ... this should be in configure.in
+ */
+#ifndef va_copy
+#define va_copy(d,s) ((d) = (s))
+#endif
+
 /**
  * vips_verror: 
  * @domain: the source of the error
@@ -148,13 +158,28 @@ vips_error_buffer( void )
 void 
 vips_verror( const char *domain, const char *fmt, va_list ap )
 {
+#ifdef VIPS_DEBUG
+{
+	char txt[256];
+	VipsBuf buf = VIPS_BUF_STATIC( txt );
+	va_list ap2;
+
+	vips_buf_appendf( &buf, "%s: ", domain );
+	va_copy( ap2, ap );
+	vips_buf_vappendf( &buf, fmt, ap2 );
+	vips_buf_appends( &buf, "\n" );
+	VIPS_DEBUG_MSG( "vips_verror: %s", vips_buf_all( &buf ) );
+}
+#endif /*VIPS_DEBUG*/
+
 	g_mutex_lock( vips__global_lock );
 	vips_buf_appendf( &vips_error_buf, "%s: ", domain );
 	vips_buf_vappendf( &vips_error_buf, fmt, ap );
 	vips_buf_appends( &vips_error_buf, "\n" );
 	g_mutex_unlock( vips__global_lock );
 
-	VIPS_DEBUG_MSG( "vips_verror: %s\n", fmt );
+	if( vips__fatal )
+		vips_error_exit( "vips__fatal" );
 }
 
 /**
@@ -262,6 +287,12 @@ vips_error_g( GError **error )
 	if( !vips_domain ) 
 		vips_domain = g_quark_from_string( "libvips" );
 
+	/* glib does not expect a trailing '\n' and vips always has one.
+	 */
+	g_mutex_lock( vips__global_lock );
+	vips_buf_removec( &vips_error_buf, '\n' );
+	g_mutex_unlock( vips__global_lock );
+
 	g_set_error( error, vips_domain, -1, "%s", vips_error_buffer() );
 	vips_error_clear();
 }
@@ -269,7 +300,7 @@ vips_error_g( GError **error )
 /**
  * vips_error_clear: 
  *
- * Clear and reset the error buffer. This is typically called after presentng
+ * Clear and reset the error buffer. This is typically called after presenting
  * an error to the user.
  *
  * See also: vips_error_buffer().
@@ -302,7 +333,8 @@ vips_vdiag( const char *domain, const char *fmt, va_list ap )
 	if( !g_getenv( IM_DIAGNOSTICS ) ) {
 		g_mutex_lock( vips__global_lock );
 		(void) fprintf( stderr, _( "%s: " ), _( "vips diagnostic" ) );
-		(void) fprintf( stderr, _( "%s: " ), domain );
+		if( domain )
+			(void) fprintf( stderr, _( "%s: " ), domain );
 		(void) vfprintf( stderr, fmt, ap );
 		(void) fprintf( stderr, "\n" );
 		g_mutex_unlock( vips__global_lock );
@@ -352,11 +384,15 @@ vips_vwarn( const char *domain, const char *fmt, va_list ap )
 	if( !g_getenv( IM_WARNING ) ) {
 		g_mutex_lock( vips__global_lock );
 		(void) fprintf( stderr, _( "%s: " ), _( "vips warning" ) );
-		(void) fprintf( stderr, _( "%s: " ), domain );
+		if( domain )
+			(void) fprintf( stderr, _( "%s: " ), domain );
 		(void) vfprintf( stderr, fmt, ap );
 		(void) fprintf( stderr, "\n" );
 		g_mutex_unlock( vips__global_lock );
 	}
+
+	if( vips__fatal )
+		vips_error_exit( "vips__fatal" );
 }
 
 /**
@@ -415,7 +451,10 @@ vips_error_exit( const char *fmt, ... )
 
 	vips_shutdown();
 
-	exit( 1 );
+	if( vips__fatal )
+		abort();
+	else
+		exit( 1 );
 }
 
 /**
@@ -463,7 +502,7 @@ vips_check_coding_noneorlabq( const char *domain, VipsImage *im )
 	if( im->Coding != VIPS_CODING_NONE && 
 		im->Coding != VIPS_CODING_LABQ ) {
 		vips_error( domain, 
-			"%s", _( "image coding must be NONE or LABQ" ) );
+			"%s", _( "image coding must be 'none' or 'labq'" ) );
 		return( -1 );
 	}
 
@@ -499,11 +538,12 @@ vips_check_coding_known( const char *domain, VipsImage *im )
 }
 
 /**
- * vips_check_coding_rad:
+ * vips_check_coding:
  * @domain: the originating domain for the error message
  * @im: image to check
+ * @coding: required coding
  *
- * Check that the image is in Radiance coding. 
+ * Check that the image has the required @coding.
  * If not, set an error message
  * and return non-zero.
  *
@@ -512,38 +552,11 @@ vips_check_coding_known( const char *domain, VipsImage *im )
  * Returns: 0 on OK, or -1 on error.
  */
 int
-vips_check_coding_rad( const char *domain, VipsImage *im )
+vips_check_coding( const char *domain, VipsImage *im, VipsCoding coding )
 {
-	if( im->Coding != VIPS_CODING_RAD ||
-		im->BandFmt != VIPS_FORMAT_UCHAR || 
-		im->Bands != 4 ) { 
-		vips_error( domain, "%s", _( "Radiance coding only" ) );
-		return( -1 );
-	}
-
-	return( 0 );
-}
-
-/**
- * vips_check_coding_labq:
- * @domain: the originating domain for the error message
- * @im: image to check
- *
- * Check that the image is in LABQ coding. 
- * If not, set an error message
- * and return non-zero.
- *
- * See also: vips_error().
- *
- * Returns: 0 on OK, or -1 on error.
- */
-int
-vips_check_coding_labq( const char *domain, VipsImage *im )
-{
-	if( im->Coding != VIPS_CODING_LABQ ||
-		im->BandFmt != VIPS_FORMAT_UCHAR || 
-		im->Bands != 4 ) { 
-		vips_error( domain, "%s", _( "LABQ coding only" ) );
+	if( im->Coding != coding ) {
+		vips_error( domain, _( "coding '%s' only" ), 
+			vips_enum_nick( VIPS_TYPE_CODING, coding ) );
 		return( -1 );
 	}
 
@@ -600,7 +613,7 @@ vips_check_bands( const char *domain, VipsImage *im, int bands )
 }
 
 /**
- * vips_check_1or3:
+ * vips_check_bands_1or3:
  * @domain: the originating domain for the error message
  * @im: image to check
  *
@@ -618,6 +631,32 @@ vips_check_bands_1or3( const char *domain, VipsImage *im )
 	if( im->Bands != 1 && im->Bands != 3 ) {
 		vips_error( domain, "%s", 
 			_( "image must have one or three bands" ) );
+		return( -1 );
+	}
+
+	return( 0 );
+}
+
+/**
+ * vips_check_bands_atleast:
+ * @domain: the originating domain for the error message
+ * @im: image to check
+ * @bands: at least this many bands
+ *
+ * Check that the image has at least @bands bands. 
+ * Otherwise set an error message
+ * and return non-zero.
+ *
+ * See also: vips_error().
+ *
+ * Returns: 0 if OK, -1 otherwise.
+ */
+int
+vips_check_bands_atleast( const char *domain, VipsImage *im, int bands )
+{
+	if( im->Bands < bands ) {
+		vips_error( domain, 
+			_( "image must have at least %d bands" ), bands );
 		return( -1 );
 	}
 
@@ -1044,6 +1083,29 @@ vips_check_coding_same( const char *domain, VipsImage *im1, VipsImage *im2 )
 }
 
 /**
+ * vips_check_vector_length:
+ * @domain: the originating domain for the error message
+ * @n: number of elements in vector
+ * @len: number of elements vector should have
+ *
+ * Check that @n == @len. 
+ *
+ * See also: vips_error().
+ *
+ * Returns: 0 if OK, -1 otherwise.
+ */
+int
+vips_check_vector_length( const char *domain, int n, int len )
+{
+	if( n != len ) {
+		vips_error( domain, _( "vector must have %d elements" ), len );
+		return( -1 );
+	}
+
+	return( 0 );
+}
+
+/**
  * vips_check_vector:
  * @domain: the originating domain for the error message
  * @n: number of elements in vector
@@ -1095,6 +1157,47 @@ vips_check_hist( const char *domain, VipsImage *im )
 				"65536 elements" ) );
 		return( -1 );
 	}
+
+	return( 0 );
+}
+
+/** 
+ * vips_check_matrix: 
+ * @domain: the originating domain for the error message
+ * @im: image to check 
+ * @out: put image as in-memory doubles here
+ *
+ * Matrix images must have width and height less than 1000 and have 1 band.
+ *
+ * Return 0 if the image will pass as a matrix, or -1 and set an error 
+ * message otherwise.
+ *
+ * @out is set to be @im cast to double and stored in memory. Use
+ * VIPS_IMAGE_ADDR() to address values in @out. @out is unreffed for you 
+ * when @im is unreffed.
+ *
+ * See also: vips_error().
+ *
+ * Returns: 0 if OK, -1 otherwise.
+ */
+int
+vips_check_matrix( const char *domain, VipsImage *im, VipsImage **out )
+{
+	if( im->Xsize > 1000 || im->Ysize > 1000 ) {
+		vips_error( domain, "%s", _( "matrix image too large" ) );
+		return( -1 );
+	}
+	if( im->Bands != 1 ) {
+		vips_error( domain, 
+			"%s", _( "matrix image must have one band" ) ); 
+		return( -1 );
+	}
+
+	if( vips_cast( im, out, VIPS_FORMAT_DOUBLE, NULL ) )
+                return( -1 );
+	vips_object_local( im, *out );
+        if( vips_image_wio_input( *out ) )
+                return( -1 );
 
 	return( 0 );
 }

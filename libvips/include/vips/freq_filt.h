@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -70,7 +71,6 @@ int im_invfftr( VipsImage *in, VipsImage *out );
 
 int im_freqflt( VipsImage *in, VipsImage *mask, VipsImage *out );
 int im_disp_ps( VipsImage *in, VipsImage *out );
-int im_rotquad( VipsImage *in, VipsImage *out );
 int im_phasecor_fft( VipsImage *in1, VipsImage *in2, VipsImage *out );
 
 int im_flt_image_freq( VipsImage *in, VipsImage *out, VipsMaskType flag, ... );

@@ -1,0 +1,217 @@
+<!-- ##### SECTION Title ##### -->
+inplace
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### USER_FUNCTION VipsPlotFn ##### -->
+<para>
+
+</para>
+
+@image: 
+@x: 
+@y: 
+@a: 
+@b: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_circle ##### -->
+<para>
+
+</para>
+
+@image: 
+@x: 
+@y: 
+@radius: 
+@fill: 
+@ink: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_flood ##### -->
+<para>
+
+</para>
+
+@image: 
+@x: 
+@y: 
+@ink: 
+@dout: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_flood_blob ##### -->
+<para>
+
+</para>
+
+@image: 
+@x: 
+@y: 
+@ink: 
+@dout: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_flood_other ##### -->
+<para>
+
+</para>
+
+@image: 
+@test: 
+@x: 
+@y: 
+@serial: 
+@dout: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_image ##### -->
+<para>
+
+</para>
+
+@image: 
+@sub: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_line ##### -->
+<para>
+
+</para>
+
+@image: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+@ink: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_line_user ##### -->
+<para>
+
+</para>
+
+@image: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+@plot: 
+@a: 
+@b: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_mask ##### -->
+<para>
+
+</para>
+
+@image: 
+@mask_im: 
+@x: 
+@y: 
+@ink: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_point ##### -->
+<para>
+
+</para>
+
+@image: 
+@x: 
+@y: 
+@ink: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_rect ##### -->
+<para>
+
+</para>
+
+@image: 
+@left: 
+@top: 
+@width: 
+@height: 
+@fill: 
+@ink: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_draw_smudge ##### -->
+<para>
+
+</para>
+
+@image: 
+@left: 
+@top: 
+@width: 
+@height: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_lineset ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@ink: 
+@n: 
+@x1v: 
+@y1v: 
+@x2v: 
+@y2v: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_read_point ##### -->
+<para>
+
+</para>
+
+@image: 
+@x: 
+@y: 
+@ink: 
+@Returns: 
+
+

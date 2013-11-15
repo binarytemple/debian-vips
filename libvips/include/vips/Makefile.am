@@ -10,7 +10,6 @@ pkginclude_HEADERS = \
 	convolution.h \
 	debug.h \
 	dispatch.h \
-	disp.h \
 	enumtypes.h \
 	error.h \
 	operation.h \
@@ -28,7 +27,7 @@ pkginclude_HEADERS = \
 	memory.h \
 	morphology.h \
 	mosaicing.h \
-	other.h \
+	create.h \
 	video.h \
 	cimg_funcs.h \
 	object.h \
@@ -63,6 +62,8 @@ vips_scan_headers = \
 	${top_srcdir}/libvips/include/vips/conversion.h \
 	${top_srcdir}/libvips/include/vips/util.h \
 	${top_srcdir}/libvips/include/vips/image.h \
+	${top_srcdir}/libvips/include/vips/colour.h \
+	${top_srcdir}/libvips/include/vips/operation.h \
 	${top_srcdir}/libvips/include/vips/object.h
 
 enumtypes.h: $(vips_scan_headers) Makefile

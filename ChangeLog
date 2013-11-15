@@ -1,3 +1,215 @@
+3/7/13 started 7.34.2
+- lower priority for Matlab load to reduce segvs from Mat_Open(), thanks
+  Michael
+- null-terminate libexif strings, thanks Mike
+- openslide always outputs solid pixels
+
+28/6/13 started 7.34.1
+- fix morphological operators on non-uchar images
+- remove any ICC profile when we use vips to go to srgb
+
+7/6/13 started 7.34.0
+- version bump
+- oops, VImage.PIL_mode_from_vips() failed for CMYK, thanks Alessandro
+- fix no-pango build
+- add im_vips2dz(): run the deepzoom writer from vips7
+- vips_magickload() has an option to read all images in a sequence
+- redo im_make_xy(), im_*eye(), im_zone*(), im_sines() as classes
+- added vips_pngload_buffer()
+- faster --centre option to dzsave, thanks Kacey
+
+12/3/13 started 7.33.0
+- vipsthumbnail lets you specify the sharpening mask
+- turn off caching for im_copy()/vips_copy(), we use copy to stop sharing, and
+  it's cheap so caching doesn't help anyway
+- auto rshift down to 8 bits on save, if necessary
+- im_gaussnoise(), im_copy_file(), im_grid(), im_scale(), im_scaleps(),
+  im_wrap(), im_rotquad(), im_zoom(), im_subsample(), im_msb(), im_text(),
+  im_system(), im_system_image()
+  redone as classes
+- add --angle option to dzsave
+- another vips_shrink() fix argh
+
+14/5/13 started 7.32.4
+- icc import and export could segv on very wide images
+- fix centos 5 build, thanks re-boot
+
+16/4/13 started 7.32.3
+- rename GETTEXT_PACKAGE as vips7.32 to help Debian (thanks Jay)
+- added "persistent" option to tilecache
+
+12/3/13 started 7.32.2
+- removed some left-over debugging code from configure.ac
+- better handling of args without values, thanks Ruven
+- better error messages from vips.c
+- fix demand hints so "vips shrink" works again, thanks Jan
+- im_jpeg2vips.c builds without jpeglib.h, thanks Alessandro
+
+6/2/13 started 7.32.1
+- fix --without-lcms, thanks speckins
+- updates to licence, thanks Benjamin
+- remove "fred" from dist
+- better bootstrap on OS X
+
+22/1/13 started 7.32.0
+- tilecache in threaded mode could deadlock if the downstream pixel source
+  raised an error (thanks Todd)
+- fix another dzsave corner-case (thanks Martin)
+- neater output for "header"
+- added VIPS_META_LOADER: record the loader name
+= header displays this loader hint
+- vipsthumbnail is better at cache sizing
+
+31/8/12 started 7.31.0
+- redone im_Lab2XYZ(), im_XYZ2Lab(), im_Lab2LCh(), im_LCh2Lab(), im_UCS2LCh, 
+  im_LCh2UCS(), im_XYZ2Yxy(), im_Yxy2XYZ(), im_float2rad(), im_rad2float(),
+  im_Lab2LabQ(), im_LabQ2Lab(), im_Lab2LabS(), im_LabS2Lab(), im_LabQ2LabS(),
+  im_LabS2LabQ(), im_LabQ2disp(), im_XYZ2disp(), im_disp2XYZ(),
+  im_icc_import*(), im_icc_export*(), im_icc_transform*(), im_dE_fromLab(),
+  im_dECMC_fromLab(), im_dE00_from_Lab(), im_icc_ac2rc() as classes
+- added vips_colourspace(), vips_colourspace_issupported(), replaces all 
+  derived conversions
+- faster and more accurate sRGB <-> XYZ conversion
+- support 16-bit sRGB import and export
+- rename UCS colourspace as CMC
+- dzsave can write zoomify and google maps layout as well
+- tilecache supports threaded access, so openslide read now threads
+- openslide2vips gets underlying tile size from openslide
+- embed has 'background' option
+- dzsave --layout google has a @background option
+- dzsave has a --depth option
+- update for new glib threading API
+- remove no threads option, glib no longer support it
+- better --help output for vips driver prog
+- vipsthumbnail -o allows absolute file names
+- much better exif handling for jpg images (thanks Gary)
+- preserve jpeg app13 (photoshop ipct)
+- vips_max() / _min() track the top n maxima / minima
+- deprecate im_maxpos_avg(): too specialised to be worth maintaining
+- deprecate im_linreg(): easily done by combining other operators
+- deprecate im_point(): easily done by combining other operators
+- add binary complex operations, with cross_phase as the only one so far
+- added vips_bandbool(), with vips_bandand(), _bandor(), _bandeor() as
+  convenience functions
+- added scRGB colourspace, linear light float space with sRGB primaries
+- all interpolators use corner convention ... we had round-to-nearest in
+  several of them before, causing a range of annoying problems
+- redone im_affine*() as a class
+- added input space displacement to affine
+- VipsArea is threadsafe
+- dzsave has a --centre option
+
+31/12/12 started 7.30.8
+- png icc profile write was broken
+
+31/12/12 started 7.30.7
+- better option parsing for "vips", thanks Haida
+- small fixes to help OS X
+- backported threaded tile cache from next version, im_tile_cache() now 
+  uses it to prevent a deadlock, see comment there
+
+14/11/12 started 7.30.6
+- capture tiff warnings earlier
+
+14/11/12 started 7.30.5
+- fix libtool version mess up (thanks Benjamin)
+
+2/10/12 started 7.30.4
+- remove options from format string in .dzi (thanks Martin)
+- vipsCC.pc required the wrong version of vips (thanks Alessandro)
+- larger max tile size for dzsave
+- linecache is 50% larger to leave some slop room
+
+13/9/12 started 7.30.3
+- linecache sized itself too large
+- fix a compile failure if libtiff was not found (thanks Martin)
+- dzsave did not work for images with an odd number of scanlines 
+  (thanks Martin)
+
+4/9/12 started 7.30.2
+- sequential stops all threads on error
+- sequential delays ahead threads rather than blocking them completely
+
+6/8/12 started 7.30.1
+- fixes to dzsave: shrink down to a 1x1 pixel tile, round image size up on 
+  shrink, write a .dzi file with the pyramid params, default tile size and 
+  overlap now matches the openslide writer
+- wrap VipsInterpolate for C++
+- so affinei and affinei_all appear in Python
+- be more cautious enabling YCbCr mode in tiff write
+- add "DEPRECATED" flag to arguments
+- jpeg load/save note and use the preferred resolution unit
+- better error msgs for enum args
+- fix compiler warnings in production build (thanks Dmitry)
+- fix spurious warnings about exif updates
+- VipsSequential has an integrated cache and stalls out of order threads
+- add a line cache ... sizes up dynamically with request size
+- tilecache / linecache use a hash table not a linear list
+
+20/7/12 started 7.30.0
+- support "rs" mode in vips7
+- add --vips-version cmdline arg
+- fix --without-tiff / exr / jpeg / png / magick
+- add --vips-fatal flag
+
+19/3/12 started 7.29.0
+- sanity-check PNG read geometry
+- nearest-neighbor interpolation rounds coordinates to nearest instead of 
+  rounding down (thanks Nicolas)
+- add dzsave, save in deep zoom format
+- rework im_shrink() as a class
+- remove im_rightshift_size(), just a convenience function now
+- vipsthumbnail no longer removes profiles by default
+- much more gentle sharpening in thumbnails
+- added "minimise" signal, used by tilecache to drop
+- add :seq support to im_tiff2vips(), im_jpeg2vips() ... helps ruby-vips
+- better thread safety for vips8 operation dispatch
+- better thread safety for upstream / downstream image linking
+- added "rs" open mode, removed "rd"
+- added vips_operation_get_flags() ... system for attaching sets of flags to
+  operations
+- added VIPS_OPERATION_SEQUENTIAL flag
+- vips8 command-line interface uses this to turn sequential mode on
+  automatically when possible
+- better handling of input files in vips7 command-line interface
+- sequential can skip ahead, so extract / insert are now seq
+
+16/7/12 started 7.28.10
+- wopconst was broken
+- vips_sign() was broken
+- png save compression range was wrong
+- more/moreeq was wrong
+- vips7 ppm save with options was broken 
+- don't cache write operations
+
+18/6/12 started 7.28.9
+- slightly more memory debugging output
+- remove references to the static bicubic interpolator from the docs
+- fix temp file handling on Windows --- was breaking for non-vips files 
+  over 100mb
+- better support for using images from multiple threads
+
+18/6/12 started 7.28.8
+- fixes for centos5 portability
+
+18/6/12 started 7.28.7
+- add vips_flatten() -- flatten RGBA to RGB
+- better alpha handling in PNG load
+- don't save RGBA PNG as CMYK JPG (thanks Tobsn)
+- fix a crash with malformed jpg files (thanks Grigoriy)
+- vipsthumbnail enables sequential mode more and caches lines better
+
+19/4/12 started 7.28.6
+- better resolution unit handling in deprecated im_vips2tiff()
+- use TIFF_CFLAGS output from pkg-config (thanks Jay)
+- much faster vips_argument_map()
+- make jpeg pyramids work with tiff4
+- tiff loader always offers THINSTRIP (thanks Diuming)
+- add "nocache" operation flag, set for sequential load (thanks Diuming)
+- fix a crash in the tiff reader for huge values of RowsPerStrip (thanks
+  Nicolas)
+- remove use of G_DEFINE_BOXED_TYPE() to help compat (thanks Jake)
+
 19/4/12 started 7.28.5
 - ifthenelse blend mode was broken
 - small blend speedup

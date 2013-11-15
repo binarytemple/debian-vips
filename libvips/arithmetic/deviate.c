@@ -49,7 +49,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -88,6 +89,7 @@ G_DEFINE_TYPE( VipsDeviate, vips_deviate, VIPS_TYPE_STATISTIC );
 static int
 vips_deviate_build( VipsObject *object )
 {
+	VipsObjectClass *class = VIPS_OBJECT_GET_CLASS( object );
 	VipsStatistic *statistic = VIPS_STATISTIC( object ); 
 	VipsDeviate *deviate = (VipsDeviate *) object;
 
@@ -95,7 +97,7 @@ vips_deviate_build( VipsObject *object )
 	double s, s2;
 
 	if( statistic->in &&
-		vips_check_noncomplex( "VipsDeviate", statistic->in ) )
+		vips_check_noncomplex( class->nickname, statistic->in ) )
 		return( -1 );
 
 	if( VIPS_OBJECT_CLASS( vips_deviate_parent_class )->build( object ) )

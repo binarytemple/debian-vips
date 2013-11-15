@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -52,6 +53,13 @@ extern "C" {
 #define VIPS_META_XMP_NAME "xmp-data"
 
 /**
+ * VIPS_META_IPCT_NAME:
+ *
+ * The name that JPEG read and write operations use for the image's IPCT data.
+ */
+#define VIPS_META_IPCT_NAME "ipct-data"
+
+/**
  * VIPS_META_ICC_NAME:
  *
  * The name we use to attach an ICC profile. The file read and write
@@ -77,6 +85,14 @@ extern "C" {
  */
 #define VIPS_META_RESOLUTION_UNIT "resolution-unit"
 
+/**
+ * VIPS_META_LOADER:
+ *
+ * Record the name of the original loader here. Handy for hinting file formats
+ * and for debugging.
+ */
+#define VIPS_META_LOADER "vips-loader"
+
 guint64 vips_format_sizeof( VipsBandFormat format );
 
 int vips_image_get_width( const VipsImage *image );
@@ -85,6 +101,7 @@ int vips_image_get_bands( const VipsImage *image );
 VipsBandFormat vips_image_get_format( const VipsImage *image );
 VipsCoding vips_image_get_coding( const VipsImage *image );
 VipsInterpretation vips_image_get_interpretation( const VipsImage *image );
+VipsInterpretation vips_image_guess_interpretation( const VipsImage *image );
 double vips_image_get_xres( const VipsImage *image );
 double vips_image_get_yres( const VipsImage *image );
 int vips_image_get_xoffset( const VipsImage *image );

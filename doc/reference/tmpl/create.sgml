@@ -1,0 +1,148 @@
+<!-- ##### SECTION Title ##### -->
+create
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION im_benchmark2 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_benchmarkn ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_black ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_create_operation_init ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_eye ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_gaussnoise ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_grey ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sines ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_text ##### -->
+<para>
+
+</para>
+
+@out: 
+@text: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_xyz ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_zone ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+

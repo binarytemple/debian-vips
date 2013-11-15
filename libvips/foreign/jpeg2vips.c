@@ -45,6 +45,16 @@
  * 	- read jfif resolution as well as exif
  * 19/2/12
  * 	- switch to lazy reading
+ * 7/8/12
+ * 	- note EXIF resolution unit in VIPS_META_RESOLUTION_UNIT
+ * 16/11/12
+ * 	- tag exif fields with their ifd
+ * 	- attach rationals as a/b, don't convert to double
+ * 21/11/12
+ * 	- don't insist exif must have data
+ * 	- attach IPCT data (app13), thanks Gary
+ * 6/7/13
+ * 	- null-terminate exif strings, thanks Mike
  */
 
 /*
@@ -63,7 +73,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -135,7 +146,6 @@ typedef struct _ReadJpeg {
 
 	/* Used for file input only.
 	 */
-	FILE *fp;
 	char *filename;
 
 	struct jpeg_decompress_struct cinfo;
@@ -166,7 +176,7 @@ readjpeg_free( ReadJpeg *jpeg )
 			vips_warn( "VipsJpeg", 
 				_( "read gave %ld warnings" ), 
 				jpeg->eman.pub.num_warnings );
-			vips_warn( "VipsJpeg", "%s", vips_error_buffer() );
+			vips_warn( NULL, "%s", vips_error_buffer() );
 		}
 
 		/* Make the message only appear once.
@@ -179,7 +189,7 @@ readjpeg_free( ReadJpeg *jpeg )
 		jpeg->decompressing = FALSE;
 	}
 
-	VIPS_FREEF( fclose, jpeg->fp );
+	VIPS_FREEF( fclose, jpeg->eman.fp );
 	VIPS_FREE( jpeg->filename );
 	jpeg->eman.fp = NULL;
 	jpeg_destroy_decompress( &jpeg->cinfo );
@@ -203,7 +213,6 @@ readjpeg_new( VipsImage *out, int shrink, gboolean fail )
 	jpeg->out = out;
 	jpeg->shrink = shrink;
 	jpeg->fail = fail;
-	jpeg->fp = NULL;
 	jpeg->filename = NULL;
 	jpeg->decompressing = FALSE;
 
@@ -225,10 +234,9 @@ static int
 readjpeg_file( ReadJpeg *jpeg, const char *filename )
 {
 	jpeg->filename = g_strdup( filename );
-        if( !(jpeg->fp = vips__file_open_read( filename, NULL, FALSE )) ) 
+        if( !(jpeg->eman.fp = vips__file_open_read( filename, NULL, FALSE )) ) 
                 return( -1 );
-	jpeg->eman.fp = jpeg->fp;
-        jpeg_stdio_src( &jpeg->cinfo, jpeg->fp );
+        jpeg_stdio_src( &jpeg->cinfo, jpeg->eman.fp );
 
 	return( 0 );
 }
@@ -282,25 +290,28 @@ show_entry( ExifEntry *entry, void *client )
 static void
 show_ifd( ExifContent *content, void *client )
 {
+	int *ifd = (int *) client;
+
+        printf( "- ifd %d\n", *ifd );
         exif_content_foreach_entry( content, show_entry, client );
-        printf( "-\n" );
+
+	*ifd += 1;
 }
 
 void
 show_values( ExifData *data )
 {
         ExifByteOrder order;
+	int ifd;
 
         order = exif_data_get_byte_order( data );
         printf( "EXIF tags in '%s' byte order\n", 
 		exif_byte_order_get_name( order ) );
 
-	printf( "%-20.20s", "Tag" );
-        printf( "|" );
-	printf( "%-58.58s", "Value" );
-        printf( "\n" );
+	printf( "Title|Value|Format|Size\n" ); 
 
-        exif_data_foreach_content( data, show_ifd, NULL );
+	ifd = 0;
+        exif_data_foreach_content( data, show_ifd, &ifd );
 
         if( data->size ) 
                 printf( "contains thumbnail of %d bytes\n", data->size );
@@ -309,7 +320,6 @@ show_values( ExifData *data )
 #endif /*HAVE_EXIF*/
 
 #ifdef HAVE_EXIF
-
 static int
 vips_exif_get_int( ExifData *ed, 
 	ExifEntry *entry, unsigned long component, int *out )
@@ -335,25 +345,50 @@ vips_exif_get_int( ExifData *ed,
 }
 
 static int
+vips_exif_get_rational( ExifData *ed, 
+	ExifEntry *entry, unsigned long component, ExifRational *out )
+{
+	if( entry->format == EXIF_FORMAT_RATIONAL ) {
+		ExifByteOrder bo = exif_data_get_byte_order( ed );
+		size_t sizeof_component = entry->size / entry->components;
+		size_t offset = component * sizeof_component;
+
+		*out = exif_get_rational( entry->data + offset, bo );
+	}
+	else
+		return( -1 );
+
+	return( 0 );
+}
+
+static int
+vips_exif_get_srational( ExifData *ed, 
+	ExifEntry *entry, unsigned long component, ExifSRational *out )
+{
+	if( entry->format == EXIF_FORMAT_SRATIONAL ) {
+		ExifByteOrder bo = exif_data_get_byte_order( ed );
+		size_t sizeof_component = entry->size / entry->components;
+		size_t offset = component * sizeof_component;
+
+		*out = exif_get_srational( entry->data + offset, bo );
+	}
+	else
+		return( -1 );
+
+	return( 0 );
+}
+
+static int
 vips_exif_get_double( ExifData *ed, 
 	ExifEntry *entry, unsigned long component, double *out )
 {
-	ExifByteOrder bo = exif_data_get_byte_order( ed );
-	size_t sizeof_component = entry->size / entry->components;
-	size_t offset = component * sizeof_component;
+	ExifRational rv;
+	ExifSRational srv;
 
-	if( entry->format == EXIF_FORMAT_RATIONAL ) {
-		ExifRational value;
-
-		value = exif_get_rational( entry->data + offset, bo );
-		*out = (double) value.numerator / value.denominator;
-	}
-	else if( entry->format == EXIF_FORMAT_SRATIONAL ) {
-		ExifSRational value;
-
-		value = exif_get_srational( entry->data + offset, bo );
-		*out = (double) value.numerator / value.denominator;
-	}
+	if( !vips_exif_get_rational( ed, entry, component, &rv ) ) 
+		*out = (double) rv.numerator / rv.denominator;
+	else if( !vips_exif_get_srational( ed, entry, component, &srv ) ) 
+		*out = (double) srv.numerator / srv.denominator;
 	else
 		return( -1 );
 
@@ -370,12 +405,20 @@ vips_exif_to_s(  ExifData *ed, ExifEntry *entry, VipsBuf *buf )
 {
 	unsigned long i;
 	int iv;
-	double dv;
+	ExifRational rv;
+	ExifSRational srv;
 	char txt[256];
 
-	if( entry->format == EXIF_FORMAT_ASCII ) 
-		vips_buf_appendf( buf, "%s ", entry->data );
+	if( entry->format == EXIF_FORMAT_ASCII )  {
+		/* libexif does not null-terminate strings. Copy out and add
+		 * the \0 ourselves.
+		 */
+		int len = VIPS_MIN( 254, entry->size ); 
 
+		memcpy( txt, entry->data, len );
+		txt[len] = '\0';
+		vips_buf_appendf( buf, "%s ", txt );
+	}
 	else if( entry->components < 10 &&
 		!vips_exif_get_int( ed, entry, 0, &iv ) ) {
 		for( i = 0; i < entry->components; i++ ) {
@@ -384,13 +427,19 @@ vips_exif_to_s(  ExifData *ed, ExifEntry *entry, VipsBuf *buf )
 		}
 	}
 	else if( entry->components < 10 &&
-		!vips_exif_get_double( ed, entry, 0, &dv ) ) {
+		!vips_exif_get_rational( ed, entry, 0, &rv ) ) {
 		for( i = 0; i < entry->components; i++ ) {
-			vips_exif_get_double( ed, entry, i, &dv );
-			/* Need to be locale independent.
-			 */
-			g_ascii_dtostr( txt, 256, dv );
-			vips_buf_appendf( buf, "%s ", txt );
+			vips_exif_get_rational( ed, entry, i, &rv );
+			vips_buf_appendf( buf, "%u/%u ", 
+				rv.numerator, rv.denominator );
+		}
+	}
+	else if( entry->components < 10 &&
+		!vips_exif_get_srational( ed, entry, 0, &srv ) ) {
+		for( i = 0; i < entry->components; i++ ) {
+			vips_exif_get_srational( ed, entry, i, &srv );
+			vips_buf_appendf( buf, "%d/%d ", 
+				srv.numerator, srv.denominator );
 		}
 	}
 	else 
@@ -417,7 +466,9 @@ attach_exif_entry( ExifEntry *entry, VipsExif *ve )
 	char value_txt[256];
 	VipsBuf value = VIPS_BUF_STATIC( value_txt );
 
-	vips_buf_appendf( &name, "exif-%s", exif_tag_get_title( entry->tag ) );
+	vips_buf_appendf( &name, "exif-ifd%d-%s", 
+		exif_entry_get_ifd( entry ),
+		exif_tag_get_title( entry->tag ) );
 	vips_exif_to_s( ve->ed, entry, &value ); 
 
 	/* Can't do anything sensible with the error return.
@@ -433,30 +484,12 @@ attach_exif_content( ExifContent *content, VipsExif *ve )
 		(ExifContentForeachEntryFunc) attach_exif_entry, ve );
 }
 
-/* Just find the first occurence of the tag (is this correct?)
- */
-static ExifEntry *
-find_entry( ExifData *ed, ExifTag tag )
-{
-	int i;
-
-	for( i = 0; i < EXIF_IFD_COUNT; i++ ) {
-		ExifEntry *entry;
-
-		if( (entry = exif_content_get_entry( ed->ifd[i], tag )) )
-			return( entry );
-	}
-
-	return( NULL );
-}
-
 static int
-get_entry_rational( ExifData *ed, ExifTag tag, double *out )
+get_entry_double( ExifData *ed, int ifd, ExifTag tag, double *out )
 {
 	ExifEntry *entry;
 
-	if( !(entry = find_entry( ed, tag )) ||
-		entry->format != EXIF_FORMAT_RATIONAL ||
+	if( !(entry = exif_content_get_entry( ed->ifd[ifd], tag )) ||
 		entry->components != 1 )
 		return( -1 );
 
@@ -464,12 +497,11 @@ get_entry_rational( ExifData *ed, ExifTag tag, double *out )
 }
 
 static int
-get_entry_short( ExifData *ed, ExifTag tag, int *out )
+get_entry_int( ExifData *ed, int ifd, ExifTag tag, int *out )
 {
 	ExifEntry *entry;
 
-	if( !(entry = find_entry( ed, tag )) ||
-		entry->format != EXIF_FORMAT_SHORT ||
+	if( !(entry = exif_content_get_entry( ed->ifd[ifd], tag )) ||
 		entry->components != 1 )
 		return( -1 );
 
@@ -477,18 +509,26 @@ get_entry_short( ExifData *ed, ExifTag tag, int *out )
 }
 
 static void
-set_vips_resolution( VipsImage *im, ExifData *ed )
+res_from_exif( VipsImage *im, ExifData *ed )
 {
 	double xres, yres;
 	int unit;
 
-	if( get_entry_rational( ed, EXIF_TAG_X_RESOLUTION, &xres ) ||
-		get_entry_rational( ed, EXIF_TAG_Y_RESOLUTION, &yres ) ||
-		get_entry_short( ed, EXIF_TAG_RESOLUTION_UNIT, &unit ) ) {
+	/* The main image xres/yres are in ifd0. ifd1 has xres/yres of the
+	 * image thumbnail, if any.
+	 */
+	if( get_entry_double( ed, 0, EXIF_TAG_X_RESOLUTION, &xres ) ||
+		get_entry_double( ed, 0, EXIF_TAG_Y_RESOLUTION, &yres ) ||
+		get_entry_int( ed, 0, EXIF_TAG_RESOLUTION_UNIT, &unit ) ) {
 		vips_warn( "VipsJpeg", 
 			"%s", _( "error reading resolution" ) );
 		return;
 	}
+
+#ifdef DEBUG
+	printf( "res_from_exif: seen exif tags "
+		"xres = %g, yres = %g, unit = %d\n", xres, yres, unit );
+#endif /*DEBUG*/
 
 	switch( unit ) {
 	case 2:
@@ -496,6 +536,8 @@ set_vips_resolution( VipsImage *im, ExifData *ed )
 		 */
 		xres /= 25.4;
 		yres /= 25.4;
+		vips_image_set_string( im, 
+			VIPS_META_RESOLUTION_UNIT, "in" );
 		break;
 
 	case 3:
@@ -503,6 +545,8 @@ set_vips_resolution( VipsImage *im, ExifData *ed )
 		 */
 		xres /= 10.0;
 		yres /= 10.0;
+		vips_image_set_string( im, 
+			VIPS_META_RESOLUTION_UNIT, "cm" );
 		break;
 
 	default:
@@ -512,7 +556,7 @@ set_vips_resolution( VipsImage *im, ExifData *ed )
 	}
 
 #ifdef DEBUG
-	printf( "set_vips_resolution: seen exif resolution %g, %g p/mm\n",
+	printf( "res_from_exif: seen exif resolution %g, %g p/mm\n",
 		       xres, yres );
 #endif /*DEBUG*/
 
@@ -538,68 +582,41 @@ attach_thumbnail( VipsImage *im, ExifData *ed )
 #endif /*HAVE_EXIF*/
 
 static int
-read_exif( VipsImage *im, void *data, int data_length )
+parse_exif( VipsImage *im, void *data, int data_length )
 {
-	char *data_copy;
-
-	/* Only use the first one.
-	 */
-	if( vips_image_get_typeof( im, VIPS_META_EXIF_NAME ) ) {
-#ifdef DEBUG
-		printf( "read_exif: second EXIF block, ignoring\n" );
-#endif /*DEBUG*/
-
-		return( 0 );
-	}
-
-#ifdef DEBUG
-	printf( "read_exif: attaching %d bytes of exif\n", data_length );
-#endif /*DEBUG*/
-
-	/* Always attach a copy of the unparsed exif data.
-	 */
-	if( !(data_copy = vips_malloc( NULL, data_length )) )
-		return( -1 );
-	memcpy( data_copy, data, data_length );
-	vips_image_set_blob( im, VIPS_META_EXIF_NAME, 
-		(VipsCallbackFn) vips_free, data_copy, data_length );
-
 #ifdef HAVE_EXIF
 {
 	ExifData *ed;
+	VipsExif ve;
 
 	if( !(ed = exif_data_new_from_data( data, data_length )) )
 		return( -1 );
 
-	if( ed->size > 0 ) {
-		VipsExif ve;
-
 #ifdef DEBUG_VERBOSE
-		show_tags( ed );
-		show_values( ed );
+	show_tags( ed );
+	show_values( ed );
 #endif /*DEBUG_VERBOSE*/
 
-		/* Attach informational fields for what we find.
+	/* Attach informational fields for what we find.
 
-			FIXME ... better to have this in the UI layer?
+		FIXME ... better to have this in the UI layer?
 
-			Or we could attach non-human-readable tags here (int, 
-			double etc) and then move the human stuff to the UI 
-			layer?
+		Or we could attach non-human-readable tags here (int, 
+		double etc) and then move the human stuff to the UI 
+		layer?
 
-		 */
-		ve.image = im;
-		ve.ed = ed;
-		exif_data_foreach_content( ed, 
-			(ExifDataForeachContentFunc) attach_exif_content, &ve );
+	 */
+	ve.image = im;
+	ve.ed = ed;
+	exif_data_foreach_content( ed, 
+		(ExifDataForeachContentFunc) attach_exif_content, &ve );
 
-		/* Look for resolution fields and use them to set the VIPS 
-		 * xres/yres fields.
-		 */
-		set_vips_resolution( im, ed );
+	/* Look for resolution fields and use them to set the VIPS 
+	 * xres/yres fields.
+	 */
+	res_from_exif( im, ed );
 
-		attach_thumbnail( im, ed );
-	}
+	attach_thumbnail( im, ed );
 
 	exif_data_free( ed );
 }
@@ -609,22 +626,22 @@ read_exif( VipsImage *im, void *data, int data_length )
 }
 
 static int
-read_xmp( VipsImage *im, void *data, size_t data_length )
+attach_blob( VipsImage *im, const char *field, void *data, int data_length )
 {
 	char *data_copy;
 
-	/* XMP sections start "http". Only use the first one.
+	/* Only use the first one.
 	 */
-	if( vips_image_get_typeof( im, VIPS_META_XMP_NAME ) ) {
+	if( vips_image_get_typeof( im, field ) ) {
 #ifdef DEBUG
-		printf( "read_xmp: second XMP block, ignoring\n" );
+		printf( "attach_blob: second %s block, ignoring\n", field );
 #endif /*DEBUG*/
 
 		return( 0 );
 	}
 
 #ifdef DEBUG
-	printf( "read_xmp: attaching %zd bytes of XMP\n", data_length );
+	printf( "attach_blob: attaching %d bytes of %s\n", data_length, field );
 #endif /*DEBUG*/
 
 	/* Always attach a copy of the unparsed exif data.
@@ -632,7 +649,7 @@ read_xmp( VipsImage *im, void *data, size_t data_length )
 	if( !(data_copy = vips_malloc( NULL, data_length )) )
 		return( -1 );
 	memcpy( data_copy, data, data_length );
-	vips_image_set_blob( im, VIPS_META_XMP_NAME, 
+	vips_image_set_blob( im, field, 
 		(VipsCallbackFn) vips_free, data_copy, data_length );
 
 	return( 0 );
@@ -698,6 +715,11 @@ read_jpeg_header( ReadJpeg *jpeg, VipsImage *out )
 	if( cinfo->saw_JFIF_marker &&
 		cinfo->X_density != 1U && 
 		cinfo->Y_density != 1U ) {
+#ifdef DEBUG
+		printf( "read_jpeg_header: seen jfif _density %d, %d\n",
+			cinfo->X_density, cinfo->Y_density );
+#endif /*DEBUG*/
+
 		switch( cinfo->density_unit ) {
 		case 1:
 			/* Pixels per inch.
@@ -734,7 +756,7 @@ read_jpeg_header( ReadJpeg *jpeg, VipsImage *out )
 		interpretation,
 		xres, yres );
 
-	vips_demand_hint( out, VIPS_DEMAND_STYLE_SMALLTILE, NULL );
+	vips_demand_hint( out, VIPS_DEMAND_STYLE_THINSTRIP, NULL );
 
 	/* Interlaced jpegs need lots of memory to read, so our caller needs
 	 * to know.
@@ -747,8 +769,6 @@ read_jpeg_header( ReadJpeg *jpeg, VipsImage *out )
 	for( p = cinfo->marker_list; p; p = p->next ) {
 #ifdef DEBUG
 {
-		int i;
-
 		printf( "read_jpeg_header: seen %d bytes of APP%d\n",
 			p->data_length,
 			p->marker - JPEG_APP0 );
@@ -764,19 +784,24 @@ read_jpeg_header( ReadJpeg *jpeg, VipsImage *out )
 			/* Possible EXIF or XMP data.
 			 */
 			if( p->data_length > 4 &&
-				vips_isprefix( "Exif", (char *) p->data ) &&
-				read_exif( out, p->data, p->data_length ) )
+				vips_isprefix( "Exif", (char *) p->data ) ) {
+				if( parse_exif( out, 
+					p->data, p->data_length ) ||
+					attach_blob( out, VIPS_META_EXIF_NAME, 
+						p->data, p->data_length ) )
 				return( -1 );
+			}
 
 			if( p->data_length > 4 &&
 				vips_isprefix( "http", (char *) p->data ) &&
-				read_xmp( out, p->data, p->data_length ) )
+				attach_blob( out, VIPS_META_XMP_NAME, 
+					p->data, p->data_length ) )
 				return( -1 );
 
 			break;
 
 		case JPEG_APP0 + 2:
-			/* ICC profile.
+			/* Possible ICC profile.
 			 */
 			if( p->data_length > 14 &&
 				vips_isprefix( "ICC_PROFILE", 
@@ -793,6 +818,16 @@ read_jpeg_header( ReadJpeg *jpeg, VipsImage *out )
 						p->data_length - 14;
 				}
 			}
+			break;
+
+		case JPEG_APP0 + 13:
+			/* Possible IPCT data block.
+			 */
+			if( p->data_length > 5 &&
+				vips_isprefix( "Photo", (char *) p->data ) &&
+				attach_blob( out, VIPS_META_IPCT_NAME,
+					p->data, p->data_length ) )
+				return( -1 );
 			break;
 
 		default:
@@ -839,7 +874,6 @@ read_jpeg_generate( VipsRegion *or,
 	struct jpeg_decompress_struct *cinfo = &jpeg->cinfo;
 	int sz = cinfo->output_width * cinfo->output_components;
 
-	JSAMPROW row_pointer[1];
 	int y;
 
 #ifdef DEBUG
@@ -858,18 +892,22 @@ read_jpeg_generate( VipsRegion *or,
 	 */
 	g_assert( r->top % 8 == 0 );
 
+	/* Tiles should always be a strip in height, unless it's the final
+	 * strip.
+	 */
+	g_assert( r->height == VIPS_MIN( 8, or->im->Ysize - r->top ) ); 
+
 	/* Here for longjmp() from vips__new_error_exit().
 	 */
 	if( setjmp( jpeg->eman.jmp ) ) 
 		return( -1 );
 
 	for( y = 0; y < r->height; y++ ) {
+		JSAMPROW row_pointer[1];
+
 		row_pointer[0] = (JSAMPLE *) 
 			VIPS_REGION_ADDR( or, 0, r->top + y );
 
-		/* No faster to read in groups and you have to loop
-		 * anyway. So just read a line at a time.
-		 */
 		jpeg_read_scanlines( cinfo, &row_pointer[0], 1 );
 
 		if( jpeg->invert_pels ) {
@@ -908,15 +946,16 @@ read_jpeg_image( ReadJpeg *jpeg, VipsImage *out )
 	jpeg->decompressing = TRUE;
 
 #ifdef DEBUG
-	printf( "read_jpeg_image: starting deompress\n" );
+	printf( "read_jpeg_image: starting decompress\n" );
 #endif /*DEBUG*/
 
 	if( vips_image_generate( t[0], 
-			NULL, read_jpeg_generate, NULL, 
-			jpeg, NULL ) ||
-		vips_sequential( t[0], &t[1], NULL ) ||
-		vips_foreign_tilecache( t[1], &t[2], 8 ) || 
-		vips_image_write( t[2], out ) )
+		NULL, read_jpeg_generate, NULL, 
+		jpeg, NULL ) ||
+		vips_sequential( t[0], &t[1], 
+			"tile_height", 8,
+			NULL ) ||
+		vips_image_write( t[1], out ) )
 		return( -1 );
 
 	return( 0 );
@@ -950,10 +989,12 @@ vips__jpeg_read_file( const char *filename, VipsImage *out,
 		return( -1 );
 	}
 
-	/* Need to read in APP1 (EXIF metadata) and APP2 (ICC profile).
+	/* Need to read in APP1 (EXIF metadata), APP2 (ICC profile), APP13
+	 * (photoshop IPCT).
 	 */
 	jpeg_save_markers( &jpeg->cinfo, JPEG_APP0 + 1, 0xffff );
 	jpeg_save_markers( &jpeg->cinfo, JPEG_APP0 + 2, 0xffff );
+	jpeg_save_markers( &jpeg->cinfo, JPEG_APP0 + 13, 0xffff );
 
 	/* Convert!
 	 */

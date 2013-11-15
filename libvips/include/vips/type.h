@@ -20,7 +20,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -66,9 +67,13 @@ typedef struct _VipsArea {
 
 	/*< private >*/
 
-	/* Reference count.
+	/* Reference count and lock. 
+	 *
+	 * We could use an atomic int, but this is not a high-traffic data
+	 * structure, so a simple GMutex is OK.
 	 */
 	int count;
+	GMutex *lock;		
 
 	/* Things like ICC profiles need their own free functions.
 	 */
@@ -86,6 +91,7 @@ typedef struct _VipsArea {
 
 VipsArea *vips_area_copy( VipsArea *area );
 void vips_area_unref( VipsArea *area );
+void vips__type_leak( void );
 
 VipsArea *vips_area_new( VipsCallbackFn free_fn, void *data );
 VipsArea *vips_area_new_blob( VipsCallbackFn free_fn, 
@@ -128,7 +134,6 @@ GType vips_ref_string_get_type( void );
 #define VIPS_TYPE_BLOB (vips_blob_get_type())
 GType vips_blob_get_type( void );
 
-
 /**
  * VIPS_TYPE_ARRAY_DOUBLE:
  *
@@ -137,7 +142,19 @@ GType vips_blob_get_type( void );
 #define VIPS_TYPE_ARRAY_DOUBLE (vips_array_double_get_type())
 typedef VipsArea VipsArrayDouble;
 VipsArrayDouble *vips_array_double_new( const double *array, int n );
+VipsArrayDouble *vips_array_double_newv( int n, ... );
 GType vips_array_double_get_type( void );
+
+/**
+ * VIPS_TYPE_ARRAY_INT:
+ *
+ * The #GType for a #VipsArrayInt.
+ */
+#define VIPS_TYPE_ARRAY_INT (vips_array_int_get_type())
+typedef VipsArea VipsArrayInt;
+VipsArrayInt *vips_array_int_new( const int *array, int n );
+VipsArrayInt *vips_array_int_newv( int n, ... );
+GType vips_array_int_get_type( void );
 
 /**
  * VIPS_TYPE_ARRAY_IMAGE:
@@ -169,6 +186,9 @@ void *vips_value_get_array( const GValue *value,
 
 double *vips_value_get_array_double( const GValue *value, int *n );
 int vips_value_set_array_double( GValue *value, const double *array, int n );
+
+int *vips_value_get_array_int( const GValue *value, int *n );
+int vips_value_set_array_int( GValue *value, const int *array, int n );
 
 GObject **vips_value_get_array_object( const GValue *value, int *n );
 int vips_value_set_array_object( GValue *value, int n );

@@ -1,0 +1,244 @@
+<!-- ##### SECTION Title ##### -->
+generate
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### USER_FUNCTION VipsGenerateFn ##### -->
+<para>
+
+</para>
+
+@out: 
+@seq: 
+@a: 
+@b: 
+@stop: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsRegionWrite ##### -->
+<para>
+
+</para>
+
+@region: 
+@area: 
+@a: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsSinkNotify ##### -->
+<para>
+
+</para>
+
+@im: 
+@rect: 
+@a: 
+
+
+<!-- ##### USER_FUNCTION VipsStartFn ##### -->
+<para>
+
+</para>
+
+@out: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsStopFn ##### -->
+<para>
+
+</para>
+
+@seq: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_allocate_input_array ##### -->
+<para>
+
+</para>
+
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_demand_hint ##### -->
+<para>
+
+</para>
+
+@image: 
+@hint: 
+@...: 
+
+
+<!-- ##### FUNCTION vips_demand_hint_array ##### -->
+<para>
+
+</para>
+
+@image: 
+@hint: 
+@in: 
+
+
+<!-- ##### FUNCTION vips_image_generate ##### -->
+<para>
+
+</para>
+
+@im: 
+@start_fn: 
+@generate_fn: 
+@stop_fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sink ##### -->
+<para>
+
+</para>
+
+@im: 
+@start_fn: 
+@generate_fn: 
+@stop_fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sink_disc ##### -->
+<para>
+
+</para>
+
+@im: 
+@write_fn: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sink_memory ##### -->
+<para>
+
+</para>
+
+@im: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sink_memory2 ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sink_screen ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@mask: 
+@tile_width: 
+@tile_height: 
+@max_tiles: 
+@priority: 
+@notify: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sink_tile ##### -->
+<para>
+
+</para>
+
+@im: 
+@tile_width: 
+@tile_height: 
+@start_fn: 
+@generate_fn: 
+@stop_fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_start_many ##### -->
+<para>
+
+</para>
+
+@out: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_start_one ##### -->
+<para>
+
+</para>
+
+@out: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_stop_many ##### -->
+<para>
+
+</para>
+
+@seq: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_stop_one ##### -->
+<para>
+
+</para>
+
+@seq: 
+@a: 
+@b: 
+@Returns: 
+
+

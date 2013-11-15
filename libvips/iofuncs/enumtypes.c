@@ -105,6 +105,44 @@ vips_foreign_tiff_resunit_get_type( void )
 
 	return( etype );
 }
+GType
+vips_foreign_dz_layout_get_type( void )
+{
+	static GType etype = 0;
+
+	if( etype == 0 ) {
+		static const GEnumValue values[] = {
+			{VIPS_FOREIGN_DZ_LAYOUT_DZ, "VIPS_FOREIGN_DZ_LAYOUT_DZ", "dz"},
+			{VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY, "VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY", "zoomify"},
+			{VIPS_FOREIGN_DZ_LAYOUT_GOOGLE, "VIPS_FOREIGN_DZ_LAYOUT_GOOGLE", "google"},
+			{VIPS_FOREIGN_DZ_LAYOUT_LAST, "VIPS_FOREIGN_DZ_LAYOUT_LAST", "last"},
+			{0, NULL, NULL}
+		};
+		
+		etype = g_enum_register_static( "VipsForeignDzLayout", values );
+	}
+
+	return( etype );
+}
+GType
+vips_foreign_dz_depth_get_type( void )
+{
+	static GType etype = 0;
+
+	if( etype == 0 ) {
+		static const GEnumValue values[] = {
+			{VIPS_FOREIGN_DZ_DEPTH_1PIXEL, "VIPS_FOREIGN_DZ_DEPTH_1PIXEL", "1pixel"},
+			{VIPS_FOREIGN_DZ_DEPTH_1TILE, "VIPS_FOREIGN_DZ_DEPTH_1TILE", "1tile"},
+			{VIPS_FOREIGN_DZ_DEPTH_1, "VIPS_FOREIGN_DZ_DEPTH_1", "1"},
+			{VIPS_FOREIGN_DZ_DEPTH_LAST, "VIPS_FOREIGN_DZ_DEPTH_LAST", "last"},
+			{0, NULL, NULL}
+		};
+		
+		etype = g_enum_register_static( "VipsForeignDzDepth", values );
+	}
+
+	return( etype );
+}
 /* enumerations from "../../libvips/include/vips/conversion.h" */
 GType
 vips_extend_get_type( void )
@@ -118,6 +156,7 @@ vips_extend_get_type( void )
 			{VIPS_EXTEND_REPEAT, "VIPS_EXTEND_REPEAT", "repeat"},
 			{VIPS_EXTEND_MIRROR, "VIPS_EXTEND_MIRROR", "mirror"},
 			{VIPS_EXTEND_WHITE, "VIPS_EXTEND_WHITE", "white"},
+			{VIPS_EXTEND_BACKGROUND, "VIPS_EXTEND_BACKGROUND", "background"},
 			{VIPS_EXTEND_LAST, "VIPS_EXTEND_LAST", "last"},
 			{0, NULL, NULL}
 		};
@@ -329,6 +368,23 @@ vips_operation_complex_get_type( void )
 	return( etype );
 }
 GType
+vips_operation_complex2_get_type( void )
+{
+	static GType etype = 0;
+
+	if( etype == 0 ) {
+		static const GEnumValue values[] = {
+			{VIPS_OPERATION_COMPLEX2_CROSS_PHASE, "VIPS_OPERATION_COMPLEX2_CROSS_PHASE", "cross-phase"},
+			{VIPS_OPERATION_COMPLEX2_LAST, "VIPS_OPERATION_COMPLEX2_LAST", "last"},
+			{0, NULL, NULL}
+		};
+		
+		etype = g_enum_register_static( "VipsOperationComplex2", values );
+	}
+
+	return( etype );
+}
+GType
 vips_operation_complexget_get_type( void )
 {
 	static GType etype = 0;
@@ -423,20 +479,21 @@ vips_interpretation_get_type( void )
 			{VIPS_INTERPRETATION_MULTIBAND, "VIPS_INTERPRETATION_MULTIBAND", "multiband"},
 			{VIPS_INTERPRETATION_B_W, "VIPS_INTERPRETATION_B_W", "b-w"},
 			{VIPS_INTERPRETATION_HISTOGRAM, "VIPS_INTERPRETATION_HISTOGRAM", "histogram"},
-			{VIPS_INTERPRETATION_FOURIER, "VIPS_INTERPRETATION_FOURIER", "fourier"},
 			{VIPS_INTERPRETATION_XYZ, "VIPS_INTERPRETATION_XYZ", "xyz"},
 			{VIPS_INTERPRETATION_LAB, "VIPS_INTERPRETATION_LAB", "lab"},
 			{VIPS_INTERPRETATION_CMYK, "VIPS_INTERPRETATION_CMYK", "cmyk"},
 			{VIPS_INTERPRETATION_LABQ, "VIPS_INTERPRETATION_LABQ", "labq"},
 			{VIPS_INTERPRETATION_RGB, "VIPS_INTERPRETATION_RGB", "rgb"},
-			{VIPS_INTERPRETATION_UCS, "VIPS_INTERPRETATION_UCS", "ucs"},
+			{VIPS_INTERPRETATION_CMC, "VIPS_INTERPRETATION_CMC", "cmc"},
 			{VIPS_INTERPRETATION_LCH, "VIPS_INTERPRETATION_LCH", "lch"},
 			{VIPS_INTERPRETATION_LABS, "VIPS_INTERPRETATION_LABS", "labs"},
 			{VIPS_INTERPRETATION_sRGB, "VIPS_INTERPRETATION_sRGB", "srgb"},
 			{VIPS_INTERPRETATION_YXY, "VIPS_INTERPRETATION_YXY", "yxy"},
+			{VIPS_INTERPRETATION_FOURIER, "VIPS_INTERPRETATION_FOURIER", "fourier"},
 			{VIPS_INTERPRETATION_RGB16, "VIPS_INTERPRETATION_RGB16", "rgb16"},
 			{VIPS_INTERPRETATION_GREY16, "VIPS_INTERPRETATION_GREY16", "grey16"},
 			{VIPS_INTERPRETATION_ARRAY, "VIPS_INTERPRETATION_ARRAY", "array"},
+			{VIPS_INTERPRETATION_scRGB, "VIPS_INTERPRETATION_scRGB", "scrgb"},
 			{0, NULL, NULL}
 		};
 		
@@ -492,6 +549,45 @@ vips_coding_get_type( void )
 
 	return( etype );
 }
+/* enumerations from "../../libvips/include/vips/operation.h" */
+GType
+vips_operation_flags_get_type( void )
+{
+	static GType etype = 0;
+
+	if( etype == 0 ) {
+		static const GFlagsValue values[] = {
+			{VIPS_OPERATION_NONE, "VIPS_OPERATION_NONE", "none"},
+			{VIPS_OPERATION_SEQUENTIAL, "VIPS_OPERATION_SEQUENTIAL", "sequential"},
+			{VIPS_OPERATION_NOCACHE, "VIPS_OPERATION_NOCACHE", "nocache"},
+			{0, NULL, NULL}
+		};
+		
+		etype = g_flags_register_static( "VipsOperationFlags", values );
+	}
+
+	return( etype );
+}
+/* enumerations from "../../libvips/include/vips/colour.h" */
+GType
+vips_intent_get_type( void )
+{
+	static GType etype = 0;
+
+	if( etype == 0 ) {
+		static const GEnumValue values[] = {
+			{VIPS_INTENT_PERCEPTUAL, "VIPS_INTENT_PERCEPTUAL", "perceptual"},
+			{VIPS_INTENT_RELATIVE, "VIPS_INTENT_RELATIVE", "relative"},
+			{VIPS_INTENT_SATURATION, "VIPS_INTENT_SATURATION", "saturation"},
+			{VIPS_INTENT_ABSOLUTE, "VIPS_INTENT_ABSOLUTE", "absolute"},
+			{0, NULL, NULL}
+		};
+		
+		etype = g_enum_register_static( "VipsIntent", values );
+	}
+
+	return( etype );
+}
 /* enumerations from "../../libvips/include/vips/object.h" */
 GType
 vips_argument_flags_get_type( void )
@@ -507,6 +603,7 @@ vips_argument_flags_get_type( void )
 			{VIPS_ARGUMENT_SET_ALWAYS, "VIPS_ARGUMENT_SET_ALWAYS", "set-always"},
 			{VIPS_ARGUMENT_INPUT, "VIPS_ARGUMENT_INPUT", "input"},
 			{VIPS_ARGUMENT_OUTPUT, "VIPS_ARGUMENT_OUTPUT", "output"},
+			{VIPS_ARGUMENT_DEPRECATED, "VIPS_ARGUMENT_DEPRECATED", "deprecated"},
 			{0, NULL, NULL}
 		};
 		

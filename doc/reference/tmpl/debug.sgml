@@ -1,0 +1,56 @@
+<!-- ##### SECTION Title ##### -->
+debug
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO VIPS_DEBUG_MSG ##### -->
+<para>
+
+</para>
+
+@...: 
+
+
+<!-- ##### MACRO VIPS_DEBUG_MSG_AMBER ##### -->
+<para>
+
+</para>
+
+@...: 
+
+
+<!-- ##### MACRO VIPS_DEBUG_MSG_GREEN ##### -->
+<para>
+
+</para>
+
+@...: 
+
+
+<!-- ##### MACRO VIPS_DEBUG_MSG_RED ##### -->
+<para>
+
+</para>
+
+@...: 
+
+

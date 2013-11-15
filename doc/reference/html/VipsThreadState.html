@@ -99,6 +99,8 @@ can be used to give feedback.
 <a name="VipsThreadStartFn"></a><h3>VipsThreadStartFn ()</h3>
 <pre class="programlisting"><a class="link" href="VipsThreadState.html" title="VipsThreadState"><span class="returnvalue">VipsThreadState</span></a> *   (*VipsThreadStartFn)                (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -131,7 +133,7 @@ can be used to give feedback.
 These per-thread values are carried around for your use by
 <a class="link" href="VipsThreadState.html#vips-threadpool-run" title="vips_threadpool_run ()"><code class="function">vips_threadpool_run()</code></a>. They are private to each thread, so they are a
 useful place
-for <a href="http://http://www.vips.ecs.soton.ac.uk/VipsThreadState.html#VipsThreadpoolAllocate"><span class="type">VipsThreadpoolAllocate</span></a> and <a href="http://http://www.vips.ecs.soton.ac.uk/VipsThreadState.html#VipsThreadpoolWork"><span class="type">VipsThreadpoolWork</span></a> to communicate.
+for <span class="type">VipsThreadpoolAllocate</span> and <span class="type">VipsThreadpoolWork</span> to communicate.
 </p>
 <p>
 <em class="parameter"><code>reg</code></em> is created for you at the start of processing and freed at the end,
@@ -180,6 +182,8 @@ but you can do what you like with it.
 	VipsObjectClass parent_class;
 } VipsThreadStateClass;
 </pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -215,14 +219,6 @@ See also: <a class="link" href="VipsThreadState.html#vips-threadpool-run" title=
 <td>client data</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>client data</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
-<td>client data</td>
-</tr>
-<tr>
 <td><p><span class="term"><em class="parameter"><code>stop</code></em> :</span></p></td>
 <td>set this to signal end of computation</td>
 </tr>
@@ -249,14 +245,6 @@ See also: <a class="link" href="VipsThreadState.html#vips-threadpool-run" title=
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>client data</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>client data</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
 <td>client data</td>
 </tr>
 <tr>
@@ -295,14 +283,6 @@ See also: <a class="link" href="VipsThreadState.html#vips-threadpool-run" title=
 <td>client data</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>client data</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
-<td>client data</td>
-</tr>
-<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>0 on success, or -1 on error</td>
 </tr>
@@ -313,16 +293,70 @@ See also: <a class="link" href="VipsThreadState.html#vips-threadpool-run" title=
 <div class="refsect2">
 <a name="vips--print-renders"></a><h3>vips__print_renders ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips__print_renders                 (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-concurrency-get"></a><h3>vips_concurrency_get ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 vips_concurrency_get                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Returns the number of worker threads that vips should use when running a
+<span class="type">VipsThreadPool</span>. 
+</p>
+<p>
+vips gets this values from these sources in turn:
+</p>
+<p>
+If <a class="link" href="VipsThreadState.html#vips-concurrency-set" title="vips_concurrency_set ()"><code class="function">vips_concurrency_set()</code></a> has been called, this value is used. The special
+value 0 means "default". You can also use the command-line argument
+"--vips-concurrency" to set this value.
+</p>
+<p>
+If <a class="link" href="VipsThreadState.html#vips-concurrency-set" title="vips_concurrency_set ()"><code class="function">vips_concurrency_set()</code></a> has not been called and no command-line argument
+was used, vips uses the value of the environment variable IM_CONCURRENCY,
+</p>
+<p>
+If IM_CONCURRENCY has not been set, vips find the number of hardware
+threads that the host machine can run in parallel and uses that value. 
+</p>
+<p>
+The final value is clipped to the range 1 - 1024.
+</p>
+<p>
+See also: <a class="link" href="VipsThreadState.html#vips-concurrency-get" title="vips_concurrency_get ()"><code class="function">vips_concurrency_get()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>number of worker threads to use.</td>
+</tr></tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="vips-concurrency-set"></a><h3>vips_concurrency_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                vips_concurrency_set                (<em class="parameter"><code><span class="type">int</span> concurrency</code></em>);</pre>
+<p>
+Sets the number of worker threads that vips should use when running a
+<span class="type">VipsThreadPool</span>. 
+</p>
+<p>
+The special value 0 means "default". In this case, the number of threads is
+set by the environmnt variable IM_CONCURRENCY, or if that is not set, the
+number of threads availble on the hist machine. 
+</p>
+<p>
+See also: <a class="link" href="VipsThreadState.html#vips-concurrency-get" title="vips_concurrency_get ()"><code class="function">vips_concurrency_get()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>concurrency</code></em> :</span></p></td>
+<td>number of threads to run</td>
+</tr></tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -363,6 +397,8 @@ will always be a multiple of tile_height.
 <a name="vips-thread-state-new"></a><h3>vips_thread_state_new ()</h3>
 <pre class="programlisting"><a class="link" href="VipsThreadState.html" title="VipsThreadState"><span class="returnvalue">VipsThreadState</span></a> *   vips_thread_state_new               (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *im</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -370,6 +406,8 @@ will always be a multiple of tile_height.
 <pre class="programlisting"><span class="returnvalue">void</span> *              vips_thread_state_set               (<em class="parameter"><code><a class="link" href="VipsObject.html" title="VipsObject"><span class="type">VipsObject</span></a> *object</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *a</code></em>,
                                                          <em class="parameter"><code><span class="type">void</span> *b</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -389,9 +427,8 @@ processed, <em class="parameter"><code>progress</code></em> is called, so that t
 progress feedback. <em class="parameter"><code>progress</code></em> may be <code class="literal">NULL</code>.
 </p>
 <p>
-Each thread has private state that the <em class="parameter"><code>allocate</code></em> and <em class="parameter"><code>work</code></em> functions can 
-use to communicate. This state is created by each worker as it starts using
-<em class="parameter"><code>start</code></em>. Use the state destructor to clean up.
+The object returned by <em class="parameter"><code>start</code></em> must be an instance of a subclass of
+<a class="link" href="VipsThreadState.html" title="VipsThreadState"><span class="type">VipsThreadState</span></a>. Use this to communicate between <em class="parameter"><code>allocate</code></em> and <em class="parameter"><code>work</code></em>. 
 </p>
 <p>
 <em class="parameter"><code>allocate</code></em> and <em class="parameter"><code>start</code></em> are always single-threaded (so they can write to the 

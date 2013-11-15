@@ -29,11 +29,12 @@ libiofuncs_la_SOURCES = \
 	buf.c \
 	window.c \
 	vector.c \
+	system.c \
 	buffer.c 
 
 EXTRA_DIST = enumtemplate
 
-INCLUDES = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 
+AM_CPPFLAGS = -I${top_srcdir}/libvips/include @VIPS_CFLAGS@ @VIPS_INCLUDES@ 
 
 # the headers we scan for enums etc.
 # keep in sync with ../include/vips/Makefile.am
@@ -46,6 +47,8 @@ vips_scan_headers = \
 	${top_srcdir}/libvips/include/vips/arithmetic.h \
 	${top_srcdir}/libvips/include/vips/util.h \
 	${top_srcdir}/libvips/include/vips/image.h \
+	${top_srcdir}/libvips/include/vips/operation.h \
+	${top_srcdir}/libvips/include/vips/colour.h \
 	${top_srcdir}/libvips/include/vips/object.h
 
 enumtypes.c: $(vips_scan_headers) Makefile

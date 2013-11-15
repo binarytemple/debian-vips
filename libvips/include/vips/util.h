@@ -21,7 +21,8 @@
 
     You should have received a copy of the GNU Lesser General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA
 
  */
 
@@ -158,6 +159,7 @@ G_STMT_START { \
 
 const char *vips_enum_string( GType enm, int value );
 const char *vips_enum_nick( GType enm, int value );
+int vips_enum_from_nick( const char *domain, GType type, const char *str );
 
 gboolean vips_slist_equal( GSList *l1, GSList *l2 );
 void *vips_slist_map2( GSList *list, VipsSListMap2Fn fn, void *a, void *b );
@@ -212,6 +214,8 @@ char *vips__gslist_gvalue_get( const GSList *list );
 int vips__seek( int fd, gint64 pos );
 int vips__ftruncate( int fd, gint64 pos );
 int vips_existsf( const char *name, ... )
+	__attribute__((format(printf, 1, 2)));
+int vips_mkdirf( const char *name, ... )
 	__attribute__((format(printf, 1, 2)));
 FILE *vips_popenf( const char *fmt, const char *mode, ... )
 	__attribute__((format(printf, 1, 3)));
