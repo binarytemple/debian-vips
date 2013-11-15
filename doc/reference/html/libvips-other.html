@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>other</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-mosaicing.html" title="mosaicing">
+<link rel="next" href="libvips-video.html" title="video">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-mosaicing.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-video.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-other.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-other.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="other">
+<a name="libvips-other"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-other.top_of_page"></a>other</span></h2>
+<p>other — miscellaneous operators</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-other.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-other.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-other.html#im-feye"
+>im_feye</a>                             (IMAGE *image,
+                                                         const int xsize,
+                                                         const int ysize,
+                                                         const double factor);
+int                 <a
+href="../libvips/libvips-other.html#im-eye"
+>im_eye</a>                              (IMAGE *image,
+                                                         const int xsize,
+                                                         const int ysize,
+                                                         const double factor);
+int                 <a
+href="../libvips/libvips-other.html#im-zone"
+>im_zone</a>                             (IMAGE *im,
+                                                         int size);
+int                 <a
+href="../libvips/libvips-other.html#im-fzone"
+>im_fzone</a>                            (IMAGE *im,
+                                                         int size);
+int                 <a
+href="../libvips/libvips-other.html#im-grey"
+>im_grey</a>                             (IMAGE *im,
+                                                         const int xsize,
+                                                         const int ysize);
+int                 <a
+href="../libvips/libvips-other.html#im-fgrey"
+>im_fgrey</a>                            (IMAGE *im,
+                                                         const int xsize,
+                                                         const int ysize);
+int                 <a
+href="../libvips/libvips-other.html#im-make-xy"
+>im_make_xy</a>                          (IMAGE *out,
+                                                         const int xsize,
+                                                         const int ysize);
+int                 <a
+href="../libvips/libvips-other.html#im-benchmarkn"
+>im_benchmarkn</a>                       (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n);
+int                 <a
+href="../libvips/libvips-other.html#im-benchmark2"
+>im_benchmark2</a>                       (IMAGE *in,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-other.html#im-cooc-matrix"
+>im_cooc_matrix</a>                      (IMAGE *im,
+                                                         IMAGE *m,
+                                                         int xp,
+                                                         int yp,
+                                                         int xs,
+                                                         int ys,
+                                                         int dx,
+                                                         int dy,
+                                                         int flag);
+int                 <a
+href="../libvips/libvips-other.html#im-cooc-asm"
+>im_cooc_asm</a>                         (IMAGE *m,
+                                                         double *asmoment);
+int                 <a
+href="../libvips/libvips-other.html#im-cooc-contrast"
+>im_cooc_contrast</a>                    (IMAGE *m,
+                                                         double *contrast);
+int                 <a
+href="../libvips/libvips-other.html#im-cooc-correlation"
+>im_cooc_correlation</a>                 (IMAGE *m,
+                                                         double *correlation);
+int                 <a
+href="../libvips/libvips-other.html#im-cooc-entropy"
+>im_cooc_entropy</a>                     (IMAGE *m,
+                                                         double *entropy);
+int                 <a
+href="../libvips/libvips-other.html#im-glds-matrix"
+>im_glds_matrix</a>                      (IMAGE *im,
+                                                         IMAGE *m,
+                                                         int xpos,
+                                                         int ypos,
+                                                         int xsize,
+                                                         int ysize,
+                                                         int dx,
+                                                         int dy);
+int                 <a
+href="../libvips/libvips-other.html#im-glds-asm"
+>im_glds_asm</a>                         (IMAGE *m,
+                                                         double *asmoment);
+int                 <a
+href="../libvips/libvips-other.html#im-glds-contrast"
+>im_glds_contrast</a>                    (IMAGE *m,
+                                                         double *contrast);
+int                 <a
+href="../libvips/libvips-other.html#im-glds-entropy"
+>im_glds_entropy</a>                     (IMAGE *m,
+                                                         double *entropy);
+int                 <a
+href="../libvips/libvips-other.html#im-glds-mean"
+>im_glds_mean</a>                        (IMAGE *m,
+                                                         double *mean);
+int                 <a
+href="../libvips/libvips-other.html#im-simcontr"
+>im_simcontr</a>                         (IMAGE *image,
+                                                         int xs,
+                                                         int ys);
+int                 <a
+href="../libvips/libvips-other.html#im-sines"
+>im_sines</a>                            (IMAGE *image,
+                                                         int xsize,
+                                                         int ysize,
+                                                         double horfreq,
+                                                         double verfreq);
+int                 <a
+href="../libvips/libvips-other.html#im-spatres"
+>im_spatres</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int step);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-other.description"></a><h2>Description</h2>
+<p>
+Various small things.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-other.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_feye ()">
+<a name="im-feye"></a><h3>im_feye ()</h3>
+<pre class="programlisting">int                 im_feye                             (IMAGE *image,
+                                                         const int xsize,
+                                                         const int ysize,
+                                                         const double factor);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_eye ()">
+<a name="im-eye"></a><h3>im_eye ()</h3>
+<pre class="programlisting">int                 im_eye                              (IMAGE *image,
+                                                         const int xsize,
+                                                         const int ysize,
+                                                         const double factor);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_zone ()">
+<a name="im-zone"></a><h3>im_zone ()</h3>
+<pre class="programlisting">int                 im_zone                             (IMAGE *im,
+                                                         int size);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_fzone ()">
+<a name="im-fzone"></a><h3>im_fzone ()</h3>
+<pre class="programlisting">int                 im_fzone                            (IMAGE *im,
+                                                         int size);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_grey ()">
+<a name="im-grey"></a><h3>im_grey ()</h3>
+<pre class="programlisting">int                 im_grey                             (IMAGE *im,
+                                                         const int xsize,
+                                                         const int ysize);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_fgrey ()">
+<a name="im-fgrey"></a><h3>im_fgrey ()</h3>
+<pre class="programlisting">int                 im_fgrey                            (IMAGE *im,
+                                                         const int xsize,
+                                                         const int ysize);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_make_xy ()">
+<a name="im-make-xy"></a><h3>im_make_xy ()</h3>
+<pre class="programlisting">int                 im_make_xy                          (IMAGE *out,
+                                                         const int xsize,
+                                                         const int ysize);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_benchmarkn ()">
+<a name="im-benchmarkn"></a><h3>im_benchmarkn ()</h3>
+<pre class="programlisting">int                 im_benchmarkn                       (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_benchmark2 ()">
+<a name="im-benchmark2"></a><h3>im_benchmark2 ()</h3>
+<pre class="programlisting">int                 im_benchmark2                       (IMAGE *in,
+                                                         double *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_cooc_matrix ()">
+<a name="im-cooc-matrix"></a><h3>im_cooc_matrix ()</h3>
+<pre class="programlisting">int                 im_cooc_matrix                      (IMAGE *im,
+                                                         IMAGE *m,
+                                                         int xp,
+                                                         int yp,
+                                                         int xs,
+                                                         int ys,
+                                                         int dx,
+                                                         int dy,
+                                                         int flag);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_cooc_asm ()">
+<a name="im-cooc-asm"></a><h3>im_cooc_asm ()</h3>
+<pre class="programlisting">int                 im_cooc_asm                         (IMAGE *m,
+                                                         double *asmoment);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_cooc_contrast ()">
+<a name="im-cooc-contrast"></a><h3>im_cooc_contrast ()</h3>
+<pre class="programlisting">int                 im_cooc_contrast                    (IMAGE *m,
+                                                         double *contrast);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_cooc_correlation ()">
+<a name="im-cooc-correlation"></a><h3>im_cooc_correlation ()</h3>
+<pre class="programlisting">int                 im_cooc_correlation                 (IMAGE *m,
+                                                         double *correlation);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_cooc_entropy ()">
+<a name="im-cooc-entropy"></a><h3>im_cooc_entropy ()</h3>
+<pre class="programlisting">int                 im_cooc_entropy                     (IMAGE *m,
+                                                         double *entropy);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_glds_matrix ()">
+<a name="im-glds-matrix"></a><h3>im_glds_matrix ()</h3>
+<pre class="programlisting">int                 im_glds_matrix                      (IMAGE *im,
+                                                         IMAGE *m,
+                                                         int xpos,
+                                                         int ypos,
+                                                         int xsize,
+                                                         int ysize,
+                                                         int dx,
+                                                         int dy);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_glds_asm ()">
+<a name="im-glds-asm"></a><h3>im_glds_asm ()</h3>
+<pre class="programlisting">int                 im_glds_asm                         (IMAGE *m,
+                                                         double *asmoment);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_glds_contrast ()">
+<a name="im-glds-contrast"></a><h3>im_glds_contrast ()</h3>
+<pre class="programlisting">int                 im_glds_contrast                    (IMAGE *m,
+                                                         double *contrast);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_glds_entropy ()">
+<a name="im-glds-entropy"></a><h3>im_glds_entropy ()</h3>
+<pre class="programlisting">int                 im_glds_entropy                     (IMAGE *m,
+                                                         double *entropy);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_glds_mean ()">
+<a name="im-glds-mean"></a><h3>im_glds_mean ()</h3>
+<pre class="programlisting">int                 im_glds_mean                        (IMAGE *m,
+                                                         double *mean);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_simcontr ()">
+<a name="im-simcontr"></a><h3>im_simcontr ()</h3>
+<pre class="programlisting">int                 im_simcontr                         (IMAGE *image,
+                                                         int xs,
+                                                         int ys);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_sines ()">
+<a name="im-sines"></a><h3>im_sines ()</h3>
+<pre class="programlisting">int                 im_sines                            (IMAGE *image,
+                                                         int xsize,
+                                                         int ysize,
+                                                         double horfreq,
+                                                         double verfreq);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_spatres ()">
+<a name="im-spatres"></a><h3>im_spatres ()</h3>
+<pre class="programlisting">int                 im_spatres                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int step);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

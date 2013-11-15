@@ -1,0 +1,649 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>header</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch01.html" title="Core VIPS API">
+<link rel="prev" href="libvips-image.html" title="image">
+<link rel="next" href="libvips-check.html" title="check">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-image.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-check.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-header.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-header.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="header">
+<a name="libvips-header"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-header.top_of_page"></a>header</span></h2>
+<p>header — get, set and walk image headers</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-header.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-header.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-header.html#im-header-int"
+>im_header_int</a>                       (IMAGE *im,
+                                                         const char *field,
+                                                         int *out);
+int                 <a
+href="../libvips/libvips-header.html#im-header-double"
+>im_header_double</a>                    (IMAGE *im,
+                                                         const char *field,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-header.html#im-header-string"
+>im_header_string</a>                    (IMAGE *im,
+                                                         const char *field,
+                                                         char **out);
+int                 <a
+href="../libvips/libvips-header.html#im-header-as-string"
+>im_header_as_string</a>                 (IMAGE *im,
+                                                         const char *field,
+                                                         char **out);
+GType               <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+>im_header_get_typeof</a>                (IMAGE *im,
+                                                         const char *field);
+int                 <a
+href="../libvips/libvips-header.html#im-header-get"
+>im_header_get</a>                       (IMAGE *im,
+                                                         const char *field,
+                                                         GValue *value_copy);
+void *              (<a
+href="../libvips/libvips-header.html#im-header-map-fn"
+>*im_header_map_fn</a>)                 (IMAGE *,
+                                                         const char *,
+                                                         GValue *,
+                                                         void *);
+void *              <a
+href="../libvips/libvips-header.html#im-header-map"
+>im_header_map</a>                       (IMAGE *im,
+                                                         <a
+href="../libvips/libvips-header.html#im-header-map-fn"
+>im_header_map_fn</a> fn,
+                                                         void *a);
+int                 <a
+href="../libvips/libvips-header.html#im-histlin"
+>im_histlin</a>                          (IMAGE *image,
+                                                         const char *fmt,
+                                                         ...);
+int                 <a
+href="../libvips/libvips-header.html#im-updatehist"
+>im_updatehist</a>                       (IMAGE *out,
+                                                         const char *name,
+                                                         int argc,
+                                                         char *argv[]);
+const char *        <a
+href="../libvips/libvips-header.html#im-history-get"
+>im_history_get</a>                      (IMAGE *im);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-header.description"></a><h2>Description</h2>
+<p>
+These functions let you get at image header data (including metadata) in a
+uniform way. They are handy for language bindings but less useful for C
+users.
+</p>
+<p>
+They first search the 
+VIPS header
+fields (see <a
+href="../libvips/libvips-image.html"
+>image</a>), then search for 
+a metadata field of that name (see
+<a
+href="../libvips/libvips-meta.html"
+>meta</a>).
+Use <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a> to test for the 
+existance and <span class="type">GType</span>
+of a header field.
+</p>
+<p>
+See <a
+href="../libvips/libvips-meta.html"
+>meta</a>
+for a set of functions for adding new metadata to an image.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-header.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_header_int ()">
+<a name="im-header-int"></a><h3>im_header_int ()</h3>
+<pre class="programlisting">int                 im_header_int                       (IMAGE *im,
+                                                         const char *field,
+                                                         int *out);</pre>
+<p>
+Gets <em class="parameter"><code>out</code></em> from <em class="parameter"><code>im</code></em> under the name <em class="parameter"><code>field</code></em>. This function searches for
+int-valued fields.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-header-get"
+><code class="function">im_header_get()</code></a>, <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to get the header field from
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
+<td> field name
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> return field value
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_header_double ()">
+<a name="im-header-double"></a><h3>im_header_double ()</h3>
+<pre class="programlisting">int                 im_header_double                    (IMAGE *im,
+                                                         const char *field,
+                                                         double *out);</pre>
+<p>
+Gets <em class="parameter"><code>out</code></em> from <em class="parameter"><code>im</code></em> under the name <em class="parameter"><code>field</code></em>. 
+This function searches for
+double-valued fields.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-header-get"
+><code class="function">im_header_get()</code></a>, <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to get the header field from
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
+<td> field name
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> return field value
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_header_string ()">
+<a name="im-header-string"></a><h3>im_header_string ()</h3>
+<pre class="programlisting">int                 im_header_string                    (IMAGE *im,
+                                                         const char *field,
+                                                         char **out);</pre>
+<p>
+Gets <em class="parameter"><code>out</code></em> from <em class="parameter"><code>im</code></em> under the name <em class="parameter"><code>field</code></em>. 
+This function searches for
+string-valued fields.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-header-get"
+><code class="function">im_header_get()</code></a>, <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to get the header field from
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
+<td> field name
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> return field value
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_header_as_string ()">
+<a name="im-header-as-string"></a><h3>im_header_as_string ()</h3>
+<pre class="programlisting">int                 im_header_as_string                 (IMAGE *im,
+                                                         const char *field,
+                                                         char **out);</pre>
+<p>
+Gets <em class="parameter"><code>out</code></em> from <em class="parameter"><code>im</code></em> under the name <em class="parameter"><code>field</code></em>. 
+This function will read any field, returning it as a printable string.
+You need to free the string with <code class="function">g_free()</code> when you are done with it.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-header-get"
+><code class="function">im_header_get()</code></a>, <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to get the header field from
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
+<td> field name
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> return field value as string
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_header_get_typeof ()">
+<a name="im-header-get-typeof"></a><h3>im_header_get_typeof ()</h3>
+<pre class="programlisting">GType               im_header_get_typeof                (IMAGE *im,
+                                                         const char *field);</pre>
+<p>
+Read the GType for a header field. Returns zero if there is no
+field of that name. 
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-header-get"
+><code class="function">im_header_get()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to test
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
+<td> the name to search for
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the GType of the field, or zero if there is no
+field of that name.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_header_get ()">
+<a name="im-header-get"></a><h3>im_header_get ()</h3>
+<pre class="programlisting">int                 im_header_get                       (IMAGE *im,
+                                                         const char *field,
+                                                         GValue *value_copy);</pre>
+<p>
+Fill <em class="parameter"><code>value_copy</code></em> with a copy of the header field. <em class="parameter"><code>value_copy</code></em> must be zeroed 
+but uninitialised.
+</p>
+<p>
+This will return -1 and add a message to the error buffer if the field
+does not exist. Use <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a> to test for the 
+existence
+of a field first if you are not certain it will be there.
+</p>
+<p>
+For example, to read a double from an image (though of course you would use
+<a
+href="../libvips/libvips-header.html#im-header-double"
+><code class="function">im_header_double()</code></a> in practice):
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+GValue value = { 0 };
+double d;
+
+if( im_header_get( im, field, &amp;value ) )
+  return( -1 );
+
+if( G_VALUE_TYPE( &amp;value ) != G_TYPE_DOUBLE ) {
+  im_error( "mydomain", _( "field \"%s\" is of type %s, not double" ),
+    field, g_type_name( G_VALUE_TYPE( &amp;value ) ) );
+  g_value_unset( &amp;value );
+  return( -1 );
+}
+
+d = g_value_get_double( &amp;value );
+g_value_unset( &amp;value );
+
+return( 0 );
+</pre></div>
+<p>
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a>, <a
+href="../libvips/libvips-header.html#im-header-double"
+><code class="function">im_header_double()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to get the field from from
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
+<td> the name to give the metadata
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value_copy</code></em> :</span></p></td>
+<td> the GValue is copied into this
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_header_map_fn ()">
+<a name="im-header-map-fn"></a><h3>im_header_map_fn ()</h3>
+<pre class="programlisting">void *              (*im_header_map_fn)                 (IMAGE *,
+                                                         const char *,
+                                                         GValue *,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_header_map ()">
+<a name="im-header-map"></a><h3>im_header_map ()</h3>
+<pre class="programlisting">void *              im_header_map                       (IMAGE *im,
+                                                         <a
+href="../libvips/libvips-header.html#im-header-map-fn"
+>im_header_map_fn</a> fn,
+                                                         void *a);</pre>
+<p>
+This function calls <em class="parameter"><code>fn</code></em> for every header field, including every item of 
+metadata. 
+</p>
+<p>
+Like all _map functions, the user function should return <code class="literal">NULL</code> to continue
+iteration, or a non-<code class="literal">NULL</code> pointer to indicate early termination.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-header-get-typeof"
+><code class="function">im_header_get_typeof()</code></a>, <a
+href="../libvips/libvips-header.html#im-header-get"
+><code class="function">im_header_get()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to map over
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fn</code></em> :</span></p></td>
+<td> function to call for each header field
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td> user data for function
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">NULL</code> on success, the failing pointer otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_histlin ()">
+<a name="im-histlin"></a><h3>im_histlin ()</h3>
+<pre class="programlisting">int                 im_histlin                          (IMAGE *image,
+                                                         const char *fmt,
+                                                         ...);</pre>
+<p>
+Add a line to the image history. The <em class="parameter"><code>fmt</code></em> and arguments are expanded, the
+date and time is appended prefixed with a hash character, and the whole
+string is appended to the image history and terminated with a newline.
+</p>
+<p>
+For example:
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+im_histlin( im, "vips im_invert %s %s", in-&gt;filename, out-&gt;filename );
+</pre></div>
+<p>
+</p>
+<p>
+Might add the string
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+"vips im_invert /home/john/fred.v /home/john/jim.v # Fri Apr  3 23:30:35
+2009\n"
+</pre></div>
+<p>
+</p>
+<p>
+VIPS operations don't add history lines for you because a single action at 
+the application level might involve many VIPS operations. History must be
+recorded by the application.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-updatehist"
+><code class="function">im_updatehist()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> add history liine to this image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fmt</code></em> :</span></p></td>
+<td> <code class="function">printf()</code> format string
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td> arguments to format string
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_updatehist ()">
+<a name="im-updatehist"></a><h3>im_updatehist ()</h3>
+<pre class="programlisting">int                 im_updatehist                       (IMAGE *out,
+                                                         const char *name,
+                                                         int argc,
+                                                         char *argv[]);</pre>
+<p>
+Formats the name/argv as a single string and calls <a
+href="../libvips/libvips-header.html#im-histlin"
+><code class="function">im_histlin()</code></a>. A
+convenience function for command-line prorams.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-history-get"
+><code class="function">im_history_get()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> image to attach history line to
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> program name
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>argc</code></em> :</span></p></td>
+<td> number of program arguments
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>argv</code></em> :</span></p></td>
+<td> program arguments
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_history_get ()">
+<a name="im-history-get"></a><h3>im_history_get ()</h3>
+<pre class="programlisting">const char *        im_history_get                      (IMAGE *im);</pre>
+<p>
+This function reads the image history as a C string. The string is owned
+by VIPS and must not be freed.
+</p>
+<p>
+VIPS tracks the history of each image, that is, the sequence of operations
+that generated that image. Applications built on VIPS need to call
+<a
+href="../libvips/libvips-header.html#im-histlin"
+><code class="function">im_histlin()</code></a> for each action they perform setting the command-line
+equivalent for the action.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-header.html#im-histlin"
+><code class="function">im_histlin()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> get history from here
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The history of <em class="parameter"><code>im</code></em> as a C string. Do not free!
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libvips-header.see-also"></a><h2>See Also</h2>
+<a
+href="../libvips/libvips-meta.html"
+>meta</a>,
+<a
+href="../libvips/libvips-check.html"
+>check</a>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

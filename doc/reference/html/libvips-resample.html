@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>resample</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-morphology.html" title="morphology">
+<link rel="next" href="libvips-histograms-lut.html" title="histograms_lut">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-morphology.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-histograms-lut.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-resample.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-resample.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="resample">
+<a name="libvips-resample"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-resample.top_of_page"></a>resample</span></h2>
+<p>resample — shrink, expand, rotate with a choice of interpolators</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-resample.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-resample.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-resample.html#im-affinei"
+>im_affinei</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         double a,
+                                                         double b,
+                                                         double c,
+                                                         double d,
+                                                         double dx,
+                                                         double dy,
+                                                         int ox,
+                                                         int oy,
+                                                         int ow,
+                                                         int oh);
+int                 <a
+href="../libvips/libvips-resample.html#im-affinei-all"
+>im_affinei_all</a>                      (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         double a,
+                                                         double b,
+                                                         double c,
+                                                         double d,
+                                                         double dx,
+                                                         double dy);
+int                 <a
+href="../libvips/libvips-resample.html#im-stretch3"
+>im_stretch3</a>                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double dx,
+                                                         double dy);
+int                 <a
+href="../libvips/libvips-resample.html#im-shrink"
+>im_shrink</a>                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double xshrink,
+                                                         double yshrink);
+int                 <a
+href="../libvips/libvips-resample.html#im-rightshift-size"
+>im_rightshift_size</a>                  (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int xshift,
+                                                         int yshift,
+                                                         int band_fmt);
+int                 <a
+href="../libvips/libvips-resample.html#im-match-linear"
+>im_match_linear</a>                     (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2);
+int                 <a
+href="../libvips/libvips-resample.html#im-match-linear-search"
+>im_match_linear_search</a>              (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int hwindowsize,
+                                                         int hsearchsize);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-resample.description"></a><h2>Description</h2>
+<p>
+Resample an image in various ways, using a <span class="type">VipsInterpolator</span> to generate
+intermediate values.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-resample.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_affinei ()">
+<a name="im-affinei"></a><h3>im_affinei ()</h3>
+<pre class="programlisting">int                 im_affinei                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         double a,
+                                                         double b,
+                                                         double c,
+                                                         double d,
+                                                         double dx,
+                                                         double dy,
+                                                         int ox,
+                                                         int oy,
+                                                         int ow,
+                                                         int oh);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_affinei_all ()">
+<a name="im-affinei-all"></a><h3>im_affinei_all ()</h3>
+<pre class="programlisting">int                 im_affinei_all                      (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         double a,
+                                                         double b,
+                                                         double c,
+                                                         double d,
+                                                         double dx,
+                                                         double dy);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_stretch3 ()">
+<a name="im-stretch3"></a><h3>im_stretch3 ()</h3>
+<pre class="programlisting">int                 im_stretch3                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double dx,
+                                                         double dy);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_shrink ()">
+<a name="im-shrink"></a><h3>im_shrink ()</h3>
+<pre class="programlisting">int                 im_shrink                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double xshrink,
+                                                         double yshrink);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_rightshift_size ()">
+<a name="im-rightshift-size"></a><h3>im_rightshift_size ()</h3>
+<pre class="programlisting">int                 im_rightshift_size                  (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int xshift,
+                                                         int yshift,
+                                                         int band_fmt);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_match_linear ()">
+<a name="im-match-linear"></a><h3>im_match_linear ()</h3>
+<pre class="programlisting">int                 im_match_linear                     (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_match_linear_search ()">
+<a name="im-match-linear-search"></a><h3>im_match_linear_search ()</h3>
+<pre class="programlisting">int                 im_match_linear_search              (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int hwindowsize,
+                                                         int hsearchsize);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

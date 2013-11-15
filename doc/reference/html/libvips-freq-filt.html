@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>freq_filt</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-histograms-lut.html" title="histograms_lut">
+<link rel="next" href="libvips-mask.html" title="mask">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-histograms-lut.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-mask.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-freq-filt.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-freq-filt.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="freq_filt">
+<a name="libvips-freq-filt"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-freq-filt.top_of_page"></a>freq_filt</span></h2>
+<p>freq_filt — fourier transforms and frequency-domin filters</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-freq-filt.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-freq-filt.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-fractsurf"
+>im_fractsurf</a>                        (IMAGE *out,
+                                                         int size,
+                                                         double frd);
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-freqflt"
+>im_freqflt</a>                          (IMAGE *in,
+                                                         IMAGE *mask,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-disp-ps"
+>im_disp_ps</a>                          (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-rotquad"
+>im_rotquad</a>                          (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-fwfft"
+>im_fwfft</a>                            (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-invfft"
+>im_invfft</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-invfftr"
+>im_invfftr</a>                          (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-freq-filt.html#im-phasecor-fft"
+>im_phasecor_fft</a>                     (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-freq-filt.description"></a><h2>Description</h2>
+<p>
+To and from Fourier space, filter in Fourier space, convert Fourier-space
+images to a displayable form.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-freq-filt.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_fractsurf ()">
+<a name="im-fractsurf"></a><h3>im_fractsurf ()</h3>
+<pre class="programlisting">int                 im_fractsurf                        (IMAGE *out,
+                                                         int size,
+                                                         double frd);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_freqflt ()">
+<a name="im-freqflt"></a><h3>im_freqflt ()</h3>
+<pre class="programlisting">int                 im_freqflt                          (IMAGE *in,
+                                                         IMAGE *mask,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_disp_ps ()">
+<a name="im-disp-ps"></a><h3>im_disp_ps ()</h3>
+<pre class="programlisting">int                 im_disp_ps                          (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_rotquad ()">
+<a name="im-rotquad"></a><h3>im_rotquad ()</h3>
+<pre class="programlisting">int                 im_rotquad                          (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_fwfft ()">
+<a name="im-fwfft"></a><h3>im_fwfft ()</h3>
+<pre class="programlisting">int                 im_fwfft                            (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_invfft ()">
+<a name="im-invfft"></a><h3>im_invfft ()</h3>
+<pre class="programlisting">int                 im_invfft                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_invfftr ()">
+<a name="im-invfftr"></a><h3>im_invfftr ()</h3>
+<pre class="programlisting">int                 im_invfftr                          (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_phasecor_fft ()">
+<a name="im-phasecor-fft"></a><h3>im_phasecor_fft ()</h3>
+<pre class="programlisting">int                 im_phasecor_fft                     (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);</pre>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libvips-freq-filt.see-also"></a><h2>See Also</h2>
+<a
+href="../libvips/libvips-image.html"
+>image</a>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>
