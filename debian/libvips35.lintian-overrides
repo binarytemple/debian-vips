@@ -1,0 +1,4 @@
+libvips35: package-name-doesnt-match-sonames libvipsCC35 libvips35
+
+# This is temporary until libtiff5-alt-dev goes away.
+libvips35: binary-or-shlib-defines-rpath
