@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>fmask</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-dispatch.html" title="dispatch">
+<link rel="next" href="object-tree.html" title="Object Hierarchy">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-dispatch.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="object-tree.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-fmask.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-fmask.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="fmask">
+<a name="libvips-fmask"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-fmask.top_of_page"></a>fmask</span></h2>
+<p>fmask</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-fmask.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+enum                <a
+href="../libvips/libvips-fmask.html#MaskType"
+>MaskType</a>;
+int                 <a
+href="../libvips/libvips-fmask.html#im-flt-image-freq"
+>im_flt_image_freq</a>                   (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-fmask.html#MaskType"
+>MaskType</a> flag,
+                                                         ...);
+int                 <a
+href="../libvips/libvips-fmask.html#im-create-fmask"
+>im_create_fmask</a>                     (IMAGE *out,
+                                                         int xsize,
+                                                         int ysize,
+                                                         <a
+href="../libvips/libvips-fmask.html#MaskType"
+>MaskType</a> flag,
+                                                         ...);
+int                 <a
+href="../libvips/libvips-fmask.html#im--fmaskcir"
+>im__fmaskcir</a>                        (IMAGE *out,
+                                                         <a
+href="../libvips/libvips-fmask.html#MaskType"
+>MaskType</a> flag,
+                                                         va_list ap);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-fmask.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-fmask.details"></a><h2>Details</h2>
+<div class="refsect2" title="enum MaskType">
+<a name="MaskType"></a><h3>enum MaskType</h3>
+<pre class="programlisting">typedef enum mask_type {
+        MASK_IDEAL_HIGHPASS = 0,
+        MASK_IDEAL_LOWPASS = 1,
+        MASK_BUTTERWORTH_HIGHPASS = 2,
+        MASK_BUTTERWORTH_LOWPASS = 3,
+        MASK_GAUSS_HIGHPASS = 4,
+        MASK_GAUSS_LOWPASS = 5,
+
+        MASK_IDEAL_RINGPASS = 6,
+        MASK_IDEAL_RINGREJECT = 7,
+        MASK_BUTTERWORTH_RINGPASS = 8,
+        MASK_BUTTERWORTH_RINGREJECT = 9,
+        MASK_GAUSS_RINGPASS = 10,
+        MASK_GAUSS_RINGREJECT = 11,
+
+        MASK_IDEAL_BANDPASS = 12,
+        MASK_IDEAL_BANDREJECT = 13,
+        MASK_BUTTERWORTH_BANDPASS = 14,
+        MASK_BUTTERWORTH_BANDREJECT = 15,
+        MASK_GAUSS_BANDPASS = 16,
+        MASK_GAUSS_BANDREJECT = 17,
+
+        MASK_FRACTAL_FLT = 18
+} MaskType;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_flt_image_freq ()">
+<a name="im-flt-image-freq"></a><h3>im_flt_image_freq ()</h3>
+<pre class="programlisting">int                 im_flt_image_freq                   (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-fmask.html#MaskType"
+>MaskType</a> flag,
+                                                         ...);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_create_fmask ()">
+<a name="im-create-fmask"></a><h3>im_create_fmask ()</h3>
+<pre class="programlisting">int                 im_create_fmask                     (IMAGE *out,
+                                                         int xsize,
+                                                         int ysize,
+                                                         <a
+href="../libvips/libvips-fmask.html#MaskType"
+>MaskType</a> flag,
+                                                         ...);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__fmaskcir ()">
+<a name="im--fmaskcir"></a><h3>im__fmaskcir ()</h3>
+<pre class="programlisting">int                 im__fmaskcir                        (IMAGE *out,
+                                                         <a
+href="../libvips/libvips-fmask.html#MaskType"
+>MaskType</a> flag,
+                                                         va_list ap);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

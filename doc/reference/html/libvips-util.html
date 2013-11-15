@@ -1,0 +1,926 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>util</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-transform.html" title="transform">
+<link rel="next" href="libvips-version.html" title="version">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-transform.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-version.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-util.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-util.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="util">
+<a name="libvips-util"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-util.top_of_page"></a>util</span></h2>
+<p>util</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-util.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a
+href="../libvips/libvips-util.html#IM-PI--CAPS"
+>IM_PI</a>
+#define             <a
+href="../libvips/libvips-util.html#IM-RAD--CAPS"
+>IM_RAD</a>                              ( r )
+#define             <a
+href="../libvips/libvips-util.html#IM-DEG--CAPS"
+>IM_DEG</a>                              ( a )
+#define             <a
+href="../libvips/libvips-util.html#IM-MAX--CAPS"
+>IM_MAX</a>                              (A,B)
+#define             <a
+href="../libvips/libvips-util.html#IM-MIN--CAPS"
+>IM_MIN</a>                              (A,B)
+#define             <a
+href="../libvips/libvips-util.html#IM-ABS--CAPS"
+>IM_ABS</a>                              (x)
+#define             <a
+href="../libvips/libvips-util.html#IM-CLIP--CAPS"
+>IM_CLIP</a>                             (A,V,B)
+#define             <a
+href="../libvips/libvips-util.html#IM-NUMBER--CAPS"
+>IM_NUMBER</a>                           (R)
+#define             <a
+href="../libvips/libvips-util.html#IM-FREEF--CAPS"
+>IM_FREEF</a>                            ( F, S )
+#define             <a
+href="../libvips/libvips-util.html#IM-FREE--CAPS"
+>IM_FREE</a>                             ( S )
+#define             <a
+href="../libvips/libvips-util.html#IM-SETSTR--CAPS"
+>IM_SETSTR</a>                           ( S, V )
+#define             <a
+href="../libvips/libvips-util.html#IM-UNROLL--CAPS"
+>IM_UNROLL</a>                           ( N, OPER )
+#define             <a
+href="../libvips/libvips-util.html#IM-RINT--CAPS"
+>IM_RINT</a>                             ( R )
+#define             <a
+href="../libvips/libvips-util.html#IM-CLIP-UCHAR--CAPS"
+>IM_CLIP_UCHAR</a>                       ( V, SEQ )
+#define             <a
+href="../libvips/libvips-util.html#IM-CLIP-USHORT--CAPS"
+>IM_CLIP_USHORT</a>                      ( V, SEQ )
+#define             <a
+href="../libvips/libvips-util.html#IM-CLIP-CHAR--CAPS"
+>IM_CLIP_CHAR</a>                        ( V, SEQ )
+#define             <a
+href="../libvips/libvips-util.html#IM-CLIP-SHORT--CAPS"
+>IM_CLIP_SHORT</a>                       ( V, SEQ )
+#define             <a
+href="../libvips/libvips-util.html#IM-CLIP-NONE--CAPS"
+>IM_CLIP_NONE</a>                        ( V, SEQ )
+void *              (<a
+href="../libvips/libvips-util.html#im-construct-fn"
+>*im_construct_fn</a>)                  (void *,
+                                                         void *,
+                                                         void *);
+void *              <a
+href="../libvips/libvips-util.html#im-local"
+>im_local</a>                            (<a
+href="../libvips/libvips-image.html#VipsImage"
+>VipsImage</a> *im,
+                                                         <a
+href="../libvips/libvips-util.html#im-construct-fn"
+>im_construct_fn</a> cons,
+                                                         <a
+href="../libvips/libvips-callback.html#im-callback-fn"
+>im_callback_fn</a> dest,
+                                                         void *a,
+                                                         void *b,
+                                                         void *c);
+int                 <a
+href="../libvips/libvips-util.html#im-local-array"
+>im_local_array</a>                      (<a
+href="../libvips/libvips-image.html#VipsImage"
+>VipsImage</a> *im,
+                                                         void **out,
+                                                         int n,
+                                                         <a
+href="../libvips/libvips-util.html#im-construct-fn"
+>im_construct_fn</a> cons,
+                                                         <a
+href="../libvips/libvips-callback.html#im-callback-fn"
+>im_callback_fn</a> dest,
+                                                         void *a,
+                                                         void *b,
+                                                         void *c);
+char *              <a
+href="../libvips/libvips-util.html#im--break-token"
+>im__break_token</a>                     (char *str,
+                                                         char *brk);
+void *              (<a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>*VSListMap2Fn</a>)                     (void *,
+                                                         void *,
+                                                         void *);
+void *              (<a
+href="../libvips/libvips-util.html#VSListMap4Fn"
+>*VSListMap4Fn</a>)                     (void *,
+                                                         void *,
+                                                         void *,
+                                                         void *,
+                                                         void *);
+void *              (<a
+href="../libvips/libvips-util.html#VSListFold2Fn"
+>*VSListFold2Fn</a>)                    (void *,
+                                                         void *,
+                                                         void *,
+                                                         void *);
+gboolean            <a
+href="../libvips/libvips-util.html#im-slist-equal"
+>im_slist_equal</a>                      (GSList *l1,
+                                                         GSList *l2);
+void *              <a
+href="../libvips/libvips-util.html#im-slist-map2"
+>im_slist_map2</a>                       (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);
+void *              <a
+href="../libvips/libvips-util.html#im-slist-map2-rev"
+>im_slist_map2_rev</a>                   (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);
+void *              <a
+href="../libvips/libvips-util.html#im-slist-map4"
+>im_slist_map4</a>                       (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap4Fn"
+>VSListMap4Fn</a> fn,
+                                                         void *a,
+                                                         void *b,
+                                                         void *c,
+                                                         void *d);
+void *              <a
+href="../libvips/libvips-util.html#im-slist-fold2"
+>im_slist_fold2</a>                      (GSList *list,
+                                                         void *start,
+                                                         <a
+href="../libvips/libvips-util.html#VSListFold2Fn"
+>VSListFold2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);
+GSList *            <a
+href="../libvips/libvips-util.html#im-slist-filter"
+>im_slist_filter</a>                     (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);
+void                <a
+href="../libvips/libvips-util.html#im-slist-free-all"
+>im_slist_free_all</a>                   (GSList *list);
+void *              <a
+href="../libvips/libvips-util.html#im-map-equal"
+>im_map_equal</a>                        (void *a,
+                                                         void *b);
+void *              <a
+href="../libvips/libvips-util.html#im-hash-table-map"
+>im_hash_table_map</a>                   (GHashTable *hash,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);
+void *              (<a
+href="../libvips/libvips-util.html#VipsTypeMap"
+>*VipsTypeMap</a>)                      (GType ,
+                                                         void *);
+void *              (<a
+href="../libvips/libvips-util.html#VipsTypeMap2"
+>*VipsTypeMap2</a>)                     (GType ,
+                                                         void *,
+                                                         void *);
+void *              (<a
+href="../libvips/libvips-util.html#VipsClassMap"
+>*VipsClassMap</a>)                     (VipsObjectClass *,
+                                                         void *);
+void *              <a
+href="../libvips/libvips-util.html#vips-type-map"
+>vips_type_map</a>                       (GType base,
+                                                         <a
+href="../libvips/libvips-util.html#VipsTypeMap2"
+>VipsTypeMap2</a> fn,
+                                                         void *a,
+                                                         void *b);
+void *              <a
+href="../libvips/libvips-util.html#vips-type-map-concrete-all"
+>vips_type_map_concrete_all</a>          (GType base,
+                                                         <a
+href="../libvips/libvips-util.html#VipsTypeMap"
+>VipsTypeMap</a> fn,
+                                                         void *a);
+void *              <a
+href="../libvips/libvips-util.html#vips-class-map-concrete-all"
+>vips_class_map_concrete_all</a>         (GType base,
+                                                         <a
+href="../libvips/libvips-util.html#VipsClassMap"
+>VipsClassMap</a> fn,
+                                                         void *a);
+VipsObjectClass *   <a
+href="../libvips/libvips-util.html#vips-class-find"
+>vips_class_find</a>                     (const char *basename,
+                                                         const char *nickname);
+GType               <a
+href="../libvips/libvips-util.html#vips-type-find"
+>vips_type_find</a>                      (const char *basename,
+                                                         const char *nickname);
+char *              <a
+href="../libvips/libvips-util.html#im-strncpy"
+>im_strncpy</a>                          (char *dest,
+                                                         const char *src,
+                                                         int n);
+char *              <a
+href="../libvips/libvips-util.html#im-strrstr"
+>im_strrstr</a>                          (const char *haystack,
+                                                         const char *needle);
+char *              <a
+href="../libvips/libvips-util.html#im-strdup"
+>im_strdup</a>                           (IMAGE *im,
+                                                         const char *str);
+gboolean            <a
+href="../libvips/libvips-util.html#im-ispostfix"
+>im_ispostfix</a>                        (const char *a,
+                                                         const char *b);
+gboolean            <a
+href="../libvips/libvips-util.html#im-isprefix"
+>im_isprefix</a>                         (const char *a,
+                                                         const char *b);
+int                 <a
+href="../libvips/libvips-util.html#im-vsnprintf"
+>im_vsnprintf</a>                        (char *str,
+                                                         size_t size,
+                                                         const char *format,
+                                                         va_list ap);
+int                 <a
+href="../libvips/libvips-util.html#im-snprintf"
+>im_snprintf</a>                         (char *str,
+                                                         size_t size,
+                                                         const char *format,
+                                                         ...);
+char *              <a
+href="../libvips/libvips-util.html#im-break-token"
+>im_break_token</a>                      (char *str,
+                                                         const char *brk);
+const char *        <a
+href="../libvips/libvips-util.html#im-skip-dir"
+>im_skip_dir</a>                         (const char *filename);
+void                <a
+href="../libvips/libvips-util.html#im-filename-split"
+>im_filename_split</a>                   (const char *path,
+                                                         char *name,
+                                                         char *mode);
+void                <a
+href="../libvips/libvips-util.html#im-filename-suffix"
+>im_filename_suffix</a>                  (const char *path,
+                                                         char *suffix);
+int                 <a
+href="../libvips/libvips-util.html#im-filename-suffix-match"
+>im_filename_suffix_match</a>            (const char *path,
+                                                         const char *suffixes[]);
+char *              <a
+href="../libvips/libvips-util.html#im-getnextoption"
+>im_getnextoption</a>                    (char **in);
+char *              <a
+href="../libvips/libvips-util.html#im-getsuboption"
+>im_getsuboption</a>                     (const char *buf);
+gint64              <a
+href="../libvips/libvips-util.html#im-file-length"
+>im_file_length</a>                      (int fd);
+int                 <a
+href="../libvips/libvips-util.html#im--write"
+>im__write</a>                           (int fd,
+                                                         const void *buf,
+                                                         size_t count);
+FILE *              <a
+href="../libvips/libvips-util.html#im--file-open-read"
+>im__file_open_read</a>                  (const char *filename);
+FILE *              <a
+href="../libvips/libvips-util.html#im--file-open-write"
+>im__file_open_write</a>                 (const char *filename);
+char *              <a
+href="../libvips/libvips-util.html#im--file-read"
+>im__file_read</a>                       (FILE *fp,
+                                                         const char *name,
+                                                         unsigned int *length_out);
+char *              <a
+href="../libvips/libvips-util.html#im--file-read-name"
+>im__file_read_name</a>                  (const char *name,
+                                                         unsigned int *length_out);
+int                 <a
+href="../libvips/libvips-util.html#im--file-write"
+>im__file_write</a>                      (void *data,
+                                                         size_t size,
+                                                         size_t nmemb,
+                                                         FILE *stream);
+enum                <a
+href="../libvips/libvips-util.html#VipsToken"
+>VipsToken</a>;
+const char *        <a
+href="../libvips/libvips-util.html#vips--token-get"
+>vips__token_get</a>                     (const char *buffer,
+                                                         <a
+href="../libvips/libvips-util.html#VipsToken"
+>VipsToken</a> *token,
+                                                         char *string,
+                                                         int size);
+const char *        <a
+href="../libvips/libvips-util.html#vips--token-must"
+>vips__token_must</a>                    (const char *buffer,
+                                                         <a
+href="../libvips/libvips-util.html#VipsToken"
+>VipsToken</a> *token,
+                                                         char *string,
+                                                         int size);
+const char *        <a
+href="../libvips/libvips-util.html#vips--token-need"
+>vips__token_need</a>                    (const char *buffer,
+                                                         <a
+href="../libvips/libvips-util.html#VipsToken"
+>VipsToken</a> need_token,
+                                                         char *string,
+                                                         int size);
+int                 <a
+href="../libvips/libvips-util.html#im-existsf"
+>im_existsf</a>                          (const char *name,
+                                                         ...);
+int                 <a
+href="../libvips/libvips-util.html#im-ispoweroftwo"
+>im_ispoweroftwo</a>                     (int p);
+int                 <a
+href="../libvips/libvips-util.html#im-isvips"
+>im_isvips</a>                           (const char *filename);
+int                 <a
+href="../libvips/libvips-util.html#im-amiMSBfirst"
+>im_amiMSBfirst</a>                      (void);
+IMAGE *             <a
+href="../libvips/libvips-util.html#im--open-temp"
+>im__open_temp</a>                       (void);
+int                 <a
+href="../libvips/libvips-util.html#im-bits-of-fmt"
+>im_bits_of_fmt</a>                      (<a
+href="../libvips/libvips-image.html#VipsBandFmt"
+>VipsBandFmt</a> fmt);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-util.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-util.details"></a><h2>Details</h2>
+<div class="refsect2" title="IM_PI">
+<a name="IM-PI--CAPS"></a><h3>IM_PI</h3>
+<pre class="programlisting">#define IM_PI (3.14159265358979323846)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_RAD()">
+<a name="IM-RAD--CAPS"></a><h3>IM_RAD()</h3>
+<pre class="programlisting">#define IM_RAD( r ) (((r) / 360.0) * 2.0 * IM_PI)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_DEG()">
+<a name="IM-DEG--CAPS"></a><h3>IM_DEG()</h3>
+<pre class="programlisting">#define IM_DEG( a ) (((a) / (2.0 * IM_PI)) * 360.0)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_MAX()">
+<a name="IM-MAX--CAPS"></a><h3>IM_MAX()</h3>
+<pre class="programlisting">#define IM_MAX(A,B) ((A)&gt;(B)?(A):(B))
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_MIN()">
+<a name="IM-MIN--CAPS"></a><h3>IM_MIN()</h3>
+<pre class="programlisting">#define IM_MIN(A,B) ((A)&lt;(B)?(A):(B))
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_ABS()">
+<a name="IM-ABS--CAPS"></a><h3>IM_ABS()</h3>
+<pre class="programlisting">#define IM_ABS(x) (((x) &gt;= 0) ? (x) : -(x))
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_CLIP()">
+<a name="IM-CLIP--CAPS"></a><h3>IM_CLIP()</h3>
+<pre class="programlisting">#define IM_CLIP(A,V,B) IM_MAX( (A), IM_MIN( (B), (V) ) )
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_NUMBER()">
+<a name="IM-NUMBER--CAPS"></a><h3>IM_NUMBER()</h3>
+<pre class="programlisting">#define IM_NUMBER(R) ((int)(sizeof(R)/sizeof(R[0])))
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_FREEF()">
+<a name="IM-FREEF--CAPS"></a><h3>IM_FREEF()</h3>
+<pre class="programlisting">#define             IM_FREEF( F, S )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_FREE()">
+<a name="IM-FREE--CAPS"></a><h3>IM_FREE()</h3>
+<pre class="programlisting">#define             IM_FREE( S )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_SETSTR()">
+<a name="IM-SETSTR--CAPS"></a><h3>IM_SETSTR()</h3>
+<pre class="programlisting">#define             IM_SETSTR( S, V )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_UNROLL()">
+<a name="IM-UNROLL--CAPS"></a><h3>IM_UNROLL()</h3>
+<pre class="programlisting">#define             IM_UNROLL( N, OPER )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_RINT()">
+<a name="IM-RINT--CAPS"></a><h3>IM_RINT()</h3>
+<pre class="programlisting">#define IM_RINT( R ) ((int)((R)&gt;0?((R)+0.5):((R)-0.5)))
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_CLIP_UCHAR()">
+<a name="IM-CLIP-UCHAR--CAPS"></a><h3>IM_CLIP_UCHAR()</h3>
+<pre class="programlisting">#define             IM_CLIP_UCHAR( V, SEQ )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_CLIP_USHORT()">
+<a name="IM-CLIP-USHORT--CAPS"></a><h3>IM_CLIP_USHORT()</h3>
+<pre class="programlisting">#define             IM_CLIP_USHORT( V, SEQ )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_CLIP_CHAR()">
+<a name="IM-CLIP-CHAR--CAPS"></a><h3>IM_CLIP_CHAR()</h3>
+<pre class="programlisting">#define             IM_CLIP_CHAR( V, SEQ )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_CLIP_SHORT()">
+<a name="IM-CLIP-SHORT--CAPS"></a><h3>IM_CLIP_SHORT()</h3>
+<pre class="programlisting">#define             IM_CLIP_SHORT( V, SEQ )</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_CLIP_NONE()">
+<a name="IM-CLIP-NONE--CAPS"></a><h3>IM_CLIP_NONE()</h3>
+<pre class="programlisting">#define IM_CLIP_NONE( V, SEQ ) {}
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_construct_fn ()">
+<a name="im-construct-fn"></a><h3>im_construct_fn ()</h3>
+<pre class="programlisting">void *              (*im_construct_fn)                  (void *,
+                                                         void *,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_local ()">
+<a name="im-local"></a><h3>im_local ()</h3>
+<pre class="programlisting">void *              im_local                            (<a
+href="../libvips/libvips-image.html#VipsImage"
+>VipsImage</a> *im,
+                                                         <a
+href="../libvips/libvips-util.html#im-construct-fn"
+>im_construct_fn</a> cons,
+                                                         <a
+href="../libvips/libvips-callback.html#im-callback-fn"
+>im_callback_fn</a> dest,
+                                                         void *a,
+                                                         void *b,
+                                                         void *c);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_local_array ()">
+<a name="im-local-array"></a><h3>im_local_array ()</h3>
+<pre class="programlisting">int                 im_local_array                      (<a
+href="../libvips/libvips-image.html#VipsImage"
+>VipsImage</a> *im,
+                                                         void **out,
+                                                         int n,
+                                                         <a
+href="../libvips/libvips-util.html#im-construct-fn"
+>im_construct_fn</a> cons,
+                                                         <a
+href="../libvips/libvips-callback.html#im-callback-fn"
+>im_callback_fn</a> dest,
+                                                         void *a,
+                                                         void *b,
+                                                         void *c);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__break_token ()">
+<a name="im--break-token"></a><h3>im__break_token ()</h3>
+<pre class="programlisting">char *              im__break_token                     (char *str,
+                                                         char *brk);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VSListMap2Fn ()">
+<a name="VSListMap2Fn"></a><h3>VSListMap2Fn ()</h3>
+<pre class="programlisting">void *              (*VSListMap2Fn)                     (void *,
+                                                         void *,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VSListMap4Fn ()">
+<a name="VSListMap4Fn"></a><h3>VSListMap4Fn ()</h3>
+<pre class="programlisting">void *              (*VSListMap4Fn)                     (void *,
+                                                         void *,
+                                                         void *,
+                                                         void *,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VSListFold2Fn ()">
+<a name="VSListFold2Fn"></a><h3>VSListFold2Fn ()</h3>
+<pre class="programlisting">void *              (*VSListFold2Fn)                    (void *,
+                                                         void *,
+                                                         void *,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_slist_equal ()">
+<a name="im-slist-equal"></a><h3>im_slist_equal ()</h3>
+<pre class="programlisting">gboolean            im_slist_equal                      (GSList *l1,
+                                                         GSList *l2);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_slist_map2 ()">
+<a name="im-slist-map2"></a><h3>im_slist_map2 ()</h3>
+<pre class="programlisting">void *              im_slist_map2                       (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_slist_map2_rev ()">
+<a name="im-slist-map2-rev"></a><h3>im_slist_map2_rev ()</h3>
+<pre class="programlisting">void *              im_slist_map2_rev                   (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_slist_map4 ()">
+<a name="im-slist-map4"></a><h3>im_slist_map4 ()</h3>
+<pre class="programlisting">void *              im_slist_map4                       (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap4Fn"
+>VSListMap4Fn</a> fn,
+                                                         void *a,
+                                                         void *b,
+                                                         void *c,
+                                                         void *d);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_slist_fold2 ()">
+<a name="im-slist-fold2"></a><h3>im_slist_fold2 ()</h3>
+<pre class="programlisting">void *              im_slist_fold2                      (GSList *list,
+                                                         void *start,
+                                                         <a
+href="../libvips/libvips-util.html#VSListFold2Fn"
+>VSListFold2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_slist_filter ()">
+<a name="im-slist-filter"></a><h3>im_slist_filter ()</h3>
+<pre class="programlisting">GSList *            im_slist_filter                     (GSList *list,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_slist_free_all ()">
+<a name="im-slist-free-all"></a><h3>im_slist_free_all ()</h3>
+<pre class="programlisting">void                im_slist_free_all                   (GSList *list);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_map_equal ()">
+<a name="im-map-equal"></a><h3>im_map_equal ()</h3>
+<pre class="programlisting">void *              im_map_equal                        (void *a,
+                                                         void *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_hash_table_map ()">
+<a name="im-hash-table-map"></a><h3>im_hash_table_map ()</h3>
+<pre class="programlisting">void *              im_hash_table_map                   (GHashTable *hash,
+                                                         <a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a,
+                                                         void *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VipsTypeMap ()">
+<a name="VipsTypeMap"></a><h3>VipsTypeMap ()</h3>
+<pre class="programlisting">void *              (*VipsTypeMap)                      (GType ,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VipsTypeMap2 ()">
+<a name="VipsTypeMap2"></a><h3>VipsTypeMap2 ()</h3>
+<pre class="programlisting">void *              (*VipsTypeMap2)                     (GType ,
+                                                         void *,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VipsClassMap ()">
+<a name="VipsClassMap"></a><h3>VipsClassMap ()</h3>
+<pre class="programlisting">void *              (*VipsClassMap)                     (VipsObjectClass *,
+                                                         void *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_type_map ()">
+<a name="vips-type-map"></a><h3>vips_type_map ()</h3>
+<pre class="programlisting">void *              vips_type_map                       (GType base,
+                                                         <a
+href="../libvips/libvips-util.html#VipsTypeMap2"
+>VipsTypeMap2</a> fn,
+                                                         void *a,
+                                                         void *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_type_map_concrete_all ()">
+<a name="vips-type-map-concrete-all"></a><h3>vips_type_map_concrete_all ()</h3>
+<pre class="programlisting">void *              vips_type_map_concrete_all          (GType base,
+                                                         <a
+href="../libvips/libvips-util.html#VipsTypeMap"
+>VipsTypeMap</a> fn,
+                                                         void *a);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_class_map_concrete_all ()">
+<a name="vips-class-map-concrete-all"></a><h3>vips_class_map_concrete_all ()</h3>
+<pre class="programlisting">void *              vips_class_map_concrete_all         (GType base,
+                                                         <a
+href="../libvips/libvips-util.html#VipsClassMap"
+>VipsClassMap</a> fn,
+                                                         void *a);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_class_find ()">
+<a name="vips-class-find"></a><h3>vips_class_find ()</h3>
+<pre class="programlisting">VipsObjectClass *   vips_class_find                     (const char *basename,
+                                                         const char *nickname);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_type_find ()">
+<a name="vips-type-find"></a><h3>vips_type_find ()</h3>
+<pre class="programlisting">GType               vips_type_find                      (const char *basename,
+                                                         const char *nickname);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_strncpy ()">
+<a name="im-strncpy"></a><h3>im_strncpy ()</h3>
+<pre class="programlisting">char *              im_strncpy                          (char *dest,
+                                                         const char *src,
+                                                         int n);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_strrstr ()">
+<a name="im-strrstr"></a><h3>im_strrstr ()</h3>
+<pre class="programlisting">char *              im_strrstr                          (const char *haystack,
+                                                         const char *needle);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_strdup ()">
+<a name="im-strdup"></a><h3>im_strdup ()</h3>
+<pre class="programlisting">char *              im_strdup                           (IMAGE *im,
+                                                         const char *str);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_ispostfix ()">
+<a name="im-ispostfix"></a><h3>im_ispostfix ()</h3>
+<pre class="programlisting">gboolean            im_ispostfix                        (const char *a,
+                                                         const char *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_isprefix ()">
+<a name="im-isprefix"></a><h3>im_isprefix ()</h3>
+<pre class="programlisting">gboolean            im_isprefix                         (const char *a,
+                                                         const char *b);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_vsnprintf ()">
+<a name="im-vsnprintf"></a><h3>im_vsnprintf ()</h3>
+<pre class="programlisting">int                 im_vsnprintf                        (char *str,
+                                                         size_t size,
+                                                         const char *format,
+                                                         va_list ap);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_snprintf ()">
+<a name="im-snprintf"></a><h3>im_snprintf ()</h3>
+<pre class="programlisting">int                 im_snprintf                         (char *str,
+                                                         size_t size,
+                                                         const char *format,
+                                                         ...);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_break_token ()">
+<a name="im-break-token"></a><h3>im_break_token ()</h3>
+<pre class="programlisting">char *              im_break_token                      (char *str,
+                                                         const char *brk);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_skip_dir ()">
+<a name="im-skip-dir"></a><h3>im_skip_dir ()</h3>
+<pre class="programlisting">const char *        im_skip_dir                         (const char *filename);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_filename_split ()">
+<a name="im-filename-split"></a><h3>im_filename_split ()</h3>
+<pre class="programlisting">void                im_filename_split                   (const char *path,
+                                                         char *name,
+                                                         char *mode);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_filename_suffix ()">
+<a name="im-filename-suffix"></a><h3>im_filename_suffix ()</h3>
+<pre class="programlisting">void                im_filename_suffix                  (const char *path,
+                                                         char *suffix);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_filename_suffix_match ()">
+<a name="im-filename-suffix-match"></a><h3>im_filename_suffix_match ()</h3>
+<pre class="programlisting">int                 im_filename_suffix_match            (const char *path,
+                                                         const char *suffixes[]);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_getnextoption ()">
+<a name="im-getnextoption"></a><h3>im_getnextoption ()</h3>
+<pre class="programlisting">char *              im_getnextoption                    (char **in);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_getsuboption ()">
+<a name="im-getsuboption"></a><h3>im_getsuboption ()</h3>
+<pre class="programlisting">char *              im_getsuboption                     (const char *buf);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_file_length ()">
+<a name="im-file-length"></a><h3>im_file_length ()</h3>
+<pre class="programlisting">gint64              im_file_length                      (int fd);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__write ()">
+<a name="im--write"></a><h3>im__write ()</h3>
+<pre class="programlisting">int                 im__write                           (int fd,
+                                                         const void *buf,
+                                                         size_t count);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__file_open_read ()">
+<a name="im--file-open-read"></a><h3>im__file_open_read ()</h3>
+<pre class="programlisting">FILE *              im__file_open_read                  (const char *filename);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__file_open_write ()">
+<a name="im--file-open-write"></a><h3>im__file_open_write ()</h3>
+<pre class="programlisting">FILE *              im__file_open_write                 (const char *filename);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__file_read ()">
+<a name="im--file-read"></a><h3>im__file_read ()</h3>
+<pre class="programlisting">char *              im__file_read                       (FILE *fp,
+                                                         const char *name,
+                                                         unsigned int *length_out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__file_read_name ()">
+<a name="im--file-read-name"></a><h3>im__file_read_name ()</h3>
+<pre class="programlisting">char *              im__file_read_name                  (const char *name,
+                                                         unsigned int *length_out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__file_write ()">
+<a name="im--file-write"></a><h3>im__file_write ()</h3>
+<pre class="programlisting">int                 im__file_write                      (void *data,
+                                                         size_t size,
+                                                         size_t nmemb,
+                                                         FILE *stream);</pre>
+</div>
+<hr>
+<div class="refsect2" title="enum VipsToken">
+<a name="VipsToken"></a><h3>enum VipsToken</h3>
+<pre class="programlisting">typedef enum {
+ 	VIPS_TOKEN_LEFT = 1,	/* ({[ */
+	VIPS_TOKEN_RIGHT,	/* ]}) */
+	VIPS_TOKEN_STRING,	/* string or "str\"ing" */
+	VIPS_TOKEN_EQUALS,	/* = */
+	VIPS_TOKEN_COMMA	/* , */
+} VipsToken;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips__token_get ()">
+<a name="vips--token-get"></a><h3>vips__token_get ()</h3>
+<pre class="programlisting">const char *        vips__token_get                     (const char *buffer,
+                                                         <a
+href="../libvips/libvips-util.html#VipsToken"
+>VipsToken</a> *token,
+                                                         char *string,
+                                                         int size);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips__token_must ()">
+<a name="vips--token-must"></a><h3>vips__token_must ()</h3>
+<pre class="programlisting">const char *        vips__token_must                    (const char *buffer,
+                                                         <a
+href="../libvips/libvips-util.html#VipsToken"
+>VipsToken</a> *token,
+                                                         char *string,
+                                                         int size);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips__token_need ()">
+<a name="vips--token-need"></a><h3>vips__token_need ()</h3>
+<pre class="programlisting">const char *        vips__token_need                    (const char *buffer,
+                                                         <a
+href="../libvips/libvips-util.html#VipsToken"
+>VipsToken</a> need_token,
+                                                         char *string,
+                                                         int size);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_existsf ()">
+<a name="im-existsf"></a><h3>im_existsf ()</h3>
+<pre class="programlisting">int                 im_existsf                          (const char *name,
+                                                         ...);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_ispoweroftwo ()">
+<a name="im-ispoweroftwo"></a><h3>im_ispoweroftwo ()</h3>
+<pre class="programlisting">int                 im_ispoweroftwo                     (int p);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_isvips ()">
+<a name="im-isvips"></a><h3>im_isvips ()</h3>
+<pre class="programlisting">int                 im_isvips                           (const char *filename);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_amiMSBfirst ()">
+<a name="im-amiMSBfirst"></a><h3>im_amiMSBfirst ()</h3>
+<pre class="programlisting">int                 im_amiMSBfirst                      (void);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__open_temp ()">
+<a name="im--open-temp"></a><h3>im__open_temp ()</h3>
+<pre class="programlisting">IMAGE *             im__open_temp                       (void);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_bits_of_fmt ()">
+<a name="im-bits-of-fmt"></a><h3>im_bits_of_fmt ()</h3>
+<pre class="programlisting">int                 im_bits_of_fmt                      (<a
+href="../libvips/libvips-image.html#VipsBandFmt"
+>VipsBandFmt</a> fmt);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

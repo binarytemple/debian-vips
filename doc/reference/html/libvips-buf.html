@@ -1,0 +1,936 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>buf</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch01.html" title="Core VIPS API">
+<link rel="prev" href="libvips-memory.html" title="memory">
+<link rel="next" href="ch02.html" title="VIPS operation API by section">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-memory.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="ch02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-buf.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-buf.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="buf">
+<a name="libvips-buf"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-buf.top_of_page"></a>buf</span></h2>
+<p>buf — a string you can append to</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-buf.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-buf.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+                    <a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a>;
+#define             <a
+href="../libvips/libvips-buf.html#VIPS-BUF-STATIC--CAPS"
+>VIPS_BUF_STATIC</a>                     ( TEXT )
+void                <a
+href="../libvips/libvips-buf.html#vips-buf-rewind"
+>vips_buf_rewind</a>                     (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+void                <a
+href="../libvips/libvips-buf.html#vips-buf-destroy"
+>vips_buf_destroy</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+void                <a
+href="../libvips/libvips-buf.html#vips-buf-init"
+>vips_buf_init</a>                       (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+void                <a
+href="../libvips/libvips-buf.html#vips-buf-set-static"
+>vips_buf_set_static</a>                 (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char *base,
+                                                         int mx);
+void                <a
+href="../libvips/libvips-buf.html#vips-buf-set-dynamic"
+>vips_buf_set_dynamic</a>                (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         int mx);
+void                <a
+href="../libvips/libvips-buf.html#vips-buf-init-static"
+>vips_buf_init_static</a>                (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char *base,
+                                                         int mx);
+void                <a
+href="../libvips/libvips-buf.html#vips-buf-init-dynamic"
+>vips_buf_init_dynamic</a>               (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         int mx);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appendns"
+>vips_buf_appendns</a>                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *str,
+                                                         int sz);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appends"
+>vips_buf_appends</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *str);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appendf"
+>vips_buf_appendf</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *fmt,
+                                                         ...);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-vappendf"
+>vips_buf_vappendf</a>                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *fmt,
+                                                         va_list ap);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appendc"
+>vips_buf_appendc</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char ch);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appendsc"
+>vips_buf_appendsc</a>                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         gboolean quote,
+                                                         const char *str);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appendgv"
+>vips_buf_appendgv</a>                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         GValue *value);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-removec"
+>vips_buf_removec</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char ch);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-change"
+>vips_buf_change</a>                     (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *old,
+                                                         const char *);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-is-empty"
+>vips_buf_is_empty</a>                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-is-full"
+>vips_buf_is_full</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+const char *        <a
+href="../libvips/libvips-buf.html#vips-buf-all"
+>vips_buf_all</a>                        (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+const char *        <a
+href="../libvips/libvips-buf.html#vips-buf-firstline"
+>vips_buf_firstline</a>                  (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appendg"
+>vips_buf_appendg</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         double g);
+gboolean            <a
+href="../libvips/libvips-buf.html#vips-buf-appendd"
+>vips_buf_appendd</a>                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         int d);
+int                 <a
+href="../libvips/libvips-buf.html#vips-buf-len"
+>vips_buf_len</a>                        (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-buf.description"></a><h2>Description</h2>
+<p>
+A message buffer you can append stuff to safely and quickly. If the message 
+gets too long, you get "..." and truncation. Message buffers can be on the 
+stack or heap.
+</p>
+<p>
+For example:
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+char txt[256];
+VipsBuf buf = VIPS_BUF_STATIC (txt);
+int i;
+
+vips_buf_appends (&amp;buf, "Numbers are: ");
+for (i = 0; i &lt; array_length; i++) {
+  if (i &gt; 0)
+    vips_buf_appends (&amp;buf, ", ");
+  vips_buf_appendg (&amp;buf, array[i]);
+}
+printf ("%s", vips_buf_all (&amp;buf));
+</pre></div>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-buf.details"></a><h2>Details</h2>
+<div class="refsect2" title="VipsBuf">
+<a name="VipsBuf"></a><h3>VipsBuf</h3>
+<pre class="programlisting">typedef struct {
+	/* All fields are private.
+	 */
+} VipsBuf;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="VIPS_BUF_STATIC()">
+<a name="VIPS-BUF-STATIC--CAPS"></a><h3>VIPS_BUF_STATIC()</h3>
+<pre class="programlisting">#define             VIPS_BUF_STATIC( TEXT )</pre>
+<p>
+Initialize a heap buffer. For example:
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+char txt[256];
+VipsBuf buf = VIPS_BUF_STATIC (txt);
+</pre></div>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>TEXT</code></em> :</span></p></td>
+<td> the storage area to use
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>MAX</code></em> :</span></p></td>
+<td> the size of the storage area
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_rewind ()">
+<a name="vips-buf-rewind"></a><h3>vips_buf_rewind ()</h3>
+<pre class="programlisting">void                vips_buf_rewind                     (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+Reset the buffer to the empty string.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_destroy ()">
+<a name="vips-buf-destroy"></a><h3>vips_buf_destroy ()</h3>
+<pre class="programlisting">void                vips_buf_destroy                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+Destroy a buffer. Only needed for heap buffers. Leaves the buffer in the
+_init state.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_init ()">
+<a name="vips-buf-init"></a><h3>vips_buf_init ()</h3>
+<pre class="programlisting">void                vips_buf_init                       (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+Initialize a buffer.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_set_static ()">
+<a name="vips-buf-set-static"></a><h3>vips_buf_set_static ()</h3>
+<pre class="programlisting">void                vips_buf_set_static                 (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char *base,
+                                                         int mx);</pre>
+<p>
+Attach the buffer to a static memory area. The buffer needs to have been
+initialised. The memory area needs to be at least 4 bytes long.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>base</code></em> :</span></p></td>
+<td> the start of the memory area to use for storage
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mx</code></em> :</span></p></td>
+<td> the size of the storage area
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_set_dynamic ()">
+<a name="vips-buf-set-dynamic"></a><h3>vips_buf_set_dynamic ()</h3>
+<pre class="programlisting">void                vips_buf_set_dynamic                (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         int mx);</pre>
+<p>
+Attach the buffer to a heap memory area. The buffer needs to have been
+initialised. The memory area needs to be at least 4 bytes long.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mx</code></em> :</span></p></td>
+<td> the size of the storage area
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_init_static ()">
+<a name="vips-buf-init-static"></a><h3>vips_buf_init_static ()</h3>
+<pre class="programlisting">void                vips_buf_init_static                (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char *base,
+                                                         int mx);</pre>
+<p>
+Initialise and attach to a static memory area. <a
+href="../libvips/libvips-buf.html#VIPS-BUF-STATIC--CAPS"
+><code class="function">VIPS_BUF_STATIC()</code></a> is usually
+more convenient.
+</p>
+<p>
+For example:
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+char txt[256];
+VipsBuf buf;
+
+vips_buf_init_static (&amp;buf, txt, 256);
+</pre></div>
+<p>
+</p>
+<p>
+Static buffers don't need to be freed when they go out of scope, but their
+size must be set at compile-time.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>base</code></em> :</span></p></td>
+<td> the start of the memory area to use for storage
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mx</code></em> :</span></p></td>
+<td> the size of the storage area
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_init_dynamic ()">
+<a name="vips-buf-init-dynamic"></a><h3>vips_buf_init_dynamic ()</h3>
+<pre class="programlisting">void                vips_buf_init_dynamic               (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         int mx);</pre>
+<p>
+Initialise and attach to a heap memory area. 
+The memory area needs to be at least 4 bytes long.
+</p>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+VipsBuf buf;
+
+vips_buf_init_synamic (&amp;buf, 256);
+</pre></div>
+<p>
+</p>
+<p>
+Dynamic buffers must be freed with <a
+href="../libvips/libvips-buf.html#vips-buf-destroy"
+><code class="function">vips_buf_destroy()</code></a>, but their size can
+be set at runtime.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mx</code></em> :</span></p></td>
+<td> the size of the storage area
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appendns ()">
+<a name="vips-buf-appendns"></a><h3>vips_buf_appendns ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appendns                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *str,
+                                                         int sz);</pre>
+<p>
+Append at most <em class="parameter"><code>sz</code></em> chars from <em class="parameter"><code>str</code></em> to <em class="parameter"><code>buf</code></em>. <em class="parameter"><code>sz</code></em> &lt; 0 means unlimited. This
+is the low-level append operation: functions like <a
+href="../libvips/libvips-buf.html#vips-buf-appendf"
+><code class="function">vips_buf_appendf()</code></a> build
+on top of this.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
+<td> the string to append to the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sz</code></em> :</span></p></td>
+<td> the size of the string to append
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appends ()">
+<a name="vips-buf-appends"></a><h3>vips_buf_appends ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appends                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *str);</pre>
+<p>
+Append the whole of <em class="parameter"><code>str</code></em> to <em class="parameter"><code>buf</code></em>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
+<td> the string to append to the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appendf ()">
+<a name="vips-buf-appendf"></a><h3>vips_buf_appendf ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appendf                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *fmt,
+                                                         ...);</pre>
+<p>
+Format the string and append to <em class="parameter"><code>buf</code></em>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fmt</code></em> :</span></p></td>
+<td> <code class="function"><code class="function">printf()</code></code>-style format string
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td> arguments to format string
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_vappendf ()">
+<a name="vips-buf-vappendf"></a><h3>vips_buf_vappendf ()</h3>
+<pre class="programlisting">gboolean            vips_buf_vappendf                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *fmt,
+                                                         va_list ap);</pre>
+<p>
+Append to <em class="parameter"><code>buf</code></em>, args as <code class="function"><code class="function">vprintf()</code></code>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fmt</code></em> :</span></p></td>
+<td> <code class="function"><code class="function">printf()</code></code>-style format string
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ap</code></em> :</span></p></td>
+<td> arguments to format string
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appendc ()">
+<a name="vips-buf-appendc"></a><h3>vips_buf_appendc ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appendc                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char ch);</pre>
+<p>
+Append a single character <em class="parameter"><code>ch</code></em> to <em class="parameter"><code>buf</code></em>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ch</code></em> :</span></p></td>
+<td> the character to append to the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appendsc ()">
+<a name="vips-buf-appendsc"></a><h3>vips_buf_appendsc ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appendsc                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         gboolean quote,
+                                                         const char *str);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appendgv ()">
+<a name="vips-buf-appendgv"></a><h3>vips_buf_appendgv ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appendgv                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         GValue *value);</pre>
+<p>
+Format and append a <span class="type">GValue</span> with <code class="function">g_strdup_value_contents()</code>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td> <span class="type">GValue</span> to format and append
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_removec ()">
+<a name="vips-buf-removec"></a><h3>vips_buf_removec ()</h3>
+<pre class="programlisting">gboolean            vips_buf_removec                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         char ch);</pre>
+<p>
+Remove the last character, if it's <em class="parameter"><code>ch</code></em>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ch</code></em> :</span></p></td>
+<td> the character to remove
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on failure, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_change ()">
+<a name="vips-buf-change"></a><h3>vips_buf_change ()</h3>
+<pre class="programlisting">gboolean            vips_buf_change                     (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         const char *old,
+                                                         const char *);</pre>
+<p>
+Swap the rightmost occurence of <em class="parameter"><code>old</code></em> for <em class="parameter"><code>new</code></em>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>old</code></em> :</span></p></td>
+<td> the string to search for
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new</code></em> :</span></p></td>
+<td> the string to substitute
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_is_empty ()">
+<a name="vips-buf-is-empty"></a><h3>vips_buf_is_empty ()</h3>
+<pre class="programlisting">gboolean            vips_buf_is_empty                   (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if the buffer is empty.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_is_full ()">
+<a name="vips-buf-is-full"></a><h3>vips_buf_is_full ()</h3>
+<pre class="programlisting">gboolean            vips_buf_is_full                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if the buffer is full.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_all ()">
+<a name="vips-buf-all"></a><h3>vips_buf_all ()</h3>
+<pre class="programlisting">const char *        vips_buf_all                        (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+Return the contents of the buffer as a C string.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the <code class="literal">NULL</code>-terminated contents of the buffer. This is a pointer to
+the memory managed by the buffer and must not be freed. 
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_firstline ()">
+<a name="vips-buf-firstline"></a><h3>vips_buf_firstline ()</h3>
+<pre class="programlisting">const char *        vips_buf_firstline                  (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+Trim to just the first line (excluding "\n").</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the <code class="literal">NULL</code>-terminated contents of the buffer. This is a pointer to
+the memory managed by the buffer and must not be freed. 
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appendg ()">
+<a name="vips-buf-appendg"></a><h3>vips_buf_appendg ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appendg                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         double g);</pre>
+<p>
+Append a double, non-localised. Useful for config files etc.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>g</code></em> :</span></p></td>
+<td> value to format and append
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_appendd ()">
+<a name="vips-buf-appendd"></a><h3>vips_buf_appendd ()</h3>
+<pre class="programlisting">gboolean            vips_buf_appendd                    (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf,
+                                                         int d);</pre>
+<p>
+Append a number. If the number is -ve, add brackets. Needed for
+building function arguments.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>d</code></em> :</span></p></td>
+<td> value to format and append
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">FALSE</code> on overflow, <code class="literal">TRUE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="vips_buf_len ()">
+<a name="vips-buf-len"></a><h3>vips_buf_len ()</h3>
+<pre class="programlisting">int                 vips_buf_len                        (<a
+href="../libvips/libvips-buf.html#VipsBuf"
+>VipsBuf</a> *buf);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> the buffer
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the number of characters currently in the buffer.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libvips-buf.see-also"></a><h2>See Also</h2>
+#vips
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

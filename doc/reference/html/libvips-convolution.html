@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>convolution</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-conversion.html" title="conversion">
+<link rel="next" href="VipsFormat.html" title="VipsFormat">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-conversion.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="VipsFormat.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-convolution.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-convolution.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="convolution">
+<a name="libvips-convolution"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-convolution.top_of_page"></a>convolution</span></h2>
+<p>convolution — convolve and correlate images</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-convolution.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-convolution.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-convolution.html#im-conv"
+>im_conv</a>                             (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);
+int                 <a
+href="../libvips/libvips-convolution.html#im-conv-f"
+>im_conv_f</a>                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *mask);
+int                 <a
+href="../libvips/libvips-convolution.html#im-convsep"
+>im_convsep</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);
+int                 <a
+href="../libvips/libvips-convolution.html#im-convsep-f"
+>im_convsep_f</a>                        (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *mask);
+int                 <a
+href="../libvips/libvips-convolution.html#im-compass"
+>im_compass</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);
+int                 <a
+href="../libvips/libvips-convolution.html#im-gradient"
+>im_gradient</a>                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);
+int                 <a
+href="../libvips/libvips-convolution.html#im-lindetect"
+>im_lindetect</a>                        (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);
+int                 <a
+href="../libvips/libvips-convolution.html#im-sharpen"
+>im_sharpen</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int mask_size,
+                                                         double x1,
+                                                         double y2,
+                                                         double y3,
+                                                         double m1,
+                                                         double m2);
+int                 <a
+href="../libvips/libvips-convolution.html#im-grad-x"
+>im_grad_x</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-convolution.html#im-grad-y"
+>im_grad_y</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-convolution.html#im-fastcor"
+>im_fastcor</a>                          (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-convolution.html#im-spcor"
+>im_spcor</a>                            (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-convolution.html#im-gradcor"
+>im_gradcor</a>                          (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-convolution.html#im-contrast-surface"
+>im_contrast_surface</a>                 (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int half_win_size,
+                                                         int spacing);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-convolution.description"></a><h2>Description</h2>
+<p>
+These operations convolve an image in some way, or are operations based on
+simple convolution, or are useful with convolution.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-convolution.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_conv ()">
+<a name="im-conv"></a><h3>im_conv ()</h3>
+<pre class="programlisting">int                 im_conv                             (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_conv_f ()">
+<a name="im-conv-f"></a><h3>im_conv_f ()</h3>
+<pre class="programlisting">int                 im_conv_f                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *mask);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_convsep ()">
+<a name="im-convsep"></a><h3>im_convsep ()</h3>
+<pre class="programlisting">int                 im_convsep                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_convsep_f ()">
+<a name="im-convsep-f"></a><h3>im_convsep_f ()</h3>
+<pre class="programlisting">int                 im_convsep_f                        (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *mask);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_compass ()">
+<a name="im-compass"></a><h3>im_compass ()</h3>
+<pre class="programlisting">int                 im_compass                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_gradient ()">
+<a name="im-gradient"></a><h3>im_gradient ()</h3>
+<pre class="programlisting">int                 im_gradient                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_lindetect ()">
+<a name="im-lindetect"></a><h3>im_lindetect ()</h3>
+<pre class="programlisting">int                 im_lindetect                        (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#INTMASK--CAPS"
+>INTMASK</a> *mask);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_sharpen ()">
+<a name="im-sharpen"></a><h3>im_sharpen ()</h3>
+<pre class="programlisting">int                 im_sharpen                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int mask_size,
+                                                         double x1,
+                                                         double y2,
+                                                         double y3,
+                                                         double m1,
+                                                         double m2);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_grad_x ()">
+<a name="im-grad-x"></a><h3>im_grad_x ()</h3>
+<pre class="programlisting">int                 im_grad_x                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_grad_y ()">
+<a name="im-grad-y"></a><h3>im_grad_y ()</h3>
+<pre class="programlisting">int                 im_grad_y                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_fastcor ()">
+<a name="im-fastcor"></a><h3>im_fastcor ()</h3>
+<pre class="programlisting">int                 im_fastcor                          (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_spcor ()">
+<a name="im-spcor"></a><h3>im_spcor ()</h3>
+<pre class="programlisting">int                 im_spcor                            (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_gradcor ()">
+<a name="im-gradcor"></a><h3>im_gradcor ()</h3>
+<pre class="programlisting">int                 im_gradcor                          (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_contrast_surface ()">
+<a name="im-contrast-surface"></a><h3>im_contrast_surface ()</h3>
+<pre class="programlisting">int                 im_contrast_surface                 (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int half_win_size,
+                                                         int spacing);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

@@ -1,0 +1,1072 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>dispatch</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-semaphore.html" title="semaphore">
+<link rel="next" href="libvips-fmask.html" title="fmask">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-semaphore.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-fmask.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-dispatch.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-dispatch.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="dispatch">
+<a name="libvips-dispatch"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-dispatch.top_of_page"></a>dispatch</span></h2>
+<p>dispatch</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-dispatch.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-IMAGEVEC--CAPS"
+>IM_TYPE_IMAGEVEC</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-DOUBLEVEC--CAPS"
+>IM_TYPE_DOUBLEVEC</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-INTVEC--CAPS"
+>IM_TYPE_INTVEC</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-DOUBLE--CAPS"
+>IM_TYPE_DOUBLE</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-INT--CAPS"
+>IM_TYPE_INT</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-COMPLEX--CAPS"
+>IM_TYPE_COMPLEX</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-STRING--CAPS"
+>IM_TYPE_STRING</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-IMASK--CAPS"
+>IM_TYPE_IMASK</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-DMASK--CAPS"
+>IM_TYPE_DMASK</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-IMAGE--CAPS"
+>IM_TYPE_IMAGE</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-DISPLAY--CAPS"
+>IM_TYPE_DISPLAY</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-GVALUE--CAPS"
+>IM_TYPE_GVALUE</a>
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-TYPE-INTERPOLATE--CAPS"
+>IM_TYPE_INTERPOLATE</a>
+typedef             <a
+href="../libvips/libvips-dispatch.html#im-arg-type"
+>im_arg_type</a>;
+typedef             <a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a>;
+enum                <a
+href="../libvips/libvips-dispatch.html#im-type-flags"
+>im_type_flags</a>;
+int                 (<a
+href="../libvips/libvips-dispatch.html#im-init-obj-fn"
+>*im_init_obj_fn</a>)                   (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *obj,
+                                                         char *str);
+int                 (<a
+href="../libvips/libvips-dispatch.html#im-dest-obj-fn"
+>*im_dest_obj_fn</a>)                   (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+                    <a
+href="../libvips/libvips-dispatch.html#im-type-desc"
+>im_type_desc</a>;
+int                 (<a
+href="../libvips/libvips-dispatch.html#im-print-obj-fn"
+>*im_print_obj_fn</a>)                  (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+                    <a
+href="../libvips/libvips-dispatch.html#im-arg-desc"
+>im_arg_desc</a>;
+int                 (<a
+href="../libvips/libvips-dispatch.html#im-dispatch-fn"
+>*im_dispatch_fn</a>)                   (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *argv);
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-MAX-ARGS--CAPS"
+>IM_MAX_ARGS</a>
+enum                <a
+href="../libvips/libvips-dispatch.html#im-fn-flags"
+>im_fn_flags</a>;
+                    <a
+href="../libvips/libvips-dispatch.html#im-function"
+>im_function</a>;
+                    <a
+href="../libvips/libvips-dispatch.html#im-package"
+>im_package</a>;
+                    <a
+href="../libvips/libvips-dispatch.html#im-mask-object"
+>im_mask_object</a>;
+                    <a
+href="../libvips/libvips-dispatch.html#im-doublevec-object"
+>im_doublevec_object</a>;
+                    <a
+href="../libvips/libvips-dispatch.html#im-intvec-object"
+>im_intvec_object</a>;
+                    <a
+href="../libvips/libvips-dispatch.html#im-imagevec-object"
+>im_imagevec_object</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-int"
+>im__input_int</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-intvec"
+>im__input_intvec</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-imask"
+>im__input_imask</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-int"
+>im__output_int</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-intvec"
+>im__output_intvec</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-imask"
+>im__output_imask</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-double"
+>im__input_double</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-doublevec"
+>im__input_doublevec</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-dmask"
+>im__input_dmask</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-double"
+>im__output_double</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-doublevec"
+>im__output_doublevec</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-dmask"
+>im__output_dmask</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-dmask-screen"
+>im__output_dmask_screen</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-complex"
+>im__output_complex</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-string"
+>im__input_string</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-string"
+>im__output_string</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-imagevec"
+>im__input_imagevec</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-image"
+>im__input_image</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-image"
+>im__output_image</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--rw-image"
+>im__rw_image</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-display"
+>im__input_display</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-display"
+>im__output_display</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-gvalue"
+>im__input_gvalue</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--output-gvalue"
+>im__output_gvalue</a>;
+extern              im_type_desc <a
+href="../libvips/libvips-dispatch.html#im--input-interpolate"
+>im__input_interpolate</a>;
+int                 <a
+href="../libvips/libvips-dispatch.html#im--iprint"
+>im__iprint</a>                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--ivprint"
+>im__ivprint</a>                         (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--dprint"
+>im__dprint</a>                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--dvprint"
+>im__dvprint</a>                         (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--dmsprint"
+>im__dmsprint</a>                        (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--cprint"
+>im__cprint</a>                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--sprint"
+>im__sprint</a>                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--displayprint"
+>im__displayprint</a>                    (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+int                 <a
+href="../libvips/libvips-dispatch.html#im--gprint"
+>im__gprint</a>                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-INT--CAPS"
+>IM_INPUT_INT</a>                        ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-INTVEC--CAPS"
+>IM_INPUT_INTVEC</a>                     ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-IMASK--CAPS"
+>IM_INPUT_IMASK</a>                      ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-INT--CAPS"
+>IM_OUTPUT_INT</a>                       ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-INTVEC--CAPS"
+>IM_OUTPUT_INTVEC</a>                    ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-IMASK--CAPS"
+>IM_OUTPUT_IMASK</a>                     ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-DOUBLE--CAPS"
+>IM_INPUT_DOUBLE</a>                     ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-DOUBLEVEC--CAPS"
+>IM_INPUT_DOUBLEVEC</a>                  ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-DMASK--CAPS"
+>IM_INPUT_DMASK</a>                      ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-DOUBLE--CAPS"
+>IM_OUTPUT_DOUBLE</a>                    ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-DOUBLEVEC--CAPS"
+>IM_OUTPUT_DOUBLEVEC</a>                 ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-DMASK--CAPS"
+>IM_OUTPUT_DMASK</a>                     ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-DMASK-STATS--CAPS"
+>IM_OUTPUT_DMASK_STATS</a>               ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-COMPLEX--CAPS"
+>IM_OUTPUT_COMPLEX</a>                   ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-STRING--CAPS"
+>IM_INPUT_STRING</a>                     ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-STRING--CAPS"
+>IM_OUTPUT_STRING</a>                    ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-IMAGE--CAPS"
+>IM_INPUT_IMAGE</a>                      ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-IMAGEVEC--CAPS"
+>IM_INPUT_IMAGEVEC</a>                   ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-IMAGE--CAPS"
+>IM_OUTPUT_IMAGE</a>                     ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-RW-IMAGE--CAPS"
+>IM_RW_IMAGE</a>                         ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-DISPLAY--CAPS"
+>IM_INPUT_DISPLAY</a>                    ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-DISPLAY--CAPS"
+>IM_OUTPUT_DISPLAY</a>                   ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-GVALUE--CAPS"
+>IM_INPUT_GVALUE</a>                     ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-OUTPUT-GVALUE--CAPS"
+>IM_OUTPUT_GVALUE</a>                    ( S )
+#define             <a
+href="../libvips/libvips-dispatch.html#IM-INPUT-INTERPOLATE--CAPS"
+>IM_INPUT_INTERPOLATE</a>                ( S )
+<a
+href="../libvips/libvips-dispatch.html#im-package"
+>im_package</a> *        <a
+href="../libvips/libvips-dispatch.html#im-load-plugin"
+>im_load_plugin</a>                      (const char *name);
+int                 <a
+href="../libvips/libvips-dispatch.html#im-load-plugins"
+>im_load_plugins</a>                     (const char *fmt,
+                                                         ...);
+int                 <a
+href="../libvips/libvips-dispatch.html#im-close-plugins"
+>im_close_plugins</a>                    (void);
+void *              <a
+href="../libvips/libvips-dispatch.html#im-map-packages"
+>im_map_packages</a>                     (<a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a);
+<a
+href="../libvips/libvips-dispatch.html#im-function"
+>im_function</a> *       <a
+href="../libvips/libvips-dispatch.html#im-find-function"
+>im_find_function</a>                    (const char *name);
+<a
+href="../libvips/libvips-dispatch.html#im-package"
+>im_package</a> *        <a
+href="../libvips/libvips-dispatch.html#im-find-package"
+>im_find_package</a>                     (const char *name);
+<a
+href="../libvips/libvips-dispatch.html#im-package"
+>im_package</a> *        <a
+href="../libvips/libvips-dispatch.html#im-package-of-function"
+>im_package_of_function</a>              (const char *name);
+int                 <a
+href="../libvips/libvips-dispatch.html#im-free-vargv"
+>im_free_vargv</a>                       (<a
+href="../libvips/libvips-dispatch.html#im-function"
+>im_function</a> *fn,
+                                                         <a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *vargv);
+int                 <a
+href="../libvips/libvips-dispatch.html#im-allocate-vargv"
+>im_allocate_vargv</a>                   (<a
+href="../libvips/libvips-dispatch.html#im-function"
+>im_function</a> *fn,
+                                                         <a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *vargv);
+int                 <a
+href="../libvips/libvips-dispatch.html#im-run-command"
+>im_run_command</a>                      (char *name,
+                                                         int argc,
+                                                         char **argv);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-dispatch.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-dispatch.details"></a><h2>Details</h2>
+<div class="refsect2" title="IM_TYPE_IMAGEVEC">
+<a name="IM-TYPE-IMAGEVEC--CAPS"></a><h3>IM_TYPE_IMAGEVEC</h3>
+<pre class="programlisting">#define IM_TYPE_IMAGEVEC "imagevec"	/* im_object is ptr to IMAGE[] */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_DOUBLEVEC">
+<a name="IM-TYPE-DOUBLEVEC--CAPS"></a><h3>IM_TYPE_DOUBLEVEC</h3>
+<pre class="programlisting">#define IM_TYPE_DOUBLEVEC "doublevec"	/* im_object is ptr to double[] */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_INTVEC">
+<a name="IM-TYPE-INTVEC--CAPS"></a><h3>IM_TYPE_INTVEC</h3>
+<pre class="programlisting">#define IM_TYPE_INTVEC "intvec"		/* im_object is ptr to int[] */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_DOUBLE">
+<a name="IM-TYPE-DOUBLE--CAPS"></a><h3>IM_TYPE_DOUBLE</h3>
+<pre class="programlisting">#define IM_TYPE_DOUBLE "double"		/* im_object is ptr to double */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_INT">
+<a name="IM-TYPE-INT--CAPS"></a><h3>IM_TYPE_INT</h3>
+<pre class="programlisting">#define IM_TYPE_INT "integer"		/* 32-bit integer */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_COMPLEX">
+<a name="IM-TYPE-COMPLEX--CAPS"></a><h3>IM_TYPE_COMPLEX</h3>
+<pre class="programlisting">#define IM_TYPE_COMPLEX "complex"	/* Pair of doubles */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_STRING">
+<a name="IM-TYPE-STRING--CAPS"></a><h3>IM_TYPE_STRING</h3>
+<pre class="programlisting">#define IM_TYPE_STRING "string"         /* Zero-terminated char array */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_IMASK">
+<a name="IM-TYPE-IMASK--CAPS"></a><h3>IM_TYPE_IMASK</h3>
+<pre class="programlisting">#define IM_TYPE_IMASK "intmask"		/* Integer mask type */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_DMASK">
+<a name="IM-TYPE-DMASK--CAPS"></a><h3>IM_TYPE_DMASK</h3>
+<pre class="programlisting">#define IM_TYPE_DMASK "doublemask"	/* Double mask type */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_IMAGE">
+<a name="IM-TYPE-IMAGE--CAPS"></a><h3>IM_TYPE_IMAGE</h3>
+<pre class="programlisting">#define IM_TYPE_IMAGE "image"           /* IMAGE descriptor */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_DISPLAY">
+<a name="IM-TYPE-DISPLAY--CAPS"></a><h3>IM_TYPE_DISPLAY</h3>
+<pre class="programlisting">#define IM_TYPE_DISPLAY "display"	/* Display descriptor */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_GVALUE">
+<a name="IM-TYPE-GVALUE--CAPS"></a><h3>IM_TYPE_GVALUE</h3>
+<pre class="programlisting">#define IM_TYPE_GVALUE "gvalue"		/* GValue wrapper */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_TYPE_INTERPOLATE">
+<a name="IM-TYPE-INTERPOLATE--CAPS"></a><h3>IM_TYPE_INTERPOLATE</h3>
+<pre class="programlisting">#define IM_TYPE_INTERPOLATE "interpolate"/* A subclass of VipsInterpolate */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_arg_type">
+<a name="im-arg-type"></a><h3>im_arg_type</h3>
+<pre class="programlisting">typedef char *im_arg_type;              /* Type of argument id */
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_object">
+<a name="im-object"></a><h3>im_object</h3>
+<pre class="programlisting">typedef void *im_object;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="enum im_type_flags">
+<a name="im-type-flags"></a><h3>enum im_type_flags</h3>
+<pre class="programlisting">typedef enum {
+	IM_TYPE_NONE = 0,		/* No flags */
+	IM_TYPE_OUTPUT = 0x1,		/* Output/input object */
+	IM_TYPE_ARG = 0x2		/* Uses a str arg in construction */
+} im_type_flags;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_init_obj_fn ()">
+<a name="im-init-obj-fn"></a><h3>im_init_obj_fn ()</h3>
+<pre class="programlisting">int                 (*im_init_obj_fn)                   (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *obj,
+                                                         char *str);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_dest_obj_fn ()">
+<a name="im-dest-obj-fn"></a><h3>im_dest_obj_fn ()</h3>
+<pre class="programlisting">int                 (*im_dest_obj_fn)                   (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_type_desc">
+<a name="im-type-desc"></a><h3>im_type_desc</h3>
+<pre class="programlisting">typedef struct {
+	im_arg_type type;		/* Type of argument */
+	int size;			/* sizeof( im_object repres. ) */
+	im_type_flags flags;		/* Flags */
+	im_init_obj_fn init; 		/* Operation functions */
+	im_dest_obj_fn dest;            /* Destroy object */
+} im_type_desc;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_print_obj_fn ()">
+<a name="im-print-obj-fn"></a><h3>im_print_obj_fn ()</h3>
+<pre class="programlisting">int                 (*im_print_obj_fn)                  (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_arg_desc">
+<a name="im-arg-desc"></a><h3>im_arg_desc</h3>
+<pre class="programlisting">typedef struct {
+	char *name;			/* eg. "width" */
+	im_type_desc *desc; 		/* Type description */
+	im_print_obj_fn print;		/* Print some output objects */
+} im_arg_desc;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_dispatch_fn ()">
+<a name="im-dispatch-fn"></a><h3>im_dispatch_fn ()</h3>
+<pre class="programlisting">int                 (*im_dispatch_fn)                   (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *argv);</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_MAX_ARGS">
+<a name="IM-MAX-ARGS--CAPS"></a><h3>IM_MAX_ARGS</h3>
+<pre class="programlisting">#define IM_MAX_ARGS (1000)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="enum im_fn_flags">
+<a name="im-fn-flags"></a><h3>enum im_fn_flags</h3>
+<pre class="programlisting">typedef enum {
+	IM_FN_NONE = 0,		/* No flags set */
+	IM_FN_PIO = 0x1,	/* Is a partial function */
+	IM_FN_TRANSFORM = 0x2,	/* Performs coordinate transformations */
+	IM_FN_PTOP = 0x4,	/* Point-to-point ... can be done with a LUT */
+	IM_FN_NOCACHE = 0x8	/* Result should not be cached */
+} im_fn_flags;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_function">
+<a name="im-function"></a><h3>im_function</h3>
+<pre class="programlisting">typedef struct {
+	char *name;		/* eg "im_invert" */
+	char *desc;		/* Description - eg "photographic negative" */
+	im_fn_flags flags;	/* Flags for this function */
+	im_dispatch_fn disp;	/* Dispatch */
+	int argc;		/* Number of args */
+	im_arg_desc *argv; 	/* Arg table */
+} im_function;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_package">
+<a name="im-package"></a><h3>im_package</h3>
+<pre class="programlisting">typedef struct {
+	char *name;		/* Package name (eg "arithmetic") */
+	int nfuncs;		/* Number of functions in package */
+	im_function **table;	/* Array of function descriptors */
+} im_package;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_mask_object">
+<a name="im-mask-object"></a><h3>im_mask_object</h3>
+<pre class="programlisting">typedef struct {
+	char *name;		/* Command-line name in */
+	void *mask;		/* Mask --- DOUBLE or INT */
+} im_mask_object;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_doublevec_object">
+<a name="im-doublevec-object"></a><h3>im_doublevec_object</h3>
+<pre class="programlisting">typedef struct {
+	int n;			/* Vector length */
+	double *vec;		/* Vector */
+} im_doublevec_object;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_intvec_object">
+<a name="im-intvec-object"></a><h3>im_intvec_object</h3>
+<pre class="programlisting">typedef struct {
+	int n;			/* Vector length */
+	int *vec;		/* Vector */
+} im_intvec_object;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_imagevec_object">
+<a name="im-imagevec-object"></a><h3>im_imagevec_object</h3>
+<pre class="programlisting">typedef struct {
+	int n;			/* Vector length */
+	IMAGE **vec;		/* Vector */
+} im_imagevec_object;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_int">
+<a name="im--input-int"></a><h3>im__input_int</h3>
+<pre class="programlisting">extern im_type_desc im__input_int;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_intvec">
+<a name="im--input-intvec"></a><h3>im__input_intvec</h3>
+<pre class="programlisting">extern im_type_desc im__input_intvec;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_imask">
+<a name="im--input-imask"></a><h3>im__input_imask</h3>
+<pre class="programlisting">extern im_type_desc im__input_imask;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_int">
+<a name="im--output-int"></a><h3>im__output_int</h3>
+<pre class="programlisting">extern im_type_desc im__output_int;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_intvec">
+<a name="im--output-intvec"></a><h3>im__output_intvec</h3>
+<pre class="programlisting">extern im_type_desc im__output_intvec;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_imask">
+<a name="im--output-imask"></a><h3>im__output_imask</h3>
+<pre class="programlisting">extern im_type_desc im__output_imask;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_double">
+<a name="im--input-double"></a><h3>im__input_double</h3>
+<pre class="programlisting">extern im_type_desc im__input_double;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_doublevec">
+<a name="im--input-doublevec"></a><h3>im__input_doublevec</h3>
+<pre class="programlisting">extern im_type_desc im__input_doublevec;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_dmask">
+<a name="im--input-dmask"></a><h3>im__input_dmask</h3>
+<pre class="programlisting">extern im_type_desc im__input_dmask;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_double">
+<a name="im--output-double"></a><h3>im__output_double</h3>
+<pre class="programlisting">extern im_type_desc im__output_double;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_doublevec">
+<a name="im--output-doublevec"></a><h3>im__output_doublevec</h3>
+<pre class="programlisting">extern im_type_desc im__output_doublevec;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_dmask">
+<a name="im--output-dmask"></a><h3>im__output_dmask</h3>
+<pre class="programlisting">extern im_type_desc im__output_dmask;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_dmask_screen">
+<a name="im--output-dmask-screen"></a><h3>im__output_dmask_screen</h3>
+<pre class="programlisting">extern im_type_desc im__output_dmask_screen;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_complex">
+<a name="im--output-complex"></a><h3>im__output_complex</h3>
+<pre class="programlisting">extern im_type_desc im__output_complex;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_string">
+<a name="im--input-string"></a><h3>im__input_string</h3>
+<pre class="programlisting">extern im_type_desc im__input_string;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_string">
+<a name="im--output-string"></a><h3>im__output_string</h3>
+<pre class="programlisting">extern im_type_desc im__output_string;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_imagevec">
+<a name="im--input-imagevec"></a><h3>im__input_imagevec</h3>
+<pre class="programlisting">extern im_type_desc im__input_imagevec;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_image">
+<a name="im--input-image"></a><h3>im__input_image</h3>
+<pre class="programlisting">extern im_type_desc im__input_image;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_image">
+<a name="im--output-image"></a><h3>im__output_image</h3>
+<pre class="programlisting">extern im_type_desc im__output_image;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__rw_image">
+<a name="im--rw-image"></a><h3>im__rw_image</h3>
+<pre class="programlisting">extern im_type_desc im__rw_image;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_display">
+<a name="im--input-display"></a><h3>im__input_display</h3>
+<pre class="programlisting">extern im_type_desc im__input_display;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_display">
+<a name="im--output-display"></a><h3>im__output_display</h3>
+<pre class="programlisting">extern im_type_desc im__output_display;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_gvalue">
+<a name="im--input-gvalue"></a><h3>im__input_gvalue</h3>
+<pre class="programlisting">extern im_type_desc im__input_gvalue;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__output_gvalue">
+<a name="im--output-gvalue"></a><h3>im__output_gvalue</h3>
+<pre class="programlisting">extern im_type_desc im__output_gvalue;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__input_interpolate">
+<a name="im--input-interpolate"></a><h3>im__input_interpolate</h3>
+<pre class="programlisting">extern im_type_desc im__input_interpolate;
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__iprint ()">
+<a name="im--iprint"></a><h3>im__iprint ()</h3>
+<pre class="programlisting">int                 im__iprint                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__ivprint ()">
+<a name="im--ivprint"></a><h3>im__ivprint ()</h3>
+<pre class="programlisting">int                 im__ivprint                         (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__dprint ()">
+<a name="im--dprint"></a><h3>im__dprint ()</h3>
+<pre class="programlisting">int                 im__dprint                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__dvprint ()">
+<a name="im--dvprint"></a><h3>im__dvprint ()</h3>
+<pre class="programlisting">int                 im__dvprint                         (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__dmsprint ()">
+<a name="im--dmsprint"></a><h3>im__dmsprint ()</h3>
+<pre class="programlisting">int                 im__dmsprint                        (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__cprint ()">
+<a name="im--cprint"></a><h3>im__cprint ()</h3>
+<pre class="programlisting">int                 im__cprint                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__sprint ()">
+<a name="im--sprint"></a><h3>im__sprint ()</h3>
+<pre class="programlisting">int                 im__sprint                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__displayprint ()">
+<a name="im--displayprint"></a><h3>im__displayprint ()</h3>
+<pre class="programlisting">int                 im__displayprint                    (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im__gprint ()">
+<a name="im--gprint"></a><h3>im__gprint ()</h3>
+<pre class="programlisting">int                 im__gprint                          (<a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> obj);</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_INT()">
+<a name="IM-INPUT-INT--CAPS"></a><h3>IM_INPUT_INT()</h3>
+<pre class="programlisting">#define IM_INPUT_INT( S ) { S, &amp;im__input_int, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_INTVEC()">
+<a name="IM-INPUT-INTVEC--CAPS"></a><h3>IM_INPUT_INTVEC()</h3>
+<pre class="programlisting">#define IM_INPUT_INTVEC( S ) { S, &amp;im__input_intvec, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_IMASK()">
+<a name="IM-INPUT-IMASK--CAPS"></a><h3>IM_INPUT_IMASK()</h3>
+<pre class="programlisting">#define IM_INPUT_IMASK( S ) { S, &amp;im__input_imask, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_INT()">
+<a name="IM-OUTPUT-INT--CAPS"></a><h3>IM_OUTPUT_INT()</h3>
+<pre class="programlisting">#define IM_OUTPUT_INT( S ) { S, &amp;im__output_int, im__iprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_INTVEC()">
+<a name="IM-OUTPUT-INTVEC--CAPS"></a><h3>IM_OUTPUT_INTVEC()</h3>
+<pre class="programlisting">#define IM_OUTPUT_INTVEC( S ) { S, &amp;im__output_intvec, im__ivprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_IMASK()">
+<a name="IM-OUTPUT-IMASK--CAPS"></a><h3>IM_OUTPUT_IMASK()</h3>
+<pre class="programlisting">#define IM_OUTPUT_IMASK( S ) { S, &amp;im__output_imask, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_DOUBLE()">
+<a name="IM-INPUT-DOUBLE--CAPS"></a><h3>IM_INPUT_DOUBLE()</h3>
+<pre class="programlisting">#define IM_INPUT_DOUBLE( S ) { S, &amp;im__input_double, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_DOUBLEVEC()">
+<a name="IM-INPUT-DOUBLEVEC--CAPS"></a><h3>IM_INPUT_DOUBLEVEC()</h3>
+<pre class="programlisting">#define IM_INPUT_DOUBLEVEC( S ) { S, &amp;im__input_doublevec, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_DMASK()">
+<a name="IM-INPUT-DMASK--CAPS"></a><h3>IM_INPUT_DMASK()</h3>
+<pre class="programlisting">#define IM_INPUT_DMASK( S ) { S, &amp;im__input_dmask, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_DOUBLE()">
+<a name="IM-OUTPUT-DOUBLE--CAPS"></a><h3>IM_OUTPUT_DOUBLE()</h3>
+<pre class="programlisting">#define IM_OUTPUT_DOUBLE( S ) { S, &amp;im__output_double, im__dprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_DOUBLEVEC()">
+<a name="IM-OUTPUT-DOUBLEVEC--CAPS"></a><h3>IM_OUTPUT_DOUBLEVEC()</h3>
+<pre class="programlisting">#define IM_OUTPUT_DOUBLEVEC( S ) { S, &amp;im__output_doublevec, im__dvprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_DMASK()">
+<a name="IM-OUTPUT-DMASK--CAPS"></a><h3>IM_OUTPUT_DMASK()</h3>
+<pre class="programlisting">#define IM_OUTPUT_DMASK( S ) { S, &amp;im__output_dmask, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_DMASK_STATS()">
+<a name="IM-OUTPUT-DMASK-STATS--CAPS"></a><h3>IM_OUTPUT_DMASK_STATS()</h3>
+<pre class="programlisting">#define IM_OUTPUT_DMASK_STATS( S ) { S, &amp;im__output_dmask_screen, im__dmsprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_COMPLEX()">
+<a name="IM-OUTPUT-COMPLEX--CAPS"></a><h3>IM_OUTPUT_COMPLEX()</h3>
+<pre class="programlisting">#define IM_OUTPUT_COMPLEX( S ) { S, &amp;im__output_complex, im__cprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_STRING()">
+<a name="IM-INPUT-STRING--CAPS"></a><h3>IM_INPUT_STRING()</h3>
+<pre class="programlisting">#define IM_INPUT_STRING( S ) { S, &amp;im__input_string, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_STRING()">
+<a name="IM-OUTPUT-STRING--CAPS"></a><h3>IM_OUTPUT_STRING()</h3>
+<pre class="programlisting">#define IM_OUTPUT_STRING( S ) { S, &amp;im__output_string, im__sprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_IMAGE()">
+<a name="IM-INPUT-IMAGE--CAPS"></a><h3>IM_INPUT_IMAGE()</h3>
+<pre class="programlisting">#define IM_INPUT_IMAGE( S ) { S, &amp;im__input_image, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_IMAGEVEC()">
+<a name="IM-INPUT-IMAGEVEC--CAPS"></a><h3>IM_INPUT_IMAGEVEC()</h3>
+<pre class="programlisting">#define IM_INPUT_IMAGEVEC( S ) { S, &amp;im__input_imagevec, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_IMAGE()">
+<a name="IM-OUTPUT-IMAGE--CAPS"></a><h3>IM_OUTPUT_IMAGE()</h3>
+<pre class="programlisting">#define IM_OUTPUT_IMAGE( S ) { S, &amp;im__output_image, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_RW_IMAGE()">
+<a name="IM-RW-IMAGE--CAPS"></a><h3>IM_RW_IMAGE()</h3>
+<pre class="programlisting">#define IM_RW_IMAGE( S ) { S, &amp;im__rw_image, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_DISPLAY()">
+<a name="IM-INPUT-DISPLAY--CAPS"></a><h3>IM_INPUT_DISPLAY()</h3>
+<pre class="programlisting">#define IM_INPUT_DISPLAY( S ) { S, &amp;im__input_display, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_DISPLAY()">
+<a name="IM-OUTPUT-DISPLAY--CAPS"></a><h3>IM_OUTPUT_DISPLAY()</h3>
+<pre class="programlisting">#define IM_OUTPUT_DISPLAY( S ) { S, &amp;im__output_display, im__displayprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_GVALUE()">
+<a name="IM-INPUT-GVALUE--CAPS"></a><h3>IM_INPUT_GVALUE()</h3>
+<pre class="programlisting">#define IM_INPUT_GVALUE( S ) { S, &amp;im__input_gvalue, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_OUTPUT_GVALUE()">
+<a name="IM-OUTPUT-GVALUE--CAPS"></a><h3>IM_OUTPUT_GVALUE()</h3>
+<pre class="programlisting">#define IM_OUTPUT_GVALUE( S ) { S, &amp;im__output_gvalue, im__gprint }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="IM_INPUT_INTERPOLATE()">
+<a name="IM-INPUT-INTERPOLATE--CAPS"></a><h3>IM_INPUT_INTERPOLATE()</h3>
+<pre class="programlisting">#define IM_INPUT_INTERPOLATE( S ) { S, &amp;im__input_interpolate, NULL }
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_load_plugin ()">
+<a name="im-load-plugin"></a><h3>im_load_plugin ()</h3>
+<pre class="programlisting"><a
+href="../libvips/libvips-dispatch.html#im-package"
+>im_package</a> *        im_load_plugin                      (const char *name);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_load_plugins ()">
+<a name="im-load-plugins"></a><h3>im_load_plugins ()</h3>
+<pre class="programlisting">int                 im_load_plugins                     (const char *fmt,
+                                                         ...);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_close_plugins ()">
+<a name="im-close-plugins"></a><h3>im_close_plugins ()</h3>
+<pre class="programlisting">int                 im_close_plugins                    (void);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_map_packages ()">
+<a name="im-map-packages"></a><h3>im_map_packages ()</h3>
+<pre class="programlisting">void *              im_map_packages                     (<a
+href="../libvips/libvips-util.html#VSListMap2Fn"
+>VSListMap2Fn</a> fn,
+                                                         void *a);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_find_function ()">
+<a name="im-find-function"></a><h3>im_find_function ()</h3>
+<pre class="programlisting"><a
+href="../libvips/libvips-dispatch.html#im-function"
+>im_function</a> *       im_find_function                    (const char *name);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_find_package ()">
+<a name="im-find-package"></a><h3>im_find_package ()</h3>
+<pre class="programlisting"><a
+href="../libvips/libvips-dispatch.html#im-package"
+>im_package</a> *        im_find_package                     (const char *name);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_package_of_function ()">
+<a name="im-package-of-function"></a><h3>im_package_of_function ()</h3>
+<pre class="programlisting"><a
+href="../libvips/libvips-dispatch.html#im-package"
+>im_package</a> *        im_package_of_function              (const char *name);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_free_vargv ()">
+<a name="im-free-vargv"></a><h3>im_free_vargv ()</h3>
+<pre class="programlisting">int                 im_free_vargv                       (<a
+href="../libvips/libvips-dispatch.html#im-function"
+>im_function</a> *fn,
+                                                         <a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *vargv);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_allocate_vargv ()">
+<a name="im-allocate-vargv"></a><h3>im_allocate_vargv ()</h3>
+<pre class="programlisting">int                 im_allocate_vargv                   (<a
+href="../libvips/libvips-dispatch.html#im-function"
+>im_function</a> *fn,
+                                                         <a
+href="../libvips/libvips-dispatch.html#im-object"
+>im_object</a> *vargv);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_run_command ()">
+<a name="im-run-command"></a><h3>im_run_command ()</h3>
+<pre class="programlisting">int                 im_run_command                      (char *name,
+                                                         int argc,
+                                                         char **argv);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>inplace</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-mask.html" title="mask">
+<link rel="next" href="libvips-mosaicing.html" title="mosaicing">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-mask.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-mosaicing.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-inplace.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-inplace.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="inplace">
+<a name="libvips-inplace"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-inplace.top_of_page"></a>inplace</span></h2>
+<p>inplace — in-place paintbox operations: flood, paste, line,
+circle</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-inplace.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-inplace.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-inplace.html#im-plotmask"
+>im_plotmask</a>                         (IMAGE *im,
+                                                         int ix,
+                                                         int iy,
+                                                         PEL *ink,
+                                                         PEL *mask,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r);
+int                 <a
+href="../libvips/libvips-inplace.html#im-smear"
+>im_smear</a>                            (IMAGE *im,
+                                                         int ix,
+                                                         int iy,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r);
+int                 <a
+href="../libvips/libvips-inplace.html#im-smudge"
+>im_smudge</a>                           (IMAGE *im,
+                                                         int ix,
+                                                         int iy,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r);
+int                 <a
+href="../libvips/libvips-inplace.html#im-paintrect"
+>im_paintrect</a>                        (IMAGE *im,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r,
+                                                         PEL *ink);
+int                 <a
+href="../libvips/libvips-inplace.html#im-circle"
+>im_circle</a>                           (IMAGE *im,
+                                                         int cx,
+                                                         int cy,
+                                                         int radius,
+                                                         int intensity);
+int                 <a
+href="../libvips/libvips-inplace.html#im-insertplace"
+>im_insertplace</a>                      (IMAGE *main,
+                                                         IMAGE *sub,
+                                                         int x,
+                                                         int y);
+int                 <a
+href="../libvips/libvips-inplace.html#im-fastline"
+>im_fastline</a>                         (IMAGE *im,
+                                                         int x1,
+                                                         int y1,
+                                                         int x2,
+                                                         int y2,
+                                                         PEL *pel);
+int                 <a
+href="../libvips/libvips-inplace.html#im-fastlineuser"
+>im_fastlineuser</a>                     (IMAGE *im,
+                                                         int x1,
+                                                         int y1,
+                                                         int x2,
+                                                         int y2,
+                                                         int (fn) (),
+                                                         void *client1,
+                                                         void *client2,
+                                                         void *client3);
+int                 <a
+href="../libvips/libvips-inplace.html#im-readpoint"
+>im_readpoint</a>                        (IMAGE *im,
+                                                         int x,
+                                                         int y,
+                                                         PEL *pel);
+int                 <a
+href="../libvips/libvips-inplace.html#im-flood"
+>im_flood</a>                            (IMAGE *im,
+                                                         int x,
+                                                         int y,
+                                                         PEL *ink,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *dout);
+int                 <a
+href="../libvips/libvips-inplace.html#im-flood-blob"
+>im_flood_blob</a>                       (IMAGE *im,
+                                                         int x,
+                                                         int y,
+                                                         PEL *ink,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *dout);
+int                 <a
+href="../libvips/libvips-inplace.html#im-flood-blob-copy"
+>im_flood_blob_copy</a>                  (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int x,
+                                                         int y,
+                                                         PEL *ink);
+int                 <a
+href="../libvips/libvips-inplace.html#im-flood-other"
+>im_flood_other</a>                      (IMAGE *mask,
+                                                         IMAGE *test,
+                                                         int x,
+                                                         int y,
+                                                         int serial);
+int                 <a
+href="../libvips/libvips-inplace.html#im-flood-other-copy"
+>im_flood_other_copy</a>                 (IMAGE *mask,
+                                                         IMAGE *test,
+                                                         IMAGE *out,
+                                                         int x,
+                                                         int y,
+                                                         int serial);
+int                 <a
+href="../libvips/libvips-inplace.html#im-lineset"
+>im_lineset</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         IMAGE *mask,
+                                                         IMAGE *ink,
+                                                         int n,
+                                                         int *x1v,
+                                                         int *y1v,
+                                                         int *x2v,
+                                                         int *y2v);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-inplace.description"></a><h2>Description</h2>
+<p>
+These operations modify the input image. You can't easily use them in
+pipelines, but they are useful for paintbox-style programs.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-inplace.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_plotmask ()">
+<a name="im-plotmask"></a><h3>im_plotmask ()</h3>
+<pre class="programlisting">int                 im_plotmask                         (IMAGE *im,
+                                                         int ix,
+                                                         int iy,
+                                                         PEL *ink,
+                                                         PEL *mask,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_smear ()">
+<a name="im-smear"></a><h3>im_smear ()</h3>
+<pre class="programlisting">int                 im_smear                            (IMAGE *im,
+                                                         int ix,
+                                                         int iy,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_smudge ()">
+<a name="im-smudge"></a><h3>im_smudge ()</h3>
+<pre class="programlisting">int                 im_smudge                           (IMAGE *im,
+                                                         int ix,
+                                                         int iy,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_paintrect ()">
+<a name="im-paintrect"></a><h3>im_paintrect ()</h3>
+<pre class="programlisting">int                 im_paintrect                        (IMAGE *im,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *r,
+                                                         PEL *ink);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_circle ()">
+<a name="im-circle"></a><h3>im_circle ()</h3>
+<pre class="programlisting">int                 im_circle                           (IMAGE *im,
+                                                         int cx,
+                                                         int cy,
+                                                         int radius,
+                                                         int intensity);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_insertplace ()">
+<a name="im-insertplace"></a><h3>im_insertplace ()</h3>
+<pre class="programlisting">int                 im_insertplace                      (IMAGE *main,
+                                                         IMAGE *sub,
+                                                         int x,
+                                                         int y);</pre>
+<p>
+Copy <em class="parameter"><code>sub</code></em> into <em class="parameter"><code>main</code></em> at position <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>. The two images must match in
+format, bands and coding.
+</p>
+<p>
+This an inplace operation, so <em class="parameter"><code>main</code></em> is changed. It does not thread and will
+not work well as part of a pipeline.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-conversion.html#im-insert"
+><code class="function">im_insert()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>main</code></em> :</span></p></td>
+<td> main image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sub</code></em> :</span></p></td>
+<td> sub-image to insert
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td> position to insert
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td> position to insert
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or -1 on error.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_fastline ()">
+<a name="im-fastline"></a><h3>im_fastline ()</h3>
+<pre class="programlisting">int                 im_fastline                         (IMAGE *im,
+                                                         int x1,
+                                                         int y1,
+                                                         int x2,
+                                                         int y2,
+                                                         PEL *pel);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_fastlineuser ()">
+<a name="im-fastlineuser"></a><h3>im_fastlineuser ()</h3>
+<pre class="programlisting">int                 im_fastlineuser                     (IMAGE *im,
+                                                         int x1,
+                                                         int y1,
+                                                         int x2,
+                                                         int y2,
+                                                         int (fn) (),
+                                                         void *client1,
+                                                         void *client2,
+                                                         void *client3);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_readpoint ()">
+<a name="im-readpoint"></a><h3>im_readpoint ()</h3>
+<pre class="programlisting">int                 im_readpoint                        (IMAGE *im,
+                                                         int x,
+                                                         int y,
+                                                         PEL *pel);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_flood ()">
+<a name="im-flood"></a><h3>im_flood ()</h3>
+<pre class="programlisting">int                 im_flood                            (IMAGE *im,
+                                                         int x,
+                                                         int y,
+                                                         PEL *ink,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *dout);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_flood_blob ()">
+<a name="im-flood-blob"></a><h3>im_flood_blob ()</h3>
+<pre class="programlisting">int                 im_flood_blob                       (IMAGE *im,
+                                                         int x,
+                                                         int y,
+                                                         PEL *ink,
+                                                         <a
+href="../libvips/libvips-rect.html#Rect"
+>Rect</a> *dout);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_flood_blob_copy ()">
+<a name="im-flood-blob-copy"></a><h3>im_flood_blob_copy ()</h3>
+<pre class="programlisting">int                 im_flood_blob_copy                  (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int x,
+                                                         int y,
+                                                         PEL *ink);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_flood_other ()">
+<a name="im-flood-other"></a><h3>im_flood_other ()</h3>
+<pre class="programlisting">int                 im_flood_other                      (IMAGE *mask,
+                                                         IMAGE *test,
+                                                         int x,
+                                                         int y,
+                                                         int serial);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_flood_other_copy ()">
+<a name="im-flood-other-copy"></a><h3>im_flood_other_copy ()</h3>
+<pre class="programlisting">int                 im_flood_other_copy                 (IMAGE *mask,
+                                                         IMAGE *test,
+                                                         IMAGE *out,
+                                                         int x,
+                                                         int y,
+                                                         int serial);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_lineset ()">
+<a name="im-lineset"></a><h3>im_lineset ()</h3>
+<pre class="programlisting">int                 im_lineset                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         IMAGE *mask,
+                                                         IMAGE *ink,
+                                                         int n,
+                                                         int *x1v,
+                                                         int *y1v,
+                                                         int *x2v,
+                                                         int *y2v);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

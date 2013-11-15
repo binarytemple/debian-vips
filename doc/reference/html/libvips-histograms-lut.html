@@ -1,0 +1,430 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>histograms_lut</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-resample.html" title="resample">
+<link rel="next" href="libvips-freq-filt.html" title="freq_filt">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-resample.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-freq-filt.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-histograms-lut.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-histograms-lut.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="histograms_lut">
+<a name="libvips-histograms-lut"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-histograms-lut.top_of_page"></a>histograms_lut</span></h2>
+<p>histograms_lut — find, manipulate and apply histograms and lookup tables</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-histograms-lut.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-histograms-lut.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-maplut"
+>im_maplut</a>                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         IMAGE *lut);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-gammacorrect"
+>im_gammacorrect</a>                     (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double exponent);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-heq"
+>im_heq</a>                              (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bandno);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-hist"
+>im_hist</a>                             (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bandno);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-hist-indexed"
+>im_hist_indexed</a>                     (IMAGE *index,
+                                                         IMAGE *value,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-histeq"
+>im_histeq</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-histnorm"
+>im_histnorm</a>                         (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-histcum"
+>im_histcum</a>                          (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-histgr"
+>im_histgr</a>                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bandno);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-histnD"
+>im_histnD</a>                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bins);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-histplot"
+>im_histplot</a>                         (IMAGE *hist,
+                                                         IMAGE *histplot);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-histspec"
+>im_histspec</a>                         (IMAGE *hin,
+                                                         IMAGE *href,
+                                                         IMAGE *lut);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-hsp"
+>im_hsp</a>                              (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-identity"
+>im_identity</a>                         (IMAGE *lut,
+                                                         int bands);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-identity-ushort"
+>im_identity_ushort</a>                  (IMAGE *lut,
+                                                         int bands,
+                                                         int sz);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-lhisteq"
+>im_lhisteq</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int xwin,
+                                                         int ywin);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-invertlut"
+>im_invertlut</a>                        (<a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *input,
+                                                         IMAGE *output,
+                                                         int lut_size);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-buildlut"
+>im_buildlut</a>                         (<a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *input,
+                                                         IMAGE *output);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-stdif"
+>im_stdif</a>                            (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double a,
+                                                         double m0,
+                                                         double b,
+                                                         double s0,
+                                                         int xwin,
+                                                         int ywin);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-tone-build-range"
+>im_tone_build_range</a>                 (IMAGE *out,
+                                                         int in_max,
+                                                         int out_max,
+                                                         double Lb,
+                                                         double Lw,
+                                                         double Ps,
+                                                         double Pm,
+                                                         double Ph,
+                                                         double S,
+                                                         double M,
+                                                         double H);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-tone-build"
+>im_tone_build</a>                       (IMAGE *out,
+                                                         double Lb,
+                                                         double Lw,
+                                                         double Ps,
+                                                         double Pm,
+                                                         double Ph,
+                                                         double S,
+                                                         double M,
+                                                         double H);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-tone-analyse"
+>im_tone_analyse</a>                     (IMAGE *in,
+                                                         IMAGE *lut,
+                                                         double Ps,
+                                                         double Pm,
+                                                         double Ph,
+                                                         double S,
+                                                         double M,
+                                                         double H);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-ismonotonic"
+>im_ismonotonic</a>                      (IMAGE *lut,
+                                                         int *out);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-tone-map"
+>im_tone_map</a>                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         IMAGE *lut);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-project"
+>im_project</a>                          (IMAGE *in,
+                                                         IMAGE *hout,
+                                                         IMAGE *vout);
+int                 <a
+href="../libvips/libvips-histograms-lut.html#im-mpercent"
+>im_mpercent</a>                         (IMAGE *in,
+                                                         double percent,
+                                                         int *out);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-histograms-lut.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-histograms-lut.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_maplut ()">
+<a name="im-maplut"></a><h3>im_maplut ()</h3>
+<pre class="programlisting">int                 im_maplut                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         IMAGE *lut);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_gammacorrect ()">
+<a name="im-gammacorrect"></a><h3>im_gammacorrect ()</h3>
+<pre class="programlisting">int                 im_gammacorrect                     (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double exponent);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_heq ()">
+<a name="im-heq"></a><h3>im_heq ()</h3>
+<pre class="programlisting">int                 im_heq                              (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bandno);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_hist ()">
+<a name="im-hist"></a><h3>im_hist ()</h3>
+<pre class="programlisting">int                 im_hist                             (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bandno);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_hist_indexed ()">
+<a name="im-hist-indexed"></a><h3>im_hist_indexed ()</h3>
+<pre class="programlisting">int                 im_hist_indexed                     (IMAGE *index,
+                                                         IMAGE *value,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_histeq ()">
+<a name="im-histeq"></a><h3>im_histeq ()</h3>
+<pre class="programlisting">int                 im_histeq                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_histnorm ()">
+<a name="im-histnorm"></a><h3>im_histnorm ()</h3>
+<pre class="programlisting">int                 im_histnorm                         (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_histcum ()">
+<a name="im-histcum"></a><h3>im_histcum ()</h3>
+<pre class="programlisting">int                 im_histcum                          (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_histgr ()">
+<a name="im-histgr"></a><h3>im_histgr ()</h3>
+<pre class="programlisting">int                 im_histgr                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bandno);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_histnD ()">
+<a name="im-histnD"></a><h3>im_histnD ()</h3>
+<pre class="programlisting">int                 im_histnD                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int bins);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_histplot ()">
+<a name="im-histplot"></a><h3>im_histplot ()</h3>
+<pre class="programlisting">int                 im_histplot                         (IMAGE *hist,
+                                                         IMAGE *histplot);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_histspec ()">
+<a name="im-histspec"></a><h3>im_histspec ()</h3>
+<pre class="programlisting">int                 im_histspec                         (IMAGE *hin,
+                                                         IMAGE *href,
+                                                         IMAGE *lut);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_hsp ()">
+<a name="im-hsp"></a><h3>im_hsp ()</h3>
+<pre class="programlisting">int                 im_hsp                              (IMAGE *in,
+                                                         IMAGE *ref,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_identity ()">
+<a name="im-identity"></a><h3>im_identity ()</h3>
+<pre class="programlisting">int                 im_identity                         (IMAGE *lut,
+                                                         int bands);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_identity_ushort ()">
+<a name="im-identity-ushort"></a><h3>im_identity_ushort ()</h3>
+<pre class="programlisting">int                 im_identity_ushort                  (IMAGE *lut,
+                                                         int bands,
+                                                         int sz);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_lhisteq ()">
+<a name="im-lhisteq"></a><h3>im_lhisteq ()</h3>
+<pre class="programlisting">int                 im_lhisteq                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int xwin,
+                                                         int ywin);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_invertlut ()">
+<a name="im-invertlut"></a><h3>im_invertlut ()</h3>
+<pre class="programlisting">int                 im_invertlut                        (<a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *input,
+                                                         IMAGE *output,
+                                                         int lut_size);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_buildlut ()">
+<a name="im-buildlut"></a><h3>im_buildlut ()</h3>
+<pre class="programlisting">int                 im_buildlut                         (<a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *input,
+                                                         IMAGE *output);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_stdif ()">
+<a name="im-stdif"></a><h3>im_stdif ()</h3>
+<pre class="programlisting">int                 im_stdif                            (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double a,
+                                                         double m0,
+                                                         double b,
+                                                         double s0,
+                                                         int xwin,
+                                                         int ywin);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tone_build_range ()">
+<a name="im-tone-build-range"></a><h3>im_tone_build_range ()</h3>
+<pre class="programlisting">int                 im_tone_build_range                 (IMAGE *out,
+                                                         int in_max,
+                                                         int out_max,
+                                                         double Lb,
+                                                         double Lw,
+                                                         double Ps,
+                                                         double Pm,
+                                                         double Ph,
+                                                         double S,
+                                                         double M,
+                                                         double H);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tone_build ()">
+<a name="im-tone-build"></a><h3>im_tone_build ()</h3>
+<pre class="programlisting">int                 im_tone_build                       (IMAGE *out,
+                                                         double Lb,
+                                                         double Lw,
+                                                         double Ps,
+                                                         double Pm,
+                                                         double Ph,
+                                                         double S,
+                                                         double M,
+                                                         double H);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tone_analyse ()">
+<a name="im-tone-analyse"></a><h3>im_tone_analyse ()</h3>
+<pre class="programlisting">int                 im_tone_analyse                     (IMAGE *in,
+                                                         IMAGE *lut,
+                                                         double Ps,
+                                                         double Pm,
+                                                         double Ph,
+                                                         double S,
+                                                         double M,
+                                                         double H);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_ismonotonic ()">
+<a name="im-ismonotonic"></a><h3>im_ismonotonic ()</h3>
+<pre class="programlisting">int                 im_ismonotonic                      (IMAGE *lut,
+                                                         int *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tone_map ()">
+<a name="im-tone-map"></a><h3>im_tone_map ()</h3>
+<pre class="programlisting">int                 im_tone_map                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         IMAGE *lut);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_project ()">
+<a name="im-project"></a><h3>im_project ()</h3>
+<pre class="programlisting">int                 im_project                          (IMAGE *in,
+                                                         IMAGE *hout,
+                                                         IMAGE *vout);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_mpercent ()">
+<a name="im-mpercent"></a><h3>im_mpercent ()</h3>
+<pre class="programlisting">int                 im_mpercent                         (IMAGE *in,
+                                                         double percent,
+                                                         int *out);</pre>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libvips-histograms-lut.see-also"></a><h2>See Also</h2>
+<a
+href="../libvips/libvips-image.html"
+>image</a>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

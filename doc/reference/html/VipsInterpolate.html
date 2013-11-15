@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>VipsInterpolate</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-cimg-funcs.html" title="cimg_funcs">
+<link rel="next" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-cimg-funcs.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="ch04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#VipsInterpolate.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#VipsInterpolate.description" class="shortcut">Description</a>
+                 | 
+                <a href="#VipsInterpolate.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
+</table>
+<div class="refentry" title="VipsInterpolate">
+<a name="VipsInterpolate"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="VipsInterpolate.top_of_page"></a>VipsInterpolate</span></h2>
+<p>VipsInterpolate — various interpolators: nearest, bilinear, bicubic, and
+some non-linear</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="VipsInterpolate.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="VipsInterpolate.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+void                (<a
+href="../libvips/VipsInterpolate.html#VipsInterpolateMethod"
+>*VipsInterpolateMethod</a>)            (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *,
+                                                         PEL *out,
+                                                         <a
+href="../libvips/libvips-region.html#REGION--CAPS"
+>REGION</a> *in,
+                                                         double x,
+                                                         double y);
+                    <a
+href="../libvips/VipsInterpolate.html#VipsInterpolate-struct"
+>VipsInterpolate</a>;
+void                <a
+href="../libvips/VipsInterpolate.html#vips-interpolate"
+>vips_interpolate</a>                    (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         PEL *out,
+                                                         <a
+href="../libvips/libvips-region.html#REGION--CAPS"
+>REGION</a> *in,
+                                                         double x,
+                                                         double y);
+<a
+href="../libvips/VipsInterpolate.html#VipsInterpolateMethod"
+>VipsInterpolateMethod</a>  <a
+href="../libvips/VipsInterpolate.html#vips-interpolate-get-method"
+>vips_interpolate_get_method</a>      (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *);
+int                 <a
+href="../libvips/VipsInterpolate.html#vips-interpolate-get-window-size"
+>vips_interpolate_get_window_size</a>    (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate);
+int                 <a
+href="../libvips/VipsInterpolate.html#vips-interpolate-get-window-offset"
+>vips_interpolate_get_window_offset</a>  (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate);
+#define             <a
+href="../libvips/VipsInterpolate.html#VIPS-TRANSFORM-SHIFT--CAPS"
+>VIPS_TRANSFORM_SHIFT</a>
+#define             <a
+href="../libvips/VipsInterpolate.html#VIPS-TRANSFORM-SCALE--CAPS"
+>VIPS_TRANSFORM_SCALE</a>
+#define             <a
+href="../libvips/VipsInterpolate.html#VIPS-INTERPOLATE-SHIFT--CAPS"
+>VIPS_INTERPOLATE_SHIFT</a>
+#define             <a
+href="../libvips/VipsInterpolate.html#VIPS-INTERPOLATE-SCALE--CAPS"
+>VIPS_INTERPOLATE_SCALE</a>
+<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   <a
+href="../libvips/VipsInterpolate.html#vips-interpolate-nearest-static"
+>vips_interpolate_nearest_static</a>     (void);
+<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   <a
+href="../libvips/VipsInterpolate.html#vips-interpolate-bilinear-static"
+>vips_interpolate_bilinear_static</a>    (void);
+<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   <a
+href="../libvips/VipsInterpolate.html#vips-interpolate-bicubic-static"
+>vips_interpolate_bicubic_static</a>     (void);
+<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   <a
+href="../libvips/VipsInterpolate.html#vips-interpolate-new"
+>vips_interpolate_new</a>                (const char *nickname);
+void                <a
+href="../libvips/VipsInterpolate.html#vips--interpolate-init"
+>vips__interpolate_init</a>              (void);
+</pre>
+</div>
+<div class="refsect1" title="Object Hierarchy">
+<a name="VipsInterpolate.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  GObject
+   +----<a
+href="../libvips/VipsObject.html"
+>VipsObject</a>
+         +----VipsInterpolate
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="VipsInterpolate.description"></a><h2>Description</h2>
+<p>
+A number of image interpolators.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="VipsInterpolate.details"></a><h2>Details</h2>
+<div class="refsect2" title="VipsInterpolateMethod ()">
+<a name="VipsInterpolateMethod"></a><h3>VipsInterpolateMethod ()</h3>
+<pre class="programlisting">void                (*VipsInterpolateMethod)            (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *,
+                                                         PEL *out,
+                                                         <a
+href="../libvips/libvips-region.html#REGION--CAPS"
+>REGION</a> *in,
+                                                         double x,
+                                                         double y);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VipsInterpolate">
+<a name="VipsInterpolate-struct"></a><h3>VipsInterpolate</h3>
+<pre class="programlisting">typedef struct _VipsInterpolate VipsInterpolate;</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate ()">
+<a name="vips-interpolate"></a><h3>vips_interpolate ()</h3>
+<pre class="programlisting">void                vips_interpolate                    (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         PEL *out,
+                                                         <a
+href="../libvips/libvips-region.html#REGION--CAPS"
+>REGION</a> *in,
+                                                         double x,
+                                                         double y);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate_get_method ()">
+<a name="vips-interpolate-get-method"></a><h3>vips_interpolate_get_method ()</h3>
+<pre class="programlisting"><a
+href="../libvips/VipsInterpolate.html#VipsInterpolateMethod"
+>VipsInterpolateMethod</a>  vips_interpolate_get_method      (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate_get_window_size ()">
+<a name="vips-interpolate-get-window-size"></a><h3>vips_interpolate_get_window_size ()</h3>
+<pre class="programlisting">int                 vips_interpolate_get_window_size    (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate_get_window_offset ()">
+<a name="vips-interpolate-get-window-offset"></a><h3>vips_interpolate_get_window_offset ()</h3>
+<pre class="programlisting">int                 vips_interpolate_get_window_offset  (<a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate);</pre>
+</div>
+<hr>
+<div class="refsect2" title="VIPS_TRANSFORM_SHIFT">
+<a name="VIPS-TRANSFORM-SHIFT--CAPS"></a><h3>VIPS_TRANSFORM_SHIFT</h3>
+<pre class="programlisting">#define VIPS_TRANSFORM_SHIFT (5)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="VIPS_TRANSFORM_SCALE">
+<a name="VIPS-TRANSFORM-SCALE--CAPS"></a><h3>VIPS_TRANSFORM_SCALE</h3>
+<pre class="programlisting">#define VIPS_TRANSFORM_SCALE (1 &lt;&lt; VIPS_TRANSFORM_SHIFT)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="VIPS_INTERPOLATE_SHIFT">
+<a name="VIPS-INTERPOLATE-SHIFT--CAPS"></a><h3>VIPS_INTERPOLATE_SHIFT</h3>
+<pre class="programlisting">#define VIPS_INTERPOLATE_SHIFT (12)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="VIPS_INTERPOLATE_SCALE">
+<a name="VIPS-INTERPOLATE-SCALE--CAPS"></a><h3>VIPS_INTERPOLATE_SCALE</h3>
+<pre class="programlisting">#define VIPS_INTERPOLATE_SCALE (1 &lt;&lt; VIPS_INTERPOLATE_SHIFT)
+</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate_nearest_static ()">
+<a name="vips-interpolate-nearest-static"></a><h3>vips_interpolate_nearest_static ()</h3>
+<pre class="programlisting"><a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   vips_interpolate_nearest_static     (void);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate_bilinear_static ()">
+<a name="vips-interpolate-bilinear-static"></a><h3>vips_interpolate_bilinear_static ()</h3>
+<pre class="programlisting"><a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   vips_interpolate_bilinear_static    (void);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate_bicubic_static ()">
+<a name="vips-interpolate-bicubic-static"></a><h3>vips_interpolate_bicubic_static ()</h3>
+<pre class="programlisting"><a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   vips_interpolate_bicubic_static     (void);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips_interpolate_new ()">
+<a name="vips-interpolate-new"></a><h3>vips_interpolate_new ()</h3>
+<pre class="programlisting"><a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *   vips_interpolate_new                (const char *nickname);</pre>
+</div>
+<hr>
+<div class="refsect2" title="vips__interpolate_init ()">
+<a name="vips--interpolate-init"></a><h3>vips__interpolate_init ()</h3>
+<pre class="programlisting">void                vips__interpolate_init              (void);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

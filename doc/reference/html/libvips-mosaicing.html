@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>mosaicing</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="prev" href="libvips-inplace.html" title="inplace">
+<link rel="next" href="libvips-other.html" title="other">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-inplace.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-other.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-mosaicing.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-mosaicing.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="mosaicing">
+<a name="libvips-mosaicing"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-mosaicing.top_of_page"></a>mosaicing</span></h2>
+<p>mosaicing — build image mosaics</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-mosaicing.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-mosaicing.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-lrmerge"
+>im_lrmerge</a>                          (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int dx,
+                                                         int dy,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-tbmerge"
+>im_tbmerge</a>                          (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int dx,
+                                                         int dy,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-lrmerge1"
+>im_lrmerge1</a>                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-tbmerge1"
+>im_tbmerge1</a>                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-lrmosaic"
+>im_lrmosaic</a>                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xref,
+                                                         int yref,
+                                                         int xsec,
+                                                         int ysec,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-tbmosaic"
+>im_tbmosaic</a>                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xref,
+                                                         int yref,
+                                                         int xsec,
+                                                         int ysec,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-lrmosaic1"
+>im_lrmosaic1</a>                        (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-tbmosaic1"
+>im_tbmosaic1</a>                        (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-global-balance"
+>im_global_balance</a>                   (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double gamma);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-global-balancef"
+>im_global_balancef</a>                  (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double gamma);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-correl"
+>im_correl</a>                           (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         int xref,
+                                                         int yref,
+                                                         int xsec,
+                                                         int ysec,
+                                                         int hwindowsize,
+                                                         int hsearchsize,
+                                                         double *correlation,
+                                                         int *x,
+                                                         int *y);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-remosaic"
+>im_remosaic</a>                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         const char *old_str,
+                                                         const char *new_str);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-align-bands"
+>im_align_bands</a>                      (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-mosaicing.html#im-maxpos-subpel"
+>im_maxpos_subpel</a>                    (IMAGE *in,
+                                                         double *x,
+                                                         double *y);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-mosaicing.description"></a><h2>Description</h2>
+<p>
+A set of operations for assembling large image mosaics.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-mosaicing.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_lrmerge ()">
+<a name="im-lrmerge"></a><h3>im_lrmerge ()</h3>
+<pre class="programlisting">int                 im_lrmerge                          (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int dx,
+                                                         int dy,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tbmerge ()">
+<a name="im-tbmerge"></a><h3>im_tbmerge ()</h3>
+<pre class="programlisting">int                 im_tbmerge                          (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int dx,
+                                                         int dy,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_lrmerge1 ()">
+<a name="im-lrmerge1"></a><h3>im_lrmerge1 ()</h3>
+<pre class="programlisting">int                 im_lrmerge1                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tbmerge1 ()">
+<a name="im-tbmerge1"></a><h3>im_tbmerge1 ()</h3>
+<pre class="programlisting">int                 im_tbmerge1                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_lrmosaic ()">
+<a name="im-lrmosaic"></a><h3>im_lrmosaic ()</h3>
+<pre class="programlisting">int                 im_lrmosaic                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xref,
+                                                         int yref,
+                                                         int xsec,
+                                                         int ysec,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tbmosaic ()">
+<a name="im-tbmosaic"></a><h3>im_tbmosaic ()</h3>
+<pre class="programlisting">int                 im_tbmosaic                         (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xref,
+                                                         int yref,
+                                                         int xsec,
+                                                         int ysec,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_lrmosaic1 ()">
+<a name="im-lrmosaic1"></a><h3>im_lrmosaic1 ()</h3>
+<pre class="programlisting">int                 im_lrmosaic1                        (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_tbmosaic1 ()">
+<a name="im-tbmosaic1"></a><h3>im_tbmosaic1 ()</h3>
+<pre class="programlisting">int                 im_tbmosaic1                        (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         IMAGE *out,
+                                                         int bandno,
+                                                         int xr1,
+                                                         int yr1,
+                                                         int xs1,
+                                                         int ys1,
+                                                         int xr2,
+                                                         int yr2,
+                                                         int xs2,
+                                                         int ys2,
+                                                         int halfcorrelation,
+                                                         int halfarea,
+                                                         int balancetype,
+                                                         int mwidth);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_global_balance ()">
+<a name="im-global-balance"></a><h3>im_global_balance ()</h3>
+<pre class="programlisting">int                 im_global_balance                   (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double gamma);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_global_balancef ()">
+<a name="im-global-balancef"></a><h3>im_global_balancef ()</h3>
+<pre class="programlisting">int                 im_global_balancef                  (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double gamma);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_correl ()">
+<a name="im-correl"></a><h3>im_correl ()</h3>
+<pre class="programlisting">int                 im_correl                           (IMAGE *ref,
+                                                         IMAGE *sec,
+                                                         int xref,
+                                                         int yref,
+                                                         int xsec,
+                                                         int ysec,
+                                                         int hwindowsize,
+                                                         int hsearchsize,
+                                                         double *correlation,
+                                                         int *x,
+                                                         int *y);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_remosaic ()">
+<a name="im-remosaic"></a><h3>im_remosaic ()</h3>
+<pre class="programlisting">int                 im_remosaic                         (IMAGE *in,
+                                                         IMAGE *out,
+                                                         const char *old_str,
+                                                         const char *new_str);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_align_bands ()">
+<a name="im-align-bands"></a><h3>im_align_bands ()</h3>
+<pre class="programlisting">int                 im_align_bands                      (IMAGE *in,
+                                                         IMAGE *out);</pre>
+</div>
+<hr>
+<div class="refsect2" title="im_maxpos_subpel ()">
+<a name="im-maxpos-subpel"></a><h3>im_maxpos_subpel ()</h3>
+<pre class="programlisting">int                 im_maxpos_subpel                    (IMAGE *in,
+                                                         double *x,
+                                                         double *y);</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

@@ -1,0 +1,3031 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>arithmetic</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch02.html" title="VIPS operation API by section">
+<link rel="prev" href="ch02.html" title="VIPS operation API by section">
+<link rel="next" href="libvips-boolean.html" title="boolean">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Core VIPS API">
+<link rel="chapter" href="ch02.html" title="VIPS operation API by section">
+<link rel="chapter" href="ch03.html" title="VIPS operation API by section (no gtkdoc comments yet)">
+<link rel="chapter" href="ch04.html" title="Other API (no gtkdoc comments yet)">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-boolean.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-arithmetic.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libvips-arithmetic.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="arithmetic">
+<a name="libvips-arithmetic"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-arithmetic.top_of_page"></a>arithmetic</span></h2>
+<p>arithmetic — operations which perform pixel arithmetic, trig, log, statistics</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libvips-arithmetic.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libvips-arithmetic.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;vips/vips.h&gt;
+
+<a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *        <a
+href="../libvips/libvips-arithmetic.html#im-measure-area"
+>im_measure_area</a>                     (IMAGE *im,
+                                                         int left,
+                                                         int top,
+                                                         int width,
+                                                         int height,
+                                                         int h,
+                                                         int v,
+                                                         int *sel,
+                                                         int nsel,
+                                                         const char *name);
+<a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *        <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+>im_stats</a>                            (IMAGE *in);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-max"
+>im_max</a>                              (IMAGE *in,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-min"
+>im_min</a>                              (IMAGE *in,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-avg"
+>im_avg</a>                              (IMAGE *in,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-deviate"
+>im_deviate</a>                          (IMAGE *in,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-maxpos"
+>im_maxpos</a>                           (IMAGE *in,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-minpos"
+>im_minpos</a>                           (IMAGE *in,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-maxpos-avg"
+>im_maxpos_avg</a>                       (IMAGE *im,
+                                                         double *xpos,
+                                                         double *ypos,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-maxpos-vec"
+>im_maxpos_vec</a>                       (IMAGE *im,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *maxima,
+                                                         int n);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-minpos-vec"
+>im_minpos_vec</a>                       (IMAGE *im,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *minima,
+                                                         int n);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-bandmean"
+>im_bandmean</a>                         (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-add"
+>im_add</a>                              (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-subtract"
+>im_subtract</a>                         (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-invert"
+>im_invert</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-lintra"
+>im_lintra</a>                           (double a,
+                                                         IMAGE *in,
+                                                         double b,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-lintra-vec"
+>im_lintra_vec</a>                       (int n,
+                                                         double *a,
+                                                         IMAGE *in,
+                                                         double *b,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-multiply"
+>im_multiply</a>                         (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-divide"
+>im_divide</a>                           (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-remainder"
+>im_remainder</a>                        (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-remainder-vec"
+>im_remainder_vec</a>                    (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n,
+                                                         double *c);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-remainderconst"
+>im_remainderconst</a>                   (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double c);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-recomb"
+>im_recomb</a>                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *recomb);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-sign"
+>im_sign</a>                             (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-abs"
+>im_abs</a>                              (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-floor"
+>im_floor</a>                            (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-rint"
+>im_rint</a>                             (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-ceil"
+>im_ceil</a>                             (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-linreg"
+>im_linreg</a>                           (IMAGE **ins,
+                                                         IMAGE *out,
+                                                         double *xs);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-point"
+>im_point</a>                            (IMAGE *im,
+                                                         <a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         double x,
+                                                         double y,
+                                                         int band,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-point-bilinear"
+>im_point_bilinear</a>                   (IMAGE *im,
+                                                         double x,
+                                                         double y,
+                                                         int band,
+                                                         double *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-powtra"
+>im_powtra</a>                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double e);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-powtra-vec"
+>im_powtra_vec</a>                       (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n,
+                                                         double *e);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-exptra"
+>im_exptra</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-exp10tra"
+>im_exp10tra</a>                         (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-expntra"
+>im_expntra</a>                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double e);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-expntra-vec"
+>im_expntra_vec</a>                      (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n,
+                                                         double *e);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-logtra"
+>im_logtra</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-log10tra"
+>im_log10tra</a>                         (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-sintra"
+>im_sintra</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-costra"
+>im_costra</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-tantra"
+>im_tantra</a>                           (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-asintra"
+>im_asintra</a>                          (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-acostra"
+>im_acostra</a>                          (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-atantra"
+>im_atantra</a>                          (IMAGE *in,
+                                                         IMAGE *out);
+int                 <a
+href="../libvips/libvips-arithmetic.html#im-cross-phase"
+>im_cross_phase</a>                      (IMAGE *a,
+                                                         IMAGE *b,
+                                                         IMAGE *out);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libvips-arithmetic.description"></a><h2>Description</h2>
+<p>
+These operations perform pixel arithmetic, that is, they perform an
+arithmetic operation, such as addition, on every pixel in an image or a
+pair of images. All (except in a few cases noted below) will work with 
+images of any type or any mixture of types, of any size and of any number 
+of bands.
+</p>
+<p>
+For binary operations, if the number of bands differs, one of the images 
+must have one band. In this case, an n-band image is formed from the 
+one-band image by joining n copies of the one-band image together, and then
+the two n-band images are operated upon.
+</p>
+<p>
+In the same way, for operations that take an array constant, such as 
+<a
+href="../libvips/libvips-arithmetic.html#im-remainder-vec"
+><code class="function">im_remainder_vec()</code></a>, you can mix single-element arrays or single-band 
+images freely.
+</p>
+<p>
+Arithmetic operations try to preserve precision by increasing the number of
+bits in the output image when necessary. Generally, this follows the ANSI C
+conventions for type promotion, so multiplying two
+<code class="literal">IM_BANDFMT_UCHAR</code> images together, for example, produces a 
+<code class="literal">IM_BANDFMT_USHORT</code> image, and taking the <a
+href="../libvips/libvips-arithmetic.html#im-costra"
+><code class="function">im_costra()</code></a> of a 
+<code class="literal">IM_BANDFMT_USHORT</code> image produces <code class="literal">IM_BANDFMT_FLOAT</code> image. 
+</p>
+<p>
+For binary arithmetic operations, type promotion occurs in two stages. 
+First, the two input images are cast up to the smallest common format, 
+that is, the type with the smallest range that can represent the full 
+range of both inputs. This conversion can be represented as a table:
+</p>
+<p>
+</p>
+<div class="table">
+<a name="id454221"></a><p class="title"><b>Table 1. Smallest common format</b></p>
+<div class="table-contents"><table summary="Smallest common format" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="left">
+<em class="parameter"><code>in2</code></em>/<em class="parameter"><code>in1</code></em>
+</th>
+<th align="left">uchar</th>
+<th align="left">char</th>
+<th align="left">ushort</th>
+<th align="left">short</th>
+<th align="left">uint</th>
+<th align="left">int</th>
+<th align="left">float</th>
+<th align="left">double</th>
+<th align="left">complex</th>
+<th align="left">double complex</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">uchar</td>
+<td align="left">ushort</td>
+<td align="left">short</td>
+<td align="left">ushort</td>
+<td align="left">short</td>
+<td align="left">uint</td>
+<td align="left">int</td>
+<td align="left">float</td>
+<td align="left">double</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">char</td>
+<td align="left">short</td>
+<td align="left">short</td>
+<td align="left">short</td>
+<td align="left">short</td>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">float</td>
+<td align="left">double</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">ushort</td>
+<td align="left">ushort</td>
+<td align="left">short</td>
+<td align="left">ushort</td>
+<td align="left">short</td>
+<td align="left">uint</td>
+<td align="left">int</td>
+<td align="left">float</td>
+<td align="left">double</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">short</td>
+<td align="left">short</td>
+<td align="left">short</td>
+<td align="left">short</td>
+<td align="left">short</td>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">float</td>
+<td align="left">double</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">uint</td>
+<td align="left">uint</td>
+<td align="left">int</td>
+<td align="left">uint</td>
+<td align="left">int</td>
+<td align="left">uint</td>
+<td align="left">int</td>
+<td align="left">float</td>
+<td align="left">double</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">int</td>
+<td align="left">float</td>
+<td align="left">double</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">float</td>
+<td align="left">float</td>
+<td align="left">float</td>
+<td align="left">float</td>
+<td align="left">float</td>
+<td align="left">float</td>
+<td align="left">float</td>
+<td align="left">float</td>
+<td align="left">double</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">complex</td>
+<td align="left">complex</td>
+<td align="left">complex</td>
+<td align="left">complex</td>
+<td align="left">complex</td>
+<td align="left">complex</td>
+<td align="left">complex</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+<td align="left">complex</td>
+<td align="left">double complex</td>
+</tr>
+<tr>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+</p>
+<p>
+In the second stage, the operation is performed between the two identical 
+types to form the output. The details vary between operations, but 
+generally the principle is that the output type should be large enough to 
+represent the whole rage of possible values, except that int never becomes 
+float.</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libvips-arithmetic.details"></a><h2>Details</h2>
+<div class="refsect2" title="im_measure_area ()">
+<a name="im-measure-area"></a><h3>im_measure_area ()</h3>
+<pre class="programlisting"><a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *        im_measure_area                     (IMAGE *im,
+                                                         int left,
+                                                         int top,
+                                                         int width,
+                                                         int height,
+                                                         int h,
+                                                         int v,
+                                                         int *sel,
+                                                         int nsel,
+                                                         const char *name);</pre>
+<p>
+Analyse a grid of colour patches, producing a <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+><span class="type">DOUBLEMASK</span></a> of patch averages.
+The mask has a row for each measured patch, and a column for each image
+band. The operations issues a warning if any patch has a deviation more 
+than 20% of
+the mean. Only the central 50% of each patch is averaged. If <em class="parameter"><code>sel</code></em> is <code class="literal">NULL</code>
+then all patches are measured.
+</p>
+<p>
+Example: 6 band image of 4x2 block of colour patches.
+</p>
+<p>
+</p>
+<table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">4</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">6</td>
+<td align="left">7</td>
+<td align="left">8</td>
+</tr>
+</tbody>
+</table>
+<p>
+</p>
+<p>
+Then call im_measure( im, box, 4, 2, { 2, 4 }, 2, "fred" ) makes a mask
+"fred" which has 6 columns, two rows. The first row contains the averages
+for patch 2, the second for patch 4.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-avg"
+><code class="function">im_avg()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-deviate"
+><code class="function">im_deviate()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to measure
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
+<td> area of image containing chart
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
+<td> area of image containing chart
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td> area of image containing chart
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td> area of image containing chart
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
+<td> patches across chart
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>v</code></em> :</span></p></td>
+<td> patches down chart
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sel</code></em> :</span></p></td>
+<td> array of patch numbers to measure (numbered from 1 in row-major order)
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>nsel</code></em> :</span></p></td>
+<td> length of patch number array
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> name to give to returned <em class="parameter"><code>DOUBLEMASK</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+><span class="type">DOUBLEMASK</span></a> of measurements.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_stats ()">
+<a name="im-stats"></a><h3>im_stats ()</h3>
+<pre class="programlisting"><a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *        im_stats                            (IMAGE *in);</pre>
+<p>
+Find many image statistics in a single pass through the data. Returns a
+<a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+><span class="type">DOUBLEMASK</span></a> of 6 columns by n + 1 (where n is number of bands in image <em class="parameter"><code>in</code></em>) 
+rows. Columns are statistics, and are, in order: minimum, maximum, sum, 
+sum of squares, mean, standard deviation. Row 0 has statistics for all 
+bands together, row 1 has stats for band 1, and so on.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-maxpos"
+><code class="function">im_maxpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-deviate"
+><code class="function">im_deviate()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> image to scan
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_max ()">
+<a name="im-max"></a><h3>im_max ()</h3>
+<pre class="programlisting">int                 im_max                              (IMAGE *in,
+                                                         double *out);</pre>
+<p>
+Finds the the maximum value of image <span class="type">in</span> and returns it at the
+location pointed by out.  If input is complex, the max modulus
+is returned. <a
+href="../libvips/libvips-arithmetic.html#im-max"
+><code class="function">im_max()</code></a> finds the maximum of all bands: if you
+want to find the maximum of each band separately, use <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-maxpos"
+><code class="function">im_maxpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output double
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_min ()">
+<a name="im-min"></a><h3>im_min ()</h3>
+<pre class="programlisting">int                 im_min                              (IMAGE *in,
+                                                         double *out);</pre>
+<p>
+Finds the the minimum value of image <span class="type">in</span> and returns it at the
+location pointed by <em class="parameter"><code>out</code></em>.  If input is complex, the min modulus
+is returned. <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a> finds the minimum of all bands: if you
+want to find the minimum of each band separately, use <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-minpos"
+><code class="function">im_minpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output double
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_avg ()">
+<a name="im-avg"></a><h3>im_avg ()</h3>
+<pre class="programlisting">int                 im_avg                              (IMAGE *in,
+                                                         double *out);</pre>
+<p>
+This operation finds the average value in an image. It operates on all 
+bands of the input image: use <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a> if you need to calculate an 
+average for each band. For complex images, return the average modulus.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-bandmean"
+><code class="function">im_bandmean()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-deviate"
+><code class="function">im_deviate()</code></a>, <a
+href="../libvips/libvips-morphology.html#im-rank"
+><code class="function">im_rank()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output pixel average
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_deviate ()">
+<a name="im-deviate"></a><h3>im_deviate ()</h3>
+<pre class="programlisting">int                 im_deviate                          (IMAGE *in,
+                                                         double *out);</pre>
+<p>
+This operation finds the standard deviation of all pixels in <em class="parameter"><code>in</code></em>. It 
+operates on all bands of the input image: use <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a> if you need 
+to calculate an average for each band. 
+</p>
+<p>
+Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-bandmean"
+><code class="function">im_bandmean()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-avg"
+><code class="function">im_avg()</code></a>, <a
+href="../libvips/libvips-morphology.html#im-rank"
+><code class="function">im_rank()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output pixel standard deviation
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_maxpos ()">
+<a name="im-maxpos"></a><h3>im_maxpos ()</h3>
+<pre class="programlisting">int                 im_maxpos                           (IMAGE *in,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *out);</pre>
+<p>
+Function to find the maximum of an image. Works for any 
+image type. Returns a double and the location of max. For complex images,
+finds the pixel with the highest modulus.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-minpos"
+><code class="function">im_minpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-maxpos-avg"
+><code class="function">im_maxpos_avg()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> image to search
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
+<td> returned x position of maximum
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
+<td> returned y position of maximum
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> returned pixel value at that position
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_minpos ()">
+<a name="im-minpos"></a><h3>im_minpos ()</h3>
+<pre class="programlisting">int                 im_minpos                           (IMAGE *in,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *out);</pre>
+<p>
+Function to find the minimum of an image. Works for any 
+image type. Returns a double and the location of min. For complex images,
+finds the pixel with the smallest modulus.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-maxpos"
+><code class="function">im_maxpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-maxpos-avg"
+><code class="function">im_maxpos_avg()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> image to search
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
+<td> returned x position of minimum
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
+<td> returned y position of minimum
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> returned pixel value at that position
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_maxpos_avg ()">
+<a name="im-maxpos-avg"></a><h3>im_maxpos_avg ()</h3>
+<pre class="programlisting">int                 im_maxpos_avg                       (IMAGE *im,
+                                                         double *xpos,
+                                                         double *ypos,
+                                                         double *out);</pre>
+<p>
+Function to find the maximum of an image.  Returns coords and value at
+double precision.  In the event of a draw, returns average of all 
+drawing coords.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-maxpos"
+><code class="function">im_maxpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to scan
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
+<td> returned X position
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
+<td> returned Y position
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> returned value
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_maxpos_vec ()">
+<a name="im-maxpos-vec"></a><h3>im_maxpos_vec ()</h3>
+<pre class="programlisting">int                 im_maxpos_vec                       (IMAGE *im,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *maxima,
+                                                         int n);</pre>
+<p>
+Find the coordinates and values of the n maxima of an image.
+</p>
+<p>
+For 8 and 16-bit images, it's much faster to find the histogram and then
+calculate a threshold from that. See <a
+href="../libvips/libvips-histograms-lut.html#im-mpercent"
+><code class="function">im_mpercent()</code></a>.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-minpos"
+><code class="function">im_minpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-maxpos-avg"
+><code class="function">im_maxpos_avg()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to scan
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
+<td> array to return x positions
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
+<td> array to return y positions
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>maxima</code></em> :</span></p></td>
+<td> array to return values
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
+<td> number of maxima to search for
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_minpos_vec ()">
+<a name="im-minpos-vec"></a><h3>im_minpos_vec ()</h3>
+<pre class="programlisting">int                 im_minpos_vec                       (IMAGE *im,
+                                                         int *xpos,
+                                                         int *ypos,
+                                                         double *minima,
+                                                         int n);</pre>
+<p>
+Find the coordinates and values of the n minima of an image.
+</p>
+<p>
+For 8 and 16-bit images, it's much faster to find the histogram and then
+calculate a threshold from that. See <a
+href="../libvips/libvips-histograms-lut.html#im-mpercent"
+><code class="function">im_mpercent()</code></a>.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-minpos"
+><code class="function">im_minpos()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-min"
+><code class="function">im_min()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-stats"
+><code class="function">im_stats()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-maxpos-avg"
+><code class="function">im_maxpos_avg()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to scan
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>xpos</code></em> :</span></p></td>
+<td> array to return x positions
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ypos</code></em> :</span></p></td>
+<td> array to return y positions
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>maxima</code></em> :</span></p></td>
+<td> array to return values
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
+<td> number of minima to search for
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_bandmean ()">
+<a name="im-bandmean"></a><h3>im_bandmean ()</h3>
+<pre class="programlisting">int                 im_bandmean                         (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+<a
+href="../libvips/libvips-arithmetic.html#im-bandmean"
+><code class="function">im_bandmean()</code></a> writes a one-band image where each pixel is the average of 
+the bands for that pixel in the input image. The output band format is 
+the same as the input band format. Integer types use round-to-nearest
+averaging.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-add"
+><code class="function">im_add()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-avg"
+><code class="function">im_avg()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-recomb"
+><code class="function">im_recomb()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_add ()">
+<a name="im-add"></a><h3>im_add ()</h3>
+<pre class="programlisting">int                 im_add                              (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);</pre>
+<p>
+This operation calculates <em class="parameter"><code>in1</code></em> + <em class="parameter"><code>in2</code></em> and writes the result to <em class="parameter"><code>out</code></em>. 
+The images must be the same size. They may have any format. 
+</p>
+<p>
+If the number of bands differs, one of the images 
+must have one band. In this case, an n-band image is formed from the 
+one-band image by joining n copies of the one-band image together, and then
+the two n-band images are operated upon.
+</p>
+<p>
+The two input images are cast up to the smallest common type (see table 
+Smallest common format in 
+arithmetic), then the 
+following table is used to determine the output type:
+</p>
+<p>
+</p>
+<div class="table">
+<a name="id456813"></a><p class="title"><b>Table 2. <a
+href="../libvips/libvips-arithmetic.html#im-add"
+><code class="function">im_add()</code></a> type promotion</b></p>
+<div class="table-contents"><table summary="im_add() type promotion" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="left">input type</th>
+<th align="left">output type</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">uchar</td>
+<td align="left">ushort</td>
+</tr>
+<tr>
+<td align="left">char</td>
+<td align="left">short</td>
+</tr>
+<tr>
+<td align="left">ushort</td>
+<td align="left">uint</td>
+</tr>
+<tr>
+<td align="left">short</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">uint</td>
+<td align="left">uint</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">float</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">double</td>
+<td align="left">double</td>
+</tr>
+<tr>
+<td align="left">complex</td>
+<td align="left">complex</td>
+</tr>
+<tr>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+</p>
+<p>
+In other words, the output type is just large enough to hold the whole
+range of possible values.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-subtract"
+><code class="function">im_subtract()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-lintra"
+><code class="function">im_lintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in1</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 1
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in2</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 2
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_subtract ()">
+<a name="im-subtract"></a><h3>im_subtract ()</h3>
+<pre class="programlisting">int                 im_subtract                         (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);</pre>
+<p>
+This operation calculates <em class="parameter"><code>in1</code></em> - <em class="parameter"><code>in2</code></em> and writes the result to <em class="parameter"><code>out</code></em>. 
+The images must be the same size. They may have any format. 
+</p>
+<p>
+If the number of bands differs, one of the images 
+must have one band. In this case, an n-band image is formed from the 
+one-band image by joining n copies of the one-band image together, and then
+the two n-band images are operated upon.
+</p>
+<p>
+The two input images are cast up to the smallest common type (see table 
+Smallest common format in 
+arithmetic), then the 
+following table is used to determine the output type:
+</p>
+<p>
+</p>
+<div class="table">
+<a name="id457148"></a><p class="title"><b>Table 3. <a
+href="../libvips/libvips-arithmetic.html#im-subtract"
+><code class="function">im_subtract()</code></a> type promotion</b></p>
+<div class="table-contents"><table summary="im_subtract() type promotion" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="left">input type</th>
+<th align="left">output type</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">uchar</td>
+<td align="left">short</td>
+</tr>
+<tr>
+<td align="left">char</td>
+<td align="left">short</td>
+</tr>
+<tr>
+<td align="left">ushort</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">short</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">uint</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">float</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">double</td>
+<td align="left">double</td>
+</tr>
+<tr>
+<td align="left">complex</td>
+<td align="left">complex</td>
+</tr>
+<tr>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+</p>
+<p>
+In other words, the output type is just large enough to hold the whole
+range of possible values.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-add"
+><code class="function">im_add()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-lintra"
+><code class="function">im_lintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in1</code></em> :</span></p></td>
+<td> input image 1
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in2</code></em> :</span></p></td>
+<td> input image 2
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_invert ()">
+<a name="im-invert"></a><h3>im_invert ()</h3>
+<pre class="programlisting">int                 im_invert                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+this operation calculates (255 - <em class="parameter"><code>in</code></em>).
+The operation works on uchar images only. The input can have any no of 
+channels.
+</p>
+<p>
+This is not a generally useful program -- it is included as an example of 
+a very simple new-style IO function. 
+See <a
+href="../libvips/libvips-arithmetic.html#im-exptra"
+><code class="function">im_exptra()</code></a> for an example of a VIPS function which can process
+any input image type.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-exptra"
+><code class="function">im_exptra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-lintra"
+><code class="function">im_lintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_lintra ()">
+<a name="im-lintra"></a><h3>im_lintra ()</h3>
+<pre class="programlisting">int                 im_lintra                           (double a,
+                                                         IMAGE *in,
+                                                         double b,
+                                                         IMAGE *out);</pre>
+<p>
+Pass an image through a linear transform - ie. <em class="parameter"><code>out</code></em> = <em class="parameter"><code>in</code></em> * <em class="parameter"><code>a</code></em> + <em class="parameter"><code>b</code></em>. Output
+is always float for integer input, double for double input, complex for
+complex input and double complex for double complex input.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-add"
+><code class="function">im_add()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-lintra-vec"
+><code class="function">im_lintra_vec()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td> constant for multiplication
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> image to transform
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td> constant for addition
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_lintra_vec ()">
+<a name="im-lintra-vec"></a><h3>im_lintra_vec ()</h3>
+<pre class="programlisting">int                 im_lintra_vec                       (int n,
+                                                         double *a,
+                                                         IMAGE *in,
+                                                         double *b,
+                                                         IMAGE *out);</pre>
+<p>
+Pass an image through a linear transform - ie. <em class="parameter"><code>out</code></em> = <em class="parameter"><code>in</code></em> * <em class="parameter"><code>a</code></em> + <em class="parameter"><code>b</code></em>. Output
+is always float for integer input, double for double input, complex for
+complex input and double complex for double complex input.
+</p>
+<p>
+If the arrays of constants have just one element, that constant are used for 
+all image bands. If the arrays have more than one element and they have 
+the same number of elements as there are bands in the image, then 
+one array element is used for each band. If the arrays have more than one
+element and the image only has a single band, the result is a many-band
+image where each band corresponds to one array element.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-add"
+><code class="function">im_add()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-lintra"
+><code class="function">im_lintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
+<td> array size
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td> array of constants for multiplication
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> image to transform
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td> array of constants for addition
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_multiply ()">
+<a name="im-multiply"></a><h3>im_multiply ()</h3>
+<pre class="programlisting">int                 im_multiply                         (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);</pre>
+<p>
+This operation calculates <em class="parameter"><code>in1</code></em> * <em class="parameter"><code>in2</code></em> and writes the result to <em class="parameter"><code>out</code></em>. 
+The images must be the same size. They may have any format. 
+</p>
+<p>
+If the number of bands differs, one of the images 
+must have one band. In this case, an n-band image is formed from the 
+one-band image by joining n copies of the one-band image together, and then
+the two n-band images are operated upon.
+</p>
+<p>
+The two input images are cast up to the smallest common type (see table 
+Smallest common format in 
+arithmetic), then the 
+following table is used to determine the output type:
+</p>
+<p>
+</p>
+<div class="table">
+<a name="id457930"></a><p class="title"><b>Table 4. <a
+href="../libvips/libvips-arithmetic.html#im-multiply"
+><code class="function">im_multiply()</code></a> type promotion</b></p>
+<div class="table-contents"><table summary="im_multiply() type promotion" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="left">input type</th>
+<th align="left">output type</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">uchar</td>
+<td align="left">ushort</td>
+</tr>
+<tr>
+<td align="left">char</td>
+<td align="left">short</td>
+</tr>
+<tr>
+<td align="left">ushort</td>
+<td align="left">uint</td>
+</tr>
+<tr>
+<td align="left">short</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">uint</td>
+<td align="left">uint</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">int</td>
+</tr>
+<tr>
+<td align="left">float</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">double</td>
+<td align="left">double</td>
+</tr>
+<tr>
+<td align="left">complex</td>
+<td align="left">complex</td>
+</tr>
+<tr>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+</p>
+<p>
+In other words, the output type is just large enough to hold the whole
+range of possible values.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-divide"
+><code class="function">im_divide()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-lintra"
+><code class="function">im_lintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in1</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 1
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in2</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 2
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_divide ()">
+<a name="im-divide"></a><h3>im_divide ()</h3>
+<pre class="programlisting">int                 im_divide                           (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);</pre>
+<p>
+This operation calculates <em class="parameter"><code>in1</code></em> / <em class="parameter"><code>in2</code></em> and writes the result to <em class="parameter"><code>out</code></em>. 
+The images must be the same size. They may have any format. 
+</p>
+<p>
+If the number of bands differs, one of the images 
+must have one band. In this case, an n-band image is formed from the 
+one-band image by joining n copies of the one-band image together, and then
+the two n-band images are operated upon.
+</p>
+<p>
+The two input images are cast up to the smallest common type (see table 
+Smallest common format in 
+arithmetic), then the 
+following table is used to determine the output type:
+</p>
+<p>
+</p>
+<div class="table">
+<a name="id458265"></a><p class="title"><b>Table 5. <a
+href="../libvips/libvips-arithmetic.html#im-divide"
+><code class="function">im_divide()</code></a> type promotion</b></p>
+<div class="table-contents"><table summary="im_divide() type promotion" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="left">input type</th>
+<th align="left">output type</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">uchar</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">char</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">ushort</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">short</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">uint</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">float</td>
+<td align="left">float</td>
+</tr>
+<tr>
+<td align="left">double</td>
+<td align="left">double</td>
+</tr>
+<tr>
+<td align="left">complex</td>
+<td align="left">complex</td>
+</tr>
+<tr>
+<td align="left">double complex</td>
+<td align="left">double complex</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+</p>
+<p>
+In other words, the output type is just large enough to hold the whole
+range of possible values.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-multiply"
+><code class="function">im_multiply()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-lintra"
+><code class="function">im_lintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in1</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 1
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in2</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 2
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_remainder ()">
+<a name="im-remainder"></a><h3>im_remainder ()</h3>
+<pre class="programlisting">int                 im_remainder                        (IMAGE *in1,
+                                                         IMAGE *in2,
+                                                         IMAGE *out);</pre>
+<p>
+This operation calculates <em class="parameter"><code>in1</code></em> % <em class="parameter"><code>in2</code></em> (remainder after division) and writes 
+the result to <em class="parameter"><code>out</code></em>. The images must be the same size. They may have any 
+non-complex format. For float formats, <a
+href="../libvips/libvips-arithmetic.html#im-remainder"
+><code class="function">im_remainder()</code></a> calculates <em class="parameter"><code>in1</code></em> -
+<em class="parameter"><code>in2</code></em> * floor (<em class="parameter"><code>in1</code></em> / <em class="parameter"><code>in2</code></em>).
+</p>
+<p>
+If the number of bands differs, one of the images 
+must have one band. In this case, an n-band image is formed from the 
+one-band image by joining n copies of the one-band image together, and then
+the two n-band images are operated upon.
+</p>
+<p>
+The two input images are cast up to the smallest common type (see table 
+Smallest common format in 
+arithmetic), and that format is the
+result type.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-remainderconst"
+><code class="function">im_remainderconst()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-divide"
+><code class="function">im_divide()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in1</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 1
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in2</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 2
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_remainder_vec ()">
+<a name="im-remainder-vec"></a><h3>im_remainder_vec ()</h3>
+<pre class="programlisting">int                 im_remainder_vec                    (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n,
+                                                         double *c);</pre>
+<p>
+This operation calculates <em class="parameter"><code>in</code></em> % <em class="parameter"><code>c</code></em> (remainder after division by constant) 
+and writes the result to <em class="parameter"><code>out</code></em>. 
+The image may have any 
+non-complex format. For float formats, <a
+href="../libvips/libvips-arithmetic.html#im-remainder"
+><code class="function">im_remainder()</code></a> calculates <em class="parameter"><code>in</code></em> -
+<em class="parameter"><code>c</code></em> * floor (<em class="parameter"><code>in</code></em> / <em class="parameter"><code>c</code></em>).
+</p>
+<p>
+If the number of image bands end array elements differs, one of them
+must have one band. Either the image is up-banded by joining n copies of
+the one-band image together, or the array is upbanded by copying the single
+element n times.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-remainder"
+><code class="function">im_remainder()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-remainderconst"
+><code class="function">im_remainderconst()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-divide"
+><code class="function">im_divide()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
+<td> number of elements in array
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
+<td> array of constants
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_remainderconst ()">
+<a name="im-remainderconst"></a><h3>im_remainderconst ()</h3>
+<pre class="programlisting">int                 im_remainderconst                   (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double c);</pre>
+<p>
+This operation calculates <em class="parameter"><code>in</code></em> % <em class="parameter"><code>c</code></em> (remainder after division by constant) 
+and writes the result to <em class="parameter"><code>out</code></em>. The image must be one of the integer types. 
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-remainder-vec"
+><code class="function">im_remainder_vec()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-divide"
+><code class="function">im_divide()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
+<td> constant
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_recomb ()">
+<a name="im-recomb"></a><h3>im_recomb ()</h3>
+<pre class="programlisting">int                 im_recomb                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         <a
+href="../libvips/libvips-mask.html#DOUBLEMASK--CAPS"
+>DOUBLEMASK</a> *recomb);</pre>
+<p>
+This operation recombines an image's bands. Each pixel in <em class="parameter"><code>in</code></em> is treated as 
+an n-element vector, where n is the number of bands in <em class="parameter"><code>in</code></em>, and multipled by
+the n x m matrix <em class="parameter"><code>recomb</code></em> to produce the m-band image <em class="parameter"><code>out</code></em>.
+</p>
+<p>
+<em class="parameter"><code>out</code></em> is always float, unless <em class="parameter"><code>in</code></em> is double, in which case <em class="parameter"><code>out</code></em> is double
+too. No complex images allowed.
+</p>
+<p>
+It's useful for various sorts of colour space conversions.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>recomb</code></em> :</span></p></td>
+<td> recombination matrix
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_sign ()">
+<a name="im-sign"></a><h3>im_sign ()</h3>
+<pre class="programlisting">int                 im_sign                             (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+Finds the unit vector in the direction of the pixel value. For non-complex
+images, it returns a signed char image with values -1, 0, and 1 for negative,
+zero and positive pixels. For complex images, it returns a
+complex normalised to length 1.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-abs"
+><code class="function">im_abs()</code></a>, <code class="function">im_cmulnorm()</code>, <a
+href="../libvips/libvips-conversion.html#im-c2amph"
+><code class="function">im_c2amph()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output image
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_abs ()">
+<a name="im-abs"></a><h3>im_abs ()</h3>
+<pre class="programlisting">int                 im_abs                              (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+This operation finds the absolute value of an image. It does a copy for 
+unsigned integer types, negate for negative values in 
+signed integer types, <code class="function">fabs(3)</code> for 
+float types, and calculate modulus for complex 
+types. 
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-exp10tra"
+><code class="function">im_exp10tra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-sign"
+><code class="function">im_sign()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_floor ()">
+<a name="im-floor"></a><h3>im_floor ()</h3>
+<pre class="programlisting">int                 im_floor                            (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, find the largest integral value not less than.
+Copy for integer types, call <code class="function"><code class="function">floor()</code></code> for float and 
+complex types. 
+Output type == input type.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-ceil"
+><code class="function">im_ceil()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-rint"
+><code class="function">im_rint()</code></a>, <a
+href="../libvips/libvips-conversion.html#im-clip2fmt"
+><code class="function">im_clip2fmt()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_rint ()">
+<a name="im-rint"></a><h3>im_rint ()</h3>
+<pre class="programlisting">int                 im_rint                             (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+Finds the nearest integral value. Copy for integer types, 
+call <a
+href="../libvips/libvips-util.html#IM-RINT--CAPS"
+><code class="function">IM_RINT()</code></a> for float and complex types. Output type == input type.
+</p>
+<p>
+<a
+href="../libvips/libvips-util.html#IM-RINT--CAPS"
+><code class="function">IM_RINT()</code></a> is a pseudo-round-to-nearest. It is much faster than
+<code class="function">rint</code>(3), but does not give the same result for
+negative integral values.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-ceil"
+><code class="function">im_ceil()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-floor"
+><code class="function">im_floor()</code></a>, <a
+href="../libvips/libvips-conversion.html#im-clip2fmt"
+><code class="function">im_clip2fmt()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_ceil ()">
+<a name="im-ceil"></a><h3>im_ceil ()</h3>
+<pre class="programlisting">int                 im_ceil                             (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, find the smallest integral value not less than.
+Copy for integer types, call <code class="function">ceil(3)</code> for float and 
+complex types. 
+Output type == input type.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-floor"
+><code class="function">im_floor()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-rint"
+><code class="function">im_rint()</code></a>, <a
+href="../libvips/libvips-conversion.html#im-clip2fmt"
+><code class="function">im_clip2fmt()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_linreg ()">
+<a name="im-linreg"></a><h3>im_linreg ()</h3>
+<pre class="programlisting">int                 im_linreg                           (IMAGE **ins,
+                                                         IMAGE *out,
+                                                         double *xs);</pre>
+<p>
+Function to find perform pixelwise linear regression on an array of 
+single band images. The output is a seven-band douuble image
+</p>
+<p>
+TODO: figure out how this works and fix up these docs!</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ins</code></em> :</span></p></td>
+<td> NULL-terminated array of input images
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> results of analysis
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>xs</code></em> :</span></p></td>
+<td>	X position of each image (pixel value is Y)
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_point ()">
+<a name="im-point"></a><h3>im_point ()</h3>
+<pre class="programlisting">int                 im_point                            (IMAGE *im,
+                                                         <a
+href="../libvips/VipsInterpolate.html"
+>VipsInterpolate</a> *interpolate,
+                                                         double x,
+                                                         double y,
+                                                         int band,
+                                                         double *out);</pre>
+<p>
+Find the value at (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) in given band of image.
+Non-integral values are calculated using the supplied <em class="parameter"><code>interpolate</code></em>.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-avg"
+><code class="function">im_avg()</code></a>, <a
+href="../libvips/VipsInterpolate.html"
+><span class="type">VipsInterpolate</span></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to read from
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interpolate</code></em> :</span></p></td>
+<td> interpolator to sample points with
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td> x position to interpolate
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td> y position to interpolate
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>band</code></em> :</span></p></td>
+<td> band to read
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> return interpolated value
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_point_bilinear ()">
+<a name="im-point-bilinear"></a><h3>im_point_bilinear ()</h3>
+<pre class="programlisting">int                 im_point_bilinear                   (IMAGE *im,
+                                                         double x,
+                                                         double y,
+                                                         int band,
+                                                         double *out);</pre>
+<p>
+Find the value at (<em class="parameter"><code>x</code></em>,<em class="parameter"><code>y</code></em>) in given band of image.
+Use bilinear interpolation if <em class="parameter"><code>x</code></em> or <em class="parameter"><code>y</code></em> are non-integral. 
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-avg"
+><code class="function">im_avg()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-point"
+><code class="function">im_point()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>im</code></em> :</span></p></td>
+<td> image to read from
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td> x position to interpolate
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td> y position to interpolate
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>band</code></em> :</span></p></td>
+<td> band to read
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> return interpolated value
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_powtra ()">
+<a name="im-powtra"></a><h3>im_powtra ()</h3>
+<pre class="programlisting">int                 im_powtra                           (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double e);</pre>
+<p>
+<a
+href="../libvips/libvips-arithmetic.html#im-powtra"
+><code class="function">im_powtra()</code></a> transforms element x of input to 
+<code class="function">pow</code>(x, <em class="parameter"><code>e</code></em>) in output. 
+It detects division by zero, setting those pixels to zero in the output. 
+Beware: it does this silently!
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-logtra"
+><code class="function">im_logtra()</code></a>, <code class="function">im_powntra_vec()</code></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>e</code></em> :</span></p></td>
+<td> exponent
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_powtra_vec ()">
+<a name="im-powtra-vec"></a><h3>im_powtra_vec ()</h3>
+<pre class="programlisting">int                 im_powtra_vec                       (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n,
+                                                         double *e);</pre>
+<p>
+<a
+href="../libvips/libvips-arithmetic.html#im-powtra-vec"
+><code class="function">im_powtra_vec()</code></a> transforms element x of input to 
+<code class="function">pow</code>(x, <em class="parameter"><code>b</code></em>) in output. 
+It detects division by zero, setting those pixels to zero in the output. 
+Beware: it does this silently!
+</p>
+<p>
+If the array of constants has one element, that constant is used for each
+image band. If the array has more than one element, it must have the same
+number of elements as there are bands in the image, and one array element
+is used for each band.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-logtra"
+><code class="function">im_logtra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-expntra-vec"
+><code class="function">im_expntra_vec()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
+<td> number of elements in array
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>e</code></em> :</span></p></td>
+<td> array of constants
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_exptra ()">
+<a name="im-exptra"></a><h3>im_exptra ()</h3>
+<pre class="programlisting">int                 im_exptra                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+<a
+href="../libvips/libvips-arithmetic.html#im-exptra"
+><code class="function">im_exptra()</code></a> transforms element x of input to 
+<code class="function">pow</code>(e, x) in output. 
+It detects division by zero, setting those pixels to zero in the output. 
+Beware: it does this silently!
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-logtra"
+><code class="function">im_logtra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-powtra"
+><code class="function">im_powtra()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_exp10tra ()">
+<a name="im-exp10tra"></a><h3>im_exp10tra ()</h3>
+<pre class="programlisting">int                 im_exp10tra                         (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+<a
+href="../libvips/libvips-arithmetic.html#im-exptra"
+><code class="function">im_exptra()</code></a> transforms element x of input to 
+<code class="function">pow</code>(10, x) in output. 
+It detects division by zero, setting those pixels to zero in the output. 
+Beware: it does this silently!
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-logtra"
+><code class="function">im_logtra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-powtra"
+><code class="function">im_powtra()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_expntra ()">
+<a name="im-expntra"></a><h3>im_expntra ()</h3>
+<pre class="programlisting">int                 im_expntra                          (IMAGE *in,
+                                                         IMAGE *out,
+                                                         double e);</pre>
+<p>
+<a
+href="../libvips/libvips-arithmetic.html#im-expntra"
+><code class="function">im_expntra()</code></a> transforms element x of input to 
+<code class="function">pow</code>(<em class="parameter"><code>e</code></em>, x) in output. 
+It detects division by zero, setting those pixels to zero in the output. 
+Beware: it does this silently!
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-logtra"
+><code class="function">im_logtra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-powtra"
+><code class="function">im_powtra()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>e</code></em> :</span></p></td>
+<td> base
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_expntra_vec ()">
+<a name="im-expntra-vec"></a><h3>im_expntra_vec ()</h3>
+<pre class="programlisting">int                 im_expntra_vec                      (IMAGE *in,
+                                                         IMAGE *out,
+                                                         int n,
+                                                         double *e);</pre>
+<p>
+<a
+href="../libvips/libvips-arithmetic.html#im-expntra-vec"
+><code class="function">im_expntra_vec()</code></a> transforms element x of input to 
+<code class="function">pow</code>(<em class="parameter"><code>b</code></em>, x) in output. 
+It detects division by zero, setting those pixels to zero in the output. 
+Beware: it does this silently!
+</p>
+<p>
+If the array of constants has one element, that constant is used for each
+image band. If the array has more than one element, it must have the same
+number of elements as there are bands in the image, and one array element
+is used for each band.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-logtra"
+><code class="function">im_logtra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-powtra"
+><code class="function">im_powtra()</code></a></p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n</code></em> :</span></p></td>
+<td> number of elements in array
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>e</code></em> :</span></p></td>
+<td> array of constants
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_logtra ()">
+<a name="im-logtra"></a><h3>im_logtra ()</h3>
+<pre class="programlisting">int                 im_logtra                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">log(3)</code> (natural logarithm). 
+The output type is float, unless the input is 
+double, in which case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-exp10tra"
+><code class="function">im_exp10tra()</code></a>, <code class="function">im_logntra()</code>, <a
+href="../libvips/libvips-arithmetic.html#im-sintra"
+><code class="function">im_sintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_log10tra ()">
+<a name="im-log10tra"></a><h3>im_log10tra ()</h3>
+<pre class="programlisting">int                 im_log10tra                         (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">log10(3)</code> (base 10 logarithm). 
+The output type is float, unless the input is 
+double, in which case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-exp10tra"
+><code class="function">im_exp10tra()</code></a>, <code class="function">im_logntra()</code>, <a
+href="../libvips/libvips-arithmetic.html#im-sintra"
+><code class="function">im_sintra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_sintra ()">
+<a name="im-sintra"></a><h3>im_sintra ()</h3>
+<pre class="programlisting">int                 im_sintra                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">sin(3)</code> (sine). Angles are 
+expressed in degrees. The output type is float, unless the input is 
+double, in which case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-asintra"
+><code class="function">im_asintra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-costra"
+><code class="function">im_costra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-tantra"
+><code class="function">im_tantra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_costra ()">
+<a name="im-costra"></a><h3>im_costra ()</h3>
+<pre class="programlisting">int                 im_costra                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">cos(3)</code> (cosine). Angles are 
+expressed in degrees. The output type is float, unless the input is 
+double, in which case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-acostra"
+><code class="function">im_acostra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-sintra"
+><code class="function">im_sintra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-tantra"
+><code class="function">im_tantra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_tantra ()">
+<a name="im-tantra"></a><h3>im_tantra ()</h3>
+<pre class="programlisting">int                 im_tantra                           (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">tan(3)</code> (tangent). Angles are 
+expressed in degrees. The output type is float, unless the input is 
+double, in which case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-atantra"
+><code class="function">im_atantra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-sintra"
+><code class="function">im_sintra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-tantra"
+><code class="function">im_tantra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_asintra ()">
+<a name="im-asintra"></a><h3>im_asintra ()</h3>
+<pre class="programlisting">int                 im_asintra                          (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">asin(3)</code> (arc, or inverse sine). 
+Angles are 
+expressed in degrees. The output type is float, unless the input is 
+double, in which case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-asintra"
+><code class="function">im_asintra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-costra"
+><code class="function">im_costra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-tantra"
+><code class="function">im_tantra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_acostra ()">
+<a name="im-acostra"></a><h3>im_acostra ()</h3>
+<pre class="programlisting">int                 im_acostra                          (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">acos(3)</code> (arc or inverse cosine). 
+Angles are expressed in
+degrees. The output type is float, unless the input is double, in which 
+case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-costra"
+><code class="function">im_costra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-asintra"
+><code class="function">im_asintra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-atantra"
+><code class="function">im_atantra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_atantra ()">
+<a name="im-atantra"></a><h3>im_atantra ()</h3>
+<pre class="programlisting">int                 im_atantra                          (IMAGE *in,
+                                                         IMAGE *out);</pre>
+<p>
+For each pixel, call <code class="function">atan(3)</code> (arc or inverse tangent). 
+Angles are expressed in
+degrees. The output type is float, unless the input is double, in which 
+case the output is double.  Non-complex images only.
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-tantra"
+><code class="function">im_tantra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-asintra"
+><code class="function">im_asintra()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-atantra"
+><code class="function">im_atantra()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="im_cross_phase ()">
+<a name="im-cross-phase"></a><h3>im_cross_phase ()</h3>
+<pre class="programlisting">int                 im_cross_phase                      (IMAGE *a,
+                                                         IMAGE *b,
+                                                         IMAGE *out);</pre>
+<p>
+Find the phase of the cross power spectrum of two complex images,
+expressed as a complex image where the modulus of each pixel is
+one.
+</p>
+<p>
+I.E. find (a.b*)/|a.b*| where
+ .  represents complex multiplication
+ *  represents the complex conjugate
+ || represents the complex modulus
+</p>
+<p>
+See also: <a
+href="../libvips/libvips-arithmetic.html#im-multiply"
+><code class="function">im_multiply()</code></a>, <a
+href="../libvips/libvips-arithmetic.html#im-sign"
+><code class="function">im_sign()</code></a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 1
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td> input <span class="type">IMAGE</span> 2
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> output <span class="type">IMAGE</span> 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on error
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libvips-arithmetic.see-also"></a><h2>See Also</h2>
+<a
+href="../libvips/libvips-boolean.html"
+>boolean</a>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>
