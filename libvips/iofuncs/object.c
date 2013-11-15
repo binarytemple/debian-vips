@@ -1232,6 +1232,9 @@ vips_object_real_dump( VipsObject *object, VipsBuf *buf )
 {
 	vips_buf_appendf( buf, " %s (%p)", 
 		G_OBJECT_TYPE_NAME( object ), object );
+
+	if( object->local_memory )
+		vips_buf_appendf( buf, " %zd bytes", object->local_memory ); 
 }
 
 static void
@@ -1519,6 +1522,7 @@ vips_object_set_argument_from_string( VipsObject *object,
 	if( g_type_is_a( otype, VIPS_TYPE_IMAGE ) ) { 
 		VipsImage *out;
 		VipsOperationFlags flags;
+		VipsAccess access;
 
 		flags = 0;
 		if( VIPS_IS_OPERATION( object ) )
@@ -1533,17 +1537,17 @@ vips_object_set_argument_from_string( VipsObject *object,
 		/* Read the filename. vips_foreign_load_options()
 		 * handles embedded options.
 		 */
-		if( flags & VIPS_OPERATION_SEQUENTIAL ) {
-			if( vips_foreign_load_options( value, &out, 
-				"sequential", TRUE,
-				NULL ) )
-				return( -1 );
-		}
-		else {
-			if( vips_foreign_load_options( value, &out, 
-				NULL ) )
-				return( -1 );
-		}
+		if( flags & VIPS_OPERATION_SEQUENTIAL_UNBUFFERED ) 
+			access = VIPS_ACCESS_SEQUENTIAL_UNBUFFERED;
+		else if( flags & VIPS_OPERATION_SEQUENTIAL ) 
+			access = VIPS_ACCESS_SEQUENTIAL;
+		else
+			access = VIPS_ACCESS_RANDOM; 
+
+		if( vips_foreign_load_options( value, &out, 
+			"access", access,
+			NULL ) )
+			return( -1 );
 
 		g_value_init( &gvalue, VIPS_TYPE_IMAGE );
 		g_value_set_object( &gvalue, out );
@@ -2281,7 +2285,8 @@ vips_type_depth( GType type )
 	int depth;
 
 	depth = 0;
-	while( type != VIPS_TYPE_OBJECT && (type = g_type_parent( type )) )
+	while( type != VIPS_TYPE_OBJECT && 
+		(type = g_type_parent( type )) )
 		depth += 1;
 
 	return( depth );
@@ -2369,10 +2374,11 @@ vips_object_local_array_cb( GObject *parent, VipsObjectLocal *local )
  * @n: array size
  *
  * Make an array of NULL VipsObject pointers. When @parent closes, every
- * non-NULL pointer in the array will be unreffed and the arraqy will be
- * freed.
- * Handy for creating a 
- * set of temporary images for a function.
+ * non-NULL pointer in the array will be unreffed and the array will be
+ * freed. Handy for creating a set of temporary images for a function.
+ *
+ * The array is NULL-terminated, ie. contains an extra NULL element at the
+ * end. 
  *
  * Example:
  *
@@ -2445,8 +2451,11 @@ vips_object_print_all_cb( VipsObject *object, int *n )
 	char str[32768];
 	VipsBuf buf = VIPS_BUF_STATIC( str );
 
-	fprintf( stderr, "%d) %s (%p)\n", 
+	fprintf( stderr, "%d) %s (%p)", 
 		*n, G_OBJECT_TYPE_NAME( object ), object );
+	if( object->local_memory )
+		fprintf( stderr, " %zd bytes", object->local_memory ); 
+	fprintf( stderr, "\n" ); 
 
 	vips_object_summary_class( class, &buf );
 	vips_buf_appends( &buf, " " );

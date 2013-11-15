@@ -493,11 +493,11 @@ vips_image_guess_interpretation( const VipsImage *image )
 			sane = FALSE;
 		break;
 
-	case  VIPS_INTERPRETATION_ARRAY:
+	case  VIPS_INTERPRETATION_MATRIX:
 		if( image->Bands != 1 )
 			sane = FALSE;
 		break;
-	
+
 	default:
 		g_assert( 0 );
 		sane = FALSE;
@@ -544,6 +544,30 @@ const char *
 vips_image_get_mode( const VipsImage *image )
 {
 	return( image->mode );
+}
+
+double
+vips_image_get_scale( const VipsImage *array )
+{
+	double scale;
+
+	scale = 1.0;
+	if( vips_image_get_typeof( array, "scale" ) ) 
+		vips_image_get_double( array, "scale", &scale );
+
+	return( scale );
+}
+
+double
+vips_image_get_offset( const VipsImage *array )
+{
+	double offset;
+
+	offset = 0.0;
+	if( vips_image_get_typeof( array, "offset" ) ) 
+		vips_image_get_double( array, "offset", &offset );
+
+	return( offset );
 }
 
 /**
@@ -664,7 +688,7 @@ meta_cp( VipsImage *dst, const VipsImage *src )
  * on @out.
  *
  * Image history is completely copied from all @in. @out will have the history
- * of all the intput images.
+ * of all the input images.
  *
  * See also: vips_image_copy_fieldsv(), vips_image_copy_fields().
  *
@@ -857,7 +881,7 @@ vips_image_set( VipsImage *image, const char *field, GValue *value )
  * Returns: 0 on success, -1 otherwise.
  */
 int
-vips_image_get( VipsImage *image, const char *field, GValue *value_copy )
+vips_image_get( const VipsImage *image, const char *field, GValue *value_copy )
 {
 	int i;
 	VipsMeta *meta;
@@ -937,7 +961,7 @@ vips_image_get( VipsImage *image, const char *field, GValue *value_copy )
  * field of that name.
  */
 GType 
-vips_image_get_typeof( VipsImage *image, const char *field )
+vips_image_get_typeof( const VipsImage *image, const char *field )
 {
 	int i;
 	VipsMeta *meta;
@@ -1079,7 +1103,7 @@ vips_image_set_area( VipsImage *image, const char *field,
 }
 
 static int
-meta_get_value( VipsImage *image,
+meta_get_value( const VipsImage *image,
 	const char *field, GType type, GValue *value_copy )
 {
 	if( vips_image_get( image, field, value_copy ) )
@@ -1114,7 +1138,7 @@ meta_get_value( VipsImage *image,
  * Returns: 0 on success, -1 otherwise.
  */
 int
-vips_image_get_area( VipsImage *image, const char *field, void **data )
+vips_image_get_area( const VipsImage *image, const char *field, void **data )
 {
 	GValue value_copy = { 0 };
 
@@ -1171,7 +1195,7 @@ vips_image_set_blob( VipsImage *image, const char *field,
  * Returns: 0 on success, -1 otherwise.
  */
 int
-vips_image_get_blob( VipsImage *image, const char *field, 
+vips_image_get_blob( const VipsImage *image, const char *field, 
 	void **data, size_t *length )
 {
 	GValue value_copy = { 0 };
@@ -1199,7 +1223,7 @@ vips_image_get_blob( VipsImage *image, const char *field,
  * Returns: 0 on success, -1 otherwise.
  */
 int
-vips_image_get_int( VipsImage *image, const char *field, int *out )
+vips_image_get_int( const VipsImage *image, const char *field, int *out )
 {
 	int i;
 	GValue value_copy = { 0 };
@@ -1265,7 +1289,7 @@ vips_image_set_int( VipsImage *image, const char *field, int i )
  * Returns: 0 on success, -1 otherwise.
  */
 int
-vips_image_get_double( VipsImage *image, const char *field, double *out )
+vips_image_get_double( const VipsImage *image, const char *field, double *out )
 {
 	int i;
 	GValue value_copy = { 0 };
@@ -1333,7 +1357,8 @@ vips_image_set_double( VipsImage *image, const char *field, double d )
  * Returns: 0 on success, -1 otherwise.
  */
 int
-vips_image_get_string( VipsImage *image, const char *field, char **out )
+vips_image_get_string( const VipsImage *image, const char *field, 
+	const char **out )
 {
 	int i;
 	GValue value_copy = { 0 };
@@ -1396,7 +1421,8 @@ vips_image_set_string( VipsImage *image, const char *field, const char *str )
  * Returns: 0 on success, -1 otherwise.
  */
 int
-vips_image_get_as_string( VipsImage *image, const char *field, char **out )
+vips_image_get_as_string( const VipsImage *image, 
+	const char *field, char **out )
 {
 	GValue value = { 0 };
 	GType type;

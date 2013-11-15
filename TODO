@@ -1,4 +1,37 @@
 
+Next version
+============
+
+- make vips_init() into a macro, check sizes of important structs against size
+  at library compile time
+
+  add a new API call like vips__get_sizeof_image() which returns
+  sizeof(VipsImage) from library compile time, compare that to the application
+  compile-time value
+
+  vips_init() macro then passes control on to vips__init() for real startup
+
+  breaks binary API sadly
+
+- do conv and morph quickly as simple wrappers over the vips7 operations
+
+- do much fancier profiling with timing on all locks saved in memory and
+  dumped on exit
+
+- use the webp advanced encoding api to set a write function for webp save to
+  file
+
+- use g_log() instead of vips_info()
+
+- do we always call copy_fields and demand_hint with ALL input images? what
+  about the operators in conversion?
+
+  could we add something to check that the two calls agree on the image lists?
+  I think they should
+
+- support multiscan jpeg write? see
+
+	https://github.com/jcupitt/ruby-vips/issues/41
 
 - object construction is threadsafe, but class construction is not
 
@@ -7,25 +40,12 @@
   we worked around this by adding vips_class_ping_all() to dsave build, but
   this is not a good fix
 
-  find out why vips class construct fails, test on seurat, kirk's 12-core
+  find out why vips class construct fails, test on seurat, kirk's 24-core
   monster
 
 
 
 
-
-- look at
-	
-	There is an order 1 algorithm for doing medians over boxes (truly O(1)
-	per pixel: I checked it carefully; it's like doing means over boxes in
-	order 1 per pixel) in OpenCV since February 2012 I think, due to
-	Perreault (and Hebert).
-
-	It appears to be well respected, at least for 8-bit medians. Very
-	memory intensive. Simple and elegant. No clue if it fits VIPS well
-	(probably not?).
-
-	Article: nomis80.org/ctmf.pdf
 
 - quadratic doesn't work for order 3
 
@@ -35,11 +55,6 @@
   seems fine vertically, only get errors on horizontal tile boundaries
 
   because we step across tiles left to right: y doesn't change, only x does
-
-- seems to leak with vips_check_matrix()?
-
-- test with interpolators, do we add margins correctly?
-
 
 
 
@@ -53,24 +68,6 @@
   cache then just needs to watch for "invalidate" on operations it tracks
 
   need to add an "invalidate" signal to operation
-
-- check CMC equations against web
-
-	http://en.wikipedia.org/wiki/Color_difference#CMC_l:c_.281984.29
-
-- see
-
-        http://www.dentistry.bham.ac.uk/landinig/software/cdeconv/cdeconv.html
-
-  sounds useful for BM?
-
-
-
-blocking bugs
-=============
-
-- none!
-
 
 mosaic
 ======
@@ -113,8 +110,6 @@ foreign
 - add nifti support
 
 	http://niftilib.sourceforge.net/
-
-- support planar tiff
 
 - add matlab write
 
@@ -163,20 +158,12 @@ convolution
   wait for vipsobject for this
 
 
-
 arithmetic
 ==========
 
 - avg/dev etc. should uncode images? eg. labq2lab etc.
 
   how about ifthenelse? 
-
-- bandalike: consider RGB + RGBA ... we should bandup by adding a black band
-
-  (or white?? unclear)
-
-  not clear if this is a good idea ... eg. when we upband a 1 band to a 2
-  band, should we duplicate the 1 band or add black?
 
 - HAVE_HYPOT could define a hypot() macro?
 
@@ -189,10 +176,6 @@ arithmetic
 
 iofuncs
 =======
-
-- we have VipsArrayObject and also vips_object_local_array()
-
-  can we make one use the other?
 
 - need vips_image_invalidate_area()
 
@@ -287,10 +270,6 @@ libvipsCC
 tools
 =====
 
-- could spot "copy" and turn on seq mode automatically?
-
-  perhaps there should be something on operations to indicate seq-ability
-
 - need a way to make the vips.1 etc. man pages
 
   gtk has things like docs/reference/gtk/gtk-update-icon-cache.xml and man
@@ -322,4 +301,27 @@ new operations
 
 - non-linear sharpen: replace each pixel by the lightest or darkest neighbour
   depending on which is closer in value
+
+- look at
+	
+	There is an order 1 algorithm for doing medians over boxes (truly O(1)
+	per pixel: I checked it carefully; it's like doing means over boxes in
+	order 1 per pixel) in OpenCV since February 2012 I think, due to
+	Perreault (and Hebert).
+
+	It appears to be well respected, at least for 8-bit medians. Very
+	memory intensive. Simple and elegant. No clue if it fits VIPS well
+	(probably not?).
+
+	Article: nomis80.org/ctmf.pdf
+
+- check CMC equations against web
+
+	http://en.wikipedia.org/wiki/Color_difference#CMC_l:c_.281984.29
+
+- see
+
+        http://www.dentistry.bham.ac.uk/landinig/software/cdeconv/cdeconv.html
+
+  sounds useful for BM?
 

@@ -1,0 +1,628 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>histogram</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="VIPS Reference Manual">
+<link rel="up" href="ch02.html" title="VIPS operation API by section">
+<link rel="prev" href="libvips-freq-filt.html" title="freq_filt">
+<link rel="next" href="libvips-inplace.html" title="inplace">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libvips-freq-filt.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">VIPS Reference Manual</th>
+<td><a accesskey="n" href="libvips-inplace.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libvips-histogram.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libvips-histogram.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="libvips-histogram"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libvips-histogram.top_of_page"></a>histogram</span></h2>
+<p>histogram — find, manipulate and apply histograms and lookup tables</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="libvips-histogram.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv">
+<a name="libvips-histogram.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#include &lt;vips/vips.h&gt;
+
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-maplut" title="vips_maplut ()">vips_maplut</a>                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *lut</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-percent" title="vips_percent ()">vips_percent</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> percent</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *threshold</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-stdif" title="vips_stdif ()">vips_stdif</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-hist-cum" title="vips_hist_cum ()">vips_hist_cum</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-hist-norm" title="vips_hist_norm ()">vips_hist_norm</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-hist-equal" title="vips_hist_equal ()">vips_hist_equal</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-hist-plot" title="vips_hist_plot ()">vips_hist_plot</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-hist-match" title="vips_hist_match ()">vips_hist_match</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ref</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-hist-local" title="vips_hist_local ()">vips_hist_local</a>                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-histogram.html#vips-hist-ismonotonic" title="vips_hist_ismonotonic ()">vips_hist_ismonotonic</a>               (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> *monotonic</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="libvips-histogram.description"></a><h2>Description</h2>
+<p>
+Histograms and look-up tables are 1xn or nx1 images, where n is less than
+256 or less than 65536, corresponding to 8- and 16-bit unsigned int images. 
+They are
+tagged with a <span class="type">VipsType</span> of IM_TYPE_HISTOGRAM and usually displayed by
+user-interfaces such as nip2 as plots rather than images.
+</p>
+<p>
+These functions can be broadly grouped as things to find or build 
+histograms (<a href="http://http://www.vips.ecs.soton.ac.uk/libvips-histograms-lut.html#im-histgr"><code class="function">im_histgr()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-histograms-lut.html#im-buildlut"><code class="function">im_buildlut()</code></a>, <code class="function">in_identity()</code>), operations that 
+manipulate histograms in some way (<a href="http://http://www.vips.ecs.soton.ac.uk/libvips-histograms-lut.html#im-histcum"><code class="function">im_histcum()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-histograms-lut.html#im-histnorm"><code class="function">im_histnorm()</code></a>), operations
+to apply histograms (<a href="http://http://www.vips.ecs.soton.ac.uk/libvips-histograms-lut.html#im-maplut"><code class="function">im_maplut()</code></a>), and a variety of utility 
+operations.
+</p>
+<p>
+A final group of operations build tone curves. These are useful in
+pre-press work for adjusting the appearance of images. They are designed
+for CIELAB images, but might be useful elsewhere.
+</p>
+</div>
+<div class="refsect1">
+<a name="libvips-histogram.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="vips-maplut"></a><h3>vips_maplut ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_maplut                         (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *lut</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>band</code></em>: apply one-band <em class="parameter"><code>lut</code></em> to this band of <em class="parameter"><code>in</code></em>
+</p>
+<p>
+Map an image through another image acting as a LUT (Look Up Table). 
+The lut may have any type and the output image will be that type.
+</p>
+<p>
+The input image will be cast to one of the unsigned integer types, that is,
+VIPS_FORMAT_UCHAR, VIPS_FORMAT_USHORT or VIPS_FORMAT_UINT.
+</p>
+<p>
+If <em class="parameter"><code>lut</code></em> is too small for the input type (for example, if <em class="parameter"><code>in</code></em> is
+VIPS_FORMAT_UCHAR but <em class="parameter"><code>lut</code></em> only has 100 elements), the lut is padded out
+by copying the last element. Overflows are reported at the end of 
+computation.
+If <em class="parameter"><code>lut</code></em> is too large, extra values are ignored. 
+</p>
+<p>
+If <em class="parameter"><code>lut</code></em> has one band and <em class="parameter"><code>band</code></em> is -1 (the default), then all bands of <em class="parameter"><code>in</code></em> 
+pass through <em class="parameter"><code>lut</code></em>. If <em class="parameter"><code>band</code></em> is &gt;= 0, then just that band of <em class="parameter"><code>in</code></em> passes 
+through <em class="parameter"><code>lut</code></em> and other bands are just copied. 
+</p>
+<p>
+If <em class="parameter"><code>lut</code></em>
+has same number of bands as <em class="parameter"><code>in</code></em>, then each band is mapped
+separately. If <em class="parameter"><code>in</code></em> has one band, then <em class="parameter"><code>lut</code></em> may have many bands and
+the output will have the same number of bands as <em class="parameter"><code>lut</code></em>.
+</p>
+<p>
+See also: <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-histograms-lut.html#im-histgr"><code class="function">im_histgr()</code></a>, <a class="link" href="libvips-create.html#vips-identity" title="vips_identity ()"><code class="function">vips_identity()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>lut</code></em> :</span></p></td>
+<td>look-up table</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-percent"></a><h3>vips_percent ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_percent                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><span class="type">double</span> percent</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *threshold</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+<a class="link" href="libvips-histogram.html#vips-percent" title="vips_percent ()"><code class="function">vips_percent()</code></a> returns (through the <em class="parameter"><code>threshold</code></em> parameter) the threshold 
+above which there are <em class="parameter"><code>percent</code></em> values of <em class="parameter"><code>in</code></em>. If for example percent=10, the
+number of pels of the input image with values greater than <em class="parameter"><code>threshold</code></em>
+will correspond to 10% of all pels of the image.
+</p>
+<p>
+The function works for uchar and ushort images only.  It can be used 
+to threshold the scaled result of a filtering operation.
+</p>
+<p>
+See also: <a class="link" href="libvips-arithmetic.html#vips-hist-find" title="vips_hist_find ()"><code class="function">vips_hist_find()</code></a>, <a class="link" href="libvips-arithmetic.html#vips-profile" title="vips_profile ()"><code class="function">vips_profile()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>percent</code></em> :</span></p></td>
+<td>threshold percentage</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em> :</span></p></td>
+<td>output threshold value</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-stdif"></a><h3>vips_stdif ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_stdif                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>a</code></em>: weight of new mean
+<em class="parameter"><code>m0</code></em>: target mean
+<em class="parameter"><code>b</code></em>: weight of new deviation
+<em class="parameter"><code>s0</code></em>: target deviation
+</p>
+<p>
+<a class="link" href="libvips-histogram.html#vips-stdif" title="vips_stdif ()"><code class="function">vips_stdif()</code></a> preforms statistical differencing according to the formula
+given in page 45 of the book "An Introduction to Digital Image 
+Processing" by Wayne Niblack. This transformation emphasises the way in 
+which a pel differs statistically from its neighbours. It is useful for 
+enhancing low-contrast images with lots of detail, such as X-ray plates.
+</p>
+<p>
+At point (i,j) the output is given by the equation:
+</p>
+<p>
+vout(i,j) = <em class="parameter"><code>a</code></em> * <em class="parameter"><code>m0</code></em> + (1 - <em class="parameter"><code>a</code></em>) * meanv + 
+      (vin(i,j) - meanv) * (<em class="parameter"><code>b</code></em> * <em class="parameter"><code>s0</code></em>) / (<em class="parameter"><code>s0</code></em> + <em class="parameter"><code>b</code></em> * stdv)
+</p>
+<p>
+Values <em class="parameter"><code>a</code></em>, <em class="parameter"><code>m0</code></em>, <em class="parameter"><code>b</code></em> and <em class="parameter"><code>s0</code></em> are entered, while meanv and stdv are the values
+calculated over a moving window of size <em class="parameter"><code>width</code></em>, <em class="parameter"><code>height</code></em> centred on pixel 
+(i,j). <em class="parameter"><code>m0</code></em> is the new mean, <em class="parameter"><code>a</code></em> is the weight given to it. <em class="parameter"><code>s0</code></em> is the new 
+standard deviation, <em class="parameter"><code>b</code></em> is the weight given to it. 
+</p>
+<p>
+Try:
+</p>
+<p>
+vips stdif $VIPSHOME/pics/huysum.v fred.v 0.5 128 0.5 50 11 11
+</p>
+<p>
+The operation works on one-band uchar images only, and writes a one-band 
+uchar image as its result. The output image has the same size as the 
+input.
+</p>
+<p>
+See also: <a class="link" href="libvips-histogram.html#vips-hist-local" title="vips_hist_local ()"><code class="function">vips_hist_local()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>width of region</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>height of region</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-hist-cum"></a><h3>vips_hist_cum ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_hist_cum                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Form cumulative histogram. 
+</p>
+<p>
+See also: <a class="link" href="libvips-histogram.html#vips-hist-norm" title="vips_hist_norm ()"><code class="function">vips_hist_norm()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-hist-norm"></a><h3>vips_hist_norm ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_hist_norm                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Normalise histogram ... normalise range to make it square (ie. max ==
+number of elements). Normalise each band separately.
+</p>
+<p>
+See also: <a class="link" href="libvips-histogram.html#vips-hist-cum" title="vips_hist_cum ()"><code class="function">vips_hist_cum()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-hist-equal"></a><h3>vips_hist_equal ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_hist_equal                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Optional arguments:
+</p>
+<p>
+<em class="parameter"><code>band</code></em>: band to equalise
+</p>
+<p>
+Histogram-equalise <em class="parameter"><code>in</code></em>. Equalise using band <em class="parameter"><code>bandno</code></em>, or if <em class="parameter"><code>bandno</code></em> is -1,
+equalise bands independently.
+</p>
+<p>
+See also:
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-hist-plot"></a><h3>vips_hist_plot ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_hist_plot                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Plot a 1 by any or any by 1 image file as a max by any or 
+any by max image using these rules:
+</p>
+<p>
+<span class="emphasis"><em>unsigned char</em></span> max is always 256 
+</p>
+<p>
+<span class="emphasis"><em>other unsigned integer types</em></span> output 0 - maxium 
+value of <em class="parameter"><code>in</code></em>.
+</p>
+<p>
+<span class="emphasis"><em>signed int types</em></span> min moved to 0, max moved to max + min.
+</p>
+<p>
+<span class="emphasis"><em>float types</em></span> min moved to 0, max moved to any 
+(square output)
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-hist-match"></a><h3>vips_hist_match ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_hist_match                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ref</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Adjust <em class="parameter"><code>in</code></em> to match <em class="parameter"><code>ref</code></em>. If <em class="parameter"><code>in</code></em> and <em class="parameter"><code>ref</code></em> are normalised
+cumulative histograms, <em class="parameter"><code>out</code></em> will be a LUT that adjusts the PDF of the image
+from which <em class="parameter"><code>in</code></em> was made to match the PDF of <em class="parameter"><code>ref</code></em>'s image. 
+</p>
+<p>
+See also: <a class="link" href="libvips-histogram.html#vips-maplut" title="vips_maplut ()"><code class="function">vips_maplut()</code></a>, <a class="link" href="libvips-arithmetic.html#vips-hist-find" title="vips_hist_find ()"><code class="function">vips_hist_find()</code></a>, <a class="link" href="libvips-histogram.html#vips-hist-norm" title="vips_hist_norm ()"><code class="function">vips_hist_norm()</code></a>,
+<a class="link" href="libvips-histogram.html#vips-hist-cum" title="vips_hist_cum ()"><code class="function">vips_hist_cum()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input histogram</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ref</code></em> :</span></p></td>
+<td>reference histogram</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output histogram</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-hist-local"></a><h3>vips_hist_local ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_hist_local                     (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> **out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Performs local histogram equalisation on <em class="parameter"><code>in</code></em> using a
+window of size <em class="parameter"><code>xwin</code></em> by <em class="parameter"><code>ywin</code></em> centered on the input pixel. 
+</p>
+<p>
+The output image is the same size as the input image. The edge pixels are
+created by copy edge pixels of the input image outwards.
+</p>
+<p>
+See also: <a class="link" href="libvips-histogram.html#vips-hist-equal" title="vips_hist_equal ()"><code class="function">vips_hist_equal()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>input image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>output image</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>width of region</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>height of region</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="vips-hist-ismonotonic"></a><h3>vips_hist_ismonotonic ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 vips_hist_ismonotonic               (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> *monotonic</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Test <em class="parameter"><code>in</code></em> for monotonicity. <em class="parameter"><code>out</code></em> is set non-zero if <em class="parameter"><code>in</code></em> is monotonic.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td>lookup-table to test</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+<code class="literal">NULL</code>-terminated list of optional named arguments</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, -1 on error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="libvips-histogram.see-also"></a><h2>See Also</h2>
+image
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.19</div>
+</body>
+</html>

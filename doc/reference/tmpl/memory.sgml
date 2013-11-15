@@ -22,24 +22,6 @@ memory
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO VIPS_ARRAY ##### -->
-<para>
-
-</para>
-
-@OBJ: 
-@N: 
-@T: 
-
-
-<!-- ##### MACRO VIPS_FREE ##### -->
-<para>
-
-</para>
-
-@S: 
-
-
 <!-- ##### MACRO VIPS_FREEF ##### -->
 <para>
 
@@ -49,13 +31,12 @@ memory
 @S: 
 
 
-<!-- ##### MACRO VIPS_NEW ##### -->
+<!-- ##### MACRO VIPS_FREE ##### -->
 <para>
 
 </para>
 
-@OBJ: 
-@T: 
+@S: 
 
 
 <!-- ##### MACRO VIPS_SETSTR ##### -->
@@ -67,13 +48,23 @@ memory
 @V: 
 
 
-<!-- ##### FUNCTION vips_free ##### -->
+<!-- ##### MACRO VIPS_NEW ##### -->
 <para>
 
 </para>
 
-@buf: 
-@Returns: 
+@OBJ: 
+@T: 
+
+
+<!-- ##### MACRO VIPS_ARRAY ##### -->
+<para>
+
+</para>
+
+@OBJ: 
+@N: 
+@T: 
 
 
 <!-- ##### FUNCTION vips_malloc ##### -->
@@ -96,12 +87,12 @@ memory
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_tracked_close ##### -->
+<!-- ##### FUNCTION vips_free ##### -->
 <para>
 
 </para>
 
-@fd: 
+@buf: 
 @Returns: 
 
 
@@ -113,21 +104,12 @@ memory
 @s: 
 
 
-<!-- ##### FUNCTION vips_tracked_get_allocs ##### -->
+<!-- ##### FUNCTION vips_tracked_malloc ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_tracked_get_files ##### -->
-<para>
-
-</para>
-
-@void: 
+@size: 
 @Returns: 
 
 
@@ -149,12 +131,12 @@ memory
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_tracked_malloc ##### -->
+<!-- ##### FUNCTION vips_tracked_get_allocs ##### -->
 <para>
 
 </para>
 
-@size: 
+@void: 
 @Returns: 
 
 
@@ -166,6 +148,24 @@ memory
 @pathname: 
 @flags: 
 @...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_close ##### -->
+<para>
+
+</para>
+
+@fd: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tracked_get_files ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 

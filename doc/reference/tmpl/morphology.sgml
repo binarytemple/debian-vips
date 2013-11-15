@@ -22,17 +22,6 @@ morphology
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### FUNCTION im_cntlines ##### -->
-<para>
-
-</para>
-
-@im: 
-@nolines: 
-@flag: 
-@Returns: 
-
-
 <!-- ##### FUNCTION im_dilate ##### -->
 <para>
 
@@ -52,39 +41,6 @@ morphology
 @in: 
 @out: 
 @mask: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_label_regions ##### -->
-<para>
-
-</para>
-
-@test: 
-@mask: 
-@segments: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_maxvalue ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@n: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_profile ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@dir: 
 @Returns: 
 
 
@@ -113,6 +69,28 @@ morphology
 @Returns: 
 
 
+<!-- ##### FUNCTION im_maxvalue ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_cntlines ##### -->
+<para>
+
+</para>
+
+@im: 
+@nolines: 
+@flag: 
+@Returns: 
+
+
 <!-- ##### FUNCTION im_zerox ##### -->
 <para>
 
@@ -121,6 +99,17 @@ morphology
 @in: 
 @out: 
 @sign: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_label_regions ##### -->
+<para>
+
+</para>
+
+@test: 
+@mask: 
+@segments: 
 @Returns: 
 
 

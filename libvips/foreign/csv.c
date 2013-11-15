@@ -25,6 +25,8 @@
  * 	- rework as a set of fns ready for wrapping as a class
  * 23/2/12
  * 	- report positions for EOF/EOL errors
+ * 2/7/13
+ * 	- add matrix read/write
  */
 
 /*
@@ -64,6 +66,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include <vips/vips.h>
 
@@ -87,7 +90,8 @@ skip_line( FILE *fp )
 
 	/* If we hit EOF and no \n, wait until the next call to report EOF.
 	 */
-        while( (ch = fgetc( fp )) != '\n' && ch != EOF )
+        while( (ch = fgetc( fp )) != '\n' && 
+		ch != EOF )
 		;
 
 	return( -1 );
@@ -100,7 +104,9 @@ skip_white( FILE *fp, const char whitemap[256] )
 
 	do {
 		ch = fgetc( fp );
-	} while (ch != EOF && ch != '\n' && whitemap[ch] );
+	} while( ch != EOF && 
+		ch != '\n' && 
+		whitemap[ch] );
 
 	ungetc( ch, fp );
 
@@ -121,7 +127,8 @@ skip_to_quote( FILE *fp )
 			ch = fgetc( fp );
 		else if( ch == '"' )
 			break;
-	} while( ch != EOF && ch != '\n' );
+	} while( ch != EOF && 
+		ch != '\n' );
 
 	ungetc( ch, fp );
 
@@ -135,7 +142,9 @@ skip_to_sep( FILE *fp, const char sepmap[256] )
 
 	do {
 		ch = fgetc( fp );
-	} while (ch != EOF && ch != '\n' && !sepmap[ch] );
+	} while( ch != EOF && 
+		ch != '\n' && 
+		!sepmap[ch] );
 
 	ungetc( ch, fp );
 
@@ -167,7 +176,8 @@ read_double( FILE *fp, const char whitemap[256], const char sepmap[256],
 	*out = 0;
 
 	ch = skip_white( fp, whitemap );
-	if( ch == EOF || ch == '\n' ) 
+	if( ch == EOF || 
+		ch == '\n' ) 
 		return( ch );
 
 	if( ch == '"' ) {
@@ -195,7 +205,8 @@ read_double( FILE *fp, const char whitemap[256], const char sepmap[256],
 
 	/* If it's a separator, we have to step over it. 
 	 */
-	if( ch != EOF && sepmap[ch] ) 
+	if( ch != EOF && 
+		sepmap[ch] ) 
 		(void) fgetc( fp );
 
 	return( 0 );
@@ -258,10 +269,6 @@ read_csv( FILE *fp, VipsImage *out,
 		vips_error( "csv2vips", "%s", _( "empty line" ) );
 		return( -1 );
 	}
-	if( ch == -2 ) 
-		/* Failed to parse a number.
-		 */
-		return( -1 );
 
 	/* If lines is -1, we have to scan the whole file to get the
 	 * number of lines out.
@@ -440,4 +447,296 @@ vips__csv_write( VipsImage *in, const char *filename, const char *separator )
 	return( 0 );
 }
 
+/* Read to non-whitespace, or buffer overflow.
+ */
+static int
+fetch_nonwhite( FILE *fp, const char whitemap[256], char *buf, int max )
+{
+	int ch;
+	int i;
+
+	for( i = 0; i < max - 1; i++ ) {
+		ch = fgetc( fp );
+
+		if( ch == EOF || ch == '\n' || whitemap[ch] )
+			break;
+
+		buf[i] = ch;
+	}
+
+	buf[i] = '\0';
+
+	/* We mustn't skip the terminator.
+	 */
+	ungetc( ch, fp );
+
+	return( ch ); 
+}
+
+/* Read a single double in ascii (not locale) encoding.
+ *
+ * Return the char that caused failure on fail (EOF or \n).
+ */
+static int
+read_ascii_double( FILE *fp, const char whitemap[256], double *out )
+{
+	int ch;
+	char buf[256];
+	char *p;
+
+	*out = 0.0;
+
+	ch = skip_white( fp, whitemap );
+
+	if( ch == EOF || 
+		ch == '\n' ) 
+		return( ch );
+
+	fetch_nonwhite( fp, whitemap, buf, 256 );
+
+	/* The str we fetched must contain at least 1 digit. This helps stop
+	 * us trying to convert "MATLAB" (for example) to a number and 
+	 * getting zero.
+	 */
+	for( p = buf; *p; p++ )
+		if( isdigit( *p ) )
+			break;
+	if( !*p ) 
+		return( *buf ); 
+
+	*out = g_ascii_strtod( buf, NULL );
+
+	return( 0 );
+}
+
+/* Read the header. Two numbers for width and height, and two optional
+ * numbers for scale and offset. 
+ */
+static int
+vips__matrix_header( char *whitemap, FILE *fp,
+	int *width, int *height, double *scale, double *offset )   
+{
+	double header[4];
+	double d;
+	int i;
+	int ch;
+
+	for( i = 0; i < 4 && 
+		(ch = read_ascii_double( fp, whitemap, &header[i] )) == 0; 
+		i++ )
+		;
+
+	if( i < 2 ) {
+		vips_error( "mask2vips", "%s", _( "no width / height" ) );
+		return( -1 );
+	}
+	if( floor( header[0] ) != header[0] ||
+		floor( header[1] ) != header[1] ) {
+		vips_error( "mask2vips", "%s", _( "width / height not int" ) );
+		return( -1 );
+	}
+	*width = header[0];
+	*height = header[1];
+	if( *width <= 0 || 
+		*width > 100000 ||
+		*height <= 0 || 
+		*height > 100000 ) { 
+		vips_error( "mask2vips", 
+			"%s", _( "width / height out of range" ) );
+		return( -1 );
+	}
+	if( i == 3 ) { 
+		vips_error( "mask2vips", "%s", _( "bad scale / offset" ) );
+		return( -1 );
+	}
+	if( (ch = read_ascii_double( fp, whitemap, &d )) != '\n' ) {
+		vips_error( "mask2vips", "%s", _( "extra chars in header" ) );
+		return( -1 );
+	}
+	if( i > 2 && 
+		header[2] == 0.0 ) {
+		vips_error( "mask2vips", "%s", _( "zero scale" ) );
+		return( -1 );
+	}
+
+	*scale = i > 2 ?  header[2] : 1.0;
+	*offset = i > 2 ?  header[3] : 0.0;
+
+	skip_line( fp );
+
+	return( 0 );
+}
+
+#define WHITESPACE " \"\t\n;,"
+
+/* Get the header from an matrix file. 
+ *
+ * Also read the first line and make sure there are the right number of
+ * entries. 
+ */
+int
+vips__matrix_read_header( const char *filename,
+	int *width, int *height, double *scale, double *offset )
+{
+	char whitemap[256];
+	int i;
+	char *p;
+	FILE *fp;
+	int ch;
+	double d;
+
+	for( i = 0; i < 256; i++ ) 
+		whitemap[i] = 0;
+	for( p = WHITESPACE; *p; p++ )
+		whitemap[(int) *p] = 1;
+
+	if( !(fp = vips__file_open_read( filename, NULL, TRUE )) ) 
+		return( -1 );
+	if( vips__matrix_header( whitemap, fp,
+		width, height, scale, offset ) ) {  
+		fclose( fp );
+		return( -1 );
+	}
+
+	for( i = 0; i < *width; i++ ) {
+		ch = read_ascii_double( fp, whitemap, &d );
+
+		if( ch ) {
+			fclose( fp );
+			vips_error( "mask2vips", "%s", _( "line too short" ) );
+			return( -1 );
+		}
+	}
+
+	/* Deliberately don't check for line too long.
+	 */
+
+	fclose( fp );
+
+	return( 0 );
+}
+
+int
+vips__matrix_ismatrix( const char *filename )
+{
+	int width;
+	int height;
+	double scale;
+	double offset;
+	int result;
+
+	vips_error_freeze();
+	result = vips__matrix_read_header( filename, 
+		&width, &height, &scale, &offset ); 
+	vips_error_thaw();
+
+	return( result == 0 ); 
+}
+
+static int
+vips__matrix_body( char *whitemap, VipsImage *out, FILE *fp )
+{
+	int x, y;
+
+	for( y = 0; y < out->Ysize; y++ ) {
+		for( x = 0; x < out->Xsize; x++ ) {
+			int ch;
+			double d;
+
+			ch = read_ascii_double( fp, whitemap, &d );
+			if( ch == EOF ||
+				ch == '\n' ) {
+				vips_error( "mask2vips", 
+					_( "line %d too short" ), y + 1 );
+				return( -1 );
+			}
+			*VIPS_MATRIX( out, x, y ) = d; 
+
+			/* Deliberately don't check for line too long.
+			 */
+		}
+
+		skip_line( fp );
+	}
+
+	return( 0 );
+}
+
+VipsImage * 
+vips__matrix_read( const char *filename )
+{
+	char whitemap[256];
+	int i;
+	char *p;
+	FILE *fp;
+	int width;
+	int height;
+	double scale;
+	double offset;
+	VipsImage *out; 
+
+	for( i = 0; i < 256; i++ ) 
+		whitemap[i] = 0;
+	for( p = WHITESPACE; *p; p++ )
+		whitemap[(int) *p] = 1;
+
+	if( !(fp = vips__file_open_read( filename, NULL, TRUE )) ) 
+		return( NULL );
+	if( vips__matrix_header( whitemap, fp,
+		&width, &height, &scale, &offset ) ) {  
+		fclose( fp );
+		return( NULL );
+	}
+
+	if( !(out = vips_image_new_matrix( width, height )) )
+		return( NULL );
+	vips_image_set_double( out, "scale", scale ); 
+	vips_image_set_double( out, "offset", offset ); 
+
+	if( vips__matrix_body( whitemap, out, fp ) ) {
+		g_object_unref( out );
+		fclose( fp );
+		return( NULL );
+	}
+	fclose( fp );
+
+	return( out ); 
+}
+
+int
+vips__matrix_write( VipsImage *in, const char *filename )
+{
+	VipsImage *mask;
+	FILE *fp;
+	int x, y; 
+
+	if( vips_check_matrix( "vips2mask", in, &mask ) )
+		return( -1 );
+
+	if( !(fp = vips__file_open_write( filename, TRUE )) ) {
+		g_object_unref( mask ); 
+		return( -1 );
+	}
+	fprintf( fp, "%d %d ", mask->Xsize, mask->Ysize ); 
+	if( vips_image_get_typeof( mask, "scale" ) && 
+		vips_image_get_typeof( mask, "offset" ) ) 
+		fprintf( fp, "%g %g ", 
+			vips_image_get_scale( mask ),
+			vips_image_get_offset( mask ) );
+	fprintf( fp, "\n" ); 
+
+	for( y = 0; y < mask->Ysize; y++ ) { 
+		for( x = 0; x < mask->Xsize; x++ ) 
+			fprintf( fp, "%g ", *VIPS_MATRIX( mask, x, y ) ); 
+
+		fprintf( fp, "\n" ); 
+	}
+
+	g_object_unref( mask ); 
+	fclose( fp ); 
+
+	return( 0 );
+}
+
+const char *vips__foreign_matrix_suffs[] = { ".mat", NULL };
 

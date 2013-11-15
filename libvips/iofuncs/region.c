@@ -189,7 +189,7 @@ vips_region_finalize( GObject *gobject )
 {
 #ifdef VIPS_DEBUG
 	VIPS_DEBUG_MSG( "vips_region_finalize: " );
-	vips_object_print( VIPS_OBJECT( gobject ) );
+	vips_object_print_name( VIPS_OBJECT( gobject ) );
 #endif /*VIPS_DEBUG*/
 
 	G_OBJECT_CLASS( vips_region_parent_class )->finalize( gobject );
@@ -264,7 +264,7 @@ vips_region_dispose( GObject *gobject )
 
 #ifdef VIPS_DEBUG
 	VIPS_DEBUG_MSG( "vips_region_dispose: " );
-	vips_object_print( VIPS_OBJECT( gobject ) );
+	vips_object_print_name( VIPS_OBJECT( gobject ) );
 #endif /*VIPS_DEBUG*/
 
 	vips_object_preclose( VIPS_OBJECT( gobject ) );
@@ -373,7 +373,8 @@ vips__region_take_ownership( VipsRegion *region )
 		 * Not sure if this will ever happen: if it does, we'll 
 		 * need to dup the buffer.
 		 */
-		g_assert( !region->buffer || region->buffer->ref_count == 1 );
+		g_assert( !region->buffer || 
+			region->buffer->ref_count == 1 );
 
 		region->thread = g_thread_self();
 	}

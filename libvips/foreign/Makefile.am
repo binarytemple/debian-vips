@@ -13,6 +13,8 @@ libforeign_la_SOURCES = \
 	csv.c \
 	csvload.c \
 	csvsave.c \
+	matrixload.c \
+	matrixsave.c \
 	dzsave.c \
 	rawload.c \
 	rawsave.c \
@@ -48,9 +50,15 @@ libforeign_la_SOURCES = \
 	openslide2vips.h \
 	openslide2vips.c \
 	openslideload.c \
+	webp.h \
+	webpload.c \
+	webpsave.c \
+	webp2vips.c \
+	vips2webp.c \
 	vips2jpeg.c \
 	jpeg2vips.c \
 	jpeg.h \
+	vipsjpeg.h \
 	jpegload.c \
 	jpegsave.c 
 

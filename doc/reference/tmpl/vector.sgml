@@ -29,14 +29,6 @@ vector
 
 
 
-<!-- ##### STRUCT VipsExecutor ##### -->
-<para>
-
-</para>
-
-@executor: 
-@vector: 
-
 <!-- ##### STRUCT VipsVector ##### -->
 <para>
 
@@ -57,118 +49,18 @@ vector
 @program: 
 @compiled: 
 
+<!-- ##### STRUCT VipsExecutor ##### -->
+<para>
+
+</para>
+
+@executor: 
+@vector: 
+
 <!-- ##### VARIABLE vips__vector_enabled ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### FUNCTION vips_executor_run ##### -->
-<para>
-
-</para>
-
-@executor: 
-
-
-<!-- ##### FUNCTION vips_executor_set_array ##### -->
-<para>
-
-</para>
-
-@executor: 
-@var: 
-@value: 
-
-
-<!-- ##### FUNCTION vips_executor_set_destination ##### -->
-<para>
-
-</para>
-
-@executor: 
-@value: 
-
-
-<!-- ##### FUNCTION vips_executor_set_program ##### -->
-<para>
-
-</para>
-
-@executor: 
-@vector: 
-@n: 
-
-
-<!-- ##### FUNCTION vips_executor_set_scanline ##### -->
-<para>
-
-</para>
-
-@executor: 
-@ir: 
-@x: 
-@y: 
-
-
-<!-- ##### FUNCTION vips_vector_asm2 ##### -->
-<para>
-
-</para>
-
-@vector: 
-@op: 
-@a: 
-@b: 
-
-
-<!-- ##### FUNCTION vips_vector_asm3 ##### -->
-<para>
-
-</para>
-
-@vector: 
-@op: 
-@a: 
-@b: 
-@c: 
-
-
-<!-- ##### FUNCTION vips_vector_compile ##### -->
-<para>
-
-</para>
-
-@vector: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_vector_constant ##### -->
-<para>
-
-</para>
-
-@vector: 
-@name: 
-@value: 
-@size: 
-
-
-<!-- ##### FUNCTION vips_vector_free ##### -->
-<para>
-
-</para>
-
-@vector: 
-
-
-<!-- ##### FUNCTION vips_vector_full ##### -->
-<para>
-
-</para>
-
-@vector: 
-@Returns: 
 
 
 <!-- ##### FUNCTION vips_vector_init ##### -->
@@ -188,6 +80,22 @@ vector
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_vector_set_enabled ##### -->
+<para>
+
+</para>
+
+@enabled: 
+
+
+<!-- ##### FUNCTION vips_vector_free ##### -->
+<para>
+
+</para>
+
+@vector: 
+
+
 <!-- ##### FUNCTION vips_vector_new ##### -->
 <para>
 
@@ -198,20 +106,15 @@ vector
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_vector_print ##### -->
+<!-- ##### FUNCTION vips_vector_constant ##### -->
 <para>
 
 </para>
 
 @vector: 
-
-
-<!-- ##### FUNCTION vips_vector_set_enabled ##### -->
-<para>
-
-</para>
-
-@enabled: 
+@name: 
+@value: 
+@size: 
 
 
 <!-- ##### FUNCTION vips_vector_source_name ##### -->
@@ -244,5 +147,102 @@ vector
 @vector: 
 @name: 
 @size: 
+
+
+<!-- ##### FUNCTION vips_vector_asm2 ##### -->
+<para>
+
+</para>
+
+@vector: 
+@op: 
+@a: 
+@b: 
+
+
+<!-- ##### FUNCTION vips_vector_asm3 ##### -->
+<para>
+
+</para>
+
+@vector: 
+@op: 
+@a: 
+@b: 
+@c: 
+
+
+<!-- ##### FUNCTION vips_vector_full ##### -->
+<para>
+
+</para>
+
+@vector: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_vector_compile ##### -->
+<para>
+
+</para>
+
+@vector: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_vector_print ##### -->
+<para>
+
+</para>
+
+@vector: 
+
+
+<!-- ##### FUNCTION vips_executor_set_program ##### -->
+<para>
+
+</para>
+
+@executor: 
+@vector: 
+@n: 
+
+
+<!-- ##### FUNCTION vips_executor_set_scanline ##### -->
+<para>
+
+</para>
+
+@executor: 
+@ir: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION vips_executor_set_destination ##### -->
+<para>
+
+</para>
+
+@executor: 
+@value: 
+
+
+<!-- ##### FUNCTION vips_executor_set_array ##### -->
+<para>
+
+</para>
+
+@executor: 
+@var: 
+@value: 
+
+
+<!-- ##### FUNCTION vips_executor_run ##### -->
+<para>
+
+</para>
+
+@executor: 
 
 

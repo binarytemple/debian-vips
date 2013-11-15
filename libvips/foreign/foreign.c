@@ -132,7 +132,7 @@
  *
  * @VIPS_FOREIGN_BIGENDIAN means that image pixels are most-significant byte
  * first. Depending on the native byte order of the host machine, you may
- * need to swap bytes. See copy_swap().
+ * need to swap bytes. See vips_copy().
  */
 
 /**
@@ -292,22 +292,6 @@ vips_foreign_save_csv_build( VipsObject *object )
 	return( 0 );
 }
 
-#define UC VIPS_FORMAT_UCHAR
-#define C VIPS_FORMAT_CHAR
-#define US VIPS_FORMAT_USHORT
-#define S VIPS_FORMAT_SHORT
-#define UI VIPS_FORMAT_UINT
-#define I VIPS_FORMAT_INT
-#define F VIPS_FORMAT_FLOAT
-#define X VIPS_FORMAT_COMPLEX
-#define D VIPS_FORMAT_DOUBLE
-#define DX VIPS_FORMAT_DPCOMPLEX
-
-static int bandfmt_csv[10] = {
-// UC  C   US  S   UI  I  F  X  D  DX 
-   UC, C,  US, S,  UI, I, F, X, D, DX
-};
-
 static void
 vips_foreign_save_csv_class_init( VipsForeignSaveCsvClass *class )
 {
@@ -326,7 +310,8 @@ vips_foreign_save_csv_class_init( VipsForeignSaveCsvClass *class )
 	foreign_class->suffs = vips__foreign_csv_suffs;
 
 	save_class->saveable = VIPS_SAVEABLE_MONO;
-	save_class->format_table = bandfmt_csv;
+	// no need to define ->format_table, we don't want the input 
+	// cast for us
 
 	VIPS_ARG_STRING( class, "filename", 1, 
 		_( "Filename" ),
@@ -700,14 +685,10 @@ vips_foreign_load_temp( VipsForeignLoad *load )
 	 * directly.
 	 */
 	if( (load->flags & VIPS_FOREIGN_SEQUENTIAL) && 
-		load->sequential ) {
+		load->access != VIPS_ACCESS_RANDOM ) {
 #ifdef DEBUG
 		printf( "vips_foreign_load_temp: partial sequential temp\n" );
 #endif /*DEBUG*/
-
-		/* You can't reuse sequential operations.
-		 */
-		load->nocache = TRUE;
 
 		return( vips_image_new() );
 	}
@@ -848,9 +829,23 @@ vips_foreign_load_build( VipsObject *object )
 
 	g_object_set( load, "flags", flags, NULL );
 
+	/* If the loader can do sequential mode and sequential has been
+	 * requested, we need to block caching.
+	 */
+	if( (load->flags & VIPS_FOREIGN_SEQUENTIAL) && 
+		load->access != VIPS_ACCESS_RANDOM ) 
+		load->nocache = TRUE;
+
 	if( VIPS_OBJECT_CLASS( vips_foreign_load_parent_class )->
 		build( object ) )
 		return( -1 );
+
+	if( load->sequential ) {
+		vips_warn( class->nickname, "%s", 
+			_( "ignoring deprecated \"sequential\" mode" ) ); 
+		vips_warn( class->nickname, "%s", 
+			_( "please use \"access\" instead" ) ); 
+	}
 
 	g_object_set( object, "out", vips_image_new(), NULL ); 
 
@@ -951,18 +946,27 @@ vips_foreign_load_class_init( VipsForeignLoadClass *class )
 		G_STRUCT_OFFSET( VipsForeignLoad, disc ),
 		TRUE );
 
+	VIPS_ARG_ENUM( class, "access", 8, 
+		_( "Access" ), 
+		_( "Required access pattern for this file" ),
+		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		G_STRUCT_OFFSET( VipsForeignLoad, access ),
+		VIPS_TYPE_ACCESS, VIPS_ACCESS_RANDOM ); 
+
 	VIPS_ARG_BOOL( class, "sequential", 10, 
 		_( "Sequential" ), 
 		_( "Sequential read only" ),
-		VIPS_ARGUMENT_OPTIONAL_INPUT,
+		VIPS_ARGUMENT_OPTIONAL_INPUT | VIPS_ARGUMENT_DEPRECATED,
 		G_STRUCT_OFFSET( VipsForeignLoad, sequential ),
 		FALSE );
+
 }
 
 static void
 vips_foreign_load_init( VipsForeignLoad *load )
 {
 	load->disc = TRUE;
+	load->access = VIPS_ACCESS_RANDOM;
 }
 
 /* Abstract base class for image savers.
@@ -1348,6 +1352,22 @@ vips_foreign_save_build( VipsObject *object )
 	return( 0 );
 }
 
+#define UC VIPS_FORMAT_UCHAR
+#define C VIPS_FORMAT_CHAR
+#define US VIPS_FORMAT_USHORT
+#define S VIPS_FORMAT_SHORT
+#define UI VIPS_FORMAT_UINT
+#define I VIPS_FORMAT_INT
+#define F VIPS_FORMAT_FLOAT
+#define X VIPS_FORMAT_COMPLEX
+#define D VIPS_FORMAT_DOUBLE
+#define DX VIPS_FORMAT_DPCOMPLEX
+
+static int vips_foreign_save_format_table[10] = {
+// UC  C   US  S   UI  I  F  X  D  DX 
+   UC, C,  US, S,  UI, I, F, X, D, DX
+};
+
 static void
 vips_foreign_save_class_init( VipsForeignSaveClass *class )
 {
@@ -1380,6 +1400,10 @@ vips_foreign_save_class_init( VipsForeignSaveClass *class )
 	for( i = 0; i < VIPS_CODING_LAST; i++ )
 		class->coding[i] = FALSE;
 	class->coding[VIPS_CODING_NONE] = TRUE;
+
+	/* Default to no cast on save.
+	 */
+	class->format_table = vips_foreign_save_format_table; 
 
 	VIPS_ARG_IMAGE( class, "in", 0, 
 		_( "Input" ), 
@@ -1588,6 +1612,8 @@ vips_foreign_operation_init( void )
 	extern GType vips_foreign_save_png_buffer_get_type( void ); 
 	extern GType vips_foreign_load_csv_get_type( void ); 
 	extern GType vips_foreign_save_csv_get_type( void ); 
+	extern GType vips_foreign_load_matrix_get_type( void ); 
+	extern GType vips_foreign_save_matrix_get_type( void ); 
 	extern GType vips_foreign_load_fits_get_type( void ); 
 	extern GType vips_foreign_save_fits_get_type( void ); 
 	extern GType vips_foreign_load_analyze_get_type( void ); 
@@ -1607,6 +1633,10 @@ vips_foreign_operation_init( void )
 	extern GType vips_foreign_save_raw_fd_get_type( void ); 
 	extern GType vips_foreign_load_magick_get_type( void ); 
 	extern GType vips_foreign_save_dz_get_type( void ); 
+	extern GType vips_foreign_load_webp_file_get_type( void ); 
+	extern GType vips_foreign_load_webp_buffer_get_type( void ); 
+	extern GType vips_foreign_save_webp_file_get_type( void ); 
+	extern GType vips_foreign_save_webp_buffer_get_type( void ); 
 
 	vips_foreign_load_rad_get_type(); 
 	vips_foreign_save_rad_get_type(); 
@@ -1614,6 +1644,8 @@ vips_foreign_operation_init( void )
 	vips_foreign_save_ppm_get_type(); 
 	vips_foreign_load_csv_get_type(); 
 	vips_foreign_save_csv_get_type(); 
+	vips_foreign_load_matrix_get_type(); 
+	vips_foreign_save_matrix_get_type(); 
 	vips_foreign_load_analyze_get_type(); 
 	vips_foreign_load_raw_get_type(); 
 	vips_foreign_save_raw_get_type(); 
@@ -1640,6 +1672,13 @@ vips_foreign_operation_init( void )
 	vips_foreign_save_jpeg_buffer_get_type(); 
 	vips_foreign_save_jpeg_mime_get_type(); 
 #endif /*HAVE_JPEG*/
+
+#ifdef HAVE_LIBWEBP
+	vips_foreign_load_webp_file_get_type(); 
+	vips_foreign_load_webp_buffer_get_type(); 
+	vips_foreign_save_webp_file_get_type(); 
+	vips_foreign_save_webp_buffer_get_type(); 
+#endif /*HAVE_LIBWEBP*/
 
 #ifdef HAVE_TIFF
 	vips_foreign_load_tiff_get_type(); 
@@ -1942,29 +1981,52 @@ vips_jpegload( const char *filename, VipsImage **out, ... )
 }
 
 /**
- * vips_jpegsave_mime:
+ * vips_jpegsave:
  * @in: image to save 
+ * @filename: file to write to 
  * @...: %NULL-terminated list of optional named arguments
  *
  * Optional arguments:
  *
- * @Q: JPEG quality factor
+ * @Q: quality factor
  * @profile: attach this ICC profile
+ * @optimize_coding: compute optimal Huffman coding tables
  *
- * As vips_jpegsave(), but save as a mime jpeg on stdout.
+ * Write a VIPS image to a file as JPEG.
  *
- * See also: vips_jpegsave(), vips_image_write_to_file().
+ * Use @Q to set the JPEG compression factor. Default 75.
+ *
+ * Use @profile to give the filename of a profile to be embedded in the JPEG.
+ * This does not affect the pixels which are written, just the way 
+ * they are tagged. You can use the special string "none" to mean 
+ * "don't attach a profile".
+ *
+ * If no profile is specified and the VIPS header 
+ * contains an ICC profile named VIPS_META_ICC_NAME ("icc-profile-data"), the
+ * profile from the VIPS header will be attached.
+ *
+ * The image is automatically converted to RGB, Monochrome or CMYK before 
+ * saving. 
+ *
+ * EXIF data is constructed from @VIPS_META_EXIF_NAME ("exif-data"), then
+ * modified with any other related tags on the image before being written to
+ * the file. 
+ *
+ * IPCT as @VIPS_META_IPCT_NAME ("ipct-data") and XMP as VIPS_META_XMP_NAME
+ * ("xmp-data") are coded and attached. 
+ *
+ * See also: vips_jpegsave_buffer(), vips_image_write_file().
  *
  * Returns: 0 on success, -1 on error.
  */
 int
-vips_jpegsave_mime( VipsImage *in, ... )
+vips_jpegsave( VipsImage *in, const char *filename, ... )
 {
 	va_list ap;
 	int result;
 
-	va_start( ap, in );
-	result = vips_call_split( "jpegsave_mime", ap, in );
+	va_start( ap, filename );
+	result = vips_call_split( "jpegsave", ap, in, filename );
 	va_end( ap );
 
 	return( result );
@@ -1981,6 +2043,7 @@ vips_jpegsave_mime( VipsImage *in, ... )
  *
  * @Q: JPEG quality factor
  * @profile: attach this ICC profile
+ * @optimize_coding: compute optimal Huffman coding tables
  *
  * As vips_jpegsave(), but save to a memory buffer. 
  *
@@ -2021,7 +2084,96 @@ vips_jpegsave_buffer( VipsImage *in, void **buf, size_t *len, ... )
 }
 
 /**
- * vips_jpegsave:
+ * vips_jpegsave_mime:
+ * @in: image to save 
+ * @...: %NULL-terminated list of optional named arguments
+ *
+ * Optional arguments:
+ *
+ * @Q: JPEG quality factor
+ * @profile: attach this ICC profile
+ * @optimize_coding: compute optimal Huffman coding tables
+ *
+ * As vips_jpegsave(), but save as a mime jpeg on stdout.
+ *
+ * See also: vips_jpegsave(), vips_image_write_to_file().
+ *
+ * Returns: 0 on success, -1 on error.
+ */
+int
+vips_jpegsave_mime( VipsImage *in, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, in );
+	result = vips_call_split( "jpegsave_mime", ap, in );
+	va_end( ap );
+
+	return( result );
+}
+
+/**
+ * vips_webpload:
+ * @filename: file to load
+ * @out: decompressed image
+ * @...: %NULL-terminated list of optional named arguments
+ *
+ * Optional arguments:
+ *
+ *
+ * Read a webp file into a VIPS image. 
+ *
+ * See also: 
+ *
+ * Returns: 0 on success, -1 on error.
+ */
+int
+vips_webpload( const char *filename, VipsImage **out, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, out );
+	result = vips_call_split( "webpload", ap, filename, out );
+	va_end( ap );
+
+	return( result );
+}
+
+/**
+ * vips_webpload_buffer:
+ * @buf: memory area to load
+ * @len: size of memory area
+ * @out: image to write
+ * @...: %NULL-terminated list of optional named arguments
+ *
+ * See also: 
+ *
+ * Returns: 0 on success, -1 on error.
+ */
+int
+vips_webpload_buffer( void *buf, size_t len, VipsImage **out, ... )
+{
+	va_list ap;
+	VipsArea *area;
+	int result;
+
+	/* We don't take a copy of the data or free it.
+	 */
+	area = vips_area_new_blob( NULL, buf, len );
+
+	va_start( ap, out );
+	result = vips_call_split( "webpload_buffer", ap, area, out );
+	va_end( ap );
+
+	vips_area_unref( area );
+
+	return( result );
+}
+
+/**
+ * vips_webpsave:
  * @in: image to save 
  * @filename: file to write to 
  * @...: %NULL-terminated list of optional named arguments
@@ -2029,43 +2181,88 @@ vips_jpegsave_buffer( VipsImage *in, void **buf, size_t *len, ... )
  * Optional arguments:
  *
  * @Q: quality factor
- * @profile: attach this ICC profile
  *
- * Write a VIPS image to a file as JPEG.
- *
- * Use @Q to set the JPEG compression factor. Default 75.
- *
- * Use @profile to give the filename of a profile to be embedded in the JPEG.
- * This does not affect the pixels which are written, just the way 
- * they are tagged. You can use the special string "none" to mean 
- * "don't attach a profile".
- *
- * If no profile is specified and the VIPS header 
- * contains an ICC profile named VIPS_META_ICC_NAME ("icc-profile-data"), the
- * profile from the VIPS header will be attached.
- *
- * The image is automatically converted to RGB, Monochrome or CMYK before 
- * saving. 
- *
- * EXIF data is constructed from @VIPS_META_EXIF_NAME ("exif-data"), then
- * modified with any other related tags on the image before being written to
- * the file. 
- *
- * IPCT as @VIPS_META_IPCT_NAME ("ipct-data") and XMP as VIPS_META_XMP_NAME
- * ("xmp-data") are coded and attached. 
- *
- * See also: vips_jpegsave_buffer(), vips_image_write_file().
+ * See also: 
  *
  * Returns: 0 on success, -1 on error.
  */
 int
-vips_jpegsave( VipsImage *in, const char *filename, ... )
+vips_webpsave( VipsImage *in, const char *filename, ... )
 {
 	va_list ap;
 	int result;
 
 	va_start( ap, filename );
-	result = vips_call_split( "jpegsave", ap, in, filename );
+	result = vips_call_split( "webpsave", ap, in, filename );
+	va_end( ap );
+
+	return( result );
+}
+
+/**
+ * vips_webpsave_buffer:
+ * @in: image to save 
+ * @buf: return output buffer here
+ * @len: return output length here
+ * @...: %NULL-terminated list of optional named arguments
+ *
+ * Optional arguments:
+ *
+ * @Q: JPEG quality factor
+ *
+ * See also: 
+ *
+ * Returns: 0 on success, -1 on error.
+ */
+int
+vips_webpsave_buffer( VipsImage *in, void **buf, size_t *len, ... )
+{
+	va_list ap;
+	VipsArea *area;
+	int result;
+
+	area = NULL; 
+
+	va_start( ap, len );
+	result = vips_call_split( "webpsave_buffer", ap, in, &area );
+	va_end( ap );
+
+	if( !result &&
+		area ) { 
+		if( buf ) {
+			*buf = area->data;
+			area->free_fn = NULL;
+		}
+		if( buf ) 
+			*len = area->length;
+
+		vips_area_unref( area );
+	}
+
+	return( result );
+}
+
+/**
+ * vips_webpsave_mime:
+ * @in: image to save 
+ * @...: %NULL-terminated list of optional named arguments
+ *
+ * Optional arguments:
+ *
+ * @Q: quality factor
+ *
+ * See also: 
+ *
+ * Returns: 0 on success, -1 on error.
+ */
+int
+vips_webpsave_mime( VipsImage *in, ... )
+{
+	va_list ap;
+	int result;
+
+	va_start( ap, in );
+	result = vips_call_split( "webpsave_mime", ap, in );
 	va_end( ap );
 
 	return( result );

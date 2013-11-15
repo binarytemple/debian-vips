@@ -71,6 +71,10 @@ extern int vips__concurrency;
  */
 extern int vips__fatal;
 
+/* Enable leak check.
+ */
+extern int vips__leak;
+
 /* Give progress feedback.
  */
 extern int vips__progress;
@@ -78,6 +82,10 @@ extern int vips__progress;
 /* Leak check on exit.
  */
 extern int vips__leak;
+
+/* Show info messages. Handy for debugging. 
+ */
+extern int vips__info;
 
 /* A string giving the image size (in bytes of uncompressed image) above which 
  * we decompress to disc on open. 
@@ -93,6 +101,8 @@ extern gboolean vips__cache_dump;
 extern gboolean vips__cache_trace;
 
 void vips__cache_init( void );
+
+void vips__type_leak( void );
 
 typedef int (*im__fftproc_fn)( VipsImage *, VipsImage *, VipsImage * );
 
@@ -246,7 +256,6 @@ void im_free_dmat();
 int im_invmat( double **, int );
 
 int *im_offsets45( int size );
-int *im_offsets90( int size );
 
 int im_conv_f_raw( VipsImage *in, VipsImage *out, DOUBLEMASK *mask );
 int im_convsep_f_raw( VipsImage *in, VipsImage *out, DOUBLEMASK *mask );
@@ -278,6 +287,7 @@ void vips_conversion_operation_init( void );
 void vips_resample_operation_init( void );
 void vips_foreign_operation_init( void );
 void vips_colour_operation_init( void );
+void vips_histogram_operation_init( void );
 
 guint64 vips__parse_size( const char *size_string );
 

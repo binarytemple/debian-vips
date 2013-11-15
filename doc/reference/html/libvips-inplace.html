@@ -3,18 +3,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>inplace</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="VIPS Reference Manual">
 <link rel="up" href="ch02.html" title="VIPS operation API by section">
-<link rel="prev" href="libvips-histograms-lut.html" title="histograms_lut">
+<link rel="prev" href="libvips-histogram.html" title="histogram">
 <link rel="next" href="VipsInterpolate.html" title="VipsInterpolate">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libvips-histograms-lut.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libvips-histogram.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">VIPS Reference Manual</th>
@@ -45,18 +45,53 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;vips/vips.h&gt;
 
-<span class="returnvalue">int</span>                 (<a class="link" href="libvips-inplace.html#VipsPlotFn" title="VipsPlotFn ()">*VipsPlotFn</a>)                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-rect" title="im_draw_rect ()">im_draw_rect</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> left</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> top</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> fill</code></em>,
+                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()">im_draw_circle</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> x</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> y</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> radius</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> fill</code></em>,
                                                          <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-image" title="im_draw_image ()">im_draw_image</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sub</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>);
+<span class="returnvalue">int</span>                 (<a class="link" href="libvips-inplace.html#VipsPlotFn" title="VipsPlotFn ()">*VipsPlotFn</a>)                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()">im_draw_line_user</a>                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-inplace.html#VipsPlotFn" title="VipsPlotFn ()"><span class="type">VipsPlotFn</span></a> plot</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-line" title="im_draw_line ()">im_draw_line</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
+                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-lineset" title="im_lineset ()">im_lineset</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ink</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *x1v</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *y1v</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *x2v</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *y2v</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-flood" title="im_draw_flood ()">im_draw_flood</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> x</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> y</code></em>,
@@ -73,25 +108,6 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code><span class="type">int</span> y</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> serial</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libvips-rect.html#VipsRect" title="VipsRect"><span class="type">VipsRect</span></a> *dout</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-image" title="im_draw_image ()">im_draw_image</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sub</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-line" title="im_draw_line ()">im_draw_line</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
-                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()">im_draw_line_user</a>                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-inplace.html#VipsPlotFn" title="VipsPlotFn ()"><span class="type">VipsPlotFn</span></a> plot</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-mask" title="im_draw_mask ()">im_draw_mask</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask_im</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> x</code></em>,
@@ -101,31 +117,15 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code><span class="type">int</span> x</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> y</code></em>,
                                                          <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-rect" title="im_draw_rect ()">im_draw_rect</a>                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> left</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> top</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> fill</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-read-point" title="im_read_point ()">im_read_point</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
                                                          <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-draw-smudge" title="im_draw_smudge ()">im_draw_smudge</a>                      (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> left</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> top</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> width</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> height</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-lineset" title="im_lineset ()">im_lineset</a>                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ink</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *x1v</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *y1v</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *x2v</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *y2v</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="libvips-inplace.html#im-read-point" title="im_read_point ()">im_read_point</a>                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -143,42 +143,58 @@ for paintbox-style programs.
 <div class="refsect1">
 <a name="libvips-inplace.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="VipsPlotFn"></a><h3>VipsPlotFn ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 (*VipsPlotFn)                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);</pre>
+<a name="im-draw-rect"></a><h3>im_draw_rect ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_rect                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> left</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> top</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> fill</code></em>,
+                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);</pre>
 <p>
-A plot function, as used by <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()"><code class="function">im_draw_line_user()</code></a> to draw on an image.
+Paint pixels within <em class="parameter"><code>left</code></em>, <em class="parameter"><code>top</code></em>, <em class="parameter"><code>width</code></em>, <em class="parameter"><code>height</code></em> in <em class="parameter"><code>image</code></em> with <em class="parameter"><code>ink</code></em>. If
+<em class="parameter"><code>fill</code></em> is zero, just paint a 1-pixel-wide outline.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
 <td>image to draw on</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>position to draw at</td>
+<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
+<td>area to paint</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>position to draw at</td>
+<td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
+<td>area to paint</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>user data</td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>area to paint</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>user data</td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>area to paint</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
-<td>user data</td>
+<td><p><span class="term"><em class="parameter"><code>fill</code></em> :</span></p></td>
+<td>fill the rect</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ink</code></em> :</span></p></td>
+<td>paint with this colour</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, or -1 on error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -203,8 +219,11 @@ It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>image</co
 <p>
 See also: <a class="link" href="libvips-inplace.html#im-draw-line" title="im_draw_line ()"><code class="function">im_draw_line()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
@@ -239,6 +258,238 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-line" title="im_dra
 </div>
 <hr>
 <div class="refsect2">
+<a name="im-draw-image"></a><h3>im_draw_image ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_image                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sub</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>);</pre>
+<p>
+Draw <em class="parameter"><code>sub</code></em> on top of <em class="parameter"><code>image</code></em> at position <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>. The two images must have the 
+same
+Coding. If <em class="parameter"><code>sub</code></em> has 1 band, the bands will be duplicated to match the
+number of bands in <em class="parameter"><code>image</code></em>. <em class="parameter"><code>sub</code></em> will be converted to <em class="parameter"><code>image</code></em>'s format, see
+<code class="function">im_clip2fmt()</code>.
+</p>
+<p>
+See also: <code class="function">im_insert()</code>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
+<td>image to draw on</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sub</code></em> :</span></p></td>
+<td>image to draw</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>position to insert</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>position to insert</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, or -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="VipsPlotFn"></a><h3>VipsPlotFn ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 (*VipsPlotFn)                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);</pre>
+<p>
+A plot function, as used by <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()"><code class="function">im_draw_line_user()</code></a> to draw on an image.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
+<td>image to draw on</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>position to draw at</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>position to draw at</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>user data</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>user data</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
+<td>user data</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="im-draw-line-user"></a><h3>im_draw_line_user ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_line_user                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libvips-inplace.html#VipsPlotFn" title="VipsPlotFn ()"><span class="type">VipsPlotFn</span></a> plot</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);</pre>
+<p>
+Calls <em class="parameter"><code>plot</code></em> for every point on the line connecting <em class="parameter"><code>x1</code></em>, <em class="parameter"><code>y1</code></em> and <em class="parameter"><code>x2</code></em>, <em class="parameter"><code>y2</code></em>.
+If you pass <a class="link" href="libvips-inplace.html#im-draw-mask" title="im_draw_mask ()"><code class="function">im_draw_mask()</code></a> as the plot operation, you can draw wide lines
+or lines with various brushes.
+</p>
+<p>
+See also: <a class="link" href="libvips-inplace.html#im-draw-mask" title="im_draw_mask ()"><code class="function">im_draw_mask()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-line" title="im_draw_line ()"><code class="function">im_draw_line()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
+<td>image to draw on</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
+<td>start point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
+<td>start point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x2</code></em> :</span></p></td>
+<td>end point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y2</code></em> :</span></p></td>
+<td>end point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>plot</code></em> :</span></p></td>
+<td>draw operation</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>draw operation parameter</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>draw operation parameter</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
+<td>draw operation parameter</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, or -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="im-draw-line"></a><h3>im_draw_line ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_line                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
+                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);</pre>
+<p>
+Draws a 1-pixel-wide line on an image. 
+</p>
+<p>
+<em class="parameter"><code>ink</code></em> is an array of bytes 
+containing a valid pixel for the image's format.
+It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>image</code></em> ) bytes.
+</p>
+<p>
+See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
+<td>image to draw on</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
+<td>start point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
+<td>start point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x2</code></em> :</span></p></td>
+<td>end point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y2</code></em> :</span></p></td>
+<td>end point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ink</code></em> :</span></p></td>
+<td>value to draw</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>0 on success, or -1 on error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="im-lineset"></a><h3>im_lineset ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_lineset                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ink</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *x1v</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *y1v</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *x2v</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *y2v</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="im-draw-flood"></a><h3>im_draw_flood ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_flood                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> x</code></em>,
@@ -257,8 +508,11 @@ NULL.
 <p>
 See also: <a class="link" href="libvips-inplace.html#im-draw-flood-blob" title="im_draw_flood_blob ()"><code class="function">im_draw_flood_blob()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-flood-other" title="im_draw_flood_other ()"><code class="function">im_draw_flood_other()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
@@ -307,8 +561,11 @@ NULL.
 <p>
 See also: <a class="link" href="libvips-inplace.html#im-draw-flood" title="im_draw_flood ()"><code class="function">im_draw_flood()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-flood-other" title="im_draw_flood_other ()"><code class="function">im_draw_flood_other()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-flood-blob" title="im_draw_flood_blob ()"><code class="function">im_draw_flood_blob()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
@@ -359,8 +616,11 @@ NULL.
 <p>
 See also: <a class="link" href="libvips-inplace.html#im-draw-flood" title="im_draw_flood ()"><code class="function">im_draw_flood()</code></a>, <a class="link" href="libvips-morphology.html#im-label-regions" title="im_label_regions ()"><code class="function">im_label_regions()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-flood-blob" title="im_draw_flood_blob ()"><code class="function">im_draw_flood_blob()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
@@ -395,169 +655,6 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-flood" title="im_dr
 </div>
 <hr>
 <div class="refsect2">
-<a name="im-draw-image"></a><h3>im_draw_image ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_image                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *sub</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>);</pre>
-<p>
-Draw <em class="parameter"><code>sub</code></em> on top of <em class="parameter"><code>image</code></em> at position <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>. The two images must have the 
-same
-Coding. If <em class="parameter"><code>sub</code></em> has 1 band, the bands will be duplicated to match the
-number of bands in <em class="parameter"><code>image</code></em>. <em class="parameter"><code>sub</code></em> will be converted to <em class="parameter"><code>image</code></em>'s format, see
-<code class="function">im_clip2fmt()</code>.
-</p>
-<p>
-See also: <code class="function">im_insert()</code>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
-<td>image to draw on</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>sub</code></em> :</span></p></td>
-<td>image to draw</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>position to insert</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>position to insert</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, or -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-draw-line"></a><h3>im_draw_line ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_line                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
-                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);</pre>
-<p>
-Draws a 1-pixel-wide line on an image. 
-</p>
-<p>
-<em class="parameter"><code>ink</code></em> is an array of bytes 
-containing a valid pixel for the image's format.
-It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>image</code></em> ) bytes.
-</p>
-<p>
-See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
-<td>image to draw on</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
-<td>start point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
-<td>start point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x2</code></em> :</span></p></td>
-<td>end point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y2</code></em> :</span></p></td>
-<td>end point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ink</code></em> :</span></p></td>
-<td>value to draw</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, or -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-draw-line-user"></a><h3>im_draw_line_user ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_line_user                   (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y1</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x2</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y2</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="libvips-inplace.html#VipsPlotFn" title="VipsPlotFn ()"><span class="type">VipsPlotFn</span></a> plot</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *a</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *b</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *c</code></em>);</pre>
-<p>
-Calls <em class="parameter"><code>plot</code></em> for every point on the line connecting <em class="parameter"><code>x1</code></em>, <em class="parameter"><code>y1</code></em> and <em class="parameter"><code>x2</code></em>, <em class="parameter"><code>y2</code></em>.
-If you pass <a class="link" href="libvips-inplace.html#im-draw-mask" title="im_draw_mask ()"><code class="function">im_draw_mask()</code></a> as the plot operation, you can draw wide lines
-or lines with various brushes.
-</p>
-<p>
-See also: <a class="link" href="libvips-inplace.html#im-draw-mask" title="im_draw_mask ()"><code class="function">im_draw_mask()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-line" title="im_draw_line ()"><code class="function">im_draw_line()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
-<td>image to draw on</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
-<td>start point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
-<td>start point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x2</code></em> :</span></p></td>
-<td>end point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y2</code></em> :</span></p></td>
-<td>end point</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>plot</code></em> :</span></p></td>
-<td>draw operation</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>draw operation parameter</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>draw operation parameter</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>c</code></em> :</span></p></td>
-<td>draw operation parameter</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, or -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="im-draw-mask"></a><h3>im_draw_mask ()</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_mask                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
                                                          <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask_im</code></em>,
@@ -567,7 +664,7 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-mask" title="im_dra
 <p>
 Draw a mask on the image. <em class="parameter"><code>mask_im</code></em> is a monochrome 8-bit image with 0/255
 for transparent or <em class="parameter"><code>ink</code></em> coloured points. Intermediate values blend the ink
-with the pixel. Use with <code class="function">im_text()</code> to draw text on an image.
+with the pixel. Use with <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-conversion.html#im-text"><code class="function">im_text()</code></a> to draw text on an image.
 </p>
 <p>
 <em class="parameter"><code>ink</code></em> is an array of bytes 
@@ -575,10 +672,13 @@ containing a valid pixel for the image's format.
 It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>image</code></em> ) bytes.
 </p>
 <p>
-See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>, <code class="function">im_text()</code>, <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()"><code class="function">im_draw_line_user()</code></a>.
+See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>, <a href="http://http://www.vips.ecs.soton.ac.uk/libvips-conversion.html#im-text"><code class="function">im_text()</code></a>, <a class="link" href="libvips-inplace.html#im-draw-line-user" title="im_draw_line_user ()"><code class="function">im_draw_line_user()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
@@ -624,8 +724,11 @@ It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>im</code>
 <p>
 See also: <a class="link" href="libvips-inplace.html#im-draw-line" title="im_draw_line ()"><code class="function">im_draw_line()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
@@ -652,51 +755,42 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-line" title="im_dra
 </div>
 <hr>
 <div class="refsect2">
-<a name="im-draw-rect"></a><h3>im_draw_rect ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_draw_rect                        (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> left</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> top</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> fill</code></em>,
+<a name="im-read-point"></a><h3>im_read_point ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 im_read_point                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
                                                          <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);</pre>
 <p>
-Paint pixels within <em class="parameter"><code>left</code></em>, <em class="parameter"><code>top</code></em>, <em class="parameter"><code>width</code></em>, <em class="parameter"><code>height</code></em> in <em class="parameter"><code>image</code></em> with <em class="parameter"><code>ink</code></em>. If
-<em class="parameter"><code>fill</code></em> is zero, just paint a 1-pixel-wide outline.
+Reads a single point on an image. 
 </p>
 <p>
-See also: <a class="link" href="libvips-inplace.html#im-draw-circle" title="im_draw_circle ()"><code class="function">im_draw_circle()</code></a>.
+<em class="parameter"><code>ink</code></em> is an array of bytes to contain a valid pixel for the image's format.
+It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>im</code></em> ) bytes.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+See also: <a class="link" href="libvips-inplace.html#im-draw-point" title="im_draw_point ()"><code class="function">im_draw_point()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
-<td>image to draw on</td>
+<td>image to read from</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
-<td>area to paint</td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>position to read</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
-<td>area to paint</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>area to paint</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>area to paint</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>fill</code></em> :</span></p></td>
-<td>fill the rect</td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>position to read</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ink</code></em> :</span></p></td>
-<td>paint with this colour</td>
+<td>read value here</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -725,8 +819,11 @@ to 2GB images.
 <p>
 See also: <a class="link" href="libvips-inplace.html#im-draw-line" title="im_draw_line ()"><code class="function">im_draw_line()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
@@ -755,68 +852,10 @@ See also: <a class="link" href="libvips-inplace.html#im-draw-line" title="im_dra
 </tbody>
 </table></div>
 </div>
-<hr>
-<div class="refsect2">
-<a name="im-lineset"></a><h3>im_lineset ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_lineset                          (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *in</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *out</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *mask</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *ink</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *x1v</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *y1v</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *x2v</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> *y2v</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="im-read-point"></a><h3>im_read_point ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 im_read_point                       (<em class="parameter"><code><a class="link" href="VipsImage.html" title="VipsImage"><span class="type">VipsImage</span></a> *image</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> x</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
-                                                         <em class="parameter"><code><span class="type">VipsPel</span> *ink</code></em>);</pre>
-<p>
-Reads a single point on an image. 
-</p>
-<p>
-<em class="parameter"><code>ink</code></em> is an array of bytes to contain a valid pixel for the image's format.
-It must have at least IM_IMAGE_SIZEOF_PEL( <em class="parameter"><code>im</code></em> ) bytes.
-</p>
-<p>
-See also: <a class="link" href="libvips-inplace.html#im-draw-point" title="im_draw_point ()"><code class="function">im_draw_point()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>image</code></em> :</span></p></td>
-<td>image to read from</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>position to read</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>position to read</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ink</code></em> :</span></p></td>
-<td>read value here</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>0 on success, or -1 on error.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

@@ -30,6 +30,14 @@ debug
 @...: 
 
 
+<!-- ##### MACRO VIPS_DEBUG_MSG_RED ##### -->
+<para>
+
+</para>
+
+@...: 
+
+
 <!-- ##### MACRO VIPS_DEBUG_MSG_AMBER ##### -->
 <para>
 
@@ -39,14 +47,6 @@ debug
 
 
 <!-- ##### MACRO VIPS_DEBUG_MSG_GREEN ##### -->
-<para>
-
-</para>
-
-@...: 
-
-
-<!-- ##### MACRO VIPS_DEBUG_MSG_RED ##### -->
 <para>
 
 </para>

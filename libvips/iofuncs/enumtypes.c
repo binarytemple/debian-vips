@@ -223,24 +223,6 @@ vips_angle_get_type( void )
 
 	return( etype );
 }
-GType
-vips_cache_strategy_get_type( void )
-{
-	static GType etype = 0;
-
-	if( etype == 0 ) {
-		static const GEnumValue values[] = {
-			{VIPS_CACHE_RANDOM, "VIPS_CACHE_RANDOM", "random"},
-			{VIPS_CACHE_SEQUENTIAL, "VIPS_CACHE_SEQUENTIAL", "sequential"},
-			{VIPS_CACHE_LAST, "VIPS_CACHE_LAST", "last"},
-			{0, NULL, NULL}
-		};
-		
-		etype = g_enum_register_static( "VipsCacheStrategy", values );
-	}
-
-	return( etype );
-}
 /* enumerations from "../../libvips/include/vips/arithmetic.h" */
 GType
 vips_operation_math_get_type( void )
@@ -492,7 +474,7 @@ vips_interpretation_get_type( void )
 			{VIPS_INTERPRETATION_FOURIER, "VIPS_INTERPRETATION_FOURIER", "fourier"},
 			{VIPS_INTERPRETATION_RGB16, "VIPS_INTERPRETATION_RGB16", "rgb16"},
 			{VIPS_INTERPRETATION_GREY16, "VIPS_INTERPRETATION_GREY16", "grey16"},
-			{VIPS_INTERPRETATION_ARRAY, "VIPS_INTERPRETATION_ARRAY", "array"},
+			{VIPS_INTERPRETATION_MATRIX, "VIPS_INTERPRETATION_MATRIX", "matrix"},
 			{VIPS_INTERPRETATION_scRGB, "VIPS_INTERPRETATION_scRGB", "scrgb"},
 			{0, NULL, NULL}
 		};
@@ -549,21 +531,21 @@ vips_coding_get_type( void )
 
 	return( etype );
 }
-/* enumerations from "../../libvips/include/vips/operation.h" */
 GType
-vips_operation_flags_get_type( void )
+vips_access_get_type( void )
 {
 	static GType etype = 0;
 
 	if( etype == 0 ) {
-		static const GFlagsValue values[] = {
-			{VIPS_OPERATION_NONE, "VIPS_OPERATION_NONE", "none"},
-			{VIPS_OPERATION_SEQUENTIAL, "VIPS_OPERATION_SEQUENTIAL", "sequential"},
-			{VIPS_OPERATION_NOCACHE, "VIPS_OPERATION_NOCACHE", "nocache"},
+		static const GEnumValue values[] = {
+			{VIPS_ACCESS_RANDOM, "VIPS_ACCESS_RANDOM", "random"},
+			{VIPS_ACCESS_SEQUENTIAL, "VIPS_ACCESS_SEQUENTIAL", "sequential"},
+			{VIPS_ACCESS_SEQUENTIAL_UNBUFFERED, "VIPS_ACCESS_SEQUENTIAL_UNBUFFERED", "sequential-unbuffered"},
+			{VIPS_ACCESS_LAST, "VIPS_ACCESS_LAST", "last"},
 			{0, NULL, NULL}
 		};
 		
-		etype = g_flags_register_static( "VipsOperationFlags", values );
+		etype = g_enum_register_static( "VipsAccess", values );
 	}
 
 	return( etype );
@@ -584,6 +566,45 @@ vips_intent_get_type( void )
 		};
 		
 		etype = g_enum_register_static( "VipsIntent", values );
+	}
+
+	return( etype );
+}
+/* enumerations from "../../libvips/include/vips/operation.h" */
+GType
+vips_operation_flags_get_type( void )
+{
+	static GType etype = 0;
+
+	if( etype == 0 ) {
+		static const GFlagsValue values[] = {
+			{VIPS_OPERATION_NONE, "VIPS_OPERATION_NONE", "none"},
+			{VIPS_OPERATION_SEQUENTIAL, "VIPS_OPERATION_SEQUENTIAL", "sequential"},
+			{VIPS_OPERATION_SEQUENTIAL_UNBUFFERED, "VIPS_OPERATION_SEQUENTIAL_UNBUFFERED", "sequential-unbuffered"},
+			{VIPS_OPERATION_NOCACHE, "VIPS_OPERATION_NOCACHE", "nocache"},
+			{0, NULL, NULL}
+		};
+		
+		etype = g_flags_register_static( "VipsOperationFlags", values );
+	}
+
+	return( etype );
+}
+/* enumerations from "../../libvips/include/vips/convolution.h" */
+GType
+vips_precision_get_type( void )
+{
+	static GType etype = 0;
+
+	if( etype == 0 ) {
+		static const GEnumValue values[] = {
+			{VIPS_PRECISION_INTEGER, "VIPS_PRECISION_INTEGER", "integer"},
+			{VIPS_PRECISION_FLOAT, "VIPS_PRECISION_FLOAT", "float"},
+			{VIPS_PRECISION_APPROXIMATE, "VIPS_PRECISION_APPROXIMATE", "approximate"},
+			{0, NULL, NULL}
+		};
+		
+		etype = g_enum_register_static( "VipsPrecision", values );
 	}
 
 	return( etype );

@@ -22,6 +22,55 @@ arithmetic
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### ENUM VipsOperationMath ##### -->
+<para>
+
+</para>
+
+@VIPS_OPERATION_MATH_SIN: 
+@VIPS_OPERATION_MATH_COS: 
+@VIPS_OPERATION_MATH_TAN: 
+@VIPS_OPERATION_MATH_ASIN: 
+@VIPS_OPERATION_MATH_ACOS: 
+@VIPS_OPERATION_MATH_ATAN: 
+@VIPS_OPERATION_MATH_LOG: 
+@VIPS_OPERATION_MATH_LOG10: 
+@VIPS_OPERATION_MATH_EXP: 
+@VIPS_OPERATION_MATH_EXP10: 
+@VIPS_OPERATION_MATH_LAST: 
+
+<!-- ##### ENUM VipsOperationMath2 ##### -->
+<para>
+
+</para>
+
+@VIPS_OPERATION_MATH2_POW: 
+@VIPS_OPERATION_MATH2_WOP: 
+@VIPS_OPERATION_MATH2_LAST: 
+
+<!-- ##### ENUM VipsOperationRound ##### -->
+<para>
+
+</para>
+
+@VIPS_OPERATION_ROUND_RINT: 
+@VIPS_OPERATION_ROUND_CEIL: 
+@VIPS_OPERATION_ROUND_FLOOR: 
+@VIPS_OPERATION_ROUND_LAST: 
+
+<!-- ##### ENUM VipsOperationRelational ##### -->
+<para>
+
+</para>
+
+@VIPS_OPERATION_RELATIONAL_EQUAL: 
+@VIPS_OPERATION_RELATIONAL_NOTEQUAL: 
+@VIPS_OPERATION_RELATIONAL_LESS: 
+@VIPS_OPERATION_RELATIONAL_LESSEQ: 
+@VIPS_OPERATION_RELATIONAL_MORE: 
+@VIPS_OPERATION_RELATIONAL_MOREEQ: 
+@VIPS_OPERATION_RELATIONAL_LAST: 
+
 <!-- ##### ENUM VipsOperationBoolean ##### -->
 <para>
 
@@ -61,77 +110,6 @@ arithmetic
 @VIPS_OPERATION_COMPLEXGET_IMAG: 
 @VIPS_OPERATION_COMPLEXGET_LAST: 
 
-<!-- ##### ENUM VipsOperationMath ##### -->
-<para>
-
-</para>
-
-@VIPS_OPERATION_MATH_SIN: 
-@VIPS_OPERATION_MATH_COS: 
-@VIPS_OPERATION_MATH_TAN: 
-@VIPS_OPERATION_MATH_ASIN: 
-@VIPS_OPERATION_MATH_ACOS: 
-@VIPS_OPERATION_MATH_ATAN: 
-@VIPS_OPERATION_MATH_LOG: 
-@VIPS_OPERATION_MATH_LOG10: 
-@VIPS_OPERATION_MATH_EXP: 
-@VIPS_OPERATION_MATH_EXP10: 
-@VIPS_OPERATION_MATH_LAST: 
-
-<!-- ##### ENUM VipsOperationMath2 ##### -->
-<para>
-
-</para>
-
-@VIPS_OPERATION_MATH2_POW: 
-@VIPS_OPERATION_MATH2_WOP: 
-@VIPS_OPERATION_MATH2_LAST: 
-
-<!-- ##### ENUM VipsOperationRelational ##### -->
-<para>
-
-</para>
-
-@VIPS_OPERATION_RELATIONAL_EQUAL: 
-@VIPS_OPERATION_RELATIONAL_NOTEQUAL: 
-@VIPS_OPERATION_RELATIONAL_LESS: 
-@VIPS_OPERATION_RELATIONAL_LESSEQ: 
-@VIPS_OPERATION_RELATIONAL_MORE: 
-@VIPS_OPERATION_RELATIONAL_MOREEQ: 
-@VIPS_OPERATION_RELATIONAL_LAST: 
-
-<!-- ##### ENUM VipsOperationRound ##### -->
-<para>
-
-</para>
-
-@VIPS_OPERATION_ROUND_RINT: 
-@VIPS_OPERATION_ROUND_CEIL: 
-@VIPS_OPERATION_ROUND_FLOOR: 
-@VIPS_OPERATION_ROUND_LAST: 
-
-<!-- ##### FUNCTION vips_abs ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_acos ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
 <!-- ##### FUNCTION vips_add ##### -->
 <para>
 
@@ -144,203 +122,25 @@ arithmetic
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_andimage ##### -->
+<!-- ##### FUNCTION vips_subtract ##### -->
+<para>
+
+</para>
+
+@in1: 
+@in2: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_multiply ##### -->
 <para>
 
 </para>
 
 @left: 
 @right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_andimage_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_andimage_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_asin ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_atan ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_avg ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_boolean ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@boolean: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_boolean_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@boolean: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_ceil ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_complex ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@cmplx: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_complex2 ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@cmplx: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_complexform ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_complexget ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@get: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_conj ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_cos ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_cross_phase ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_deviate ##### -->
-<para>
-
-</para>
-
-@in: 
 @out: 
 @...: 
 @Returns: 
@@ -354,209 +154,6 @@ arithmetic
 @left: 
 @right: 
 @out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_eorimage ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_eorimage_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_eorimage_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_equal ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_equal_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_equal_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_exp ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_exp10 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_floor ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_imag ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_invert ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_less ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_less_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_less_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_lesseq ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_lesseq_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_lesseq_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
 @...: 
 @Returns: 
 
@@ -584,422 +181,6 @@ arithmetic
 @out: 
 @a: 
 @b: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_log ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_log10 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_lshift ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_lshift_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_lshift_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_math ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@math: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_math2 ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@math2: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_math2_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@math2: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_math2_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@math2: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_max ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_measure ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@h: 
-@v: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_min ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_more ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_more_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_more_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_moreeq ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_moreeq_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_moreeq_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_multiply ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_notequal ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_notequal_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_notequal_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_orimage ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_orimage_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_orimage_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_polar ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_pow ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_pow_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_pow_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@c: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_real ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_rect ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_relational ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@relational: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_relational_const ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@relational: 
-@c: 
-@n: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_relational_const1 ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@relational: 
-@c: 
 @...: 
 @Returns: 
 
@@ -1041,7 +222,29 @@ arithmetic
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_rint ##### -->
+<!-- ##### FUNCTION vips_invert ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_abs ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sign ##### -->
 <para>
 
 </para>
@@ -1064,6 +267,600 @@ arithmetic
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_floor ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_ceil ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rint ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_math ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@math: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sin ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cos ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tan ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_asin ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_acos ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_atan ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_exp ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_exp10 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_log ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_log10 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_complex ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@cmplx: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_polar ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rect ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_conj ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_complex2 ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@cmplx: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_cross_phase ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_complexget ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@get: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_real ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_imag ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_complexform ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_relational ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@relational: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_equal ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_notequal ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_less ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_lesseq ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_more ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_moreeq ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_relational_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@relational: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_equal_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_notequal_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_less_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_lesseq_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_more_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_moreeq_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_relational_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@relational: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_equal_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_notequal_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_less_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_lesseq_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_more_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_moreeq_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_boolean ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@boolean: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_andimage ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_orimage ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_eorimage ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_lshift ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_rshift ##### -->
 <para>
 
@@ -1072,6 +869,72 @@ arithmetic
 @left: 
 @right: 
 @out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_boolean_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@boolean: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_andimage_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_orimage_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_eorimage_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_lshift_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
 @...: 
 @Returns: 
 
@@ -1089,6 +952,54 @@ arithmetic
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_andimage_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_orimage_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_eorimage_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_lshift_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_rshift_const1 ##### -->
 <para>
 
@@ -1101,7 +1012,121 @@ arithmetic
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_sign ##### -->
+<!-- ##### FUNCTION vips_math2 ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@math2: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_pow ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_wop ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_math2_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@math2: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_pow_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_wop_const ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@n: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_math2_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@math2: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_pow_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_wop_const1 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_avg ##### -->
 <para>
 
 </para>
@@ -1112,7 +1137,29 @@ arithmetic
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_sin ##### -->
+<!-- ##### FUNCTION vips_deviate ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_min ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_max ##### -->
 <para>
 
 </para>
@@ -1134,19 +1181,20 @@ arithmetic
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_subtract ##### -->
+<!-- ##### FUNCTION vips_measure ##### -->
 <para>
 
 </para>
 
-@in1: 
-@in2: 
+@in: 
 @out: 
+@h: 
+@v: 
 @...: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_tan ##### -->
+<!-- ##### FUNCTION vips_hist_find ##### -->
 <para>
 
 </para>
@@ -1157,39 +1205,49 @@ arithmetic
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_wop ##### -->
-<para>
-
-</para>
-
-@left: 
-@right: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_wop_const ##### -->
+<!-- ##### FUNCTION vips_hist_find_ndim ##### -->
 <para>
 
 </para>
 
 @in: 
 @out: 
-@c: 
-@n: 
 @...: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_wop_const1 ##### -->
+<!-- ##### FUNCTION vips_hist_find_indexed ##### -->
 <para>
 
 </para>
 
 @in: 
+@index: 
 @out: 
-@c: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_project ##### -->
+<para>
+
+</para>
+
+@in: 
+@columns: 
+@rows: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_profile ##### -->
+<para>
+
+</para>
+
+@in: 
+@columns: 
+@rows: 
 @...: 
 @Returns: 
 

@@ -22,6 +22,30 @@ resample
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### FUNCTION vips_shrink ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@xshrink: 
+@yshrink: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_similarity ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_affine ##### -->
 <para>
 
@@ -45,19 +69,6 @@ resample
 @in: 
 @out: 
 @coeff: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_shrink ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@xshrink: 
-@yshrink: 
 @...: 
 @Returns: 
 

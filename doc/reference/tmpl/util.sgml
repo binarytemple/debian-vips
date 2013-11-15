@@ -22,76 +22,19 @@ util
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO VIPS_ABS ##### -->
+<!-- ##### MACRO VIPS_PI ##### -->
 <para>
 
 </para>
 
-@X: 
 
 
-<!-- ##### MACRO VIPS_CLIP ##### -->
+<!-- ##### MACRO VIPS_RAD ##### -->
 <para>
 
 </para>
 
-@A: 
-@V: 
-@B: 
-
-
-<!-- ##### MACRO VIPS_CLIP_CHAR ##### -->
-<para>
-
-</para>
-
-@V: 
-@SEQ: 
-
-
-<!-- ##### MACRO VIPS_CLIP_NONE ##### -->
-<para>
-
-</para>
-
-@V: 
-@SEQ: 
-
-
-<!-- ##### MACRO VIPS_CLIP_SHORT ##### -->
-<para>
-
-</para>
-
-@V: 
-@SEQ: 
-
-
-<!-- ##### MACRO VIPS_CLIP_UCHAR ##### -->
-<para>
-
-</para>
-
-@V: 
-@SEQ: 
-
-
-<!-- ##### MACRO VIPS_CLIP_UINT ##### -->
-<para>
-
-</para>
-
-@V: 
-@SEQ: 
-
-
-<!-- ##### MACRO VIPS_CLIP_USHORT ##### -->
-<para>
-
-</para>
-
-@V: 
-@SEQ: 
+@R: 
 
 
 <!-- ##### MACRO VIPS_DEG ##### -->
@@ -120,30 +63,25 @@ util
 @B: 
 
 
+<!-- ##### MACRO VIPS_ABS ##### -->
+<para>
+
+</para>
+
+@X: 
+
+
+<!-- ##### MACRO VIPS_CLIP ##### -->
+<para>
+
+</para>
+
+@A: 
+@V: 
+@B: 
+
+
 <!-- ##### MACRO VIPS_NUMBER ##### -->
-<para>
-
-</para>
-
-@R: 
-
-
-<!-- ##### MACRO VIPS_PI ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO VIPS_RAD ##### -->
-<para>
-
-</para>
-
-@R: 
-
-
-<!-- ##### MACRO VIPS_RINT ##### -->
 <para>
 
 </para>
@@ -170,28 +108,351 @@ util
 @OPER: 
 
 
-<!-- ##### ENUM VipsToken ##### -->
+<!-- ##### MACRO VIPS_RINT ##### -->
 <para>
 
 </para>
 
-@VIPS_TOKEN_LEFT: 
-@VIPS_TOKEN_RIGHT: 
-@VIPS_TOKEN_STRING: 
-@VIPS_TOKEN_EQUALS: 
-@VIPS_TOKEN_COMMA: 
+@R: 
 
-<!-- ##### FUNCTION vips__change_suffix ##### -->
+
+<!-- ##### MACRO VIPS_CLIP_UCHAR ##### -->
 <para>
 
 </para>
 
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_CHAR ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_USHORT ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_SHORT ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_UINT ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### MACRO VIPS_CLIP_NONE ##### -->
+<para>
+
+</para>
+
+@V: 
+@SEQ: 
+
+
+<!-- ##### FUNCTION vips_enum_string ##### -->
+<para>
+
+</para>
+
+@enm: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_enum_nick ##### -->
+<para>
+
+</para>
+
+@enm: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_enum_from_nick ##### -->
+<para>
+
+</para>
+
+@domain: 
+@type: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_equal ##### -->
+<para>
+
+</para>
+
+@l1: 
+@l2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_map2 ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_map2_rev ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_map4 ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@c: 
+@d: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_fold2 ##### -->
+<para>
+
+</para>
+
+@list: 
+@start: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_filter ##### -->
+<para>
+
+</para>
+
+@list: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_slist_free_all ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
+<!-- ##### FUNCTION vips_map_equal ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_hash_table_map ##### -->
+<para>
+
+</para>
+
+@hash: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_strncpy ##### -->
+<para>
+
+</para>
+
+@dest: 
+@src: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_strrstr ##### -->
+<para>
+
+</para>
+
+@haystack: 
+@needle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_ispostfix ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_isprefix ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_break_token ##### -->
+<para>
+
+</para>
+
+@str: 
+@brk: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_vsnprintf ##### -->
+<para>
+
+</para>
+
+@str: 
+@size: 
+@format: 
+@ap: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_snprintf ##### -->
+<para>
+
+</para>
+
+@str: 
+@size: 
+@format: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_filename_split ##### -->
+<para>
+
+</para>
+
+@path: 
 @name: 
-@out: 
-@mx: 
-@new_suff: 
-@olds: 
-@nolds: 
+@mode: 
+
+
+<!-- ##### FUNCTION vips_skip_dir ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_filename_suffix ##### -->
+<para>
+
+</para>
+
+@path: 
+@suffix: 
+
+
+<!-- ##### FUNCTION vips_filename_suffix_match ##### -->
+<para>
+
+</para>
+
+@path: 
+@suffixes: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_getnextoption ##### -->
+<para>
+
+</para>
+
+@in: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_getsuboption ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_file_length ##### -->
+<para>
+
+</para>
+
+@fd: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips__write ##### -->
+<para>
+
+</para>
+
+@fd: 
+@buf: 
+@count: 
+@Returns: 
 
 
 <!-- ##### FUNCTION vips__file_open_read ##### -->
@@ -249,25 +510,6 @@ util
 @Returns: 
 
 
-<!-- ##### FUNCTION vips__find_rightmost_brackets ##### -->
-<para>
-
-</para>
-
-@p: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips__ftruncate ##### -->
-<para>
-
-</para>
-
-@fd: 
-@pos: 
-@Returns: 
-
-
 <!-- ##### FUNCTION vips__get_bytes ##### -->
 <para>
 
@@ -279,12 +521,12 @@ util
 @Returns: 
 
 
-<!-- ##### FUNCTION vips__gslist_gvalue_copy ##### -->
+<!-- ##### FUNCTION vips__gvalue_ref_string_new ##### -->
 <para>
 
 </para>
 
-@list: 
+@text: 
 @Returns: 
 
 
@@ -296,7 +538,7 @@ util
 @list: 
 
 
-<!-- ##### FUNCTION vips__gslist_gvalue_get ##### -->
+<!-- ##### FUNCTION vips__gslist_gvalue_copy ##### -->
 <para>
 
 </para>
@@ -315,12 +557,12 @@ util
 @Returns: 
 
 
-<!-- ##### FUNCTION vips__gvalue_ref_string_new ##### -->
+<!-- ##### FUNCTION vips__gslist_gvalue_get ##### -->
 <para>
 
 </para>
 
-@text: 
+@list: 
 @Returns: 
 
 
@@ -334,14 +576,57 @@ util
 @Returns: 
 
 
-<!-- ##### FUNCTION vips__temp_name ##### -->
+<!-- ##### FUNCTION vips__ftruncate ##### -->
 <para>
 
 </para>
 
-@format: 
+@fd: 
+@pos: 
 @Returns: 
 
+
+<!-- ##### FUNCTION vips_existsf ##### -->
+<para>
+
+</para>
+
+@name: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_mkdirf ##### -->
+<para>
+
+</para>
+
+@name: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_popenf ##### -->
+<para>
+
+</para>
+
+@fmt: 
+@mode: 
+@...: 
+@Returns: 
+
+
+<!-- ##### ENUM VipsToken ##### -->
+<para>
+
+</para>
+
+@VIPS_TOKEN_LEFT: 
+@VIPS_TOKEN_RIGHT: 
+@VIPS_TOKEN_STRING: 
+@VIPS_TOKEN_EQUALS: 
+@VIPS_TOKEN_COMMA: 
 
 <!-- ##### FUNCTION vips__token_get ##### -->
 <para>
@@ -379,152 +664,12 @@ util
 @Returns: 
 
 
-<!-- ##### FUNCTION vips__write ##### -->
+<!-- ##### FUNCTION vips__find_rightmost_brackets ##### -->
 <para>
 
 </para>
 
-@fd: 
-@buf: 
-@count: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_amiMSBfirst ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_break_token ##### -->
-<para>
-
-</para>
-
-@str: 
-@brk: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_enum_from_nick ##### -->
-<para>
-
-</para>
-
-@domain: 
-@type: 
-@str: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_enum_nick ##### -->
-<para>
-
-</para>
-
-@enm: 
-@value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_enum_string ##### -->
-<para>
-
-</para>
-
-@enm: 
-@value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_existsf ##### -->
-<para>
-
-</para>
-
-@name: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_file_length ##### -->
-<para>
-
-</para>
-
-@fd: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_filename_split ##### -->
-<para>
-
-</para>
-
-@path: 
-@name: 
-@mode: 
-
-
-<!-- ##### FUNCTION vips_filename_suffix ##### -->
-<para>
-
-</para>
-
-@path: 
-@suffix: 
-
-
-<!-- ##### FUNCTION vips_filename_suffix_match ##### -->
-<para>
-
-</para>
-
-@path: 
-@suffixes: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_getnextoption ##### -->
-<para>
-
-</para>
-
-@in: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_getsuboption ##### -->
-<para>
-
-</para>
-
-@buf: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_hash_table_map ##### -->
-<para>
-
-</para>
-
-@hash: 
-@fn: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_ispostfix ##### -->
-<para>
-
-</para>
-
-@a: 
-@b: 
+@p: 
 @Returns: 
 
 
@@ -537,179 +682,34 @@ util
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_isprefix ##### -->
+<!-- ##### FUNCTION vips_amiMSBfirst ##### -->
 <para>
 
 </para>
 
-@a: 
-@b: 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_map_equal ##### -->
+<!-- ##### FUNCTION vips__temp_name ##### -->
 <para>
 
 </para>
 
-@a: 
-@b: 
+@format: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_mkdirf ##### -->
+<!-- ##### FUNCTION vips__change_suffix ##### -->
 <para>
 
 </para>
 
 @name: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_popenf ##### -->
-<para>
-
-</para>
-
-@fmt: 
-@mode: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_skip_dir ##### -->
-<para>
-
-</para>
-
-@filename: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_slist_equal ##### -->
-<para>
-
-</para>
-
-@l1: 
-@l2: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_slist_filter ##### -->
-<para>
-
-</para>
-
-@list: 
-@fn: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_slist_fold2 ##### -->
-<para>
-
-</para>
-
-@list: 
-@start: 
-@fn: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_slist_free_all ##### -->
-<para>
-
-</para>
-
-@list: 
-
-
-<!-- ##### FUNCTION vips_slist_map2 ##### -->
-<para>
-
-</para>
-
-@list: 
-@fn: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_slist_map2_rev ##### -->
-<para>
-
-</para>
-
-@list: 
-@fn: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_slist_map4 ##### -->
-<para>
-
-</para>
-
-@list: 
-@fn: 
-@a: 
-@b: 
-@c: 
-@d: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_snprintf ##### -->
-<para>
-
-</para>
-
-@str: 
-@size: 
-@format: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_strncpy ##### -->
-<para>
-
-</para>
-
-@dest: 
-@src: 
-@n: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_strrstr ##### -->
-<para>
-
-</para>
-
-@haystack: 
-@needle: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_vsnprintf ##### -->
-<para>
-
-</para>
-
-@str: 
-@size: 
-@format: 
-@ap: 
-@Returns: 
+@out: 
+@mx: 
+@new_suff: 
+@olds: 
+@nolds: 
 
 

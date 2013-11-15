@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-VipsForeignSave
+VipsForeign
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -37,25 +37,17 @@ VipsForeignSave
 @priority: 
 @suffs: 
 
-<!-- ##### ENUM VipsForeignDzDepth ##### -->
+<!-- ##### FUNCTION vips_foreign_map ##### -->
 <para>
 
 </para>
 
-@VIPS_FOREIGN_DZ_DEPTH_1PIXEL: 
-@VIPS_FOREIGN_DZ_DEPTH_1TILE: 
-@VIPS_FOREIGN_DZ_DEPTH_1: 
-@VIPS_FOREIGN_DZ_DEPTH_LAST: 
+@base: 
+@fn: 
+@a: 
+@b: 
+@Returns: 
 
-<!-- ##### ENUM VipsForeignDzLayout ##### -->
-<para>
-
-</para>
-
-@VIPS_FOREIGN_DZ_LAYOUT_DZ: 
-@VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY: 
-@VIPS_FOREIGN_DZ_LAYOUT_GOOGLE: 
-@VIPS_FOREIGN_DZ_LAYOUT_LAST: 
 
 <!-- ##### ENUM VipsForeignFlags ##### -->
 <para>
@@ -76,6 +68,11 @@ VipsForeignSave
 @out: 
 @real: 
 @nocache: 
+
+<!-- ##### ARG VipsForeignLoad:access ##### -->
+<para>
+
+</para>
 
 <!-- ##### ARG VipsForeignLoad:disc ##### -->
 <para>
@@ -109,139 +106,6 @@ VipsForeignSave
 @header: 
 @load: 
 
-<!-- ##### STRUCT VipsForeignSave ##### -->
-<para>
-
-</para>
-
-@in: 
-@ready: 
-
-<!-- ##### ARG VipsForeignSave:in ##### -->
-<para>
-
-</para>
-
-<!-- ##### STRUCT VipsForeignSaveClass ##### -->
-<para>
-
-</para>
-
-@parent_class: 
-@saveable: 
-@format_table: 
-@coding: 
-
-<!-- ##### ENUM VipsForeignTiffCompression ##### -->
-<para>
-
-</para>
-
-@VIPS_FOREIGN_TIFF_COMPRESSION_NONE: 
-@VIPS_FOREIGN_TIFF_COMPRESSION_JPEG: 
-@VIPS_FOREIGN_TIFF_COMPRESSION_DEFLATE: 
-@VIPS_FOREIGN_TIFF_COMPRESSION_PACKBITS: 
-@VIPS_FOREIGN_TIFF_COMPRESSION_CCITTFAX4: 
-@VIPS_FOREIGN_TIFF_COMPRESSION_LZW: 
-@VIPS_FOREIGN_TIFF_COMPRESSION_LAST: 
-
-<!-- ##### ENUM VipsForeignTiffPredictor ##### -->
-<para>
-
-</para>
-
-@VIPS_FOREIGN_TIFF_PREDICTOR_NONE: 
-@VIPS_FOREIGN_TIFF_PREDICTOR_HORIZONTAL: 
-@VIPS_FOREIGN_TIFF_PREDICTOR_FLOAT: 
-@VIPS_FOREIGN_TIFF_PREDICTOR_LAST: 
-
-<!-- ##### ENUM VipsForeignTiffResunit ##### -->
-<para>
-
-</para>
-
-@VIPS_FOREIGN_TIFF_RESUNIT_CM: 
-@VIPS_FOREIGN_TIFF_RESUNIT_INCH: 
-@VIPS_FOREIGN_TIFF_RESUNIT_LAST: 
-
-<!-- ##### ENUM VipsSaveable ##### -->
-<para>
-
-</para>
-
-@VIPS_SAVEABLE_MONO: 
-@VIPS_SAVEABLE_RGB: 
-@VIPS_SAVEABLE_RGBA: 
-@VIPS_SAVEABLE_RGB_CMYK: 
-@VIPS_SAVEABLE_ANY: 
-@VIPS_SAVEABLE_LAST: 
-
-<!-- ##### FUNCTION vips_analyzeload ##### -->
-<para>
-
-</para>
-
-@filename: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_csvload ##### -->
-<para>
-
-</para>
-
-@filename: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_csvsave ##### -->
-<para>
-
-</para>
-
-@in: 
-@filename: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_dzsave ##### -->
-<para>
-
-</para>
-
-@in: 
-@basename: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_fitsload ##### -->
-<para>
-
-</para>
-
-@filename: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_fitssave ##### -->
-<para>
-
-</para>
-
-@in: 
-@filename: 
-@...: 
-@Returns: 
-
-
 <!-- ##### FUNCTION vips_foreign_find_load ##### -->
 <para>
 
@@ -252,24 +116,6 @@ VipsForeignSave
 
 
 <!-- ##### FUNCTION vips_foreign_find_load_options ##### -->
-<para>
-
-</para>
-
-@filename: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_foreign_find_save ##### -->
-<para>
-
-</para>
-
-@filename: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_foreign_find_save_options ##### -->
 <para>
 
 </para>
@@ -298,6 +144,59 @@ VipsForeignSave
 @Returns: 
 
 
+<!-- ##### ENUM VipsSaveable ##### -->
+<para>
+
+</para>
+
+@VIPS_SAVEABLE_MONO: 
+@VIPS_SAVEABLE_RGB: 
+@VIPS_SAVEABLE_RGBA: 
+@VIPS_SAVEABLE_RGB_CMYK: 
+@VIPS_SAVEABLE_ANY: 
+@VIPS_SAVEABLE_LAST: 
+
+<!-- ##### STRUCT VipsForeignSave ##### -->
+<para>
+
+</para>
+
+@in: 
+@ready: 
+
+<!-- ##### ARG VipsForeignSave:in ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT VipsForeignSaveClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@saveable: 
+@format_table: 
+@coding: 
+
+<!-- ##### FUNCTION vips_foreign_find_save ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_foreign_find_save_options ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_foreign_load ##### -->
 <para>
 
@@ -305,6 +204,17 @@ VipsForeignSave
 
 @filename: 
 @out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_foreign_save ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
 @...: 
 @Returns: 
 
@@ -320,19 +230,7 @@ VipsForeignSave
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_foreign_map ##### -->
-<para>
-
-</para>
-
-@base: 
-@fn: 
-@a: 
-@b: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_foreign_save ##### -->
+<!-- ##### FUNCTION vips_foreign_save_options ##### -->
 <para>
 
 </para>
@@ -343,13 +241,13 @@ VipsForeignSave
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_foreign_save_options ##### -->
+<!-- ##### FUNCTION vips_openslideload ##### -->
 <para>
 
 </para>
 
-@in: 
 @filename: 
+@out: 
 @...: 
 @Returns: 
 
@@ -410,7 +308,7 @@ VipsForeignSave
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_magickload ##### -->
+<!-- ##### FUNCTION vips_webpload ##### -->
 <para>
 
 </para>
@@ -421,13 +319,101 @@ VipsForeignSave
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_matload ##### -->
+<!-- ##### FUNCTION vips_webpload_buffer ##### -->
+<para>
+
+</para>
+
+@buf: 
+@len: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_webpsave ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_webpsave_buffer ##### -->
+<para>
+
+</para>
+
+@in: 
+@buf: 
+@len: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_webpsave_mime ##### -->
+<para>
+
+</para>
+
+@in: 
+@...: 
+@Returns: 
+
+
+<!-- ##### ENUM VipsForeignTiffCompression ##### -->
+<para>
+
+</para>
+
+@VIPS_FOREIGN_TIFF_COMPRESSION_NONE: 
+@VIPS_FOREIGN_TIFF_COMPRESSION_JPEG: 
+@VIPS_FOREIGN_TIFF_COMPRESSION_DEFLATE: 
+@VIPS_FOREIGN_TIFF_COMPRESSION_PACKBITS: 
+@VIPS_FOREIGN_TIFF_COMPRESSION_CCITTFAX4: 
+@VIPS_FOREIGN_TIFF_COMPRESSION_LZW: 
+@VIPS_FOREIGN_TIFF_COMPRESSION_LAST: 
+
+<!-- ##### ENUM VipsForeignTiffPredictor ##### -->
+<para>
+
+</para>
+
+@VIPS_FOREIGN_TIFF_PREDICTOR_NONE: 
+@VIPS_FOREIGN_TIFF_PREDICTOR_HORIZONTAL: 
+@VIPS_FOREIGN_TIFF_PREDICTOR_FLOAT: 
+@VIPS_FOREIGN_TIFF_PREDICTOR_LAST: 
+
+<!-- ##### ENUM VipsForeignTiffResunit ##### -->
+<para>
+
+</para>
+
+@VIPS_FOREIGN_TIFF_RESUNIT_CM: 
+@VIPS_FOREIGN_TIFF_RESUNIT_INCH: 
+@VIPS_FOREIGN_TIFF_RESUNIT_LAST: 
+
+<!-- ##### FUNCTION vips_tiffload ##### -->
 <para>
 
 </para>
 
 @filename: 
 @out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tiffsave ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
 @...: 
 @Returns: 
 
@@ -443,7 +429,120 @@ VipsForeignSave
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_openslideload ##### -->
+<!-- ##### FUNCTION vips_fitsload ##### -->
+<para>
+
+</para>
+
+@filename: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_fitssave ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_analyzeload ##### -->
+<para>
+
+</para>
+
+@filename: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rawload ##### -->
+<para>
+
+</para>
+
+@filename: 
+@out: 
+@width: 
+@height: 
+@bands: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rawsave ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_rawsave_fd ##### -->
+<para>
+
+</para>
+
+@in: 
+@fd: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_csvload ##### -->
+<para>
+
+</para>
+
+@filename: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_csvsave ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_matrixload ##### -->
+<para>
+
+</para>
+
+@filename: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_matrixsave ##### -->
+<para>
+
+</para>
+
+@in: 
+@filename: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_magickload ##### -->
 <para>
 
 </para>
@@ -522,6 +621,17 @@ VipsForeignSave
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_matload ##### -->
+<para>
+
+</para>
+
+@filename: 
+@out: 
+@...: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_radload ##### -->
 <para>
 
@@ -544,60 +654,33 @@ VipsForeignSave
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_rawload ##### -->
+<!-- ##### ENUM VipsForeignDzLayout ##### -->
 <para>
 
 </para>
 
-@filename: 
-@out: 
-@width: 
-@height: 
-@bands: 
-@...: 
-@Returns: 
+@VIPS_FOREIGN_DZ_LAYOUT_DZ: 
+@VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY: 
+@VIPS_FOREIGN_DZ_LAYOUT_GOOGLE: 
+@VIPS_FOREIGN_DZ_LAYOUT_LAST: 
 
-
-<!-- ##### FUNCTION vips_rawsave ##### -->
+<!-- ##### ENUM VipsForeignDzDepth ##### -->
 <para>
 
 </para>
 
-@in: 
-@filename: 
-@...: 
-@Returns: 
+@VIPS_FOREIGN_DZ_DEPTH_1PIXEL: 
+@VIPS_FOREIGN_DZ_DEPTH_1TILE: 
+@VIPS_FOREIGN_DZ_DEPTH_1: 
+@VIPS_FOREIGN_DZ_DEPTH_LAST: 
 
-
-<!-- ##### FUNCTION vips_rawsave_fd ##### -->
+<!-- ##### FUNCTION vips_dzsave ##### -->
 <para>
 
 </para>
 
 @in: 
-@fd: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_tiffload ##### -->
-<para>
-
-</para>
-
-@filename: 
-@out: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_tiffsave ##### -->
-<para>
-
-</para>
-
-@in: 
-@filename: 
+@basename: 
 @...: 
 @Returns: 
 

@@ -18,7 +18,7 @@ pkginclude_HEADERS = \
 	inplace.h \
 	generate.h \
 	header.h \
-	histograms_lut.h \
+	histogram.h \
 	freq_filt.h \
 	image.h \
 	interpolate.h \
@@ -64,6 +64,7 @@ vips_scan_headers = \
 	${top_srcdir}/libvips/include/vips/image.h \
 	${top_srcdir}/libvips/include/vips/colour.h \
 	${top_srcdir}/libvips/include/vips/operation.h \
+	${top_srcdir}/libvips/include/vips/convolution.h \
 	${top_srcdir}/libvips/include/vips/object.h
 
 enumtypes.h: $(vips_scan_headers) Makefile

@@ -118,14 +118,17 @@ typedef struct _VipsForeignLoad {
 	 */
 	gboolean disc;
 
-	/* Setting this means "I promise to only read sequentially from this
-	 * image". 
+	/* Type of access upstream wants and the loader must supply. 
 	 */
-	gboolean sequential;
+	VipsAccess access;
 
 	/* Flags for this load operation.
 	 */
 	VipsForeignFlags flags;
+
+	/* Deprecated and unused, just here for compat.
+	 */
+	gboolean sequential;
 
 	/*< public >*/
 
@@ -319,6 +322,18 @@ int vips_jpegsave_buffer( VipsImage *in, void **buf, size_t *len, ... )
 int vips_jpegsave_mime( VipsImage *in, ... )
 	__attribute__((sentinel));
 
+int vips_webpload( const char *filename, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_webpload_buffer( void *buf, size_t len, VipsImage **out, ... )
+	__attribute__((sentinel));
+
+int vips_webpsave( VipsImage *in, const char *filename, ... )
+	__attribute__((sentinel));
+int vips_webpsave_buffer( VipsImage *in, void **buf, size_t *len, ... )
+	__attribute__((sentinel));
+int vips_webpsave_mime( VipsImage *in, ... )
+	__attribute__((sentinel));
+
 /**
  * VipsForeignTiffCompression:
  * @VIPS_FOREIGN_TIFF_COMPRESSION_NONE: no compression
@@ -400,6 +415,11 @@ int vips_rawsave_fd( VipsImage *in, int fd, ... )
 int vips_csvload( const char *filename, VipsImage **out, ... )
 	__attribute__((sentinel));
 int vips_csvsave( VipsImage *in, const char *filename, ... )
+	__attribute__((sentinel));
+
+int vips_matrixload( const char *filename, VipsImage **out, ... )
+	__attribute__((sentinel));
+int vips_matrixsave( VipsImage *in, const char *filename, ... )
 	__attribute__((sentinel));
 
 int vips_magickload( const char *filename, VipsImage **out, ... )

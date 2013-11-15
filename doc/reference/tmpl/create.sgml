@@ -22,25 +22,12 @@ create
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### FUNCTION im_benchmark2 ##### -->
+<!-- ##### FUNCTION vips_create_operation_init ##### -->
 <para>
 
 </para>
 
-@in: 
-@out: 
-@Returns: 
-
-
-<!-- ##### FUNCTION im_benchmarkn ##### -->
-<para>
-
-</para>
-
-@in: 
-@out: 
-@n: 
-@Returns: 
+@void: 
 
 
 <!-- ##### FUNCTION vips_black ##### -->
@@ -55,27 +42,7 @@ create
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_create_operation_init ##### -->
-<para>
-
-</para>
-
-@void: 
-
-
-<!-- ##### FUNCTION vips_eye ##### -->
-<para>
-
-</para>
-
-@out: 
-@width: 
-@height: 
-@...: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_gaussnoise ##### -->
+<!-- ##### FUNCTION vips_xyz ##### -->
 <para>
 
 </para>
@@ -99,18 +66,6 @@ create
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_sines ##### -->
-<para>
-
-</para>
-
-@out: 
-@width: 
-@height: 
-@...: 
-@Returns: 
-
-
 <!-- ##### FUNCTION vips_text ##### -->
 <para>
 
@@ -122,7 +77,31 @@ create
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_xyz ##### -->
+<!-- ##### FUNCTION vips_gaussnoise ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_eye ##### -->
+<para>
+
+</para>
+
+@out: 
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_sines ##### -->
 <para>
 
 </para>
@@ -143,6 +122,69 @@ create
 @width: 
 @height: 
 @...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_identity ##### -->
+<para>
+
+</para>
+
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_buildlut ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_invertlut ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_tonelut ##### -->
+<para>
+
+</para>
+
+@out: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_benchmarkn ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION im_benchmark2 ##### -->
+<para>
+
+</para>
+
+@in: 
+@out: 
 @Returns: 
 
 

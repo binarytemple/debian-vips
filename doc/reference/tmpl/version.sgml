@@ -22,7 +22,14 @@ version
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO VIPS_EXEEXT ##### -->
+<!-- ##### MACRO VIPS_VERSION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_VERSION_STRING ##### -->
 <para>
 
 </para>
@@ -36,13 +43,6 @@ version
 
 
 
-<!-- ##### MACRO VIPS_MICRO_VERSION ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### MACRO VIPS_MINOR_VERSION ##### -->
 <para>
 
@@ -50,14 +50,14 @@ version
 
 
 
-<!-- ##### MACRO VIPS_VERSION ##### -->
+<!-- ##### MACRO VIPS_MICRO_VERSION ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### MACRO VIPS_VERSION_STRING ##### -->
+<!-- ##### MACRO VIPS_EXEEXT ##### -->
 <para>
 
 </para>

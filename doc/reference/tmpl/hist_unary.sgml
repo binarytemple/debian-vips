@@ -1,0 +1,42 @@
+<!-- ##### SECTION Title ##### -->
+VipsHistUnary
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT VipsHistUnary ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG VipsHistUnary:in ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT VipsHistUnaryClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+

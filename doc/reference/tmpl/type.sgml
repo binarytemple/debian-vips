@@ -22,44 +22,34 @@ type
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### STRUCT VipsArea ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### TYPEDEF VipsArrayDouble ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### TYPEDEF VipsArrayInt ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### STRUCT VipsThing ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION vips__meta_init_types ##### -->
+<!-- ##### FUNCTION vips_thing_new ##### -->
 <para>
 
 </para>
 
-@void: 
+@i: 
+@Returns: 
 
 
-<!-- ##### FUNCTION vips__type_leak ##### -->
+<!-- ##### FUNCTION vips_thing_get_i ##### -->
 <para>
 
 </para>
 
-@void: 
+@thing: 
+@Returns: 
+
+
+<!-- ##### STRUCT VipsArea ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### FUNCTION vips_area_copy ##### -->
@@ -71,17 +61,20 @@ type
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_area_get_data ##### -->
+<!-- ##### FUNCTION vips_area_unref ##### -->
 <para>
 
 </para>
 
 @area: 
-@length: 
-@n: 
-@type: 
-@sizeof_type: 
-@Returns: 
+
+
+<!-- ##### FUNCTION vips__type_leak ##### -->
+<para>
+
+</para>
+
+@void: 
 
 
 <!-- ##### FUNCTION vips_area_new ##### -->
@@ -91,6 +84,17 @@ type
 
 @free_fn: 
 @data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_area_new_blob ##### -->
+<para>
+
+</para>
+
+@free_fn: 
+@data: 
+@length: 
 @Returns: 
 
 
@@ -114,23 +118,23 @@ type
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_area_new_blob ##### -->
-<para>
-
-</para>
-
-@free_fn: 
-@data: 
-@length: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_area_unref ##### -->
+<!-- ##### FUNCTION vips_area_get_data ##### -->
 <para>
 
 </para>
 
 @area: 
+@length: 
+@n: 
+@type: 
+@sizeof_type: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF VipsArrayDouble ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### FUNCTION vips_array_double_new ##### -->
@@ -153,6 +157,12 @@ type
 @Returns: 
 
 
+<!-- ##### TYPEDEF VipsArrayInt ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION vips_array_int_new ##### -->
 <para>
 
@@ -173,22 +183,14 @@ type
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_thing_get_i ##### -->
+<!-- ##### FUNCTION vips_value_set_area ##### -->
 <para>
 
 </para>
 
-@thing: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_thing_new ##### -->
-<para>
-
-</para>
-
-@i: 
-@Returns: 
+@value: 
+@free_fn: 
+@data: 
 
 
 <!-- ##### FUNCTION vips_value_get_area ##### -->
@@ -199,6 +201,86 @@ type
 @value: 
 @length: 
 @Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_save_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_save_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@str: 
+
+
+<!-- ##### FUNCTION vips_value_set_save_stringf ##### -->
+<para>
+
+</para>
+
+@value: 
+@fmt: 
+@...: 
+
+
+<!-- ##### FUNCTION vips_value_get_ref_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_ref_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_blob ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_set_blob ##### -->
+<para>
+
+</para>
+
+@value: 
+@free_fn: 
+@data: 
+@length: 
+
+
+<!-- ##### FUNCTION vips_value_set_array ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@type: 
+@sizeof_type: 
 
 
 <!-- ##### FUNCTION vips_value_get_array ##### -->
@@ -223,76 +305,6 @@ type
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_value_get_array_int ##### -->
-<para>
-
-</para>
-
-@value: 
-@n: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_value_get_array_object ##### -->
-<para>
-
-</para>
-
-@value: 
-@n: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_value_get_blob ##### -->
-<para>
-
-</para>
-
-@value: 
-@length: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_value_get_ref_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@length: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_value_get_save_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_value_set_area ##### -->
-<para>
-
-</para>
-
-@value: 
-@free_fn: 
-@data: 
-
-
-<!-- ##### FUNCTION vips_value_set_array ##### -->
-<para>
-
-</para>
-
-@value: 
-@n: 
-@type: 
-@sizeof_type: 
-
-
 <!-- ##### FUNCTION vips_value_set_array_double ##### -->
 <para>
 
@@ -300,6 +312,16 @@ type
 
 @value: 
 @array: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_value_get_array_int ##### -->
+<para>
+
+</para>
+
+@value: 
 @n: 
 @Returns: 
 
@@ -315,6 +337,16 @@ type
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_value_get_array_object ##### -->
+<para>
+
+</para>
+
+@value: 
+@n: 
+@Returns: 
+
+
 <!-- ##### FUNCTION vips_value_set_array_object ##### -->
 <para>
 
@@ -325,43 +357,11 @@ type
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_value_set_blob ##### -->
+<!-- ##### FUNCTION vips__meta_init_types ##### -->
 <para>
 
 </para>
 
-@value: 
-@free_fn: 
-@data: 
-@length: 
-
-
-<!-- ##### FUNCTION vips_value_set_ref_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@str: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_value_set_save_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@str: 
-
-
-<!-- ##### FUNCTION vips_value_set_save_stringf ##### -->
-<para>
-
-</para>
-
-@value: 
-@fmt: 
-@...: 
+@void: 
 
 

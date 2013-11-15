@@ -1,3 +1,54 @@
+18/10/13	started 7.36.3
+- fix compiler warnings in ubuntu 13.10
+- reverse similarity rotation direction to match the convention used 
+  elsewhere in vips
+- fix blocked caching of sequential load operations
+- fix cache flags
+- fix --delete option to vipsthumbnail
+
+10/10/13	started 7.36.2
+- better jpeg startup
+- rename jpeg bool type to reduce confusion between libraries
+
+3/10/13	started 7.36.1
+- fix to help OS X build
+
+3/10/13	started 7.36.0
+- version bump
+
+1/7/13 started 7.35.0
+- added vips_matrixload() and vips_matrixsave(), load and save vips mat format
+- rename image arrays as image matrices ... INTERPRETATION_ARRAY ->
+  INTERPRETATION_MATRIX etc. 
+- rewrite im_buildlut(), im_identity*(), im_maplut(), im_falsecolour(),
+  im_gammacorrect(), im_histgr(), im_histcum(), im_histnorm(), im_heq(),
+  im_histnD(), im_histindexed(), im_histspec(), im_invertlut(), im_lhisteq(),
+  im_stdif(), im_project(), im_profile(), im_tone_build*(), im_mpercent*(),
+  im_ismonotonic() as classes
+- vips_hist_local(), vips_stdif() do any number of bands
+- thin vips8 wrapper for im_histplot()
+- added vips_error_freeze() / vips_error_thaw()
+- used freeze() / thaw() to stop file format sniffers logging spurious errors
+- vipsthumbnail uses embedded jpg thumbnails if it can 
+- rename vips_diag() as vips_info(), add --vips-info flag
+- deprecate im_hsp()
+- added vips_webpload(), vips_webpload_buffer(), vips_webpsave(),
+  vips_webpsave_buffer(), vips_webpsave_mime()
+- tiff reader allows separate planes for strip read
+- tiff reader and writer allow many more formats, eg. 32-bit int, complex, etc. 
+- tiff reader and writer allow any number of bands
+- added vips_image_new_matrixv()
+- dzsave basename param now called filename, so you can use .dz as a
+  destination (basename is still there but deprecated)
+- new _UNBUFFERED sequential mode saves memory in some important cases
+- vips_conv() is a simple wrapper over the old convolution functions
+- new optimize_coding param for jpeg write produces optimal Huffman tables,
+  thanks Lovell 
+- im_tone_map() and im_tone_analyse() deprecated
+- new --band arg to vips_maplut() replaces im_tone_map() functionality
+- added vips_similarity(), simple wrapper for vips_affine() that lets you
+  give a scale and rotate
+
 3/7/13 started 7.34.2
 - lower priority for Matlab load to reduce segvs from Mat_Open(), thanks
   Michael

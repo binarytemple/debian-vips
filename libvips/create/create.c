@@ -120,6 +120,10 @@ vips_create_operation_init( void )
 	extern GType vips_grey_get_type( void ); 
 	extern GType vips_zone_get_type( void ); 
 	extern GType vips_sines_get_type( void ); 
+	extern GType vips_buildlut_get_type( void ); 
+	extern GType vips_invertlut_get_type( void ); 
+	extern GType vips_tonelut_get_type( void ); 
+	extern GType vips_identity_get_type( void ); 
 
 	vips_black_get_type();
 	vips_gaussnoise_get_type(); 
@@ -131,5 +135,9 @@ vips_create_operation_init( void )
 	vips_grey_get_type(); 
 	vips_zone_get_type(); 
 	vips_sines_get_type(); 
+	vips_buildlut_get_type(); 
+	vips_invertlut_get_type(); 
+	vips_tonelut_get_type(); 
+	vips_identity_get_type(); 
 }
 

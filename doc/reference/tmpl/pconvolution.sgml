@@ -1,0 +1,52 @@
+<!-- ##### SECTION Title ##### -->
+VipsConvolution
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT VipsConvolution ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG VipsConvolution:in ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG VipsConvolution:mask ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG VipsConvolution:out ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT VipsConvolutionClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+

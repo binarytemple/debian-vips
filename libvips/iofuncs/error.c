@@ -105,14 +105,45 @@
  * supposed to indicate the component which failed.
  */
 
+/* Show info messages. Handy for debugging. 
+ */
+int vips__info = 0;
+
 /* Make global array to keep the error message buffer.
  */
 #define VIPS_MAX_ERROR (10240)
 static char vips_error_text[VIPS_MAX_ERROR] = "";
 static VipsBuf vips_error_buf = VIPS_BUF_STATIC( vips_error_text );
+static int vips_error_freeze_count = 0;
 
-#define IM_DIAGNOSTICS "IM_DIAGNOSTICS"
-#define IM_WARNING "IM_WARNING"
+/**
+ * vips_error_freeze:
+ *
+ * Stop errors being logged. Use vips_error_thaw() to unfreeze. You can
+ * nest freeze/thaw pairs.
+ */
+void
+vips_error_freeze( void )
+{
+	g_mutex_lock( vips__global_lock );
+	g_assert( vips_error_freeze_count >= 0 );
+	vips_error_freeze_count += 1;
+	g_mutex_unlock( vips__global_lock );
+}
+
+/**
+ * vips_error_thaw:
+ *
+ * Reenable error logging. 
+ */
+void
+vips_error_thaw( void )
+{
+	g_mutex_lock( vips__global_lock );
+	vips_error_freeze_count -= 1;
+	g_assert( vips_error_freeze_count >= 0 );
+	g_mutex_unlock( vips__global_lock );
+}
 
 /**
  * vips_error_buffer: 
@@ -173,9 +204,12 @@ vips_verror( const char *domain, const char *fmt, va_list ap )
 #endif /*VIPS_DEBUG*/
 
 	g_mutex_lock( vips__global_lock );
-	vips_buf_appendf( &vips_error_buf, "%s: ", domain );
-	vips_buf_vappendf( &vips_error_buf, fmt, ap );
-	vips_buf_appends( &vips_error_buf, "\n" );
+	g_assert( vips_error_freeze_count >= 0 );
+	if( !vips_error_freeze_count ) {
+		vips_buf_appendf( &vips_error_buf, "%s: ", domain );
+		vips_buf_vappendf( &vips_error_buf, fmt, ap );
+		vips_buf_appends( &vips_error_buf, "\n" );
+	}
 	g_mutex_unlock( vips__global_lock );
 
 	if( vips__fatal )
@@ -314,25 +348,26 @@ vips_error_clear( void )
 }
 
 /**
- * vips_vdiag: 
- * @domain: the source of the diagnostic message
+ * vips_vinfo: 
+ * @domain: the source of the message
  * @fmt: printf()-style format string for the message
  * @ap: arguments to the format string
  *
- * Sends a formatted diagnostic message to stderr. If you define the
- * environment variable IM_DIAGNOSTICS, these message are surpressed.
+ * Sends a formatted informational message to stderr if the --vips-info flag
+ * has been given to the program or the environment variable IM_INFO has been
+ * defined. 
  *
- * Diagnostic messages are used to report details about the operation of
+ * Informational messages are used to report details about the operation of
  * functions.
  *
- * See also: vips_diag(), vips_warn().
+ * See also: vips_info(), vips_warn().
  */
 void 
-vips_vdiag( const char *domain, const char *fmt, va_list ap )
+vips_vinfo( const char *domain, const char *fmt, va_list ap )
 {
-	if( !g_getenv( IM_DIAGNOSTICS ) ) {
+	if( vips__info ) { 
 		g_mutex_lock( vips__global_lock );
-		(void) fprintf( stderr, _( "%s: " ), _( "vips diagnostic" ) );
+		(void) fprintf( stderr, _( "%s: " ), _( "info" ) );
 		if( domain )
 			(void) fprintf( stderr, _( "%s: " ), domain );
 		(void) vfprintf( stderr, fmt, ap );
@@ -342,26 +377,27 @@ vips_vdiag( const char *domain, const char *fmt, va_list ap )
 }
 
 /**
- * vips_diag: 
+ * vips_info: 
  * @domain: the source of the diagnostic message
  * @fmt: printf()-style format string for the message
  * @Varargs: arguments to the format string
  *
- * Sends a formatted diagnostic message to stderr. If you define the
- * environment variable IM_DIAGNOSTICS, these message are surpressed.
+ * Sends a formatted informational message to stderr if the --vips-info flag
+ * has been given to the program or the environment variable IM_INFO has been
+ * defined. 
  *
- * Diagnostic messages are used to report details about the operation of
+ * Informational messages are used to report details about the operation of
  * functions.
  *
  * See also: vips_vdiag(), vips_warn().
  */
 void 
-vips_diag( const char *domain, const char *fmt, ... )
+vips_info( const char *domain, const char *fmt, ... )
 {
 	va_list ap;
 
 	va_start( ap, fmt );
-	vips_vdiag( domain, fmt, ap );
+	vips_vinfo( domain, fmt, ap );
 	va_end( ap );
 }
 
@@ -376,12 +412,12 @@ vips_diag( const char *domain, const char *fmt, ... )
  *
  * Warning messages are used to report things like overflow counts.
  *
- * See also: vips_diag(), vips_warn().
+ * See also: vips_info(), vips_warn().
  */
 void 
 vips_vwarn( const char *domain, const char *fmt, va_list ap )
 {	
-	if( !g_getenv( IM_WARNING ) ) {
+	if( !g_getenv( "IM_WARNING" ) ) {
 		g_mutex_lock( vips__global_lock );
 		(void) fprintf( stderr, _( "%s: " ), _( "vips warning" ) );
 		if( domain )
@@ -406,7 +442,7 @@ vips_vwarn( const char *domain, const char *fmt, va_list ap )
  *
  * Warning messages are used to report things like overflow counts.
  *
- * See also: vips_diag(), vips_vwarn().
+ * See also: vips_info(), vips_vwarn().
  */
 void 
 vips_warn( const char *domain, const char *fmt, ... )
@@ -1167,23 +1203,26 @@ vips_check_hist( const char *domain, VipsImage *im )
  * @im: image to check 
  * @out: put image as in-memory doubles here
  *
- * Matrix images must have width and height less than 1000 and have 1 band.
+ * Matrix images must have width and height less than 100000 and have 1 band.
  *
  * Return 0 if the image will pass as a matrix, or -1 and set an error 
  * message otherwise.
  *
  * @out is set to be @im cast to double and stored in memory. Use
- * VIPS_IMAGE_ADDR() to address values in @out. @out is unreffed for you 
- * when @im is unreffed.
+ * VIPS_MATRIX() to address values in @out. 
  *
- * See also: vips_error().
+ * You must unref @out when you are done with it.
+ *
+ * See also: VIPS_MATRIX(), vips_object_local()
  *
  * Returns: 0 if OK, -1 otherwise.
  */
 int
 vips_check_matrix( const char *domain, VipsImage *im, VipsImage **out )
 {
-	if( im->Xsize > 1000 || im->Ysize > 1000 ) {
+	*out = NULL;
+
+	if( im->Xsize > 100000 || im->Ysize > 100000 ) {
 		vips_error( domain, "%s", _( "matrix image too large" ) );
 		return( -1 );
 	}
@@ -1195,7 +1234,6 @@ vips_check_matrix( const char *domain, VipsImage *im, VipsImage **out )
 
 	if( vips_cast( im, out, VIPS_FORMAT_DOUBLE, NULL ) )
                 return( -1 );
-	vips_object_local( im, *out );
         if( vips_image_wio_input( *out ) )
                 return( -1 );
 

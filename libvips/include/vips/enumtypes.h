@@ -47,8 +47,6 @@ GType vips_align_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_ALIGN (vips_align_get_type())
 GType vips_angle_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_ANGLE (vips_angle_get_type())
-GType vips_cache_strategy_get_type (void) G_GNUC_CONST;
-#define VIPS_TYPE_CACHE_STRATEGY (vips_cache_strategy_get_type())
 /* enumerations from "../../../libvips/include/vips/util.h" */
 GType vips_token_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_TOKEN (vips_token_get_type())
@@ -63,12 +61,17 @@ GType vips_band_format_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_BAND_FORMAT (vips_band_format_get_type())
 GType vips_coding_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_CODING (vips_coding_get_type())
+GType vips_access_get_type (void) G_GNUC_CONST;
+#define VIPS_TYPE_ACCESS (vips_access_get_type())
 /* enumerations from "../../../libvips/include/vips/colour.h" */
 GType vips_intent_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_INTENT (vips_intent_get_type())
 /* enumerations from "../../../libvips/include/vips/operation.h" */
 GType vips_operation_flags_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_OPERATION_FLAGS (vips_operation_flags_get_type())
+/* enumerations from "../../../libvips/include/vips/convolution.h" */
+GType vips_precision_get_type (void) G_GNUC_CONST;
+#define VIPS_TYPE_PRECISION (vips_precision_get_type())
 /* enumerations from "../../../libvips/include/vips/object.h" */
 GType vips_argument_flags_get_type (void) G_GNUC_CONST;
 #define VIPS_TYPE_ARGUMENT_FLAGS (vips_argument_flags_get_type())

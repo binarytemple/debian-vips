@@ -22,16 +22,6 @@ VipsThreadState
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### USER_FUNCTION VipsThreadStartFn ##### -->
-<para>
-
-</para>
-
-@im: 
-@a: 
-@Returns: 
-
-
 <!-- ##### STRUCT VipsThreadState ##### -->
 <para>
 
@@ -52,6 +42,37 @@ VipsThreadState
 
 @parent_class: 
 
+<!-- ##### FUNCTION vips_thread_state_set ##### -->
+<para>
+
+</para>
+
+@object: 
+@a: 
+@b: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_thread_state_new ##### -->
+<para>
+
+</para>
+
+@im: 
+@a: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION VipsThreadStartFn ##### -->
+<para>
+
+</para>
+
+@im: 
+@a: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION VipsThreadpoolAllocateFn ##### -->
 <para>
 
@@ -60,15 +81,6 @@ VipsThreadState
 @state: 
 @a: 
 @stop: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION VipsThreadpoolProgressFn ##### -->
-<para>
-
-</para>
-
-@a: 
 @Returns: 
 
 
@@ -82,60 +94,12 @@ VipsThreadState
 @Returns: 
 
 
-<!-- ##### FUNCTION vips__print_renders ##### -->
+<!-- ##### USER_FUNCTION VipsThreadpoolProgressFn ##### -->
 <para>
 
 </para>
 
-@void: 
-
-
-<!-- ##### FUNCTION vips_concurrency_get ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_concurrency_set ##### -->
-<para>
-
-</para>
-
-@concurrency: 
-
-
-<!-- ##### FUNCTION vips_get_tile_size ##### -->
-<para>
-
-</para>
-
-@im: 
-@tile_width: 
-@tile_height: 
-@nlines: 
-
-
-<!-- ##### FUNCTION vips_thread_state_new ##### -->
-<para>
-
-</para>
-
-@im: 
 @a: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_thread_state_set ##### -->
-<para>
-
-</para>
-
-@object: 
-@a: 
-@b: 
 @Returns: 
 
 
@@ -150,6 +114,42 @@ VipsThreadState
 @work: 
 @progress: 
 @a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_get_tile_size ##### -->
+<para>
+
+</para>
+
+@im: 
+@tile_width: 
+@tile_height: 
+@nlines: 
+
+
+<!-- ##### FUNCTION vips__print_renders ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
+<!-- ##### FUNCTION vips_concurrency_set ##### -->
+<para>
+
+</para>
+
+@concurrency: 
+
+
+<!-- ##### FUNCTION vips_concurrency_get ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 

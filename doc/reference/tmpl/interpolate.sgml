@@ -22,38 +22,22 @@ VipsInterpolate
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO VIPS_INTERPOLATE_SCALE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO VIPS_INTERPOLATE_SHIFT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO VIPS_TRANSFORM_SCALE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO VIPS_TRANSFORM_SHIFT ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### STRUCT VipsInterpolate ##### -->
 <para>
 
 </para>
+
+
+<!-- ##### USER_FUNCTION VipsInterpolateMethod ##### -->
+<para>
+
+</para>
+
+@interpolate: 
+@out: 
+@in: 
+@x: 
+@y: 
 
 
 <!-- ##### STRUCT VipsInterpolateClass ##### -->
@@ -68,18 +52,6 @@ VipsInterpolate
 @get_window_offset: 
 @window_offset: 
 
-<!-- ##### USER_FUNCTION VipsInterpolateMethod ##### -->
-<para>
-
-</para>
-
-@interpolate: 
-@out: 
-@in: 
-@x: 
-@y: 
-
-
 <!-- ##### FUNCTION vips_interpolate ##### -->
 <para>
 
@@ -92,25 +64,7 @@ VipsInterpolate
 @y: 
 
 
-<!-- ##### FUNCTION vips_interpolate_bilinear_static ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
 <!-- ##### FUNCTION vips_interpolate_get_method ##### -->
-<para>
-
-</para>
-
-@interpolate: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_interpolate_get_window_offset ##### -->
 <para>
 
 </para>
@@ -128,7 +82,53 @@ VipsInterpolate
 @Returns: 
 
 
+<!-- ##### FUNCTION vips_interpolate_get_window_offset ##### -->
+<para>
+
+</para>
+
+@interpolate: 
+@Returns: 
+
+
+<!-- ##### MACRO VIPS_TRANSFORM_SHIFT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_TRANSFORM_SCALE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_INTERPOLATE_SHIFT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO VIPS_INTERPOLATE_SCALE ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION vips_interpolate_nearest_static ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_interpolate_bilinear_static ##### -->
 <para>
 
 </para>

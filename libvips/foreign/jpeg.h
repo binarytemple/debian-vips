@@ -35,6 +35,32 @@
 extern "C" {
 #endif /*__cplusplus*/
 
+/* jpeglib includes jconfig.h, which can define HAVE_STDLIB_H ... which we
+ * also define. Make sure it's turned off.
+ */
+#ifdef HAVE_STDLIB_H
+#undef HAVE_STDLIB_H
+#endif /*HAVE_STDLIB_H*/
+
+/* jpeglib defines its own boolean type as an enum which then clashes with 
+ * everyone elses. Rename it as jboolean. 
+ */
+#define boolean jboolean
+
+/* Any TRUE/FALSE macros which have crept in will cause terrible confusion as
+ * well.
+ */
+#ifdef TRUE
+#undef TRUE
+#endif /*TRUE*/
+
+#ifdef FALSE
+#undef FALSE
+#endif /*FALSE*/
+
+#include <jpeglib.h>
+#include <jerror.h>
+
 /* Define a new error handler for when we bomb out.
  */
 typedef struct {
@@ -48,23 +74,8 @@ typedef struct {
 	FILE *fp;		/* fclose() if non-NULL */
 } ErrorManager;
 
-extern const char *vips__jpeg_suffs[];
-
 void vips__new_output_message( j_common_ptr cinfo );
 void vips__new_error_exit( j_common_ptr cinfo );
-
-int vips__jpeg_write_file( VipsImage *in, 
-	const char *filename, int Q, const char *profile );
-int vips__jpeg_write_buffer( VipsImage *in, 
-	void **obuf, size_t *olen, int Q, const char *profile );
-
-int vips__isjpeg( const char *filename );
-int vips__jpeg_read_file( const char *name, VipsImage *out, 
-	gboolean header_only,
-	int shrink, gboolean fail );
-int vips__jpeg_read_buffer( void *buf, size_t len, VipsImage *out, 
-	gboolean header_only,
-	int shrink, int fail );
 
 #ifdef __cplusplus
 }

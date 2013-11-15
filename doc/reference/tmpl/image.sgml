@@ -22,56 +22,6 @@ VipsImage
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO VIPS_IMAGE_ADDR ##### -->
-<para>
-
-</para>
-
-@I: 
-@X: 
-@Y: 
-
-
-<!-- ##### MACRO VIPS_IMAGE_N_ELEMENTS ##### -->
-<para>
-
-</para>
-
-@I: 
-
-
-<!-- ##### MACRO VIPS_IMAGE_N_PELS ##### -->
-<para>
-
-</para>
-
-@I: 
-
-
-<!-- ##### MACRO VIPS_IMAGE_SIZEOF_ELEMENT ##### -->
-<para>
-
-</para>
-
-@I: 
-
-
-<!-- ##### MACRO VIPS_IMAGE_SIZEOF_LINE ##### -->
-<para>
-
-</para>
-
-@I: 
-
-
-<!-- ##### MACRO VIPS_IMAGE_SIZEOF_PEL ##### -->
-<para>
-
-</para>
-
-@I: 
-
-
 <!-- ##### MACRO VIPS_MAGIC_INTEL ##### -->
 <para>
 
@@ -85,6 +35,57 @@ VipsImage
 </para>
 
 
+
+<!-- ##### ENUM VipsDemandStyle ##### -->
+<para>
+
+</para>
+
+@VIPS_DEMAND_STYLE_ERROR: 
+@VIPS_DEMAND_STYLE_SMALLTILE: 
+@VIPS_DEMAND_STYLE_FATSTRIP: 
+@VIPS_DEMAND_STYLE_THINSTRIP: 
+@VIPS_DEMAND_STYLE_ANY: 
+
+<!-- ##### ENUM VipsImageType ##### -->
+<para>
+
+</para>
+
+@VIPS_IMAGE_ERROR: 
+@VIPS_IMAGE_NONE: 
+@VIPS_IMAGE_SETBUF: 
+@VIPS_IMAGE_SETBUF_FOREIGN: 
+@VIPS_IMAGE_OPENIN: 
+@VIPS_IMAGE_MMAPIN: 
+@VIPS_IMAGE_MMAPINRW: 
+@VIPS_IMAGE_OPENOUT: 
+@VIPS_IMAGE_PARTIAL: 
+
+<!-- ##### ENUM VipsInterpretation ##### -->
+<para>
+
+</para>
+
+@VIPS_INTERPRETATION_ERROR: 
+@VIPS_INTERPRETATION_MULTIBAND: 
+@VIPS_INTERPRETATION_B_W: 
+@VIPS_INTERPRETATION_HISTOGRAM: 
+@VIPS_INTERPRETATION_XYZ: 
+@VIPS_INTERPRETATION_LAB: 
+@VIPS_INTERPRETATION_CMYK: 
+@VIPS_INTERPRETATION_LABQ: 
+@VIPS_INTERPRETATION_RGB: 
+@VIPS_INTERPRETATION_CMC: 
+@VIPS_INTERPRETATION_LCH: 
+@VIPS_INTERPRETATION_LABS: 
+@VIPS_INTERPRETATION_sRGB: 
+@VIPS_INTERPRETATION_YXY: 
+@VIPS_INTERPRETATION_FOURIER: 
+@VIPS_INTERPRETATION_RGB16: 
+@VIPS_INTERPRETATION_GREY16: 
+@VIPS_INTERPRETATION_MATRIX: 
+@VIPS_INTERPRETATION_scRGB: 
 
 <!-- ##### ENUM VipsBandFormat ##### -->
 <para>
@@ -115,16 +116,27 @@ VipsImage
 @VIPS_CODING_RAD: 
 @VIPS_CODING_LAST: 
 
-<!-- ##### ENUM VipsDemandStyle ##### -->
+<!-- ##### ENUM VipsAccess ##### -->
 <para>
 
 </para>
 
-@VIPS_DEMAND_STYLE_ERROR: 
-@VIPS_DEMAND_STYLE_SMALLTILE: 
-@VIPS_DEMAND_STYLE_FATSTRIP: 
-@VIPS_DEMAND_STYLE_THINSTRIP: 
-@VIPS_DEMAND_STYLE_ANY: 
+@VIPS_ACCESS_RANDOM: 
+@VIPS_ACCESS_SEQUENTIAL: 
+@VIPS_ACCESS_SEQUENTIAL_UNBUFFERED: 
+@VIPS_ACCESS_LAST: 
+
+<!-- ##### STRUCT VipsProgress ##### -->
+<para>
+
+</para>
+
+@run: 
+@eta: 
+@tpels: 
+@npels: 
+@percent: 
+@start: 
 
 <!-- ##### STRUCT VipsImage ##### -->
 <para>
@@ -271,113 +283,67 @@ VipsImage
 @invalidate: 
 @minimise: 
 
-<!-- ##### ENUM VipsImageType ##### -->
+<!-- ##### MACRO VIPS_IMAGE_SIZEOF_ELEMENT ##### -->
 <para>
 
 </para>
 
-@VIPS_IMAGE_ERROR: 
-@VIPS_IMAGE_NONE: 
-@VIPS_IMAGE_SETBUF: 
-@VIPS_IMAGE_SETBUF_FOREIGN: 
-@VIPS_IMAGE_OPENIN: 
-@VIPS_IMAGE_MMAPIN: 
-@VIPS_IMAGE_MMAPINRW: 
-@VIPS_IMAGE_OPENOUT: 
-@VIPS_IMAGE_PARTIAL: 
+@I: 
 
-<!-- ##### ENUM VipsInterpretation ##### -->
+
+<!-- ##### MACRO VIPS_IMAGE_SIZEOF_PEL ##### -->
 <para>
 
 </para>
 
-@VIPS_INTERPRETATION_ERROR: 
-@VIPS_INTERPRETATION_MULTIBAND: 
-@VIPS_INTERPRETATION_B_W: 
-@VIPS_INTERPRETATION_HISTOGRAM: 
-@VIPS_INTERPRETATION_XYZ: 
-@VIPS_INTERPRETATION_LAB: 
-@VIPS_INTERPRETATION_CMYK: 
-@VIPS_INTERPRETATION_LABQ: 
-@VIPS_INTERPRETATION_RGB: 
-@VIPS_INTERPRETATION_CMC: 
-@VIPS_INTERPRETATION_LCH: 
-@VIPS_INTERPRETATION_LABS: 
-@VIPS_INTERPRETATION_sRGB: 
-@VIPS_INTERPRETATION_YXY: 
-@VIPS_INTERPRETATION_FOURIER: 
-@VIPS_INTERPRETATION_RGB16: 
-@VIPS_INTERPRETATION_GREY16: 
-@VIPS_INTERPRETATION_ARRAY: 
-@VIPS_INTERPRETATION_scRGB: 
+@I: 
 
-<!-- ##### STRUCT VipsProgress ##### -->
+
+<!-- ##### MACRO VIPS_IMAGE_SIZEOF_LINE ##### -->
 <para>
 
 </para>
 
-@run: 
-@eta: 
-@tpels: 
-@npels: 
-@percent: 
-@start: 
+@I: 
 
-<!-- ##### FUNCTION vips_band_format_is8bit ##### -->
+
+<!-- ##### MACRO VIPS_IMAGE_N_ELEMENTS ##### -->
 <para>
 
 </para>
 
-@format: 
-@Returns: 
+@I: 
 
 
-<!-- ##### FUNCTION vips_band_format_iscomplex ##### -->
+<!-- ##### MACRO VIPS_IMAGE_N_PELS ##### -->
 <para>
 
 </para>
 
-@format: 
-@Returns: 
+@I: 
 
 
-<!-- ##### FUNCTION vips_band_format_isfloat ##### -->
+<!-- ##### MACRO VIPS_IMAGE_ADDR ##### -->
 <para>
 
 </para>
 
-@format: 
-@Returns: 
+@I: 
+@X: 
+@Y: 
 
 
-<!-- ##### FUNCTION vips_band_format_isint ##### -->
+<!-- ##### MACRO VIPS_MATRIX ##### -->
 <para>
 
 </para>
 
-@format: 
-@Returns: 
+@I: 
+@X: 
+@Y: 
 
 
-<!-- ##### FUNCTION vips_band_format_isuint ##### -->
-<para>
-
-</para>
-
-@format: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_eval ##### -->
-<para>
-
-</para>
-
-@image: 
-@processed: 
-
-
-<!-- ##### FUNCTION vips_image_inplace ##### -->
+<!-- ##### FUNCTION vips_image_written ##### -->
 <para>
 
 </para>
@@ -394,22 +360,46 @@ VipsImage
 @image: 
 
 
-<!-- ##### FUNCTION vips_image_isMSBfirst ##### -->
+<!-- ##### FUNCTION vips_image_minimise_all ##### -->
 <para>
 
 </para>
 
 @image: 
-@Returns: 
 
 
-<!-- ##### FUNCTION vips_image_isfile ##### -->
+<!-- ##### FUNCTION vips_image_preeval ##### -->
 <para>
 
 </para>
 
 @image: 
-@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_eval ##### -->
+<para>
+
+</para>
+
+@image: 
+@processed: 
+
+
+<!-- ##### FUNCTION vips_image_posteval ##### -->
+<para>
+
+</para>
+
+@image: 
+
+
+<!-- ##### FUNCTION vips_image_set_progress ##### -->
+<para>
+
+</para>
+
+@image: 
+@progress: 
 
 
 <!-- ##### FUNCTION vips_image_iskilled ##### -->
@@ -421,21 +411,13 @@ VipsImage
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_ispartial ##### -->
+<!-- ##### FUNCTION vips_image_set_kill ##### -->
 <para>
 
 </para>
 
 @image: 
-@Returns: 
-
-
-<!-- ##### FUNCTION vips_image_minimise_all ##### -->
-<para>
-
-</para>
-
-@image: 
+@kill: 
 
 
 <!-- ##### FUNCTION vips_image_new ##### -->
@@ -447,13 +429,13 @@ VipsImage
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_new_array ##### -->
+<!-- ##### FUNCTION vips_image_new_mode ##### -->
 <para>
 
 </para>
 
-@xsize: 
-@ysize: 
+@filename: 
+@mode: 
 @Returns: 
 
 
@@ -501,14 +483,34 @@ VipsImage
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_new_mode ##### -->
+<!-- ##### FUNCTION vips_image_new_matrix ##### -->
 <para>
 
 </para>
 
-@filename: 
-@mode: 
+@width: 
+@height: 
 @Returns: 
+
+
+<!-- ##### FUNCTION vips_image_new_matrixv ##### -->
+<para>
+
+</para>
+
+@width: 
+@height: 
+@...: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_set_delete_on_close ##### -->
+<para>
+
+</para>
+
+@image: 
+@delete_on_close: 
 
 
 <!-- ##### FUNCTION vips_image_new_temp_file ##### -->
@@ -517,6 +519,62 @@ VipsImage
 </para>
 
 @format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_write ##### -->
+<para>
+
+</para>
+
+@image: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_write_to_file ##### -->
+<para>
+
+</para>
+
+@image: 
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_isMSBfirst ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_isfile ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_ispartial ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_image_wio_input ##### -->
+<para>
+
+</para>
+
+@image: 
 @Returns: 
 
 
@@ -529,50 +587,7 @@ VipsImage
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_posteval ##### -->
-<para>
-
-</para>
-
-@image: 
-
-
-<!-- ##### FUNCTION vips_image_preeval ##### -->
-<para>
-
-</para>
-
-@image: 
-
-
-<!-- ##### FUNCTION vips_image_set_delete_on_close ##### -->
-<para>
-
-</para>
-
-@image: 
-@delete_on_close: 
-
-
-<!-- ##### FUNCTION vips_image_set_kill ##### -->
-<para>
-
-</para>
-
-@image: 
-@kill: 
-
-
-<!-- ##### FUNCTION vips_image_set_progress ##### -->
-<para>
-
-</para>
-
-@image: 
-@progress: 
-
-
-<!-- ##### FUNCTION vips_image_wio_input ##### -->
+<!-- ##### FUNCTION vips_image_inplace ##### -->
 <para>
 
 </para>
@@ -581,13 +596,12 @@ VipsImage
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_write ##### -->
+<!-- ##### FUNCTION vips_image_write_prepare ##### -->
 <para>
 
 </para>
 
 @image: 
-@out: 
 @Returns: 
 
 
@@ -602,31 +616,48 @@ VipsImage
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_write_prepare ##### -->
+<!-- ##### FUNCTION vips_band_format_isint ##### -->
 <para>
 
 </para>
 
-@image: 
+@format: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_write_to_file ##### -->
+<!-- ##### FUNCTION vips_band_format_isuint ##### -->
 <para>
 
 </para>
 
-@image: 
-@filename: 
+@format: 
 @Returns: 
 
 
-<!-- ##### FUNCTION vips_image_written ##### -->
+<!-- ##### FUNCTION vips_band_format_is8bit ##### -->
 <para>
 
 </para>
 
-@image: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_band_format_isfloat ##### -->
+<para>
+
+</para>
+
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION vips_band_format_iscomplex ##### -->
+<para>
+
+</para>
+
+@format: 
 @Returns: 
 
 
