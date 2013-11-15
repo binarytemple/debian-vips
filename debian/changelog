@@ -1,3 +1,136 @@
+vips (7.28.5-2) unstable; urgency=low
+
+  * Support bigtiff
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 29 May 2012 09:52:22 -0400
+
+vips (7.28.5-1) unstable; urgency=low
+
+  * New upstream release
+  * multiarch, hardening
+
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 24 May 2012 15:52:35 -0400
+
+vips (7.28.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 18 Mar 2012 16:54:58 -0400
+
+vips (7.26.7-4) unstable; urgency=low
+
+  * Explicitly disable v4l on kfreebsd architectures.  Hopefully it's
+    really right this time.  (Closes: #654430)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 05 Mar 2012 16:41:02 -0500
+
+vips (7.26.7-3) unstable; urgency=low
+
+  * Correctly implement previous change (fix omission in rules file)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 05 Mar 2012 13:33:26 -0500
+
+vips (7.26.7-2) unstable; urgency=low
+
+  * Update png dependency to libpng-dev.  (Closes: #662536)
+  * Explicitly disable v4l on kfreebsd architectures.  (Closes: #654430)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 05 Mar 2012 09:15:23 -0500
+
+vips (7.26.7-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix python packaging issue.  Thanks Jakub Wilik <jwilk@debian.org>.
+    (Closes: #642746)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 31 Dec 2011 10:31:20 -0500
+
+vips (7.26.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Migrate from dh_pycentral to dh_python2.  (Closes: #617141)
+  * Remove remaining .la files which were installed with the python
+    module.  (Closes: #633181)
+  * New upstream release includes updated German translation.  (Closes:
+    #625255)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 03 Sep 2011 10:47:36 -0400
+
+vips (7.24.5-4) unstable; urgency=high
+
+  * Fixed ImageMagick dependencies; previous fix missed dependencies of
+    libvips-dev. (Closes: #629904, #630014)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 11 Jun 2011 07:54:15 -0400
+
+vips (7.24.5-3) unstable; urgency=low
+
+  * Updated libmagick build dependencies to use non-version-specific
+    packages for better upgradability. (Closes: #625602, #625552)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 07 May 2011 09:42:14 -0400
+
+vips (7.24.5-2) unstable; urgency=low
+
+  * Oops...fix lintian errors from moved documentation.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Apr 2011 13:29:02 -0400
+
+vips (7.24.5-1) unstable; urgency=low
+
+  * New upstream release
+  * Updated standards to 3.9.2.  No changes required.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Apr 2011 10:58:26 -0400
+
+vips (7.24.1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 27 Dec 2010 14:24:43 -0500
+
+vips (7.22.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Upstream release includes fix to CVE-2010-3364: insecure library
+    loading.  (Closes: #598296)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 09 Oct 2010 10:39:23 -0400
+
+vips (7.22.2-2) unstable; urgency=low
+
+  * Upstream has declared this to be a stable release.  No code changes
+    from version uploaded to experimental.
+  * Updated version in shlibs file.
+  * Updated watch file for new stable location.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 04 Sep 2010 15:23:54 -0400
+
+vips (7.22.2-1) experimental; urgency=low
+
+  * New upstream release
+  * Updated standards version to 3.9.1.  No changes required.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 08 Aug 2010 19:30:12 -0400
+
+vips (7.22.1-1) experimental; urgency=low
+
+  * New upstream release
+  * Removed replaces/conflicts on very old versions of the package that
+    have been gone since before the current stable.
+  * Updated standards version to 3.9.0.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 24 Jul 2010 11:03:05 -0400
+
+vips (7.22.0-1) experimental; urgency=low
+
+  * New upstream release
+  * Changed references to libjpeg62-dev to libjpeg-dev
+  * Upstream release includes German translation. (Closes: #582086)
+  * Upstream release includes fixes to typos. (Closes: #582084)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 20 Jun 2010 13:20:26 -0400
+
 vips (7.20.7-1) unstable; urgency=low
 
   * New upstream release
